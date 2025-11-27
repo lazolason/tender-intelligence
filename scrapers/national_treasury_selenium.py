@@ -151,7 +151,8 @@ class NationalTreasuryScraper:
                                 "category": classification["category"],
                                 "reason": classification["reason"],
                                 "short_title": classification["short_title"],
-                                "source": "National Treasury"
+                                "source": "National Treasury",
+                                "url": "https://www.etenders.gov.za/Home/opportunities"
                             })
                 except:
                     continue
@@ -176,7 +177,8 @@ class NationalTreasuryScraper:
                             "category": classification["category"],
                             "reason": classification["reason"],
                             "short_title": classification["short_title"],
-                            "source": "National Treasury"
+                            "source": "National Treasury",
+                                "url": "https://www.etenders.gov.za/Home/opportunities"
                         })
                 except:
                     continue
