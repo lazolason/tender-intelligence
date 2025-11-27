@@ -1,0 +1,138 @@
+
+    <html>
+    <head>
+        <style>
+            body { font-family: Arial, sans-serif; padding: 20px; max-width: 900px; margin: 0 auto; }
+            h1 { color: #1565C0; border-bottom: 3px solid #1565C0; padding-bottom: 10px; }
+            h2 { color: #2E7D32; margin-top: 30px; }
+            .dashboard { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin: 20px 0; }
+            .card { background: #f5f5f5; padding: 20px; border-radius: 8px; text-align: center; }
+            .card.highlight { background: #E3F2FD; border: 2px solid #1565C0; }
+            .card h3 { margin: 0; font-size: 2em; color: #1565C0; }
+            .card p { margin: 5px 0 0 0; color: #666; }
+            .priority-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+            .priority-card { padding: 15px; border-radius: 8px; text-align: center; }
+            .priority-card.high { background: #FFEBEE; color: #C62828; }
+            .priority-card.medium { background: #FFF8E1; color: #F57F17; }
+            .priority-card.low { background: #E8F5E9; color: #2E7D32; }
+            .priority-card h3 { font-size: 2.5em; margin: 0; }
+            table { border-collapse: collapse; width: 100%; margin: 20px 0; }
+            th { background: #1565C0; color: white; padding: 12px; text-align: left; }
+            td { border: 1px solid #ddd; padding: 10px; }
+            tr:nth-child(even) { background: #f9f9f9; }
+            .urgent { background: #FFEBEE; }
+            .badge { display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 0.8em; font-weight: bold; }
+            .badge-high { background: #F44336; color: white; }
+            .badge-medium { background: #FFC107; color: black; }
+            .badge-tes { background: #2196F3; color: white; }
+            .badge-phakathi { background: #9C27B0; color: white; }
+            .chart-container { margin: 20px 0; }
+            .bar { height: 25px; background: #1565C0; margin: 5px 0; border-radius: 3px; color: white; padding: 3px 10px; }
+        </style>
+    </head>
+    <body>
+        <h1>📊 Weekly Tender Dashboard</h1>
+        <p><strong>Report Period:</strong> 2025-11-20 to 2025-11-27</p>
+        
+        <div class="dashboard">
+            <div class="card highlight">
+                <h3>14</h3>
+                <p>Total Tenders</p>
+            </div>
+            <div class="card">
+                <h3>8</h3>
+                <p>Added This Week</p>
+            </div>
+            <div class="card">
+                <h3>1</h3>
+                <p>Closing Soon</p>
+            </div>
+            <div class="card">
+                <h3>4</h3>
+                <p>High Priority Open</p>
+            </div>
+        </div>
+        
+        <h2>🎯 Priority Distribution</h2>
+        <div class="priority-grid">
+            <div class="priority-card high">
+                <h3>4</h3>
+                <p>🔥 HIGH</p>
+            </div>
+            <div class="priority-card medium">
+                <h3>3</h3>
+                <p>✅ MEDIUM</p>
+            </div>
+            <div class="priority-card low">
+                <h3>1</h3>
+                <p>📝 LOW</p>
+            </div>
+        </div>
+        
+        <h2>📁 By Category</h2>
+        <div class="chart-container">
+    <div class="bar" style="width: 100%">TES: 6</div><div class="bar" style="width: 100%">Phakathi: 6</div><div class="bar" style="width: 10%">Both: 0</div><div class="bar" style="width: 33%">Unknown: 2</div>
+        </div>
+        
+        <h2>⚠️ Closing Soon (Next 7 Days)</h2>
+    
+        <table>
+            <tr><th>Ref</th><th>Tender</th><th>Client</th><th>Days Left</th><th>Priority</th></tr>
+        
+            <tr class="">
+                <td>SCORE-005</td>
+                <td>SCORE-005 - Emergency Cooling System Repairs...</td>
+                <td>Eskom</td>
+                <td><strong>7 days</strong></td>
+                <td><span class="badge badge-medium">MEDIUM</span></td>
+            </tr>
+            </table>
+        <h2>🔥 Top High Priority Opportunities</h2>
+    
+        <table>
+            <tr><th>Ref</th><th>Tender</th><th>Client</th><th>Type</th><th>Score</th></tr>
+        
+            <tr>
+                <td>SCORE-001</td>
+                <td>SCORE-001 - Cooling Water Treatment Chemical Suppl...</td>
+                <td>Eskom Holdings</td>
+                <td><span class="badge badge-tes">TES</span></td>
+                <td><strong>8.8/10</strong></td>
+            </tr>
+            
+            <tr>
+                <td>SCORE-002</td>
+                <td>SCORE-002 - Pump Overhaul and White Metal Bearing ...</td>
+                <td>Sasol</td>
+                <td><span class="badge badge-tes">TES</span></td>
+                <td><strong>8.3/10</strong></td>
+            </tr>
+            
+            <tr>
+                <td>SCORE-007</td>
+                <td>SCORE-007 - Water Treatment Plant Upgrade...</td>
+                <td>Johannesburg Water</td>
+                <td><span class="badge badge-tes">TES</span></td>
+                <td><strong>8.2/10</strong></td>
+            </tr>
+            
+            <tr>
+                <td>SCORE-006</td>
+                <td>SCORE-006 - Mechanical Seals and Gearbox Spares...</td>
+                <td>Transnet</td>
+                <td><span class="badge badge-phakathi">Phakathi</span></td>
+                <td><strong>7.2/10</strong></td>
+            </tr>
+            </table>
+        <h2>🏭 Top Industries</h2>
+        <div class="chart-container">
+    <div class="bar" style="width: 100%">Test: 8</div><div class="bar" style="width: 12%">Power: 1</div><div class="bar" style="width: 12%">Municipal: 1</div><div class="bar" style="width: 12%">Transport: 1</div><div class="bar" style="width: 12%">Petrochemical: 1</div>
+        </div>
+        
+        <hr>
+        <p style="color: #666; font-size: 0.8em; text-align: center;">
+            Generated by TenderScan AI Engine | 2025-11-27 14:07
+        </p>
+    </body>
+    </html>
+    

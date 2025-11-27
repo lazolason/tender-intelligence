@@ -1,0 +1,69 @@
+# ================================
+# TENDER AUTOMATION ENGINE CONFIG
+# ================================
+
+# Absolute paths on your Mac
+paths:
+  master_root: "/Users/lazolasonqishe/Documents/MASTER/"
+  tenders_root: "/Users/lazolasonqishe/Documents/MASTER/TENDERS/"
+  tender_log_excel: "/Users/lazolasonqishe/Documents/MASTER/TENDERS/01_Tender_Log/Tender_Dashboard_v2.xlsx"
+  active_tenders: "/Users/lazolasonqishe/Documents/MASTER/TENDERS/02_Active_Tenders/"
+  output_dir: "/Users/lazolasonqishe/Documents/MASTER/TENDERS/00_System/04_Automation/output/"
+  log_file: "/Users/lazolasonqishe/Documents/MASTER/TENDERS/00_System/04_Automation/logs/scraper.log"
+
+# Scraper settings
+scrapers:
+  enable_selenium: true    # Enable Selenium-based scrapers (National Treasury)
+  timeout: 15
+  user_agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)"
+  
+  # Search terms for National Treasury
+  search_terms:
+    - "water treatment"
+    - "cooling system"
+    - "pumps"
+    - "mechanical"
+    - "switchgear"
+    - "chemical"
+    - "fabrication"
+  
+  # URLs
+  urls:
+    national_treasury: "https://www.etenders.gov.za/"
+
+# Classification settings
+classification:
+  tes_priority: true        # TES overrides if overlapping
+  pakati_priority: true     # Phakathi overrides if mechanical supply
+  both_category_enabled: true
+
+# Excel sheet names
+excel:
+  tender_log_sheet: "Tender_Log"
+
+# AI Scoring weights
+scoring:
+  fit_weight: 0.30
+  industry_weight: 0.25
+  risk_weight: 0.20
+  revenue_weight: 0.25
+  
+  # Priority thresholds
+  high_threshold: 7.0
+  medium_threshold: 4.5
+
+# Email settings (for daily reports)
+email:
+  enabled: false
+  smtp_server: "smtp.gmail.com"
+  smtp_port: 587
+  from_address: ""
+  to_addresses: []
+  
+# Logging settings
+logging:
+  level: "INFO"
+  max_entries: 5000
+
+# Version
+engine_version: "v2.0"

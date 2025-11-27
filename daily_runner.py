@@ -1,0 +1,217 @@
+#!/usr/bin/env python3
+# ==========================================================
+# DAILY TENDER AUTOMATION RUNNER
+# Runs all scrapers, scores tenders, sends email summary
+# ==========================================================
+
+import os
+import sys
+import json
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from datetime import datetime
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
+# Import main engine
+from tenderscan import run_all_scrapers, process_tenders, save_outputs
+from utils.logging_tools import write_log, rotate_log_if_needed
+
+# ----------------------------------------------------------
+# CONFIGURATION
+# ----------------------------------------------------------
+LOG_FILE = os.path.join(os.path.dirname(__file__), "logs", "daily_run.log")
+OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output")
+
+# Email settings (configure via environment variables)
+EMAIL_ENABLED = os.environ.get("TENDERSCAN_EMAIL_ENABLED", "false").lower() == "true"
+SMTP_SERVER = os.environ.get("TENDERSCAN_SMTP_SERVER", "smtp.gmail.com")
+SMTP_PORT = int(os.environ.get("TENDERSCAN_SMTP_PORT", "587"))
+SMTP_USER = os.environ.get("TENDERSCAN_SMTP_USER", "")
+SMTP_PASSWORD = os.environ.get("TENDERSCAN_SMTP_PASSWORD", "")
+EMAIL_TO = os.environ.get("TENDERSCAN_EMAIL_TO", "").split(",")
+EMAIL_FROM = os.environ.get("TENDERSCAN_EMAIL_FROM", SMTP_USER)
+
+
+def generate_email_summary(new_items: list, total_scraped: int) -> str:
+    """Generate HTML email summary"""
+    
+    # Group by priority
+    high = [t for t in new_items if t.get("scores", {}).get("priority") == "HIGH"]
+    medium = [t for t in new_items if t.get("scores", {}).get("priority") == "MEDIUM"]
+    low = [t for t in new_items if t.get("scores", {}).get("priority") == "LOW"]
+    
+    html = f"""
+    <html>
+    <head>
+        <style>
+            body {{ font-family: Arial, sans-serif; padding: 20px; }}
+            h1 {{ color: #2E7D32; }}
+            .summary {{ background: #f5f5f5; padding: 15px; border-radius: 8px; margin: 20px 0; }}
+            .high {{ background: #FFEBEE; border-left: 4px solid #F44336; padding: 10px; margin: 10px 0; }}
+            .medium {{ background: #FFF8E1; border-left: 4px solid #FFC107; padding: 10px; margin: 10px 0; }}
+            .low {{ background: #E8F5E9; border-left: 4px solid #4CAF50; padding: 10px; margin: 10px 0; }}
+            .tender-title {{ font-weight: bold; }}
+            .score {{ color: #666; font-size: 0.9em; }}
+            table {{ border-collapse: collapse; width: 100%; }}
+            th, td {{ border: 1px solid #ddd; padding: 8px; text-align: left; }}
+            th {{ background: #2E7D32; color: white; }}
+        </style>
+    </head>
+    <body>
+        <h1>🎯 Tender Scan Daily Report</h1>
+        <p><strong>Date:</strong> {datetime.now().strftime("%Y-%m-%d %H:%M")}</p>
+        
+        <div class="summary">
+            <h3>📊 Summary</h3>
+            <p>Total scraped: <strong>{total_scraped}</strong></p>
+            <p>New tenders added: <strong>{len(new_items)}</strong></p>
+            <ul>
+                <li>🔥 HIGH Priority: <strong>{len(high)}</strong></li>
+                <li>✅ MEDIUM Priority: <strong>{len(medium)}</strong></li>
+                <li>📝 LOW Priority: <strong>{len(low)}</strong></li>
+            </ul>
+        </div>
+    """
+    
+    if high:
+        html += "<h2>🔥 HIGH PRIORITY - Action Required</h2>"
+        for t in high:
+            scores = t.get("scores", {})
+            html += f"""
+            <div class="high">
+                <div class="tender-title">{t.get('ref', 'N/A')} - {t.get('title', 'Unknown')[:80]}</div>
+                <div>Client: {t.get('client', 'Unknown')} | Category: {t.get('category', 'Unknown')}</div>
+                <div class="score">AI Score: {scores.get('composite', 'N/A')}/10 | 
+                    TES: {scores.get('tes', 0)}/10 | Phakathi: {scores.get('phakathi', 0)}/10</div>
+                <div>Closing: {t.get('closing_date', 'Unknown')}</div>
+            </div>
+            """
+    
+    if medium:
+        html += "<h2>✅ MEDIUM PRIORITY - Review</h2>"
+        for t in medium[:5]:  # Limit to top 5
+            scores = t.get("scores", {})
+            html += f"""
+            <div class="medium">
+                <div class="tender-title">{t.get('ref', 'N/A')} - {t.get('title', 'Unknown')[:80]}</div>
+                <div>Client: {t.get('client', 'Unknown')} | Score: {scores.get('composite', 'N/A')}/10</div>
+            </div>
+            """
+        if len(medium) > 5:
+            html += f"<p>... and {len(medium) - 5} more medium priority tenders</p>"
+    
+    if low:
+        html += f"<h2>📝 LOW PRIORITY ({len(low)} tenders)</h2>"
+        html += "<p>Low priority tenders saved to Excel for review if needed.</p>"
+    
+    html += """
+        <hr>
+        <p style="color: #666; font-size: 0.8em;">
+            Generated by TenderScan AI Engine | 
+            <a href="#">View Dashboard</a>
+        </p>
+    </body>
+    </html>
+    """
+    
+    return html
+
+
+def send_email(subject: str, html_content: str) -> bool:
+    """Send email via SMTP"""
+    
+    if not EMAIL_ENABLED:
+        print("📧 Email disabled - skipping")
+        return False
+    
+    if not SMTP_USER or not SMTP_PASSWORD or not EMAIL_TO:
+        print("❌ Email configuration incomplete")
+        return False
+    
+    try:
+        msg = MIMEMultipart("alternative")
+        msg["Subject"] = subject
+        msg["From"] = EMAIL_FROM
+        msg["To"] = ", ".join(EMAIL_TO)
+        
+        msg.attach(MIMEText(html_content, "html"))
+        
+        with smtplib.SMTP(SMTP_SERVER, SMTP_PORT) as server:
+            server.starttls()
+            server.login(SMTP_USER, SMTP_PASSWORD)
+            server.sendmail(EMAIL_FROM, EMAIL_TO, msg.as_string())
+        
+        print(f"✅ Email sent to {', '.join(EMAIL_TO)}")
+        return True
+        
+    except Exception as e:
+        print(f"❌ Email failed: {e}")
+        return False
+
+
+def run_daily():
+    """Main daily run function"""
+    
+    os.makedirs(os.path.dirname(LOG_FILE), exist_ok=True)
+    rotate_log_if_needed(LOG_FILE)
+    
+    write_log(LOG_FILE, "=" * 50)
+    write_log(LOG_FILE, f"DAILY RUN STARTED: {datetime.now()}")
+    write_log(LOG_FILE, "=" * 50)
+    
+    print(f"\n🚀 TenderScan Daily Run - {datetime.now().strftime('%Y-%m-%d %H:%M')}")
+    print("=" * 50)
+    
+    # Run scrapers
+    print("\n📡 Running scrapers...")
+    all_tenders = run_all_scrapers()
+    write_log(LOG_FILE, f"Total scraped: {len(all_tenders)}")
+    
+    # Process and score
+    print("\n🧠 Processing & scoring tenders...")
+    added_count, new_items = process_tenders(all_tenders)
+    write_log(LOG_FILE, f"New tenders added: {added_count}")
+    
+    # Save outputs
+    save_outputs(new_items)
+    
+    # Generate and send email
+    if new_items:
+        print("\n📧 Generating email summary...")
+        subject = f"🎯 TenderScan: {len(new_items)} New Tenders - {datetime.now().strftime('%Y-%m-%d')}"
+        html = generate_email_summary(new_items, len(all_tenders))
+        send_email(subject, html)
+    else:
+        print("\n📭 No new tenders today")
+    
+    # Summary
+    high = sum(1 for t in new_items if t.get("scores", {}).get("priority") == "HIGH")
+    medium = sum(1 for t in new_items if t.get("scores", {}).get("priority") == "MEDIUM")
+    low = sum(1 for t in new_items if t.get("scores", {}).get("priority") == "LOW")
+    
+    write_log(LOG_FILE, "=" * 50)
+    write_log(LOG_FILE, f"DAILY RUN COMPLETE: HIGH={high}, MEDIUM={medium}, LOW={low}")
+    write_log(LOG_FILE, "=" * 50)
+    
+    print("\n" + "=" * 50)
+    print("✅ DAILY RUN COMPLETE")
+    print(f"   Total scraped:  {len(all_tenders)}")
+    print(f"   New added:      {added_count}")
+    print(f"   🔥 HIGH:        {high}")
+    print(f"   ✅ MEDIUM:      {medium}")
+    print(f"   📝 LOW:         {low}")
+    print("=" * 50)
+    
+    return {
+        "total_scraped": len(all_tenders),
+        "added": added_count,
+        "high": high,
+        "medium": medium,
+        "low": low
+    }
+
+
+if __name__ == "__main__":
+    run_daily()

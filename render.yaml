@@ -1,0 +1,51 @@
+# ==========================================================
+# RENDER DEPLOYMENT CONFIGURATION
+# Tender Intelligence System
+# ==========================================================
+
+services:
+  - type: web
+    name: tender-intelligence
+    runtime: python
+    region: frankfurt  # Closest to South Africa
+    plan: starter      # $7/month - upgrade as needed
+    
+    # Build settings
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app --bind 0.0.0.0:$PORT --workers 2 --timeout 120
+    
+    # Health check
+    healthCheckPath: /health
+    
+    # Environment variables
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.11"
+      - key: FLASK_ENV
+        value: production
+      - key: ENABLE_SELENIUM
+        value: "false"  # Selenium requires paid plan with Docker
+      - key: TZ
+        value: Africa/Johannesburg
+    
+    # Auto-deploy from GitHub
+    autoDeploy: true
+    
+    # Cron jobs for daily/weekly runs
+  - type: cron
+    name: tender-daily-scan
+    runtime: python
+    region: frankfurt
+    plan: starter
+    schedule: "0 4 * * *"  # 6AM South Africa time (UTC+2)
+    buildCommand: pip install -r requirements.txt
+    startCommand: python daily_runner.py
+    
+  - type: cron
+    name: tender-weekly-report
+    runtime: python
+    region: frankfurt
+    plan: starter
+    schedule: "0 5 * * 1"  # 7AM Monday South Africa time
+    buildCommand: pip install -r requirements.txt
+    startCommand: python weekly_report.py
