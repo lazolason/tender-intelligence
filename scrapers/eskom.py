@@ -28,13 +28,26 @@ def scrape_eskom():
     try:
         print("🔍 Scraping Eskom tenders...")
         
-        # Eskom tenders portal
-        url = "https://www.eskom.co.za/business-and-innovation/tenders/"
+        # Eskom tenders on National Treasury e-Tender portal
+        url = "https://www.etenders.gov.za/Home/TenderOpportunities"
+        
         headers = {
-            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36",
+            "Accept": "application/json, text/javascript, */*; q=0.01",
+            "X-Requested-With": "XMLHttpRequest"
         }
         
-        response = requests.get(url, headers=headers, timeout=10, verify=False)
+        params = {
+            "draw": 1,
+            "start": 0,
+            "length": 50,
+            "tenderStatus": 1,
+            "categories": "",
+            "provinces": "",
+            "departments": "Eskom"
+        }
+        
+        response = requests.post(url, data=params, headers=headers, timeout=10, verify=False)
         response.raise_for_status()
         
         soup = BeautifulSoup(response.content, "html.parser")
