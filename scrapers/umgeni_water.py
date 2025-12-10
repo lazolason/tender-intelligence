@@ -36,7 +36,7 @@ def scrape_umgeni_water():
             "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"
         }
         
-        response = requests.get(url, headers=headers, timeout=10)
+        response = requests.get(url, headers=headers, timeout=10, verify=False)
         response.raise_for_status()
         
         soup = BeautifulSoup(response.content, "html.parser")
