@@ -94,6 +94,24 @@ def generate_dashboard_html(tenders):
         
         url = t.get("url", "") or get_search_url(t)
         
+        # Get PDF file size if available
+        pdf_size = t.get("pdf_size", "")
+        if not pdf_size and url.endswith('.pdf'):
+            # Quick attempt to get size from headers
+            try:
+                import urllib.request
+                req = urllib.request.Request(url, method='HEAD')
+                response = urllib.request.urlopen(req, timeout=3)
+                size_bytes = int(response.headers.get('content-length', 0))
+                if size_bytes > 0:
+                    for unit in ['B', 'KB', 'MB']:
+                        if size_bytes < 1024:
+                            pdf_size = f"{size_bytes} {unit}" if unit == 'B' else f"{size_bytes:.1f} {unit}"
+                            break
+                        size_bytes /= 1024.0
+            except:
+                pass
+        
         js_tenders.append({
             "ref": t.get("ref", "N/A"),
             "title": t.get("title", "Unknown"),
@@ -104,6 +122,7 @@ def generate_dashboard_html(tenders):
             "category": t.get("category", "Unknown"),
             "source": t.get("source", "Unknown"),
             "url": url,
+            "pdf_size": pdf_size,
             "company": company,
             "tes_score": tes_score,
             "phakathi_score": phakathi_score,
@@ -438,6 +457,7 @@ def generate_dashboard_html(tenders):
             
             list.innerHTML = filtered.map(t => {{
                 const desc = t.description && t.description !== t.title ? t.description : '';
+                const isPdf = t.url && t.url.endsWith('.pdf');
                 return `<li class="tender-item" onclick="window.open('${{t.url}}', '_blank')">
                     <div class="tender-content">
                         <div class="tender-info">
@@ -446,13 +466,14 @@ def generate_dashboard_html(tenders):
                                 <span class="company-badge company-${{t.company}}">${{t.company}}</span>
                                 ${{getCountdownHtml(t.closing_date)}}
                             </div>
-                            <div class="tender-title">${{t.title}}</div>
+                            <div class="tender-title">${{t.title}} ${{isPdf ? '📄' : ''}}</div>
                             ${{desc ? `<div class="tender-description">${{desc}}</div>` : ''}}
                             <div class="tender-meta">
                                 <span>📍 ${{t.client}}</span>
                                 <span>📁 ${{t.category}}</span>
                                 <span>🔗 ${{t.source}}</span>
                                 ${{t.contact ? `<span>📞 ${{t.contact}}</span>` : ''}}
+                                ${{t.pdf_size ? `<span>💾 ${{t.pdf_size}}</span>` : ''}}
                             </div>
                         </div>
                         <div class="tender-right">
