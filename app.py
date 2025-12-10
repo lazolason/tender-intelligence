@@ -137,10 +137,13 @@ def dashboard():
     # Load recent tenders from output
     tenders = []
     total = high = medium = low = 0
+    last_run = "No runs yet"
     
     try:
         json_path = os.path.join(OUTPUT_DIR, "new_tenders.json")
         if os.path.exists(json_path):
+            mtime = datetime.fromtimestamp(os.path.getmtime(json_path))
+            last_run = mtime.strftime("%Y-%m-%d %H:%M:%S")
             with open(json_path, "r") as f:
                 raw_tenders = json.load(f)
                 for t in raw_tenders:
@@ -166,7 +169,7 @@ def dashboard():
         medium_priority=medium,
         low_priority=low,
         tenders=tenders[:10],  # Show top 10
-        last_run=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        last_run=last_run
     )
 
 @app.route("/api/run/daily")

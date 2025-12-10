@@ -40,6 +40,9 @@ SHEET_NAME = CONFIG["excel"]["tender_log_sheet"]
 # Selenium scraper toggle (set to True to enable)
 ENABLE_SELENIUM = CONFIG.get("scrapers", {}).get("enable_selenium", True)
 
+# Dashboard retains the last N tenders to avoid an empty UI when no new items are added
+MAX_DASHBOARD_TENDERS = 200
+
 # Ensure directories exist
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 os.makedirs(ACTIVE_TENDERS_DIR, exist_ok=True)
@@ -188,13 +191,77 @@ def process_tenders(tenders):
     return total_added, new_items
 
 # ----------------------------------------------------------
+# DASHBOARD SNAPSHOT HELPERS
+# ----------------------------------------------------------
+def _load_existing_tenders(json_path):
+    """Load previously saved tenders so the dashboard keeps historical data."""
+    if os.path.exists(json_path):
+        try:
+            with open(json_path, "r") as jf:
+                data = json.load(jf)
+                return data if isinstance(data, list) else []
+        except Exception as exc:
+            log_error(LOG_FILE, f"Failed to read existing tenders snapshot: {exc}")
+    return []
+
+
+def _tender_identity(tender):
+    """Return a stable identifier for merging tender lists."""
+    ref = (tender.get("ref") or "").strip().lower()
+    if ref:
+        return f"ref::{ref}"
+    title = (tender.get("title") or "").strip().lower()
+    if title:
+        return f"title::{title}"
+    source = (tender.get("source") or "unknown").lower()
+    closing = (tender.get("closing_date") or "").lower()
+    try:
+        serialized = json.dumps(tender, sort_keys=True, default=str)
+    except Exception:
+        serialized = f"{source}-{closing}-{tender.get('scores', {}).get('composite', 'na')}"
+    return f"fallback::{serialized}"
+
+
+def _merge_tenders(new_items, existing_items, limit=MAX_DASHBOARD_TENDERS):
+    """Merge tenders while keeping ordering (newest first) and removing duplicates."""
+    merged = []
+    seen = set()
+
+    for tender in new_items + existing_items:
+        identity = _tender_identity(tender)
+        if identity in seen:
+            continue
+        merged.append(tender)
+        seen.add(identity)
+        if len(merged) >= limit:
+            break
+
+    return merged
+
+# ----------------------------------------------------------
 # SAVE OUTPUT REPORTS
 # ----------------------------------------------------------
 def save_outputs(new_items):
     # Save JSON
     json_path = os.path.join(OUTPUT_DIR, "new_tenders.json")
-    with open(json_path, "w") as jf:
-        json.dump(new_items, jf, indent=4)
+    existing_items = _load_existing_tenders(json_path)
+
+    if new_items:
+        merged_items = _merge_tenders(new_items, existing_items)
+        with open(json_path, "w") as jf:
+            json.dump(merged_items, jf, indent=4)
+        write_log(
+            LOG_FILE,
+            f"Dashboard snapshot updated: {len(new_items)} new / {len(merged_items)} retained"
+        )
+    else:
+        if existing_items:
+            write_log(LOG_FILE, "No new tenders - keeping previous dashboard snapshot")
+        else:
+            with open(json_path, "w") as jf:
+                json.dump([], jf, indent=4)
+            write_log(LOG_FILE, "No new tenders and no history - snapshot initialised empty")
+        merged_items = existing_items
     
     # Save text summary
     summary_path = os.path.join(OUTPUT_DIR, "summary.txt")
@@ -202,7 +269,10 @@ def save_outputs(new_items):
         sf.write(f"Tender Scan Summary\n")
         sf.write(f"===================\n")
         sf.write(f"Run date: {datetime.now()}\n")
-        sf.write(f"New tenders added: {len(new_items)}\n\n")
+        sf.write(f"New tenders added: {len(new_items)}\n")
+        if not new_items and merged_items:
+            sf.write("No new tenders detected — dashboard is showing the previous snapshot.\n")
+        sf.write("\n")
         
         # Group by priority
         high_priority = [t for t in new_items if t.get("scores", {}).get("priority") == "HIGH"]

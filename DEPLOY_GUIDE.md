@@ -1,5 +1,47 @@
 # 🚀 TenderScan Deployment Guide
 
+## ⚠️ Chromedriver Setup (CRITICAL for Scrapers)
+
+**Before any scraping,** the chromedriver must be installed and aligned with your Chrome version.
+
+### Initial Setup
+
+```bash
+python tools/setup_chromedriver.py
+```
+
+This automatically:
+- Detects your Chrome version (e.g., 143.0.7499.40)
+- Downloads matching chromedriver from Chrome for Testing
+- Installs to `tools/chromedriver/` (isolated, not system-wide)
+- Verifies alignment
+
+### Pre-Scrape Verification
+
+Before running scrapers, verify driver readiness:
+
+```bash
+python tools/preflight_check.py
+```
+
+Outputs:
+- Driver installed status ✅/❌
+- Chrome ↔ Chromedriver version alignment ✅/⚠️
+- Warnings about mismatches that cause Selenium flakiness
+
+### When Chrome Updates
+
+When Chrome auto-updates (e.g., 143 → 144):
+```bash
+python tools/setup_chromedriver.py
+```
+
+The script automatically detects the new version and downloads the matching driver.
+
+**For details:** see `tools/README.md`
+
+---
+
 ## Cloud Deployment on Render
 
 ### Step 1: Prepare Repository
@@ -24,7 +66,24 @@ git push -u origin main
 4. Render will detect `render.yaml` automatically
 5. Click **Apply**
 
-### Step 3: Configure Environment Variables
+### Step 3: Configure Chromedriver on Render
+
+Update your `render.yaml` to run chromedriver setup during build:
+
+```yaml
+services:
+  - type: web
+    name: tender-intelligence
+    env: python
+    buildCommand: |
+      pip install -r requirements.txt
+      python tools/setup_chromedriver.py
+    startCommand: gunicorn app:app
+```
+
+This ensures the driver is automatically downloaded and aligned on every deploy, even after Chrome auto-updates on the server.
+
+### Step 4: Configure Environment Variables
 
 In Render dashboard, set these environment variables:
 

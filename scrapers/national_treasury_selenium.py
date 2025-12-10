@@ -8,18 +8,24 @@ import os
 import sys
 import time
 import re
+import subprocess
 from datetime import datetime
+from pathlib import Path
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
 
 from classify_engine import classify_tender
+from tools.chromedriver_manager import (
+    get_driver_path, verify_driver_alignment, setup_environment, print_driver_info
+)
 
 # ==========================================================
 # CONFIGURATION
@@ -31,6 +37,9 @@ ETENDER_URLS = [
 MAX_PAGES = 3
 WAIT_TIMEOUT = 20
 
+# Chromedriver management
+SETUP_ENVIRONMENT_ON_IMPORT = True
+
 
 class NationalTreasuryScraper:
     """Selenium scraper for National Treasury eTender portal"""
@@ -41,7 +50,24 @@ class NationalTreasuryScraper:
         self.tenders = []
     
     def _setup_driver(self):
-        """Initialize Chrome WebDriver"""
+        """Initialize Chrome WebDriver with version verification"""
+        # Verify versions before starting
+        aligned, chrome_major, driver_major, msg = verify_driver_alignment()
+        if not aligned:
+            print(f"⚠️  WARNING: {msg}")
+            print("   This may cause Selenium flakiness. Run: python tools/setup_chromedriver.py")
+            time.sleep(2)
+        
+        # Set up environment to find isolated driver
+        setup_environment()
+        
+        # Get driver path
+        driver_path = get_driver_path()
+        if not driver_path:
+            raise RuntimeError(
+                "Chromedriver not found. Run: python tools/setup_chromedriver.py"
+            )
+        
         options = Options()
         
         if self.headless:
@@ -55,7 +81,9 @@ class NationalTreasuryScraper:
         options.add_argument("--disable-notifications")
         options.add_argument("user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36")
         
-        self.driver = webdriver.Chrome(options=options)
+        # Use isolated driver with Service
+        service = Service(driver_path)
+        self.driver = webdriver.Chrome(service=service, options=options)
         self.driver.set_page_load_timeout(30)
     
     def _close_driver(self):
