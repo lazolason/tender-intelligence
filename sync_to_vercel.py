@@ -176,8 +176,10 @@ def generate_dashboard_html(tenders):
         
         /* Tender List */
         .tender-list {{ list-style: none; }}
-        .tender-item {{ padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); transition: background 0.2s; cursor: pointer; }}
+        .tender-item {{ padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); transition: all 0.2s; cursor: pointer; border-left: 4px solid transparent; }}
         .tender-item:hover {{ background: rgba(255,255,255,0.08); }}
+        .tender-item.urgent {{ border-left: 4px solid #ff6b6b; background: linear-gradient(135deg, rgba(255,107,107,0.1) 0%, transparent 100%); }}
+        .tender-item.warning {{ border-left: 4px solid #feca57; background: linear-gradient(135deg, rgba(254,202,87,0.08) 0%, transparent 100%); }}
         .tender-content {{ display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 15px; }}
         .tender-info {{ flex: 1; min-width: 250px; }}
         .tender-header {{ display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 8px; }}
@@ -458,7 +460,10 @@ def generate_dashboard_html(tenders):
             list.innerHTML = filtered.map(t => {{
                 const desc = t.description && t.description !== t.title ? t.description : '';
                 const isPdf = t.url && t.url.endsWith('.pdf');
-                return `<li class="tender-item" onclick="window.open('${{t.url}}', '_blank')">
+                const daysLeft = getDaysUntil(t.closing_date);
+                const urgencyClass = daysLeft !== null && daysLeft <= 3 ? 'urgent' : (daysLeft !== null && daysLeft <= 7 ? 'warning' : '');
+                
+                return `<li class="tender-item ${{urgencyClass}}" onclick="window.open('${{t.url}}', '_blank')">
                     <div class="tender-content">
                         <div class="tender-info">
                             <div class="tender-header">
