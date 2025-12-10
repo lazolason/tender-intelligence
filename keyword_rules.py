@@ -3,6 +3,43 @@
 # TES + Phakathi + Switchgear Logic (Locked)
 # ================================================
 
+# ===========================================================
+# EXCLUSION LIST - Tenders to SKIP completely
+# These are out of scope for TES & Phakathi
+# ===========================================================
+
+EXCLUDE_KEYWORDS = [
+    # Construction / Civil
+    "construction of", "building construction", "civil construction",
+    "perimeter wall", "guardhouse", "guard house", "fencing",
+    "palisade fence", "boundary wall", "security fence",
+    "road construction", "building works",
+    
+    # Security Services
+    "security guarding", "security guard", "physical security",
+    "armed response", "access control", "cctv", "surveillance",
+    "security services", "guarding services",
+    
+    # Cleaning / Consumables
+    "cleaning services", "cleaning consumables", "janitorial",
+    "office cleaning", "hygiene services",
+    
+    # IT / Software
+    "software development", "it services", "computer", "laptop",
+    "network infrastructure", "website",
+    
+    # Catering / Food
+    "catering", "food supply", "canteen",
+    
+    # HR / Admin
+    "recruitment", "staffing", "training provider",
+    "consulting services", "professional services",
+    
+    # Vehicles / Transport
+    "vehicle hire", "fleet management", "transport services",
+    "courier services",
+]
+
 TES_KEYWORDS = [
     # Cooling water / Condenser / Thermal
     "cooling water", "cooling tower", "condenser", "heat exchanger",

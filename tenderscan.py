@@ -98,6 +98,7 @@ def run_all_scrapers():
 def process_tenders(tenders):
     total_added = 0
     new_items = []
+    excluded_count = 0
 
     for t in tenders:
         try:
@@ -110,6 +111,12 @@ def process_tenders(tenders):
             short_title = t.get("short_title", "Tender")
             reason = t.get("reason", "")
             source = t.get("source", "")
+            
+            # SKIP EXCLUDED TENDERS (construction, security, etc.)
+            if category == "EXCLUDED":
+                write_log(LOG_FILE, f"[SKIP] {ref}: {reason}")
+                excluded_count += 1
+                continue
             
             tender_name = f"{ref} - {title}" if ref and ref != "NA" else title
             
@@ -188,6 +195,9 @@ def process_tenders(tenders):
             log_error(LOG_FILE, f"Error processing tender: {e}")
             continue
 
+    if excluded_count > 0:
+        write_log(LOG_FILE, f"Excluded {excluded_count} out-of-scope tenders (construction, security, etc.)")
+    
     return total_added, new_items
 
 # ----------------------------------------------------------
