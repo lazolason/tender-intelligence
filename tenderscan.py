@@ -113,6 +113,35 @@ def run_all_scrapers():
     # - SANRAL
     # - Transnet
     
+    # eTenders portal (Selenium) - Eskom, Umgeni, SANRAL, Transnet
+    if ENABLE_SELENIUM:
+        write_log(LOG_FILE, "=== Scraping eTenders Portal (Eskom, Umgeni, SANRAL, Transnet) ===")
+        try:
+            from scrapers.etenders_selenium import scrape_eskom, scrape_umgeni_water, scrape_sanral, scrape_transnet
+            
+            # Eskom
+            eskom_tenders = scrape_eskom()
+            all_tenders.extend(eskom_tenders)
+            write_log(LOG_FILE, f"Eskom: {len(eskom_tenders)} tenders found")
+            
+            # Umgeni Water
+            umgeni_tenders = scrape_umgeni_water()
+            all_tenders.extend(umgeni_tenders)
+            write_log(LOG_FILE, f"Umgeni Water: {len(umgeni_tenders)} tenders found")
+            
+            # SANRAL
+            sanral_tenders = scrape_sanral()
+            all_tenders.extend(sanral_tenders)
+            write_log(LOG_FILE, f"SANRAL: {len(sanral_tenders)} tenders found")
+            
+            # Transnet
+            transnet_tenders = scrape_transnet()
+            all_tenders.extend(transnet_tenders)
+            write_log(LOG_FILE, f"Transnet: {len(transnet_tenders)} tenders found")
+            
+        except Exception as e:
+            log_error(LOG_FILE, f"eTenders portal scraper failed: {e}")
+    
     return all_tenders
 
 # ----------------------------------------------------------
