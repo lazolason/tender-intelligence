@@ -27,9 +27,16 @@ def keyword_hits(text: str, keywords: list) -> int:
 # CHECK IF TENDER SHOULD BE EXCLUDED
 # ----------------------------------------------------------
 def should_exclude(text: str) -> tuple:
-    """Check if tender matches exclusion keywords. Returns (should_exclude, reason)"""
+    """
+    Check if tender matches exclusion keywords. Returns (should_exclude, reason).
+    If any core TES/Phakathi signals are present, skip exclusion so we don't drop mechanical/water tenders.
+    """
+    has_core_signal = any(kw in text for kw in TES_KEYWORDS + PHAKATHI_KEYWORDS + SWITCHGEAR_KEYWORDS)
     for kw in EXCLUDE_KEYWORDS:
         if kw in text:
+            if has_core_signal:
+                # Allow through when mechanical/water signals exist
+                return False, None
             return True, f"Excluded: '{kw}' (out of scope)"
     return False, None
 
