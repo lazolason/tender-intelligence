@@ -29,7 +29,7 @@ def scrape_transnet():
         print("🔍 Scraping Transnet tenders...")
         
         # Transnet procurement portal
-        url = "https://www.transnet.net/business-with-transnet/tender-and-rfq-databases/"
+        url = "https://www.transnet.net/business-and-enterprise/tenders/"
         headers = {
             "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"
         }

@@ -29,7 +29,7 @@ def scrape_eskom():
         print("🔍 Scraping Eskom tenders...")
         
         # Eskom tenders portal
-        url = "https://www.eskom.co.za/get-involved/do-business-with-us/tenders/"
+        url = "https://www.eskom.co.za/business-and-innovation/tenders/"
         headers = {
             "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"
         }

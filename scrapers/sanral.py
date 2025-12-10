@@ -29,7 +29,7 @@ def scrape_sanral():
         print("🔍 Scraping SANRAL tenders...")
         
         # SANRAL tenders portal
-        url = "https://www.sanral.co.za/get-involved/supply/tenders"
+        url = "https://www.sanral.co.za/business/tenders/"
         headers = {
             "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"
         }

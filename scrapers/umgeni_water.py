@@ -31,7 +31,7 @@ def scrape_umgeni_water():
         print("🔍 Scraping Umgeni Water tenders...")
         
         # Main tenders page
-        url = "https://www.umgeni.co.za/our-business/tenders"
+        url = "https://www.umgeniwatermb.co.za/business/tenders"
         headers = {
             "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"
         }
