@@ -40,8 +40,13 @@ class BaseMunicipalityScraper:
         raise NotImplementedError
     
     def run(self):
-        html = self.fetch_page()
-        return self.parse_tenders(html)
+        try:
+            html = self.fetch_page()
+            return self.parse_tenders(html)
+        except Exception as e:
+            # Gracefully ignore availability errors (e.g., 404s) and return empty
+            print(f"  Error: {e}")
+            return []
 
 
 # ===========================================================
