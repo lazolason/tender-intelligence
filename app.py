@@ -72,6 +72,12 @@ DASHBOARD_HTML = """
         .priority-LOW { background: rgba(82, 196, 255, 0.18); color: #7fd2ff; border: 1px solid rgba(82, 196, 255, 0.35); }
         .score { display: flex; align-items: center; gap: 8px; font-weight: 800; color: #e5ecff; }
         .chip { padding: 8px 12px; border-radius: 12px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); color: #cfd5e6; font-weight: 700; }
+        .action-bar { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+        .action-btn { padding: 10px 16px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: linear-gradient(135deg, #7c6bf7, #5ec6ff); color: #0c0f1c; font-weight: 800; cursor: pointer; box-shadow: 0 10px 25px rgba(92, 137, 255, 0.3); }
+        .action-btn.secondary { background: rgba(255,255,255,0.05); color: #d6dbec; border-color: rgba(255,255,255,0.12); box-shadow: none; }
+        .action-btn:active { transform: translateY(1px); }
+        .toast { position: fixed; bottom: 20px; right: 20px; padding: 12px 16px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(20, 22, 36, 0.95); color: #e9ecf7; box-shadow: 0 10px 30px rgba(0,0,0,0.3); display: none; }
+        .toast.show { display: block; }
         @media (max-width: 768px) {
             body { padding: 18px; }
             .hero, .section { padding: 18px; }
@@ -95,6 +101,11 @@ DASHBOARD_HTML = """
                 <a class="pill active" href="/dashboard">📊 Dashboard</a>
                 <a class="pill" href="#">📅 Bid Calendar</a>
                 <a class="pill" href="#">🗂️ Sources</a>
+            </div>
+            <div class="action-bar">
+                <button class="action-btn" data-action="/api/run/daily">🚀 Run Daily Scan</button>
+                <button class="action-btn secondary" data-action="/api/run/weekly">🗓️ Generate Weekly Report</button>
+                <button class="action-btn secondary" data-action="/health">💚 Health Check</button>
             </div>
         </div>
 
@@ -160,7 +171,32 @@ DASHBOARD_HTML = """
                 {% endif %}
             </div>
         </div>
+        <div id="toast" class="toast"></div>
     </div>
+    <script>
+        const toast = document.getElementById('toast');
+        function showToast(message) {
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2500);
+        }
+        async function triggerAction(url) {
+            try {
+                const res = await fetch(url);
+                const data = await res.json();
+                if (res.ok) {
+                    showToast(data.message || 'Action completed');
+                } else {
+                    showToast(`Error: ${data.message || res.statusText}`);
+                }
+            } catch (err) {
+                showToast(`Request failed: ${err.message}`);
+            }
+        }
+        document.querySelectorAll('[data-action]').forEach(btn => {
+            btn.addEventListener('click', () => triggerAction(btn.dataset.action));
+        });
+    </script>
 </body>
 </html>
 """
