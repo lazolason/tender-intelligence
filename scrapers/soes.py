@@ -35,6 +35,41 @@ HEADERS = {
     "Accept-Language": "en-US,en;q=0.5",
 }
 
+def _scrape_soe_generic(client_name, urls, row_selector, ref_pattern, ref_prefix):
+    tenders = []
+    for url in urls:
+        try:
+            resp = requests.get(url, headers=HEADERS, timeout=20, verify=False)
+            if resp.status_code == 200:
+                soup = BeautifulSoup(resp.text, "html.parser")
+                rows = soup.select(row_selector)
+                for row in rows:
+                    text = row.get_text(" ", strip=True)
+                    if len(text) < 20:
+                        continue
+                    ref_match = re.search(ref_pattern, text)
+                    if ref_match:
+                        date_match = re.search(r'(\d{1,2}[-/]\d{1,2}[-/]\d{2,4})', text)
+                        classification = classify_tender(text[:150], text)
+                        if classification["category"] != "Exclude":
+                            tenders.append({
+                                "ref": ref_match.group(1) if ref_match else f"{ref_prefix}-{datetime.now().strftime('%Y%m%d')}-{len(tenders)+1}",
+                                "title": text[:150],
+                                "description": text[:500],
+                                "client": client_name,
+                                "closing_date": date_match.group(1) if date_match else "",
+                                "category": classification["category"],
+                                "short_title": classification.get("short_title", "Tender"),
+                                "reason": classification.get("reason", ""),
+                                "source": client_name,
+                                "url": url
+                            })
+                if tenders:
+                    break
+        except:
+            continue
+    return tenders
+
 # ----------------------------------------------------------
 # RAND WATER - CORRECT URL: randwater.co.za/availabletenders.php
 # ----------------------------------------------------------
@@ -482,231 +517,73 @@ def scrape_umgeni_water():
 # SASOL
 # ----------------------------------------------------------
 def scrape_sasol():
-    tenders = []
-    urls = ["https://www.sasol.com/procurement", "https://www.sasol.com/suppliers"]
-    for url in urls:
-        try:
-            resp = requests.get(url, headers=HEADERS, timeout=20, verify=False)
-            if resp.status_code == 200:
-                soup = BeautifulSoup(resp.text, "html.parser")
-                rows = soup.select("table tr, .tender-item, article, .card")
-                for row in rows:
-                    text = row.get_text(" ", strip=True)
-                    if len(text) < 20:
-                        continue
-                    ref_match = re.search(r'(SAS[-/]?\d{4,}|SASOL[-/]?\d+)', text)
-                    if ref_match:
-                        date_match = re.search(r'(\d{1,2}[-/]\d{1,2}[-/]\d{2,4})', text)
-                        classification = classify_tender(text[:150], text)
-                        if classification["category"] != "Exclude":
-                            tenders.append({
-                                "ref": ref_match.group(1),
-                                "title": text[:150],
-                                "description": text[:500],
-                                "client": "Sasol",
-                                "closing_date": date_match.group(1) if date_match else "",
-                                "category": classification["category"],
-                                "short_title": classification.get("short_title", "Tender"),
-                                "reason": classification.get("reason", ""),
-                                "source": "Sasol",
-                                "url": url
-                            })
-                if tenders:
-                    break
-        except:
-            continue
-    return tenders
+    return _scrape_soe_generic(
+        client_name="Sasol",
+        urls=["https://www.sasol.com/procurement", "https://www.sasol.com/suppliers"],
+        row_selector="table tr, .tender-item, article, .card",
+        ref_pattern=r'(SAS[-/]?\d{4,}|SASOL[-/]?\d+)',
+        ref_prefix="SAS"
+    )
 
 # ----------------------------------------------------------
 # SANEDI
 # ----------------------------------------------------------
 def scrape_sanedi():
-    tenders = []
-    urls = ["https://www.sanedi.org.za/tenders/", "https://www.sanedi.org.za/procurement/"]
-    for url in urls:
-        try:
-            resp = requests.get(url, headers=HEADERS, timeout=20, verify=False)
-            if resp.status_code == 200:
-                soup = BeautifulSoup(resp.text, "html.parser")
-                rows = soup.select("table tr, .tender-item, article, .post")
-                for row in rows:
-                    text = row.get_text(" ", strip=True)
-                    if len(text) < 20:
-                        continue
-                    ref_match = re.search(r'(SANEDI[-/]?\d{4,}|SAN[-/]?\d{4,})', text)
-                    if ref_match:
-                        date_match = re.search(r'(\d{1,2}[-/]\d{1,2}[-/]\d{2,4})', text)
-                        classification = classify_tender(text[:150], text)
-                        if classification["category"] != "Exclude":
-                            tenders.append({
-                                "ref": ref_match.group(1),
-                                "title": text[:150],
-                                "description": text[:500],
-                                "client": "SANEDI",
-                                "closing_date": date_match.group(1) if date_match else "",
-                                "category": classification["category"],
-                                "short_title": classification.get("short_title", "Tender"),
-                                "reason": classification.get("reason", ""),
-                                "source": "SANEDI",
-                                "url": url
-                            })
-                if tenders:
-                    break
-        except:
-            continue
-    return tenders
+    return _scrape_soe_generic(
+        client_name="SANEDI",
+        urls=["https://www.sanedi.org.za/tenders/", "https://www.sanedi.org.za/procurement/"],
+        row_selector="table tr, .tender-item, article, .post",
+        ref_pattern=r'(SANEDI[-/]?\d{4,}|SAN[-/]?\d{4,})',
+        ref_prefix="SANEDI"
+    )
 
 # ----------------------------------------------------------
 # ANGLO AMERICAN
 # ----------------------------------------------------------
 def scrape_anglo_american():
-    tenders = []
-    urls = ["https://www.angloamerican.com/suppliers"]
-    for url in urls:
-        try:
-            resp = requests.get(url, headers=HEADERS, timeout=20, verify=False)
-            if resp.status_code == 200:
-                soup = BeautifulSoup(resp.text, "html.parser")
-                rows = soup.select("table tr, .tender-item, article")
-                for row in rows:
-                    text = row.get_text(" ", strip=True)
-                    if len(text) < 20:
-                        continue
-                    ref_match = re.search(r'(AAP[-/]?\d{4,}|ANGLO[-/]?\d{4,})', text)
-                    if ref_match:
-                        classification = classify_tender(text[:150], text)
-                        if classification["category"] != "Exclude":
-                            tenders.append({
-                                "ref": ref_match.group(1),
-                                "title": text[:150],
-                                "description": text[:500],
-                                "client": "Anglo American",
-                                "closing_date": "",
-                                "category": classification["category"],
-                                "short_title": classification.get("short_title", "Tender"),
-                                "reason": classification.get("reason", ""),
-                                "source": "Anglo American",
-                                "url": url
-                            })
-                if tenders:
-                    break
-        except:
-            continue
-    return tenders
+    return _scrape_soe_generic(
+        client_name="Anglo American",
+        urls=["https://www.angloamerican.com/suppliers"],
+        row_selector="table tr, .tender-item, article",
+        ref_pattern=r'(AAP[-/]?\d{4,}|ANGLO[-/]?\d{4,})',
+        ref_prefix="AAP"
+    )
 
 # ----------------------------------------------------------
 # HARMONY GOLD
 # ----------------------------------------------------------
 def scrape_harmony_gold():
-    tenders = []
-    urls = ["https://www.harmony.co.za/business/procurement"]
-    for url in urls:
-        try:
-            resp = requests.get(url, headers=HEADERS, timeout=20, verify=False)
-            if resp.status_code == 200:
-                soup = BeautifulSoup(resp.text, "html.parser")
-                rows = soup.select("table tr, .tender-item, article")
-                for row in rows:
-                    text = row.get_text(" ", strip=True)
-                    if len(text) < 20:
-                        continue
-                    ref_match = re.search(r'(HAR[-/]?\d{4,}|HMY[-/]?\d{4,})', text)
-                    if ref_match:
-                        classification = classify_tender(text[:150], text)
-                        if classification["category"] != "Exclude":
-                            tenders.append({
-                                "ref": ref_match.group(1),
-                                "title": text[:150],
-                                "description": text[:500],
-                                "client": "Harmony Gold",
-                                "closing_date": "",
-                                "category": classification["category"],
-                                "short_title": classification.get("short_title", "Tender"),
-                                "reason": classification.get("reason", ""),
-                                "source": "Harmony Gold",
-                                "url": url
-                            })
-                if tenders:
-                    break
-        except:
-            continue
-    return tenders
+    return _scrape_soe_generic(
+        client_name="Harmony Gold",
+        urls=["https://www.harmony.co.za/business/procurement"],
+        row_selector="table tr, .tender-item, article",
+        ref_pattern=r'(HAR[-/]?\d{4,}|HMY[-/]?\d{4,})',
+        ref_prefix="HAR"
+    )
 
 # ----------------------------------------------------------
 # SERITI RESOURCES
 # ----------------------------------------------------------
 def scrape_seriti():
-    tenders = []
-    urls = ["https://www.seritiza.com/procurement/"]
-    for url in urls:
-        try:
-            resp = requests.get(url, headers=HEADERS, timeout=20, verify=False)
-            if resp.status_code == 200:
-                soup = BeautifulSoup(resp.text, "html.parser")
-                rows = soup.select("table tr, .tender-item, article")
-                for row in rows:
-                    text = row.get_text(" ", strip=True)
-                    if len(text) < 20:
-                        continue
-                    ref_match = re.search(r'(SER[-/]?\d{4,}|SERITI[-/]?\d{4,})', text)
-                    if ref_match:
-                        classification = classify_tender(text[:150], text)
-                        if classification["category"] != "Exclude":
-                            tenders.append({
-                                "ref": ref_match.group(1),
-                                "title": text[:150],
-                                "description": text[:500],
-                                "client": "Seriti Resources",
-                                "closing_date": "",
-                                "category": classification["category"],
-                                "short_title": classification.get("short_title", "Tender"),
-                                "reason": classification.get("reason", ""),
-                                "source": "Seriti",
-                                "url": url
-                            })
-                if tenders:
-                    break
-        except:
-            continue
-    return tenders
+    return _scrape_soe_generic(
+        client_name="Seriti Resources",
+        urls=["https://www.seritiza.com/procurement/"],
+        row_selector="table tr, .tender-item, article",
+        ref_pattern=r'(SER[-/]?\d{4,}|SERITI[-/]?\d{4,})',
+        ref_prefix="SER"
+    )
 
 # ----------------------------------------------------------
 # EXXARO
 # ----------------------------------------------------------
 def scrape_exxaro():
-    tenders = []
-    urls = ["https://www.exxaro.com/suppliers/"]
-    for url in urls:
-        try:
-            resp = requests.get(url, headers=HEADERS, timeout=20, verify=False)
-            if resp.status_code == 200:
-                soup = BeautifulSoup(resp.text, "html.parser")
-                rows = soup.select("table tr, .tender-item, article")
-                for row in rows:
-                    text = row.get_text(" ", strip=True)
-                    if len(text) < 20:
-                        continue
-                    ref_match = re.search(r'(EXX[-/]?\d{4,}|EXXARO[-/]?\d{4,})', text)
-                    if ref_match:
-                        classification = classify_tender(text[:150], text)
-                        if classification["category"] != "Exclude":
-                            tenders.append({
-                                "ref": ref_match.group(1),
-                                "title": text[:150],
-                                "description": text[:500],
-                                "client": "Exxaro",
-                                "closing_date": "",
-                                "category": classification["category"],
-                                "short_title": classification.get("short_title", "Tender"),
-                                "reason": classification.get("reason", ""),
-                                "source": "Exxaro",
-                                "url": url
-                            })
-                if tenders:
-                    break
-        except:
-            continue
-    return tenders
+    return _scrape_soe_generic(
+        client_name="Exxaro",
+        urls=["https://www.exxaro.com/suppliers/"],
+        row_selector="table tr, .tender-item, article",
+        ref_pattern=r'(EXX[-/]?\d{4,}|EXXARO[-/]?\d{4,})',
+        ref_prefix="EXX"
+    )
 
 # ----------------------------------------------------------
 # MASTER FUNCTION

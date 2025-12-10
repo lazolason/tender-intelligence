@@ -155,65 +155,11 @@ def process_tenders(tenders):
             
             tender_name = f"{ref} - {title}" if ref and ref != "NA" else title
             
-            # AI SCORING ENGINE
-            scores = score_tender(
-                title=title,
-                description=description,
-                client=client,
-                closing_date=closing_date,
-                category=category
-            )
-            
-            fit_score = scores["fit_score"]
-            industry_score = scores["industry_score"]
-            risk_score = scores["risk_score"]
-            revenue_score = scores["revenue_score"]
-            tes_suitability = scores["tes_suitability"]
-            phakathi_suitability = scores["phakathi_suitability"]
-            composite_score = scores["composite_score"]
-            priority = scores["priority"]
-            recommendation = scores["recommendation"]
-            
-            # Add scores to tender dict
-            t["scores"] = {
-                "fit": fit_score,
-                "industry": industry_score,
-                "risk": risk_score,
-                "revenue": revenue_score,
-                "tes": tes_suitability,
-                "phakathi": phakathi_suitability,
-                "composite": composite_score,
-                "priority": priority
-            }
-            
-            # Build notes with scoring info
-            enhanced_notes = f"{reason}\n" if reason else ""
-            enhanced_notes += f"[AI Score: {composite_score}/10 | Priority: {priority}]"
-            enhanced_notes += f"\n{recommendation}"
-            
-            # Write to Excel
-            added = excel_writer.write_tender(
-                tender_name=tender_name,
-                client=client,
-                tender_type=category,
-                industry=f"{source} ({scores['industry_matched']})",
-                fit_score=fit_score,
-                stage="New",
-                closing_date=closing_date,
-                status="Open",
-                next_action="Review" if priority == "LOW" else "Prepare Bid" if priority == "MEDIUM" else "URGENT BID",
-                notes=enhanced_notes,
-                reference_number=ref,
-                composite_score=composite_score,
-                priority=priority,
-                risk_level=scores["risk_level"],
-                revenue_potential=scores["revenue_potential"],
-                tes_fit=tes_suitability,
-                phakathi_fit=phakathi_suitability
-            )
+            was_added, scores, classification = excel_writer.add_tender_with_scoring(t)
 
-            if added:
+            if was_added:
                 total_added += 1
+                t["scores"] = scores
                 new_items.append(t)
     
                 # Create tender folder
@@ -221,10 +167,10 @@ def process_tenders(tenders):
                     base_dir=ACTIVE_TENDERS_DIR,
                     ref=ref,
                     client=client,
-                    short_title=short_title
+                    short_title=classification["short_title"]
                 )
 
-                write_log(LOG_FILE, f"[{priority}] Added: {tender_name} → {category} (Score: {composite_score})")
+                write_log(LOG_FILE, f"[{scores['priority']}] Added: {t.get('title')} → {classification['category']} (Score: {scores['composite_score']})")
     
         except Exception as e:
             log_error(LOG_FILE, f"Error processing tender: {e}")

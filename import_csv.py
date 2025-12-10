@@ -57,55 +57,16 @@ def import_from_csv(csv_file: str) -> tuple:
                 skipped += 1
                 continue
             
-            # Classify tender (returns dict)
-            classification = classify_tender(title, description)
-            category = classification["category"]
-            reason = classification["reason"]
-            short_title = classification["short_title"]
+            tender_data = {
+                "ref": ref,
+                "title": title,
+                "description": description,
+                "client": client,
+                "closing_date": closing_date,
+                "source": source
+            }
             
-            tender_name = f"{ref} - {title}" if ref and ref != "NA" else title
-            
-            # ============================================
-            # AI SCORING ENGINE
-            # ============================================
-            scores = score_tender(
-                title=title,
-                description=description,
-                client=client,
-                closing_date=closing_date,
-                category=category
-            )
-            
-            fit_score = scores["fit_score"]
-            composite_score = scores["composite_score"]
-            priority = scores["priority"]
-            recommendation = scores["recommendation"]
-            
-            # Build notes with scoring info
-            enhanced_notes = f"{reason}\n" if reason else ""
-            enhanced_notes += f"[AI Score: {composite_score}/10 | Priority: {priority}]"
-            enhanced_notes += f"\n{recommendation}"
-            
-            # Write to Excel
-            was_added = excel_writer.write_tender(
-                tender_name=tender_name,
-                client=client,
-                tender_type=category,
-                industry=f"{source} ({scores['industry_matched']})",
-                fit_score=fit_score,
-                stage="New",
-                closing_date=closing_date,
-                status="Open",
-                next_action="Review" if priority == "LOW" else "Prepare Bid" if priority == "MEDIUM" else "URGENT BID",
-                notes=enhanced_notes,
-                reference_number=ref,
-                composite_score=composite_score,
-                priority=priority,
-                risk_level=scores["risk_level"],
-                revenue_potential=scores["revenue_potential"],
-                tes_fit=scores["tes_suitability"],
-                phakathi_fit=scores["phakathi_suitability"]
-            )
+            was_added, scores, classification = excel_writer.add_tender_with_scoring(tender_data)
             
             if was_added:
                 added += 1
@@ -115,19 +76,19 @@ def import_from_csv(csv_file: str) -> tuple:
                     base_dir=ACTIVE_TENDERS_DIR,
                     ref=ref,
                     client=client,
-                    short_title=short_title
+                    short_title=classification["short_title"]
                 )
                 
                 results.append({
                     "ref": ref,
                     "title": title,
-                    "category": category,
-                    "priority": priority,
-                    "composite_score": composite_score,
+                    "category": classification["category"],
+                    "priority": scores["priority"],
+                    "composite_score": scores["composite_score"],
                     "status": "Added"
                 })
                 
-                print(f"  [{priority}] ✅ {ref}: {title[:50]}... → {category} (Score: {composite_score})")
+                print(f"  [{scores['priority']}] ✅ {ref}: {title[:50]}... → {classification['category']} (Score: {scores['composite_score']})")
             else:
                 skipped += 1
                 results.append({

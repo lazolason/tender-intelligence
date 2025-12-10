@@ -4,6 +4,8 @@
 # ==========================================================
 
 import re
+from datetime import datetime
+from __main__ import google_web_search
 
 def clean_text(text: str) -> str:
     """
@@ -48,3 +50,25 @@ def clean_filename(text: str) -> str:
     text = re.sub(r"_+", "_", text)
     
     return text.strip("_")
+
+
+def extract_closing_date_from_text(text: str):
+    """Extract closing date from text"""
+    date_pattern = r"(\d{1,2})\s*(January|February|March|April|May|June|July|August|September|October|November|December|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s*(\d{4})?"
+    
+    match = re.search(date_pattern, text, re.I)
+    if match:
+        try:
+            day = match.group(1)
+            month = match.group(2)
+            year = match.group(3) or str(datetime.now().year)
+            return f"{year}-{month}-{day}"
+        except:
+            return None
+    return None
+
+def web_search_wrapper(query: str):
+    """
+    Performs a Google web search using the google_web_search tool.
+    """
+    return google_web_search(query=query)

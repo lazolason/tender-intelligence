@@ -4,9 +4,16 @@
 # ==========================================================
 
 import os
+import sys
 from openpyxl import Workbook, load_workbook
 from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
 from datetime import datetime
+
+# Assuming these are in the parent directory, adjust if necessary
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from classify_engine import classify_tender
+from scoring_engine import score_tender
+
 
 # Column headers (with new scoring columns)
 HEADERS = [
@@ -170,6 +177,60 @@ class ExcelWriter:
         # Save workbook
         self.wb.save(self.file_path)
         return True
+
+    def add_tender_with_scoring(self, tender_data: dict):
+        """
+        Scores a tender and writes it to the Excel file.
+        """
+        # Classify tender (returns dict)
+        classification = classify_tender(tender_data["title"], tender_data["description"])
+        category = classification["category"]
+        reason = classification["reason"]
+        short_title = classification["short_title"]
+
+        tender_name = f"{tender_data['ref']} - {tender_data['title']}" if tender_data['ref'] and tender_data['ref'] != "NA" else tender_data['title']
+
+        # AI SCORING ENGINE
+        scores = score_tender(
+            title=tender_data["title"],
+            description=tender_data["description"],
+            client=tender_data["client"],
+            closing_date=tender_data["closing_date"],
+            category=category
+        )
+
+        fit_score = scores["fit_score"]
+        composite_score = scores["composite_score"]
+        priority = scores["priority"]
+        recommendation = scores["recommendation"]
+
+        # Build notes with scoring info
+        enhanced_notes = f"{reason}\n" if reason else ""
+        enhanced_notes += f"[AI Score: {composite_score}/10 | Priority: {priority}]"
+        enhanced_notes += f"\n{recommendation}"
+
+        # Write to Excel
+        was_added = self.write_tender(
+            tender_name=tender_name,
+            client=tender_data["client"],
+            tender_type=category,
+            industry=f"{tender_data['source']} ({scores['industry_matched']})",
+            fit_score=fit_score,
+            stage="New",
+            closing_date=tender_data["closing_date"],
+            status="Open",
+            next_action="Review" if priority == "LOW" else "Prepare Bid" if priority == "MEDIUM" else "URGENT BID",
+            notes=enhanced_notes,
+            reference_number=tender_data["ref"],
+            composite_score=composite_score,
+            priority=priority,
+            risk_level=scores["risk_level"],
+            revenue_potential=scores["revenue_potential"],
+            tes_fit=scores["tes_suitability"],
+            phakathi_fit=scores["phakathi_suitability"]
+        )
+
+        return was_added, scores, classification
     
     def get_stats(self):
         """Get tender statistics"""

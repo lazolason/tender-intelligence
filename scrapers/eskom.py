@@ -14,7 +14,7 @@ import sys
 import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from utils.text_cleaner import clean_text
+from utils.text_cleaner import clean_text, extract_closing_date_from_text
 from classify_engine import classify_tender
 
 
@@ -115,22 +115,6 @@ def scrape_eskom():
         print(f"   ❌ Eskom scraper error: {e}")
         traceback.print_exc()
         return []
-
-
-def extract_closing_date_from_text(text):
-    """Extract closing date from text"""
-    date_pattern = r"(\d{1,2})\s*(January|February|March|April|May|June|July|August|September|October|November|December|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s*(\d{4})?"
-    
-    match = re.search(date_pattern, text, re.I)
-    if match:
-        try:
-            day = match.group(1)
-            month = match.group(2)
-            year = match.group(3) or str(datetime.now().year)
-            return f"{year}-{month}-{day}"
-        except:
-            return None
-    return None
 
 
 if __name__ == "__main__":
