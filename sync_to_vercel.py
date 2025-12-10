@@ -13,7 +13,8 @@ from urllib.parse import quote
 # Paths
 AUTOMATION_DIR = os.path.dirname(os.path.abspath(__file__))
 OUTPUT_DIR = os.path.join(AUTOMATION_DIR, "output")
-VERCEL_DIR = os.path.join(AUTOMATION_DIR, "vercel-dashboard")
+# Vercel dashboard is in the MASTER folder (separate git repo: lazolason/tender-dashboard)
+VERCEL_DIR = "/Users/lazolasonqishe/Documents/MASTER/TENDERS/00_System/04_Automation/vercel-dashboard"
 TENDERS_JSON = os.path.join(OUTPUT_DIR, "new_tenders.json")
 DASHBOARD_HTML = os.path.join(VERCEL_DIR, "index.html")
 
@@ -95,7 +96,8 @@ def generate_dashboard_html(tenders):
         
         js_tenders.append({
             "ref": t.get("ref", "N/A"),
-            "title": t.get("title", "Unknown")[:100],
+            "title": t.get("title", "Unknown"),
+            "description": t.get("description", t.get("title", "")),
             "client": t.get("client", "Unknown"),
             "priority": scores.get("priority", "LOW"),
             "score": scores.get("composite_score", 0),
@@ -105,7 +107,8 @@ def generate_dashboard_html(tenders):
             "company": company,
             "tes_score": tes_score,
             "phakathi_score": phakathi_score,
-            "closing_date": t.get("closing_date", "")
+            "closing_date": t.get("closing_date", ""),
+            "contact": t.get("contact", "")
         })
     
     tenders_json = json.dumps(js_tenders, indent=8)
@@ -156,11 +159,12 @@ def generate_dashboard_html(tenders):
         .tender-list {{ list-style: none; }}
         .tender-item {{ padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); transition: background 0.2s; cursor: pointer; }}
         .tender-item:hover {{ background: rgba(255,255,255,0.08); }}
-        .tender-content {{ display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }}
+        .tender-content {{ display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 15px; }}
         .tender-info {{ flex: 1; min-width: 250px; }}
         .tender-header {{ display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 8px; }}
         .tender-ref {{ color: #667eea; font-weight: 600; font-size: 1.1rem; }}
-        .tender-title {{ color: #ccc; font-size: 0.95rem; line-height: 1.4; margin-bottom: 8px; }}
+        .tender-title {{ color: #fff; font-size: 1rem; font-weight: 600; line-height: 1.4; margin-bottom: 8px; }}
+        .tender-description {{ color: #999; font-size: 0.9rem; line-height: 1.5; margin-bottom: 10px; padding: 10px; background: rgba(255,255,255,0.03); border-radius: 8px; border-left: 3px solid #667eea; }}
         .tender-meta {{ color: #666; font-size: 0.8rem; display: flex; flex-wrap: wrap; gap: 15px; }}
         
         /* Badges */
@@ -433,6 +437,7 @@ def generate_dashboard_html(tenders):
             }}
             
             list.innerHTML = filtered.map(t => {{
+                const desc = t.description && t.description !== t.title ? t.description : '';
                 return `<li class="tender-item" onclick="window.open('${{t.url}}', '_blank')">
                     <div class="tender-content">
                         <div class="tender-info">
@@ -442,10 +447,12 @@ def generate_dashboard_html(tenders):
                                 ${{getCountdownHtml(t.closing_date)}}
                             </div>
                             <div class="tender-title">${{t.title}}</div>
+                            ${{desc ? `<div class="tender-description">${{desc}}</div>` : ''}}
                             <div class="tender-meta">
                                 <span>📍 ${{t.client}}</span>
                                 <span>📁 ${{t.category}}</span>
                                 <span>🔗 ${{t.source}}</span>
+                                ${{t.contact ? `<span>📞 ${{t.contact}}</span>` : ''}}
                             </div>
                         </div>
                         <div class="tender-right">

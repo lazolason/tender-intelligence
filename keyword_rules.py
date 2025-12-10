@@ -38,6 +38,13 @@ EXCLUDE_KEYWORDS = [
     # Vehicles / Transport
     "vehicle hire", "fleet management", "transport services",
     "courier services",
+    
+    # General Maintenance / Facilities (not water/chemical related)
+    "repair of lights", "lighting", "light fittings",
+    "aircon", "air conditioning", "air-condition", "air conditioner",
+    "hvac maintenance",
+    "painting", "plumbing repairs", "office renovation",
+    "landscaping", "grass cutting", "garden services",
 ]
 
 TES_KEYWORDS = [

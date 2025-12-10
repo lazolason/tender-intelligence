@@ -1,6 +1,7 @@
 # ==========================================================
 # JOHANNESBURG WATER SCRAPER - Selenium Version
 # DataTables content requires JavaScript rendering
+# Captures direct PDF links from etenders.gov.za
 # ==========================================================
 
 import sys
@@ -32,10 +33,35 @@ def scrape_joburg_water_selenium():
         
         url = "https://www.johannesburgwater.co.za/tenders/"
         driver.get(url)
-        time.sleep(5)  # Wait for DataTable to load
+        time.sleep(6)  # Wait for DataTable to load
         
         html = driver.page_source
         soup = BeautifulSoup(html, 'html.parser')
+        
+        # Build a map of tender refs to their PDF URLs from all links on page
+        pdf_links = {}
+        for link in soup.find_all('a', href=True):
+            href = link['href']
+            text = link.get_text(strip=True).upper()
+            if '.pdf' in href.lower() and 'etenders.gov.za' in href:
+                # Extract tender ref from link text (e.g., "JW 14402 CORRIDORS...")
+                # Match patterns like: JW 14402, JW-14402, JW14402, RFQJW165NS25, JW CYD 015/24
+                ref_patterns = [
+                    r'(JW\s*CYD\s*\d+[/\-]?\d*)',  # JW CYD 015/24
+                    r'(JW\s*OPS\s*\d+[/\-]?\d*)',  # JW OPS 077/24
+                    r'(JW\s*CHR\s*\d+[/\-]?\d*)',  # JW CHR 001/25
+                    r'(JW[\s\-]*\d{5})',            # JW 14402 or JW-14402
+                    r'(RFQJW\w+)',                  # RFQJW165NS25
+                ]
+                for pattern in ref_patterns:
+                    ref_match = re.search(pattern, text, re.IGNORECASE)
+                    if ref_match:
+                        ref_key = ref_match.group(1).upper()
+                        # Normalize: remove dashes and extra spaces
+                        ref_key = re.sub(r'[\-\s]+', ' ', ref_key).strip()
+                        if ref_key not in pdf_links:
+                            pdf_links[ref_key] = href
+                        break
         
         # Get main table
         main_table = soup.find('table')
@@ -84,6 +110,20 @@ def scrape_joburg_water_selenium():
                         desc = current_tender.get("description", "")
                         cat = current_tender.get("category", "")
                         
+                        # Find matching PDF URL
+                        tender_url = url  # Default to main page
+                        ref_normalized = re.sub(r'[\-\s]+', ' ', ref.upper()).strip()
+                        
+                        # Try exact match first, then partial
+                        if ref_normalized in pdf_links:
+                            tender_url = pdf_links[ref_normalized]
+                        else:
+                            # Try matching by first part (e.g., "JW 14402" from "JW 14402 RR")
+                            for pdf_ref, pdf_url in pdf_links.items():
+                                if pdf_ref in ref_normalized or ref_normalized.startswith(pdf_ref):
+                                    tender_url = pdf_url
+                                    break
+                        
                         if desc:  # Only add if we have a description
                             classification = classify_tender(desc, f"{cat} {desc}")
                             
@@ -99,7 +139,7 @@ def scrape_joburg_water_selenium():
                                     "short_title": classification.get("short_title", "Tender"),
                                     "reason": classification.get("reason", ""),
                                     "source": "Johannesburg Water",
-                                    "url": url
+                                    "url": tender_url
                                 })
                             
                             current_tender = {}  # Reset for next tender
@@ -134,4 +174,6 @@ if __name__ == "__main__":
     
     for t in tenders[:10]:
         print(f"  [{t['ref']}] {t['title'][:50]}...")
+        print(f"       URL: {t['url'][:80]}...")
         print(f"       Closing: {t['closing_date']}")
+        print()
