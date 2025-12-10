@@ -8,6 +8,7 @@ import yaml
 from datetime import datetime
 import sys
 import os
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
@@ -113,34 +114,16 @@ def run_all_scrapers():
     # - SANRAL
     # - Transnet
     
-    # eTenders portal (Selenium) - Eskom, Umgeni, SANRAL, Transnet
+    # Eskom (Direct Tender Bulletin)
     if ENABLE_SELENIUM:
-        write_log(LOG_FILE, "=== Scraping eTenders Portal (Eskom, Umgeni, SANRAL, Transnet) ===")
+        write_log(LOG_FILE, "=== Scraping Eskom Tender Bulletin ===")
         try:
-            from scrapers.etenders_selenium import scrape_eskom, scrape_umgeni_water, scrape_sanral, scrape_transnet
-            
-            # Eskom
-            eskom_tenders = scrape_eskom()
+            from scrapers.eskom_direct import scrape_eskom_tenders
+            eskom_tenders = scrape_eskom_tenders()
             all_tenders.extend(eskom_tenders)
             write_log(LOG_FILE, f"Eskom: {len(eskom_tenders)} tenders found")
-            
-            # Umgeni Water
-            umgeni_tenders = scrape_umgeni_water()
-            all_tenders.extend(umgeni_tenders)
-            write_log(LOG_FILE, f"Umgeni Water: {len(umgeni_tenders)} tenders found")
-            
-            # SANRAL
-            sanral_tenders = scrape_sanral()
-            all_tenders.extend(sanral_tenders)
-            write_log(LOG_FILE, f"SANRAL: {len(sanral_tenders)} tenders found")
-            
-            # Transnet
-            transnet_tenders = scrape_transnet()
-            all_tenders.extend(transnet_tenders)
-            write_log(LOG_FILE, f"Transnet: {len(transnet_tenders)} tenders found")
-            
         except Exception as e:
-            log_error(LOG_FILE, f"eTenders portal scraper failed: {e}")
+            log_error(LOG_FILE, f"Eskom tender bulletin scraper failed: {e}")
     
     return all_tenders
 

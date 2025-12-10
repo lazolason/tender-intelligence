@@ -13,6 +13,7 @@ from datetime import datetime
 import time
 import traceback
 import sys
+import re
 import os
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -36,10 +37,11 @@ def scrape_etenders_for_organization(org_name, org_id, max_tenders=20):
         
         # Chrome options
         chrome_options = Options()
-        chrome_options.add_argument('--headless')
+        # chrome_options.add_argument('--headless')  # Disable headless for debugging
         chrome_options.add_argument('--no-sandbox')
         chrome_options.add_argument('--disable-dev-shm-usage')
         chrome_options.add_argument('--disable-gpu')
+        chrome_options.add_argument('--window-size=1920,1080')
         chrome_options.add_argument('user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36')
         
         # Try to find chromedriver
@@ -58,100 +60,84 @@ def scrape_etenders_for_organization(org_name, org_id, max_tenders=20):
         driver.get(url)
         
         # Wait for page to load
-        wait = WebDriverWait(driver, 15)
+        wait = WebDriverWait(driver, 20)
+        time.sleep(8)
         
-        # Click "Currently Advertised" tab
+        print(f"   Using search approach for {org_name}...")
+        
+        # Find the search box in the DataTable
         try:
-            active_tab = wait.until(EC.element_to_be_clickable((By.ID, "btnActive")))
-            active_tab.click()
+            search_box = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "#tendeList_filter input[type='search']")))
+            print(f"   Found search box")
             time.sleep(2)
-        except:
-            pass
-        
-        # Toggle advanced search
-        try:
-            show_hide = wait.until(EC.element_to_be_clickable((By.ID, "show_hide")))
-            show_hide.click()
-            time.sleep(1)
-        except:
-            pass
-        
-        # Select organization from dropdown
-        try:
-            # Use JavaScript to set the value since it might be a Chosen dropdown
-            driver.execute_script(f"document.getElementById('departments').value = '{org_id}';")
-            time.sleep(0.5)
             
-            # Click filter button
-            filter_btn = wait.until(EC.element_to_be_clickable((By.ID, "btnFilter")))
-            filter_btn.click()
-            time.sleep(4)  # Wait for DataTables to reload
+            # Use JavaScript to set the value since the element might not be interactable
+            driver.execute_script(f"arguments[0].value = '{org_name}'; arguments[0].dispatchEvent(new Event('input', {{ bubbles: true }}));", search_box)
+            print(f"   Typed '{org_name}' in search via JavaScript")
+            time.sleep(5)  # Wait for DataTable to filter
+            
         except Exception as e:
-            print(f"   ⚠️ Could not filter by organization: {e}")
+            print(f"   ⚠️ Could not find/use search box: {e}")
+            return tenders
         
-        # Wait for table to load
-        wait.until(EC.presence_of_element_located((By.ID, "tendeList")))
         time.sleep(2)
         
-        # Find tender rows in the DataTable
+        # Find all tender rows after search
         tender_rows = driver.find_elements(By.CSS_SELECTOR, "#tendeList tbody tr")
         
+        print(f"   Found {len(tender_rows)} rows matching '{org_name}'")
+        
+        if len(tender_rows) == 0:
+            print(f"   ⚠️ No tenders found. Trying with partial name...")
+            # Try with shorter keyword
+            if ' ' in org_name:
+                keyword = org_name.split()[0]
+                driver.execute_script(f"arguments[0].value = '{keyword}'; arguments[0].dispatchEvent(new Event('input', {{ bubbles: true }}));", search_box)
+                time.sleep(4)
+                tender_rows = driver.find_elements(By.CSS_SELECTOR, "#tendeList tbody tr")
+                print(f"   Found {len(tender_rows)} rows with '{keyword}'")
+        
+        # Extract tenders
         count = 0
-        for row in tender_rows[:max_tenders]:
+        for idx, row in enumerate(tender_rows[:max_tenders]):
             try:
-                # Skip if it's a "no data" row
-                if "dataTables_empty" in row.get_attribute("class"):
-                    continue
+                row_class = row.get_attribute("class") or ""
+                if "dataTables_empty" in row_class:
+                    print(f"   No matching tenders found")
+                    break
                 
                 cells = row.find_elements(By.TAG_NAME, "td")
-                if len(cells) < 6:
+                if len(cells) < 4:
                     continue
                 
-                # Extract data from columns
-                # Column 1 (index 1): Category
-                # Column 2 (index 2): Title/Description  
-                # Column 4 (index 4): Advertised date
-                # Column 5 (index 5): Closing date
-                
+                # Extract visible data
                 category = cells[1].text.strip() if len(cells) > 1 else ""
                 title = cells[2].text.strip() if len(cells) > 2 else ""
-                advertised = cells[4].text.strip() if len(cells) > 4 else ""
                 closing_date = cells[5].text.strip() if len(cells) > 5 else ""
                 
-                if not title:
+                if not title or len(title) < 10:
                     continue
                 
-                # Try to find link in the row
+                # Try to find link
                 try:
                     link_elem = cells[2].find_element(By.TAG_NAME, "a")
                     href = link_elem.get_attribute("href")
                 except:
-                    href = f"https://www.etenders.gov.za/Home/opportunities?search={title[:30]}"
+                    href = "https://www.etenders.gov.za/Home/opportunities"
                 
-                # Try to expand row to get reference number
+                # Extract reference number from title
                 ref = ""
-                try:
-                    expand_btn = cells[0].find_element(By.CSS_SELECTOR, "img, i")
-                    expand_btn.click()
-                    time.sleep(0.5)
-                    
-                    # Look for reference in child row
-                    child_row = driver.find_element(By.XPATH, f"//tr[contains(@class, 'child')]")
-                    ref_text = child_row.text
-                    # Extract reference number pattern (e.g., E2253GXGPLET)
-                    import re
-                    ref_match = re.search(r'[A-Z0-9]{10,}', ref_text)
+                ref_match = re.search(r'[A-Z][0-9]{4}[A-Z0-9]+', title)
+                if ref_match:
+                    ref = ref_match.group(0)
+                else:
+                    # Try to extract from row HTML
+                    row_html = row.get_attribute("outerHTML")
+                    ref_match = re.search(r'[A-Z][0-9]{4}[A-Z0-9]+', row_html)
                     if ref_match:
                         ref = ref_match.group(0)
-                    
-                    # Click again to collapse
-                    expand_btn.click()
-                    time.sleep(0.3)
-                except:
-                    pass
-                
-                if not ref:
-                    ref = f"{org_name[:3].upper()}-{count+1}"
+                    else:
+                        ref = f"{org_name[:3].upper()}-{count+1}"
                 
                 tender = {
                     "ref": ref,
@@ -173,6 +159,7 @@ def scrape_etenders_for_organization(org_name, org_id, max_tenders=20):
                 
                 tenders.append(tender)
                 count += 1
+                print(f"   ✓ Tender {count}: {ref} - {title[:60]}")
                 
             except Exception as e:
                 continue
