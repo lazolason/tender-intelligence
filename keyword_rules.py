@@ -75,22 +75,17 @@ PHAKATHI_KEYWORDS = [
     "pump", "impeller", "shaft", "pump refurbishment", "mechanical seals",
     "gearbox", "couplings", "motor", "rotating equipment", "pump spares",
     "alignment", "impeller casting", "pump installation",
+    "white metal bearings", "bearing housings", "compensators",
+    "transmissions", "conveyor", "conveyors", "idler", "idlers",
+    "roller", "rollers", "belting", "gaskets", "gland packing",
+    "static seals", "gearboxes",
 
     # Bearings (including white-metal)
     "white metal", "whitemetal", "babbitt", "bearing casting",
     "sleeve bearing", "bearing shells", "plummer block",
 
-    # Fabrication / Workshop / Machining
-    "machining", "fabrication", "steelwork", "welding", "turning", "milling",
-    "line boring", "cnc", "workshop", "mechanical workshop", "refurbishment",
-
-    # Repairs & Maintenance
-    "maintenance", "mechanical maintenance", "repairs", "overhauls",
-    "installation", "commissioning", "breakdown service",
-
-    # Civil & Structural
-    "pipework", "valves", "flanges", "civil works", "structural",
-    "platform", "supports"
+    # Fabrication / Workshop / Machining (trimmed)
+    "machining", "fabrication",
 ]
 
 # ===========================================================
