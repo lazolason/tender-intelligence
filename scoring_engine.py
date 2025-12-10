@@ -376,6 +376,7 @@ def score_tender(title: str, description: str, client: str = "",
         **suitability,
         
         # Composite
+        "composite": round(composite, 1),
         "composite_score": round(composite, 1),
         "priority": priority,
         

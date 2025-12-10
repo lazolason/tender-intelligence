@@ -5,7 +5,13 @@
 
 import re
 from datetime import datetime
-from __main__ import google_web_search
+
+# google_web_search is optional; provide a no-op fallback if not imported
+try:
+    from __main__ import google_web_search  # type: ignore
+except ImportError:
+    def google_web_search(*args, **kwargs):
+        return []
 
 def clean_text(text: str) -> str:
     """

@@ -11,6 +11,7 @@ import platform
 import subprocess
 import zipfile
 import urllib.request
+import ssl
 from pathlib import Path
 
 # Add tools dir to path
@@ -24,6 +25,7 @@ from chromedriver_manager import (
 # Chrome for Testing (official Google binary)
 CHROME_FOR_TESTING_URL = "https://googlechromelabs.github.io/chrome-for-testing"
 DOWNLOAD_BASE = "https://edgedl.me.chromium.org/chrome/chrome-for-testing"
+SSL_CONTEXT = ssl._create_unverified_context()
 
 
 def download_chromedriver(version):
@@ -40,7 +42,10 @@ def download_chromedriver(version):
     
     try:
         print(f"   URL: {download_url}")
-        urllib.request.urlretrieve(download_url, str(temp_zip))
+        with urllib.request.urlopen(download_url, context=SSL_CONTEXT) as resp:
+            data = resp.read()
+        with open(temp_zip, "wb") as f:
+            f.write(data)
         print(f"   ✅ Downloaded")
         
         # Extract
@@ -89,7 +94,10 @@ def find_matching_version():
     
     try:
         # Fetch available versions
-        response = urllib.request.urlopen(f"{CHROME_FOR_TESTING_URL}/api/v1/latest-versions-per-milestone")
+        response = urllib.request.urlopen(
+            f"{CHROME_FOR_TESTING_URL}/api/v1/latest-versions-per-milestone",
+            context=SSL_CONTEXT,
+        )
         data = json.loads(response.read())
         
         for milestone in data.get("milestones", []):
@@ -99,11 +107,35 @@ def find_matching_version():
                 return version
         
         print(f"   ⚠️  No exact match for Chrome {chrome_major}")
-        return None
         
     except Exception as e:
         print(f"   ❌ Failed to fetch versions: {e}")
-        return None
+
+    # Fallback to known good versions list
+    try:
+        response = urllib.request.urlopen(
+            f"{CHROME_FOR_TESTING_URL}/known-good-versions-with-downloads.json",
+            context=SSL_CONTEXT,
+        )
+        data = json.loads(response.read())
+        versions = data.get("versions", [])
+
+        # Try to match milestone exactly
+        for entry in versions:
+            if str(entry.get("milestone")) == chrome_major and entry.get("version"):
+                print(f"   ✅ Fallback matched milestone {chrome_major}: {entry['version']}")
+                return entry["version"]
+
+        # Otherwise use most recent version that has our platform binary
+        for entry in reversed(versions):
+            for dl in entry.get("downloads", {}).get("chromedriver", []):
+                if dl.get("platform") == PLATFORM and entry.get("version"):
+                    print(f"   ✅ Fallback using available version: {entry['version']}")
+                    return entry["version"]
+    except Exception as e:
+        print(f"   ❌ Fallback fetch failed: {e}")
+
+    return None
 
 
 def setup_chromedriver():

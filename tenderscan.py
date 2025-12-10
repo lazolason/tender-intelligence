@@ -273,17 +273,20 @@ def save_outputs(new_items):
         sf.write(f"\n🔥 HIGH PRIORITY ({len(high_priority)}):\n")
         sf.write("-" * 40 + "\n")
         for t in high_priority:
-            sf.write(f"  [{t['scores']['composite']}] {t['ref']} | {t['title'][:50]}...\n")
+            comp = t.get("scores", {}).get("composite") or t.get("scores", {}).get("composite_score", "na")
+            sf.write(f"  [{comp}] {t['ref']} | {t['title'][:50]}...\n")
         
         sf.write(f"\n✅ MEDIUM PRIORITY ({len(medium_priority)}):\n")
         sf.write("-" * 40 + "\n")
         for t in medium_priority:
-            sf.write(f"  [{t['scores']['composite']}] {t['ref']} | {t['title'][:50]}...\n")
+            comp = t.get("scores", {}).get("composite") or t.get("scores", {}).get("composite_score", "na")
+            sf.write(f"  [{comp}] {t['ref']} | {t['title'][:50]}...\n")
         
         sf.write(f"\n📝 LOW PRIORITY ({len(low_priority)}):\n")
         sf.write("-" * 40 + "\n")
         for t in low_priority:
-            sf.write(f"  [{t['scores']['composite']}] {t['ref']} | {t['title'][:50]}...\n")
+            comp = t.get("scores", {}).get("composite") or t.get("scores", {}).get("composite_score", "na")
+            sf.write(f"  [{comp}] {t['ref']} | {t['title'][:50]}...\n")
         
         # Group by source
         sf.write(f"\n\nBY SOURCE:\n")
