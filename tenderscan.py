@@ -14,10 +14,11 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 # Import scrapers
 from scrapers.municipalities import scrape_all_municipalities
 from scrapers.soes import scrape_all_soes
-from scrapers.umgeni_water import scrape_umgeni_water
-from scrapers.eskom import scrape_eskom
-from scrapers.sanral import scrape_sanral
-from scrapers.transnet import scrape_transnet
+# NOTE: Umgeni, Eskom, SANRAL, Transnet scrapers disabled - etenders.gov.za API returns 405
+# from scrapers.umgeni_water import scrape_umgeni_water
+# from scrapers.eskom import scrape_eskom
+# from scrapers.sanral import scrape_sanral
+# from scrapers.transnet import scrape_transnet
 
 # Import utils
 from utils.excel_writer import ExcelWriter
@@ -105,41 +106,12 @@ def run_all_scrapers():
         except Exception as e:
             log_error(LOG_FILE, f"Johannesburg Water scraper failed: {e}")
     
-    # Umgeni Water
-    write_log(LOG_FILE, "=== Scraping Umgeni Water ===")
-    try:
-        umgeni_tenders = scrape_umgeni_water()
-        all_tenders.extend(umgeni_tenders)
-        write_log(LOG_FILE, f"Umgeni Water: {len(umgeni_tenders)} tenders found")
-    except Exception as e:
-        log_error(LOG_FILE, f"Umgeni Water scraper failed: {e}")
-    
-    # Eskom
-    write_log(LOG_FILE, "=== Scraping Eskom ===")
-    try:
-        eskom_tenders = scrape_eskom()
-        all_tenders.extend(eskom_tenders)
-        write_log(LOG_FILE, f"Eskom: {len(eskom_tenders)} tenders found")
-    except Exception as e:
-        log_error(LOG_FILE, f"Eskom scraper failed: {e}")
-    
-    # SANRAL
-    write_log(LOG_FILE, "=== Scraping SANRAL ===")
-    try:
-        sanral_tenders = scrape_sanral()
-        all_tenders.extend(sanral_tenders)
-        write_log(LOG_FILE, f"SANRAL: {len(sanral_tenders)} tenders found")
-    except Exception as e:
-        log_error(LOG_FILE, f"SANRAL scraper failed: {e}")
-    
-    # Transnet
-    write_log(LOG_FILE, "=== Scraping Transnet ===")
-    try:
-        transnet_tenders = scrape_transnet()
-        all_tenders.extend(transnet_tenders)
-        write_log(LOG_FILE, f"Transnet: {len(transnet_tenders)} tenders found")
-    except Exception as e:
-        log_error(LOG_FILE, f"Transnet scraper failed: {e}")
+    # NOTE: Disabled non-functional scrapers (405 errors on etenders.gov.za API)
+    # TODO: Research correct etenders.gov.za API endpoints for:
+    # - Umgeni Water
+    # - Eskom
+    # - SANRAL
+    # - Transnet
     
     return all_tenders
 
