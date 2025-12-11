@@ -107,11 +107,9 @@ TES_KEYWORDS = [
     # Corrosion Inhibitors
     "corrosion inhibitor", "corrosion control", "corrosion barrier",
     
-    # Biocides & Disinfectants
+    # Biocides (General only - specific commodity chemicals excluded)
     "biocide", "biocidal", "antimicrobial", "microbiological control",
     "oxidizing biocide", "non-oxidizing biocide", "biological control",
-    "chlorine", "chlorination", "chlorine dioxide", "hypochlorite",
-    "calcium hypochlorite", "sodium hypochlorite", "bleach", "disinfectant",
     
     # Dispersants
     "dispersant", "fouling dispersant", "mud dispersant", "ash dispersant",
