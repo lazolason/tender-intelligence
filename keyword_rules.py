@@ -45,6 +45,29 @@ EXCLUDE_KEYWORDS = [
     "hvac maintenance",
     "painting", "plumbing repairs", "office renovation",
     "landscaping", "grass cutting", "garden services",
+    
+    # Equipment Maintenance & Refurbishment (OUT OF SCOPE)
+    "maintenance services", "mechanical maintenance", "electrical maintenance",
+    "preventative maintenance", "planned maintenance", "routine maintenance",
+    "refurbishment", "overhaul", "repair services", "service and repair",
+    "inspection and maintenance", "testing and maintenance",
+    
+    # Transformers & Electrical Supply (NOT what we do)
+    "transformer", "transformers", "transformer supply", "transformer maintenance",
+    "transformer aircells", "power transformer", "distribution transformer",
+    "transformer oil", "voltage regulator",
+    
+    # Metal Work / Welding / Specialized Services (OUT OF SCOPE)
+    "metal spraying", "thermal spraying", "arc spraying", "flame spraying",
+    "welding services", "metallizing", "coating services",
+    
+    # Turbine Services (NOT our focus)
+    "turbine maintenance", "turbine refurbishment", "turbine inspection",
+    "turbine blades", "turbine overhaul", "gas turbine", "steam turbine",
+    
+    # General Electrical/Mechanical Services (too broad)
+    "electrical services", "mechanical services", "engineering services",
+    "industrial services", "plant maintenance", "facility maintenance",
 ]
 
 TES_KEYWORDS = [
@@ -71,21 +94,25 @@ TES_KEYWORDS = [
 # ===========================================================
 
 PHAKATHI_KEYWORDS = [
-    # Mechanical Supply & Rotating Equipment
-    "pump", "impeller", "shaft", "pump refurbishment", "mechanical seals",
-    "gearbox", "couplings", "motor", "rotating equipment", "pump spares",
-    "alignment", "impeller casting", "pump installation",
-    "white metal bearings", "bearing housings", "compensators",
-    "transmissions", "conveyor", "conveyors", "idler", "idlers",
-    "roller", "rollers", "belting", "gaskets", "gland packing",
-    "static seals", "gearboxes",
+    # Mechanical Supply & Rotating Equipment (SUPPLY/MANUFACTURING, not maintenance)
+    "pump supply", "pump manufacturing", "impeller", "shaft", "mechanical seals",
+    "gearbox supply", "couplings", "pump spares", "pump parts",
+    "impeller casting", "pump installation", "new pumps",
+    "bearing housings", "compensators", "bearing supply",
+    "transmissions", "conveyor supply", "conveyor components", "idler supply",
+    "roller supply", "belting", "gaskets supply", "gland packing",
+    "static seals", "gearbox components",
 
-    # Bearings (including white-metal)
-    "white metal", "whitemetal", "babbitt", "bearing casting",
+    # Bearings (including white-metal) - SUPPLY/MANUFACTURING
+    "white metal bearings", "whitemetal casting", "babbitt", "bearing casting",
     "sleeve bearing", "bearing shells", "plummer block",
 
-    # Fabrication / Workshop / Machining (trimmed)
-    "machining", "fabrication",
+    # Fabrication / Workshop / Machining (NEW PARTS, not repair)
+    "machining services", "fabrication services", "custom fabrication",
+    "manufacturing", "cnc machining",
+    
+    # NEW EQUIPMENT ONLY
+    "pump procurement", "equipment supply", "pump tender", "bearing tender",
 ]
 
 # ===========================================================
