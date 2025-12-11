@@ -1,7 +1,7 @@
 # ================================================
-# KEYWORD RULES V2.0 - STRICT FILTERING
-# TES: Water treatment chemicals ONLY
-# Phakathi: NEW mechanical supply ONLY (no maintenance/refurb)
+# KEYWORD RULES V2.0 - ACCURATE CAPABILITY MAPPING
+# TES: Water treatment chemicals + dosing systems + monitoring
+# Phakathi: NEW mechanical supply + white-metal bearing reconditioning ONLY
 # ================================================
 
 # ===========================================================
@@ -22,8 +22,9 @@ EXCLUDE_KEYWORDS = [
     "repair", "refurbishment", "overhaul", "inspection and maintenance",
     "service provider", "maintenance services", "repair services",
     
-    # ===== REFURBISHMENT (ANY TYPE) =====
+    # ===== REFURBISHMENT (EXCLUDE - except white-metal bearing reconditioning) =====
     "refurbishment", "refurbish", "overhaul", "retrofit",
+    # Note: "bearing reconditioning" is allowed ONLY if "white metal" is also present
     
     # ===== TRANSFORMERS & ELECTRICAL EQUIPMENT =====
     "transformer", "transformers", "transformer supply", "transformer oil",
@@ -93,76 +94,129 @@ EXCLUDE_KEYWORDS = [
 ]
 
 # ===========================================================
-# TES KEYWORDS - Water Treatment Chemicals ONLY
+# TES KEYWORDS - Water Treatment Chemicals + Systems + Monitoring
 # ===========================================================
 
 TES_KEYWORDS = [
-    # === CORE: Cooling Water Treatment ===
-    "cooling water treatment", "cooling tower treatment", "cooling tower chemicals",
-    "cooling water chemicals", "cooling system treatment", "condenser treatment",
-    "cooling circuit treatment", "cw treatment",
+    # === 1. WATER TREATMENT CHEMICALS (Core Products) ===
+    "water treatment chemicals", "chemical supply", "chemical dosing",
     
-    # === CORE: Boiler Water Treatment ===
-    "boiler water treatment", "boiler chemicals", "boiler treatment",
-    "feedwater treatment", "condensate treatment", "steam treatment",
-    "boiler dosing",
+    # Scale Inhibitors
+    "scale inhibitor", "antiscalant", "anti-scalant", "scale control",
     
-    # === CORE: Water Treatment Chemicals ===
-    "water treatment chemicals", "chemical dosing", "chemical supply",
-    "scale inhibitor", "corrosion inhibitor", "dispersant", "surfactant",
-    "biocide", "non-biocidal", "antiscalant", "anti-scalant",
-    "oxygen scavenger", "passivation", "neutralising amine",
+    # Corrosion Inhibitors
+    "corrosion inhibitor", "corrosion control", "corrosion barrier",
     
-    # === SPECIFIC: Proprietary Products ===
-    "mexel", "mexel432", "mexsteam", "film forming amine", "ffa",
+    # Biocides
+    "biocide", "biocidal", "antimicrobial", "microbiological control",
+    "oxidizing biocide", "non-oxidizing biocide", "biological control",
     
-    # === SYSTEMS: Dosing & Monitoring ===
-    "chemical dosing system", "dosing pump", "dosing equipment",
-    "water quality monitoring", "chemical injection system",
-    "automated dosing", "water treatment system",
+    # Dispersants
+    "dispersant", "fouling dispersant", "mud dispersant", "ash dispersant",
     
-    # === APPLICATIONS: Where chemicals are used ===
-    "cooling tower", "heat exchanger", "condenser", "boiler",
-    "fouling control", "scale control", "corrosion control",
-    "biological control", "microbiological control",
+    # Film-Forming Agents (FFAs)
+    "film forming amine", "ffa", "film forming agent", "film-forming",
+    "mexsteam", "mexsteam 100", "steam treatment",
+    
+    # Surfactant-Based Conditioners
+    "surfactant", "surfactant conditioner", "surfactant-based",
+    "mexel", "mexel 432", "mexel432", "system conditioner",
+    
+    # Other Chemicals
+    "oxygen scavenger", "passivation", "neutralising amine", "neutralizing amine",
+    
+    # === 2. COOLING TOWER TREATMENT ===
+    "cooling tower", "cooling water treatment", "cooling tower treatment",
+    "cooling tower chemicals", "cooling water chemicals", "cooling system",
+    "condenser treatment", "cooling circuit", "cw treatment",
+    "thermal efficiency", "fouling control", "fouling removal",
+    
+    # === 3. BOILER TREATMENT ===
+    "boiler treatment", "boiler water treatment", "boiler chemicals",
+    "feedwater treatment", "condensate treatment", "steam system",
+    "boiler dosing", "steam quality", "boiler protection",
+    
+    # === 4. CHEMICAL DOSING SYSTEMS ===
+    "chemical dosing system", "dosing system", "dosing skid",
+    "dosing pump", "dosing equipment", "injection system",
+    "chemical injection", "automated dosing", "dosing control",
+    "tank and bund", "chemical storage",
+    
+    # === 5. WATER QUALITY MONITORING ===
+    "water quality monitoring", "online monitoring", "water monitoring",
+    "sensor", "ph probe", "conductivity", "orp", "redox",
+    "corrosion probe", "monitoring system", "data intelligence",
+    "compliance monitoring", "water analysis",
+    
+    # === 6. APPLICATIONS (Where TES works) ===
+    "heat exchanger", "condenser", "evaporator", "chiller",
+    "closed circuit", "open circuit", "recirculating system",
+    "separation circuit", "mineral processing", "desalination",
 ]
 
 # ===========================================================
-# PHAKATHI KEYWORDS - NEW Mechanical Supply ONLY
+# PHAKATHI KEYWORDS - NEW Mechanical Supply + White-Metal Bearing Reconditioning
 # ===========================================================
 
 PHAKATHI_KEYWORDS = [
-    # === CORE: NEW Pump Supply ===
+    # === 1. NEW PUMP SUPPLY ===
     "supply of pumps", "supply and delivery of pumps", "pump supply",
-    "new pumps", "pump procurement", "pumps supply",
-    "centrifugal pumps", "slurry pumps", "dewatering pumps",
+    "new pumps", "pump procurement", "pumps tender",
+    "centrifugal pump", "slurry pump", "dewatering pump",
+    "vertical pump", "horizontal pump", "submersible pump",
     
-    # === CORE: Pump Parts & Components (NEW) ===
-    "pump spares", "pump parts", "impeller supply", "pump impellers",
-    "mechanical seals", "seal supply", "shaft supply", "pump shafts",
-    "wear parts", "spare parts for pumps",
+    # === 2. NEW PUMP PARTS & COMPONENTS ===
+    "pump spares", "pump parts", "pump components",
+    "impeller supply", "impeller", "pump impeller",
+    "mechanical seal", "seal supply", "pump seals",
+    "shaft supply", "pump shaft", "wear rings", "wear parts",
     
-    # === CORE: Bearing Supply (NEW, especially white metal) ===
-    "bearing supply", "white metal bearings", "whitemetal", "babbitt",
-    "bearing casting", "sleeve bearings", "journal bearings",
-    "plummer blocks", "bearing shells",
+    # === 3. NEW BEARING SUPPLY ===
+    "bearing supply", "new bearings", "bearing procurement",
+    "ball bearings", "roller bearings", "spherical bearings",
+    "thrust bearings", "sleeve bearings", "journal bearings",
     
-    # === CORE: Fabrication & Machining (NEW parts) ===
+    # === 4. WHITE-METAL BEARING RECONDITIONING (ONLY EXCEPTION) ===
+    "white metal bearing", "whitemetal bearing", "white-metal",
+    "babbitt bearing", "white metal reconditioning", "bearing re-metalling",
+    "white metal casting", "bearing reconditioning",
+    "line boring", "bearing refurbishment",  # ONLY valid if "white metal" present
+    "plummer block", "bearing shell",
+    
+    # === 5. FABRICATION WORKSHOP ===
     "fabrication services", "custom fabrication", "steel fabrication",
+    "tank fabrication", "vessel fabrication", "structural fabrication",
+    "laser profiling", "plasma profiling", "laser cutting",
+    "rolling", "bending", "forming",
+    
+    # === 6. PRECISION MACHINING ===
     "machining services", "cnc machining", "precision machining",
-    "manufacturing of components", "component manufacturing",
+    "turning", "milling", "boring", "grinding",
+    "component manufacturing", "precision engineering",
     
-    # === CORE: Conveyor Components (NEW) ===
-    "conveyor components", "conveyor idlers", "conveyor rollers",
+    # === 7. CONVEYOR COMPONENTS (NEW) ===
+    "conveyor components", "conveyor idler", "conveyor roller",
     "conveyor belting", "idler supply", "roller supply",
+    "belt splice", "conveyor parts",
     
-    # === SPECIFIC: Mechanical Components Supply ===
-    "couplings supply", "gasket supply", "gland packing supply",
-    "mechanical component supply", "rotating equipment parts",
+    # === 8. MECHANICAL COMPONENTS (NEW) ===
+    "coupling", "flexible coupling", "gear coupling",
+    "gasket", "gland packing", "mechanical seal",
+    "o-ring", "seal kit",
     
-    # === INSTALLATION (of NEW equipment only) ===
-    "supply and installation of pumps", "supply and install",
-    "pump installation", "equipment installation",
+    # === 9. HEAT TREATMENT ===
+    "heat treatment", "stress relieving", "annealing",
+    "normalizing", "hardening",
+    
+    # === 10. INDUSTRIAL TECHNOLOGY (IIoT & Controls) ===
+    "instrumentation", "control system", "automation",
+    "iiot", "industrial iot", "scada", "plc",
+    "data analytics", "asset monitoring", "condition monitoring",
+    "vibration monitoring", "predictive maintenance",
+    
+    # === 11. INSTALLATION (NEW equipment) ===
+    "supply and installation", "supply and install",
+    "installation services", "commissioning",
 ]
 
 # ===========================================================
@@ -182,12 +236,15 @@ SWITCHGEAR_KEYWORDS = [
 
 TES_STRONG_SIGNALS = [
     "cooling tower", "boiler", "water treatment", "chemical dosing",
-    "scale inhibitor", "corrosion inhibitor", "biocide", "mexel"
+    "scale inhibitor", "corrosion inhibitor", "biocide", "dispersant",
+    "surfactant", "mexel", "mexel432", "film forming", "ffa",
+    "dosing system", "water quality monitoring", "heat exchanger"
 ]
 
 PHAKATHI_STRONG_SIGNALS = [
-    "pump supply", "bearing supply", "white metal", "fabrication",
-    "machining", "conveyor components"
+    "pump supply", "bearing supply", "white metal", "white-metal",
+    "fabrication", "machining", "conveyor", "impeller",
+    "laser profiling", "cnc machining", "bearing reconditioning"
 ]
 
 # ===========================================================
@@ -205,17 +262,19 @@ NEGATIVE_SIGNALS = [
 # ===========================================================
 
 TES_OVERRIDE = [
-    "cooling water treatment", "cooling tower", "boiler treatment",
-    "water treatment chemicals", "chemical dosing", "scale inhibitor",
-    "corrosion inhibitor", "biocide", "mexel", "condenser treatment"
+    "cooling tower", "boiler", "water treatment", "chemical dosing",
+    "scale inhibitor", "corrosion inhibitor", "biocide", "dispersant",
+    "surfactant", "mexel", "film forming", "dosing system",
+    "water quality", "condenser treatment", "heat exchanger"
 ]
 
 PHAKATHI_OVERRIDE = [
     "pump supply", "bearing supply", "white metal", "fabrication",
-    "machining", "conveyor", "impeller", "mechanical seals"
+    "machining", "conveyor", "impeller", "laser profiling",
+    "cnc", "precision machining", "component manufacturing"
 ]
 
 BOTH_CATEGORY_TRIGGERS = [
-    "pump station water treatment", "cooling tower and pump supply",
-    "boiler and mechanical supply"
+    "pump station with water treatment", "cooling tower and pumps",
+    "boiler and fabrication", "water treatment and mechanical"
 ]
