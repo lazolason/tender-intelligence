@@ -1,0 +1,124 @@
+{
+    "meta": {
+        "last_sync": "2025-12-11 17:07",
+        "next_run": "Daily 08:00"
+    },
+    "tenders": [
+        {
+            "ref": "RW10397693/25RR",
+            "title": "RW10397693/25RR - THE SUPPLY AND DELIVERY OF AMMONIUM HYDROXIDE TO RAND WATER\u2019S ZWARTKOPJES, EIKENHOF, PALMIET, AND MA",
+            "description": "THE SUPPLY AND DELIVERY OF AMMONIUM HYDROXIDE TO RAND WATER\u2019S ZWARTKOPJES, EIKENHOF, PALMIET, AND MAPLETON BOOSTER PUMPING STATIONS FOR A PERIOD OF TWENTY (20) YEARS",
+            "client": "Rand Water",
+            "closing_date": "2026-01-19",
+            "contact": "Jabulile Molema - jmolema@randwater.co.za - 011 682 0393",
+            "category": "Phakathi",
+            "short_title": "Rw10397693_25rr",
+            "reason": "Phakathi override keyword detected: 'pump'",
+            "source": "Rand Water",
+            "url": "https://www.randwater.co.za/./media/sc_pdf/RW10397693 25RR.pdf",
+            "scores": {
+                "fit": 8,
+                "industry": 8,
+                "risk": 7,
+                "revenue": 5,
+                "tes": 1,
+                "phakathi": 2,
+                "composite": 6.3,
+                "priority": "MEDIUM"
+            }
+        },
+        {
+            "ref": "RW10413976-25",
+            "title": "RW10413976-25 CALCIUM HYPOCHLORITE GRANULES - SUPPLY AND DELIVERY OF CALCIUM HYPOCHLORITE GRANULES TO RAND WATER SITES FOR A PERIOD OF SIXTY (60) ",
+            "description": "SUPPLY AND DELIVERY OF CALCIUM HYPOCHLORITE GRANULES TO RAND WATER SITES FOR A PERIOD OF SIXTY (60) MONTHS.",
+            "client": "Rand Water",
+            "closing_date": "2026-01-30",
+            "contact": "Johannes Sebothoma Tel no. (011) 682-0860  E-Mail:jsebotho@randwater.co.za",
+            "category": "Unknown",
+            "short_title": "Rw10413976_25_Calcium_Hypochlorite",
+            "reason": "No clear classification signals detected",
+            "source": "Rand Water",
+            "url": "https://www.randwater.co.za/./media/sc_pdf/RW010413976-25 RW Advert.pdf",
+            "scores": {
+                "fit": 5,
+                "industry": 8,
+                "risk": 7,
+                "revenue": 5,
+                "tes": 1,
+                "phakathi": 0,
+                "composite": 5.3,
+                "priority": "MEDIUM"
+            }
+        },
+        {
+            "ref": "JW 14402",
+            "title": "TURFFONTEIN CORRIDORS OF FREEDOM \u2013 WATER UPGRADE (FORESTHILL TOWER AND PUMSTATION).",
+            "description": "Category: Construction. TURFFONTEIN CORRIDORS OF FREEDOM \u2013 WATER UPGRADE (FORESTHILL TOWER AND PUMSTATION).",
+            "client": "Johannesburg Water",
+            "closing_date": "2026-02-16",
+            "advertised": "11/18/2025",
+            "category": "Unknown",
+            "short_title": "Turffontein_Corridors_Of_Freedom",
+            "reason": "No clear classification signals detected",
+            "source": "Johannesburg Water",
+            "url": "https://www.johannesburgwater.co.za/tenders/",
+            "scores": {
+                "fit_score": 5,
+                "fit_reasons": [],
+                "fit_grade": "C",
+                "industry_score": 5,
+                "industry_matched": "General",
+                "industry_grade": "C",
+                "risk_score": 7,
+                "risk_factors": [],
+                "risk_level": "Low",
+                "revenue_score": 5,
+                "revenue_indicators": [],
+                "revenue_potential": "Medium",
+                "tes_suitability": 1,
+                "tes_fit": "Weak",
+                "phakathi_suitability": 0,
+                "phakathi_fit": "Weak",
+                "composite_score": 4.7,
+                "priority": "LOW",
+                "recommendation": "\ud83d\udcdd EVALUATE - May be worth pursuing if capacity allows"
+            }
+        },
+        {
+            "ref": "JW OPS 077/24",
+            "title": "REPAIRS AND MAINTENANCE OF LOW AND MEDIUM VOLTAGE ELECTRICAL INFRASTRUCTURE FOR\nBULK WASTEWATER WORKS AS AND WHEN REQUIRED FOR A PERIOD OF 36 MONTHS",
+            "description": "Category: Services: Electrical. REPAIRS AND MAINTENANCE OF LOW AND MEDIUM VOLTAGE ELECTRICAL INFRASTRUCTURE FOR\nBULK WASTEWATER WORKS AS AND WHEN REQUIRED FOR A PERIOD OF 36 MONTHS",
+            "client": "Johannesburg Water",
+            "closing_date": "2026-01-25",
+            "advertised": "11/18/2025",
+            "category": "Phakathi",
+            "short_title": "And_Of_Low_And",
+            "reason": "Phakathi keyword score: 2",
+            "source": "Johannesburg Water",
+            "url": "https://www.johannesburgwater.co.za/tenders/",
+            "scores": {
+                "fit_score": 6,
+                "fit_reasons": [
+                    "Phakathi alignment (1 keywords)"
+                ],
+                "fit_grade": "B",
+                "industry_score": 5,
+                "industry_matched": "General",
+                "industry_grade": "C",
+                "risk_score": 7,
+                "risk_factors": [],
+                "risk_level": "Low",
+                "revenue_score": 5,
+                "revenue_indicators": [],
+                "revenue_potential": "Medium",
+                "tes_suitability": 1,
+                "tes_fit": "Weak",
+                "phakathi_suitability": 3,
+                "phakathi_fit": "Moderate",
+                "composite_score": 5.3,
+                "priority": "MEDIUM",
+                "recommendation": "\ud83d\udcdd EVALUATE - May be worth pursuing if capacity allows"
+            }
+        }
+    ]
+}
