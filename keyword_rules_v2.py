@@ -199,23 +199,3 @@ NEGATIVE_SIGNALS = [
     "transformer", "turbine", "spillage", "scrap", "disposal",
     "award", "cancellation", "regret", "bidders", "vehicle"
 ]
-
-# ===========================================================
-# OVERRIDE RULES & CROSS CATEGORY
-# ===========================================================
-
-TES_OVERRIDE = [
-    "cooling water treatment", "cooling tower", "boiler treatment",
-    "water treatment chemicals", "chemical dosing", "scale inhibitor",
-    "corrosion inhibitor", "biocide", "mexel", "condenser treatment"
-]
-
-PHAKATHI_OVERRIDE = [
-    "pump supply", "bearing supply", "white metal", "fabrication",
-    "machining", "conveyor", "impeller", "mechanical seals"
-]
-
-BOTH_CATEGORY_TRIGGERS = [
-    "pump station water treatment", "cooling tower and pump supply",
-    "boiler and mechanical supply"
-]
