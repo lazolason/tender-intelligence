@@ -1,0 +1,1296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="manifest" href="manifest.json">
+    <title>Tender Intelligence Dashboard</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%); color: #fff; min-height: 100vh; padding: 20px; }
+        .container { max-width: 1400px; margin: 0 auto; }
+        header { text-align: center; padding: 40px 0; }
+        h1 { font-size: 3rem; margin-bottom: 10px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .subtitle { color: #888; font-size: 1.1rem; }
+        .status { display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: #00ff88; margin-right: 8px; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        .last-sync { display: inline-block; background: rgba(102, 126, 234, 0.2); color: #667eea; padding: 8px 16px; border-radius: 20px; font-size: 0.85rem; margin-top: 15px; border: 1px solid rgba(102, 126, 234, 0.3); }
+        .next-run-countdown { margin-top: 6px; font-size: 0.85rem; color: #aaa; }
+        
+        /* Tab Navigation */
+        .tab-nav { display: flex; justify-content: center; gap: 10px; margin: 30px 0; flex-wrap: wrap; }
+        .tab-btn { padding: 12px 24px; border-radius: 25px; border: 1px solid rgba(255,255,255,0.2); background: transparent; color: #888; cursor: pointer; transition: all 0.3s; font-size: 0.9rem; font-weight: 500; }
+        .tab-btn:hover { border-color: rgba(255,255,255,0.4); color: #fff; }
+        .tab-btn.active { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-color: transparent; color: #fff; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        
+        /* Stats */
+        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin: 30px 0; }
+        .stat-card { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border-radius: 20px; padding: 25px; border: 1px solid rgba(255,255,255,0.1); text-align: center; transition: transform 0.3s; }
+        .stat-card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+        .stat-value { font-size: 2.5rem; font-weight: 700; margin-bottom: 10px; }
+        .stat-label { color: #888; text-transform: uppercase; letter-spacing: 1px; font-size: 0.75rem; }
+        .high { color: #ff6b6b; } .medium { color: #feca57; } .low { color: #48dbfb; } .total { color: #a29bfe; }
+        .tes-color { color: #48dbfb; } .phakathi-color { color: #feca57; }
+        
+        /* Sections */
+        .section { background: rgba(255,255,255,0.03); border-radius: 20px; padding: 30px; margin: 30px 0; border: 1px solid rgba(255,255,255,0.05); }
+        .section h2 { margin-bottom: 20px; color: #fff; }
+        
+        /* Tender List */
+        .tender-list { list-style: none; }
+        .tender-item { padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); transition: background 0.2s; cursor: pointer; }
+        .tender-item:hover { background: rgba(255,255,255,0.08); }
+        .tender-content { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 15px; }
+        .tender-info { flex: 1; min-width: 250px; }
+        .tender-header { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 8px; }
+        .tender-ref { color: #667eea; font-weight: 600; font-size: 1.1rem; }
+        .tender-title { color: #fff; font-size: 1rem; font-weight: 600; line-height: 1.4; margin-bottom: 8px; }
+        .tender-description { color: #999; font-size: 0.9rem; line-height: 1.5; margin-bottom: 10px; padding: 10px; background: rgba(255,255,255,0.03); border-radius: 8px; border-left: 3px solid #667eea; }
+        .tender-meta { color: #666; font-size: 0.8rem; display: flex; flex-wrap: wrap; gap: 15px; }
+        
+        /* Badges */
+        .company-badge { padding: 4px 12px; border-radius: 15px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+        .company-TES { background: rgba(72, 219, 251, 0.2); color: #48dbfb; border: 1px solid rgba(72, 219, 251, 0.4); }
+        .company-Phakathi { background: rgba(254, 202, 87, 0.2); color: #feca57; border: 1px solid rgba(254, 202, 87, 0.4); }
+        .company-Both { background: rgba(162, 155, 254, 0.2); color: #a29bfe; border: 1px solid rgba(162, 155, 254, 0.4); }
+        .priority-badge { padding: 8px 16px; border-radius: 25px; font-size: 0.75rem; font-weight: 700; }
+        .priority-HIGH { background: rgba(255, 107, 107, 0.2); color: #ff6b6b; }
+        .priority-MEDIUM { background: rgba(254, 202, 87, 0.2); color: #feca57; }
+        .priority-LOW { background: rgba(72, 219, 251, 0.2); color: #48dbfb; }
+        
+        /* Countdown Badge */
+        .countdown { padding: 4px 10px; border-radius: 12px; font-size: 0.7rem; font-weight: 600; }
+        .countdown.urgent { background: rgba(255, 107, 107, 0.3); color: #ff6b6b; animation: blink 1s infinite; }
+        .countdown.warning { background: rgba(254, 202, 87, 0.3); color: #feca57; }
+        .countdown.normal { background: rgba(72, 219, 251, 0.2); color: #48dbfb; }
+        .countdown.closed { background: rgba(100, 100, 100, 0.3); color: #888; text-decoration: line-through; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+        
+        .tender-right { display: flex; align-items: center; gap: 15px; }
+        .score { font-size: 1.8rem; font-weight: 700; min-width: 50px; text-align: center; }
+        .view-btn { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 10px 20px; border-radius: 25px; text-decoration: none; font-size: 0.85rem; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; transition: transform 0.2s, box-shadow 0.2s; }
+        .view-btn:hover { transform: scale(1.05); box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4); }
+        
+        /* Calendar */
+        .calendar { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; }
+        .calendar-header { text-align: center; padding: 10px; color: #888; font-size: 0.8rem; font-weight: 600; }
+        .calendar-day { aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 10px; background: rgba(255,255,255,0.03); font-size: 0.9rem; position: relative; cursor: pointer; transition: all 0.2s; }
+        .calendar-day:hover { background: rgba(255,255,255,0.1); }
+        .calendar-day.today { border: 2px solid #667eea; }
+        .calendar-day.other-month { opacity: 0.3; }
+        .calendar-day.has-tenders { background: rgba(255, 107, 107, 0.2); }
+        .calendar-day.has-tenders:hover { background: rgba(255, 107, 107, 0.3); }
+        .tender-dot { width: 6px; height: 6px; border-radius: 50%; background: #ff6b6b; position: absolute; bottom: 5px; }
+        .tender-count { font-size: 0.6rem; color: #ff6b6b; margin-top: 2px; }
+        .calendar-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .calendar-nav button { background: rgba(255,255,255,0.1); border: none; color: #fff; padding: 10px 20px; border-radius: 10px; cursor: pointer; }
+        .calendar-nav button:hover { background: rgba(255,255,255,0.2); }
+        .calendar-month { font-size: 1.2rem; font-weight: 600; }
+        
+        /* Company Cards */
+        .companies { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 20px; }
+        .company-card { background: linear-gradient(135deg, rgba(102,126,234,0.1) 0%, rgba(118,75,162,0.1) 100%); border-radius: 16px; padding: 25px; border: 1px solid rgba(102,126,234,0.3); }
+        .company-name { font-size: 1.3rem; font-weight: 700; margin-bottom: 10px; }
+        .company-focus { color: #888; font-size: 0.9rem; }
+        .company-keywords { margin-top: 15px; }
+        .keyword { display: inline-block; background: rgba(255,255,255,0.1); padding: 5px 12px; border-radius: 15px; font-size: 0.75rem; margin: 3px; color: #aaa; }
+        
+        /* Filter Tabs */
+        .filter-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .filter-tab { padding: 10px 20px; border-radius: 25px; border: 1px solid rgba(255,255,255,0.2); background: transparent; color: #888; cursor: pointer; transition: all 0.2s; font-size: 0.85rem; }
+        .filter-tab:hover { border-color: rgba(255,255,255,0.4); color: #fff; }
+        .filter-tab.active { background: rgba(102, 126, 234, 0.3); border-color: #667eea; color: #fff; }
+        .filter-tab.high { border-left: 3px solid #ff6b6b; }
+        .filter-tab.medium { border-left: 3px solid #ffc107; }
+        .filter-tab.low { border-left: 3px solid #17a2b8; }
+        .filter-tab.high.active { background: linear-gradient(135deg, rgba(255,107,107,0.3), rgba(238,90,90,0.3)); border-color: #ff6b6b; }
+        .filter-tab.medium.active { background: linear-gradient(135deg, rgba(255,193,7,0.3), rgba(224,168,0,0.3)); border-color: #ffc107; }
+        .filter-tab.low.active { background: linear-gradient(135deg, rgba(23,162,184,0.3), rgba(19,132,150,0.3)); border-color: #17a2b8; }
+        .scope-toggle { color: #888; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 6px; padding: 8px 10px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; }
+        .scope-toggle input { accent-color: #667eea; }
+        .scope-pill { display: inline-block; padding: 4px 10px; border-radius: 999px; font-size: 0.75rem; font-weight: 600; }
+        .scope-pill-out { background: rgba(255,255,255,0.08); color: #aaa; }
+        .scope-pill-tes { background: rgba(72,219,251,0.18); color: #48dbfb; }
+        .scope-pill-phakathi { background: rgba(254,202,87,0.18); color: #feca57; }
+        .scope-pill-both { background: rgba(162,155,254,0.18); color: #a29bfe; }
+        .decision-pill-bid { background: rgba(0,255,136,0.15); color: #6af7b5; border-radius: 8px; padding: 6px 10px; font-weight: 700; }
+        .decision-pill-nobid { background: rgba(255,107,107,0.15); color: #ff9b9b; border-radius: 8px; padding: 6px 10px; font-weight: 700; }
+        .decision-pill-review { background: rgba(255,255,255,0.07); color: #ccc; border-radius: 8px; padding: 6px 10px; font-weight: 700; }
+        .category-tag { display: inline-block; background: rgba(255,255,255,0.06); color: #aaa; font-size: 0.7rem; padding: 4px 8px; border-radius: 10px; margin-right: 6px; margin-top: 4px; }
+        .decision-pill { display: inline-flex; align-items: center; justify-content: center; padding: 4px 10px; border-radius: 999px; font-size: 0.75rem; font-weight: 500; border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.05); color: #ffffff; gap: 6px; white-space: nowrap; }
+        .decision-pill.bid { background: linear-gradient(135deg, #1f9d55, #38c172); border-color: rgba(139, 255, 179, 0.5); color: #eafff4; }
+        .decision-pill.consider { background: linear-gradient(135deg, #f6ad55, #fbd38d); border-color: rgba(255, 221, 150, 0.6); color: #1a1308; }
+        .decision-pill.nobid { background: linear-gradient(135deg, #4a5568, #2d3748); border-color: rgba(203, 213, 224, 0.3); color: #e2e8f0; }
+        .decision-pill .reason { opacity: 0.8; font-weight: 400; }
+        
+        .footer { text-align: center; padding: 40px; color: #444; font-size: 0.85rem; }
+        .empty-state { text-align: center; padding: 60px; color: #666; }
+        
+        /* Tooltip */
+        .tooltip { position: absolute; background: #1a1a2e; border: 1px solid rgba(255,255,255,0.2); padding: 10px 15px; border-radius: 10px; font-size: 0.8rem; z-index: 100; white-space: nowrap; display: none; }
+        
+        /* Modal */
+        .tender-modal-backdrop { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.65); display: flex; align-items: center; justify-content: center; z-index: 999; padding: 20px; }
+        .tender-modal { background: rgba(18,18,28,0.95); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 24px; max-width: 900px; width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 50px rgba(0,0,0,0.4); }
+        .tender-modal-header { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 10px; }
+        .modal-close-btn { background: rgba(255,255,255,0.1); border: none; color: #fff; width: 32px; height: 32px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; }
+        .tender-modal-meta { color: #aaa; font-size: 0.95rem; display: grid; gap: 6px; margin-bottom: 12px; }
+        .tender-modal-scores { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; color: #ddd; font-size: 0.95rem; margin-bottom: 16px; }
+        .tender-modal-body h3 { margin: 12px 0 6px; color: #fff; }
+        .tender-modal-body p { color: #bbb; line-height: 1.6; }
+        .tender-modal-ai { margin-top: 12px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.08); }
+        .tender-modal-ai h3 { margin-bottom: 6px; color: #fff; }
+        .tender-modal-ai p { color: #bbb; line-height: 1.5; }
+        .tender-modal-footer { margin-top: 16px; display: flex; justify-content: flex-end; }
+        .modal-open-link-btn { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 12px 20px; border-radius: 10px; cursor: pointer; font-weight: 600; }
+        .hidden { display: none; }
+        .export-actions { display: flex; gap: 10px; justify-content: flex-end; margin-bottom: 10px; }
+        .export-btn { padding: 8px 14px; border-radius: 999px; border: none; cursor: pointer; font-size: 0.85rem; background: rgba(255,255,255,0.08); color: #fff; }
+        .export-btn.secondary { background: rgba(255,255,255,0.03); }
+        .export-btn:hover { background: rgba(255,255,255,0.16); }
+        /* Print report header (hidden on screen, visible in print) */
+        .print-header { display: none; padding: 16px 0 12px 0; border-bottom: 1px solid rgba(0,0,0,0.1); margin-bottom: 16px; }
+        .print-header h1 { margin: 0 0 4px 0; font-size: 20px; font-weight: 600; }
+        .print-header .print-subtitle { margin: 0 0 6px 0; font-size: 11px; }
+        .print-header .print-meta { margin: 0 0 10px 0; font-size: 10px; }
+        .print-kpis { display: flex; flex-wrap: wrap; gap: 12px; font-size: 10px; }
+        .print-kpi { min-width: 120px; }
+        .print-kpi .label { display: block; opacity: 0.7; }
+        .print-kpi .value { font-weight: 600; font-size: 13px; }
+        @media print {
+            /* Global print reset for report */
+            * { box-shadow: none !important; }
+            html, body {
+              margin: 0;
+              padding: 0;
+              background: #ffffff !important;
+              color: #000000 !important;
+              font-size: 11px;
+            }
+
+            .container {
+              max-width: none;
+              padding: 16px 24px;
+              background: #ffffff !important;
+            }
+
+            /* Hide dashboard-only chrome */
+            header,              /* big dark header */
+            .tab-nav,            /* Dashboard / Bid Calendar / Sources tabs */
+            .export-actions,     /* Export / Email buttons */
+            .sources-section,    /* Sources tab content, if present */
+            .scraper-health,     /* Scraper health cards */
+            .automation-logs-section, /* Automation & Logs section */
+            .bid-calendar-section,
+            .status,             /* little online dot etc. */
+            footer {
+              display: none !important;
+            }
+
+            /* Show print header */
+            .print-header {
+              display: block !important;
+              padding-bottom: 10px;
+              margin-bottom: 12px;
+              border-bottom: 1px solid rgba(0,0,0,0.12);
+            }
+
+            /* Make normal dashboard header invisible in print */
+            .main-header { display: none !important; }
+
+            /* Light cards/sections */
+            .stats,
+            .section,
+            .card,
+            .stat-card,
+            .tender-item,
+            .ai-section,
+            .pipeline-section {
+              background: #ffffff !important;
+              color: #000000 !important;
+              border-radius: 4px;
+              box-shadow: none !important;
+            }
+
+            .stat-card,
+            .tender-item {
+              border: 1px solid rgba(0,0,0,0.08);
+            }
+
+            /* Compact layout */
+            .stats {
+              margin-top: 8px;
+              margin-bottom: 8px;
+              gap: 8px;
+            }
+
+            .stat-card {
+              padding: 8px 10px;
+            }
+
+            .section {
+              margin: 10px 0;
+              padding: 8px 0;
+            }
+
+            .section h2 {
+              font-size: 13px;
+              margin-bottom: 6px;
+            }
+
+            /* Keep key sections together */
+            .pipeline-section,
+            .ai-section {
+              page-break-inside: avoid;
+            }
+
+            /* Active tenders summary: show only top 5 */
+            .tender-list {
+              margin-top: 6px;
+            }
+
+            .tender-item {
+              padding: 6px 8px;
+            }
+
+            .tender-item:nth-child(n+6) {
+              display: none !important;
+            }
+
+            /* Simplify pills */
+            .badge,
+            .scope-badge,
+            .decision-pill,
+            .priority-pill {
+              border-radius: 999px;
+              padding: 0 6px;
+              font-size: 9px;
+            }
+
+            /* Avoid page breaks inside key sections */
+            .stats,
+            .pipeline-section,
+            .ai-section,
+            .active-tenders-section {
+              page-break-inside: avoid;
+            }
+        }
+        
+        @media (max-width: 768px) { 
+            h1 { font-size: 2rem; } 
+            .stat-value { font-size: 1.8rem; } 
+            .tender-content { flex-direction: column; align-items: flex-start; } 
+            .tender-right { margin-top: 15px; width: 100%; justify-content: space-between; }
+            .calendar { grid-template-columns: repeat(7, 1fr); gap: 2px; }
+            .calendar-day { font-size: 0.75rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="main-header">
+            <h1>Tender Intelligence</h1>
+            <p class="subtitle"><span class="status"></span>TES & Phakathi decision layer</p>
+        </header>
+
+        <div id="print-report-header" class="print-header">
+            <h1>Tender Intelligence – Daily Report</h1>
+            <p class="print-subtitle">TES &amp; Phakathi decision layer</p>
+            <p class="print-meta">
+                <span id="print-last-sync">Last sync: –</span>
+                <span> | </span>
+                <span id="print-next-run">Next run: Daily 08:00</span>
+            </p>
+            <div class="print-kpis">
+                <div class="print-kpi">
+                    <span class="label">Total tenders today</span>
+                    <span class="value" id="print-total-tenders">–</span>
+                </div>
+                <div class="print-kpi">
+                    <span class="label">TES-fit tenders</span>
+                    <span class="value" id="print-tes-tenders">–</span>
+                </div>
+                <div class="print-kpi">
+                    <span class="label">Phakathi-fit tenders</span>
+                    <span class="value" id="print-phakathi-tenders">–</span>
+                </div>
+            </div>
+        </div>
+
+        <nav class="tab-nav">
+            <button class="tab-btn active" onclick="showTab('dashboard')">📊 Dashboard</button>
+            <button class="tab-btn" onclick="showTab('calendar')">📅 Bid Calendar</button>
+            <button class="tab-btn" onclick="showTab('sources')">📂 Sources</button>
+        </nav>
+
+        <!-- DASHBOARD TAB -->
+        <div id="dashboard" class="tab-content active">
+            <div class="export-actions">
+                <button id="export-pdf-btn" class="export-btn">Export as PDF</button>
+                <button id="export-email-btn" class="export-btn secondary">Email summary</button>
+            </div>
+            <section>
+                <div class="stats">
+                    <div class="stat-card">
+                        <div class="stat-value total">7</div>
+                        <div class="stat-label">Total tenders today</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value tes-color">1</div>
+                        <div class="stat-label">TES-fit tenders</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value phakathi-color">3</div>
+                        <div class="stat-label">Phakathi-fit tenders</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value high">0</div>
+                        <div class="stat-label">High-priority tenders</div>
+                    </div>
+                </div>
+                <div class="last-sync">
+                    <span>🔄 Last sync:</span>
+                    <span id="last-sync-text">10 Dec 2025, 13:50</span>
+                    <span> | Next run:</span>
+                    <span id="next-run-text">Daily 08:00</span>
+                </div>
+                <div id="next-run-countdown" class="next-run-countdown"></div>
+            </section>
+
+            <section class="section pipeline-section">
+                <h2>🚀 Opportunity Pipeline</h2>
+                <div class="stats">
+                    <div class="stat-card">
+                        <div class="stat-value total">7</div>
+                        <div class="stat-label">Total active</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value tes-color">1</div>
+                        <div class="stat-label">TES</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value phakathi-color">3</div>
+                        <div class="stat-label">Phakathi</div>
+                    </div>
+                </div>
+                <div style="margin-top: 20px;">
+                    <p style="color: #888; margin-bottom: 8px;">Priority mix</p>
+                    <div style="background: rgba(255,255,255,0.05); border-radius: 12px; overflow: hidden; height: 18px; display: flex;">
+                        <span style="width: 10%; background: rgba(255,107,107,0.4);" title="High"></span>
+                        <span style="width: 70%; background: rgba(254,202,87,0.4);" title="Medium"></span>
+                        <span style="width: 20%; background: rgba(72,219,251,0.4);" title="Low"></span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; color: #888; font-size: 0.85rem; margin-top: 6px;">
+                        <span>High</span>
+                        <span>Medium</span>
+                        <span>Low</span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section ai-section">
+                <h2>🤖 AI Fit & Risk</h2>
+                <div style="display: grid; gap: 12px;">
+                    <div style="display: grid; grid-template-columns: 140px 1fr 70px; align-items: center; gap: 12px;">
+                        <span style="color: #ccc;">Fit score</span>
+                        <div style="background: rgba(255,255,255,0.05); border-radius: 10px; height: 12px; overflow: hidden;">
+                            <div style="width: 62%; height: 100%; background: linear-gradient(90deg, #48dbfb, #667eea);"></div>
+                        </div>
+                        <span style="text-align: right; color: #fff;">62%</span>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 140px 1fr 70px; align-items: center; gap: 12px;">
+                        <span style="color: #ccc;">Revenue score</span>
+                        <div style="background: rgba(255,255,255,0.05); border-radius: 10px; height: 12px; overflow: hidden;">
+                            <div style="width: 48%; height: 100%; background: linear-gradient(90deg, #feca57, #ff9f43);"></div>
+                        </div>
+                        <span style="text-align: right; color: #fff;">48%</span>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 140px 1fr 70px; align-items: center; gap: 12px;">
+                        <span style="color: #ccc;">Suitability score</span>
+                        <div style="background: rgba(255,255,255,0.05); border-radius: 10px; height: 12px; overflow: hidden;">
+                            <div style="width: 55%; height: 100%; background: linear-gradient(90deg, #a29bfe, #764ba2);"></div>
+                        </div>
+                        <span style="text-align: right; color: #fff;">55%</span>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 140px 1fr 70px; align-items: center; gap: 12px;">
+                        <span style="color: #ccc;">Risk score (lower is better)</span>
+                        <div style="background: rgba(255,255,255,0.05); border-radius: 10px; height: 12px; overflow: hidden;">
+                            <div style="width: 28%; height: 100%; background: linear-gradient(90deg, #ff6b6b, #ff8787);"></div>
+                        </div>
+                        <span style="text-align: right; color: #fff;">28%</span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section active-tenders-section">
+                <h2>📋 Active Tenders</h2>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px;">
+                    <label style="color: #888; font-size: 0.9rem;">Company
+                        <select id="companyFilter" onchange="filterTenders(this.value)" style="margin-left: 8px; padding: 8px 10px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); color: #fff;">
+                            <option value="all">All</option>
+                            <option value="TES">TES</option>
+                            <option value="Phakathi">Phakathi</option>
+                        </select>
+                    </label>
+                    <label style="color: #888; font-size: 0.9rem;">Priority
+                        <select id="priorityFilter" onchange="filterTenders(this.value)" style="margin-left: 8px; padding: 8px 10px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); color: #fff;">
+                            <option value="all">All</option>
+                            <option value="HIGH">High</option>
+                            <option value="MEDIUM">Medium</option>
+                            <option value="LOW">Low</option>
+                        </select>
+                    </label>
+                    <label class="scope-toggle">
+                        <input type="checkbox" id="hide-out-of-scope" />
+                        Hide out-of-scope
+                    </label>
+                </div>
+                <div style="overflow-x: auto;">
+                    <table style="width: 100%; border-collapse: collapse; min-width: 900px;">
+                        <thead>
+                            <tr style="text-align: left; color: #888;">
+                                <th style="padding: 10px;">Title</th>
+                                <th style="padding: 10px;">Source</th>
+                                <th style="padding: 10px;">Company</th>
+                                <th style="padding: 10px;">Priority</th>
+                                <th style="padding: 10px;">Close date</th>
+                                <th style="padding: 10px;">Fit</th>
+                                <th style="padding: 10px;">Revenue</th>
+                                <th style="padding: 10px;">Risk</th>
+                                <th style="padding: 10px;">Status</th>
+                                <th style="padding: 10px;">Scope</th>
+                                <th style="padding: 10px;">Decision</th>
+                                <th style="padding: 10px;">Link</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tenderList" class="tender-list"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>🛰️ Scraper & Source Health</h2>
+                <div class="companies">
+                    <div class="company-card" style="border-color: rgba(72,219,251,0.3);">
+                        <div class="company-name" style="color: #48dbfb;">Rand Water</div>
+                        <div class="company-focus">Status: <span style="color: #48dbfb;">OK</span></div>
+                        <div class="company-keywords">
+                            <span class="keyword">Last run: 06:00</span>
+                            <span class="keyword">Tenders found: 4</span>
+                            <span class="keyword">Failures (7d): 0</span>
+                        </div>
+                    </div>
+                    <div class="company-card" style="border-color: rgba(254,202,87,0.3);">
+                        <div class="company-name" style="color: #feca57;">Johannesburg Water</div>
+                        <div class="company-focus">Status: <span style="color: #feca57;">Warning</span></div>
+                        <div class="company-keywords">
+                            <span class="keyword">Last run: 05:45</span>
+                            <span class="keyword">Tenders found: 3</span>
+                            <span class="keyword">Failures (7d): 1</span>
+                        </div>
+                    </div>
+                    <div class="company-card" style="border-color: rgba(255,107,107,0.3);">
+                        <div class="company-name" style="color: #ff6b6b;">National Treasury</div>
+                        <div class="company-focus">Status: <span style="color: #ff6b6b;">Error</span></div>
+                        <div class="company-keywords">
+                            <span class="keyword">Last run: 04:30</span>
+                            <span class="keyword">Tenders found: 0</span>
+                            <span class="keyword">Failures (7d): 3</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>⚙️ Automation & Logs</h2>
+                <ul class="tender-list">
+                    <li class="tender-item">
+                        <div class="tender-content">
+                            <div class="tender-info">
+                                <div class="tender-title">2025-12-10 06:00 • Daily scan • Tenders found: 7</div>
+                                <div class="tender-meta">
+                                    <span>Status: Success</span>
+                                    <span>Notes: Fresh scrape, no errors</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="tender-item">
+                        <div class="tender-content">
+                            <div class="tender-info">
+                                <div class="tender-title">2025-12-09 18:00 • Manual CSV • Tenders found: 2</div>
+                                <div class="tender-meta">
+                                    <span>Status: Partial</span>
+                                    <span>Notes: Rand Water PDF timed out</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="tender-item">
+                        <div class="tender-content">
+                            <div class="tender-info">
+                                <div class="tender-title">2025-12-09 07:00 • Weekly report • Tenders found: 9</div>
+                                <div class="tender-meta">
+                                    <span>Status: Success</span>
+                                    <span>Notes: Report emailed to TES & Phakathi</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </section>
+        </div>
+
+        <!-- CALENDAR TAB -->
+        <div id="calendar" class="tab-content">
+            <div class="section">
+                <h2>📅 Bid Calendar</h2>
+                <div class="calendar-nav">
+                    <button onclick="changeMonth(-1)">← Previous</button>
+                    <span class="calendar-month" id="calendarMonth"></span>
+                    <button onclick="changeMonth(1)">Next →</button>
+                </div>
+                <div class="calendar">
+                    <div class="calendar-header">Sun</div>
+                    <div class="calendar-header">Mon</div>
+                    <div class="calendar-header">Tue</div>
+                    <div class="calendar-header">Wed</div>
+                    <div class="calendar-header">Thu</div>
+                    <div class="calendar-header">Fri</div>
+                    <div class="calendar-header">Sat</div>
+                </div>
+                <div class="calendar" id="calendarGrid"></div>
+                <div id="dayTenders" style="margin-top: 20px;"></div>
+            </div>
+        </div>
+
+        <!-- SOURCES TAB -->
+        <div id="sources" class="tab-content">
+            <div class="section">
+                <h2>🏢 Company Focus Areas</h2>
+                <div class="companies">
+                    <div class="company-card" style="border-color: rgba(72,219,251,0.5);">
+                        <div class="company-name" style="color: #48dbfb;">💧 TES</div>
+                        <div class="company-focus">Water Treatment & Cooling Specialists</div>
+                        <div class="company-keywords">
+                            <span class="keyword">Water Treatment</span>
+                            <span class="keyword">Cooling Systems</span>
+                            <span class="keyword">Chemical Dosing</span>
+                            <span class="keyword">RO Systems</span>
+                            <span class="keyword">Boiler Treatment</span>
+                        </div>
+                    </div>
+                    <div class="company-card" style="border-color: rgba(254,202,87,0.5);">
+                        <div class="company-name" style="color: #feca57;">⚙️ Phakathi</div>
+                        <div class="company-focus">Mechanical & Electrical Solutions</div>
+                        <div class="company-keywords">
+                            <span class="keyword">Pumps</span>
+                            <span class="keyword">Mechanical</span>
+                            <span class="keyword">Fabrication</span>
+                            <span class="keyword">Switchgear</span>
+                            <span class="keyword">Valves</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2>📊 Data Sources (11 Active)</h2>
+                <div class="companies">
+                    <div class="company-card" style="border-color: rgba(72,219,251,0.3);">
+                        <div class="company-name" style="color: #48dbfb;">🏛️ Municipalities</div>
+                        <div class="company-keywords">
+                            <span class="keyword">Ekurhuleni</span>
+                            <span class="keyword">Tshwane</span>
+                            <span class="keyword">Cape Town</span>
+                            <span class="keyword">eThekwini</span>
+                        </div>
+                    </div>
+                    <div class="company-card" style="border-color: rgba(254,202,87,0.3);">
+                        <div class="company-name" style="color: #feca57;">⚡ SOEs & Utilities</div>
+                        <div class="company-keywords">
+                            <span class="keyword">Eskom</span>
+                            <span class="keyword">Transnet</span>
+                            <span class="keyword">Rand Water</span>
+                            <span class="keyword">Sasol</span>
+                            <span class="keyword">SANEDI</span>
+                            <span class="keyword">Johannesburg Water</span>
+                            <span class="keyword">Umgeni Water</span>
+                        </div>
+                    </div>
+                    <div class="company-card" style="border-color: rgba(255,107,107,0.3);">
+                        <div class="company-name" style="color: #ff6b6b;">⛏️ Mining</div>
+                        <div class="company-keywords">
+                            <span class="keyword">Anglo American</span>
+                            <span class="keyword">Harmony Gold</span>
+                            <span class="keyword">Seriti</span>
+                            <span class="keyword">Exxaro</span>
+                        </div>
+                    </div>
+                    <div class="company-card" style="color: #a29bfe; border-color: rgba(162,155,254,0.3);">
+                        <div class="company-name">🏦 National Treasury</div>
+                        <div class="company-keywords">
+                            <span class="keyword">eTenders Portal</span>
+                            <span class="keyword">Government Bids</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>🛰️ Scraper Health</h2>
+                <div id="scraper-health-cards" class="health-grid" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 10px;"></div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Tender Intelligence System v3.0 | TES & Phakathi</p>
+            <p>Automated scans: Daily 6AM | Weekly Reports: Monday 7AM</p>
+        </footer>
+    </div>
+
+    <div id="tender-modal-backdrop" class="tender-modal-backdrop hidden">
+        <div class="tender-modal">
+            <div class="tender-modal-header">
+                <h2 id="modal-tender-title"></h2>
+                <button id="modal-close-btn" class="modal-close-btn">×</button>
+            </div>
+            <div class="tender-modal-meta">
+                <div><span id="modal-tender-source"></span> · <span id="modal-tender-company"></span> · <span id="modal-tender-priority"></span></div>
+                <div>Close date: <span id="modal-tender-close-date"></span> · <span id="modal-tender-days-remaining"></span></div>
+            </div>
+            <div class="tender-modal-scores">
+                <div>Fit score: <span id="modal-fit-score"></span></div>
+                <div>Revenue score: <span id="modal-revenue-score"></span></div>
+                <div>Suitability score: <span id="modal-suitability-score"></span></div>
+                <div>Risk score (lower is better): <span id="modal-risk-score"></span></div>
+            </div>
+            <div class="tender-modal-body">
+                <h3>Description</h3>
+                <p id="modal-tender-description"></p>
+                <h3>Notes</h3>
+                <p id="modal-tender-notes"></p>
+                <div class="tender-modal-ai">
+                    <h3>AI Insight</h3>
+                    <p id="modal-tender-ai-insight">Analyzing...</p>
+                </div>
+            </div>
+            <div class="tender-modal-footer">
+                <button id="modal-open-link" class="modal-open-link-btn">Open tender on source site ↗</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let tenders = [];
+        let currentTenders = [];
+        let currentFilter = 'all';
+        let currentMonth = new Date();
+        
+        // Calculate days until closing
+        function getDaysUntil(dateStr) {
+            if (!dateStr) return null;
+            const closing = new Date(dateStr);
+            const today = new Date();
+            today.setHours(0,0,0,0);
+            closing.setHours(0,0,0,0);
+            return Math.ceil((closing - today) / (1000 * 60 * 60 * 24));
+        }
+        
+        function getCountdownHtml(dateStr) {
+            const days = getDaysUntil(dateStr);
+            if (days === null) return '<span class="countdown normal">📅 TBC</span>';
+            if (days < 0) return '<span class="countdown closed">CLOSED</span>';
+            if (days === 0) return '<span class="countdown urgent">🔴 TODAY!</span>';
+            if (days === 1) return '<span class="countdown urgent">🔴 TOMORROW!</span>';
+            if (days <= 3) return `<span class="countdown urgent">⚠️ ${days} days</span>`;
+            if (days <= 7) return `<span class="countdown warning">📅 ${days} days</span>`;
+            return `<span class="countdown normal">📅 ${days} days</span>`;
+        }
+        
+        function renderTenders(filter) {
+            let list = document.getElementById('tender-table-body') || document.getElementById('tenderList');
+            if (!list) {
+                const table = document.querySelector('#dashboard table');
+                if (table) {
+                    list = document.createElement('tbody');
+                    list.id = 'tender-table-body';
+                    table.appendChild(list);
+                }
+            }
+            if (!list) return;
+            let filtered = tenders.filter(t => getDaysUntil(t.closing_date) === null || getDaysUntil(t.closing_date) >= 0);
+            
+            if (filter === 'TES' || filter === 'Phakathi' || filter === 'Both') {
+                filtered = filtered.filter(t => t.company === filter);
+            } else if (filter === 'HIGH') {
+                filtered = filtered.filter(t => t.priority === 'HIGH');
+            } else if (filter === 'MEDIUM') {
+                filtered = filtered.filter(t => t.priority === 'MEDIUM');
+            } else if (filter === 'LOW') {
+                filtered = filtered.filter(t => t.priority === 'LOW');
+            }
+            
+            // Sort by closing date (urgent first)
+            filtered.sort((a, b) => {
+                const daysA = getDaysUntil(a.closing_date) ?? 999;
+                const daysB = getDaysUntil(b.closing_date) ?? 999;
+                return daysA - daysB;
+            });
+
+            const hideOut = document.getElementById('hide-out-of-scope');
+            const hideOutOfScope = hideOut && hideOut.checked;
+
+            const classified = filtered
+                .map(t => ({ tender: t, classification: classifyTender(t) }))
+                .filter(item => !(hideOutOfScope && item.classification.relevance === 'OutOfScope'));
+            
+            if (classified.length === 0) {
+                list.innerHTML = '<tr><td colspan="12" class="empty-state" style="text-align:center; padding: 40px;"><h3>No tenders found</h3><p>Try a different filter...</p></td></tr>';
+                return;
+            }
+            
+            currentTenders = classified.map(item => item.tender);
+            
+            list.innerHTML = classified.map((item, idx) => {
+                const t = item.tender;
+                const { relevance, categories, bidDecision } = item.classification;
+                const title = t.title || '-';
+                const source = t.source || '-';
+                const fit = t.company || '-';
+                const priority = t.priority || '-';
+                const closeDate = t.closing_date || '-';
+                const fitScore = (t.score ?? '-') || '-';
+                const revenueScore = (t.revenue_score ?? '-') || '-';
+                const riskScore = (t.risk_score ?? '-') || '-';
+                const status = t.status || getCountdownHtml(t.closing_date) || '-';
+                const link = t.url ? `<a href="#" class="view-btn" style="padding: 6px 15px; font-size: 0.8rem;" onclick="openTenderModal(${idx}); return false;">View ↗</a>` : `<a href="#" class="view-btn" style="padding: 6px 15px; font-size: 0.8rem;" onclick="openTenderModal(${idx}); return false;">View ↗</a>`;
+                const decision = computeDecision(t);
+                const scopeClass = relevance === 'OutOfScope' ? 'scope-pill-out' : relevance === 'TES' ? 'scope-pill-tes' : relevance === 'Phakathi' ? 'scope-pill-phakathi' : relevance === 'Both' ? 'scope-pill-both' : 'scope-pill-out';
+                const scopeText = relevance === 'OutOfScope' ? 'Not in scope' : relevance === 'TES' ? 'TES' : relevance === 'Phakathi' ? 'Phakathi' : relevance === 'Both' ? 'TES + Phakathi' : 'Review';
+                const decisionPill = `<span class="decision-pill ${decision.className}">${decision.label}<span class="reason"> · ${decision.reason}</span></span>`;
+                const categoryTags = (categories || []).map(c => `<span class="category-tag">${c}</span>`).join('');
+                return `<tr style="border-bottom: 1px solid rgba(255,255,255,0.05); transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'">
+                    <td style="padding: 15px;">
+                        <div style="font-weight: 600; color: #fff; margin-bottom: 4px;">${title}</div>
+                        <div style="font-size: 0.8rem; color: #667eea;">${t.ref || '-'}</div>
+                        <div style="margin-top:4px;">${categoryTags}</div>
+                    </td>
+                    <td style="padding: 15px; color: #ccc;">${source}</td>
+                    <td style="padding: 15px; color: #ccc;">${fit}</td>
+                    <td style="padding: 15px; color: #ccc;">${priority}</td>
+                    <td style="padding: 15px; color: #ccc;">${closeDate}</td>
+                    <td style="padding: 15px; font-weight: bold; color: #fff;">${fitScore}</td>
+                    <td style="padding: 15px; color: #ccc;">${revenueScore}</td>
+                    <td style="padding: 15px; color: #ccc;">${riskScore}</td>
+                    <td style="padding: 15px;">${status}</td>
+                    <td style="padding: 15px;"><span class="scope-pill ${scopeClass}">${scopeText}</span></td>
+                    <td style="padding: 15px;">${decisionPill}</td>
+                    <td style="padding: 15px;">${link}</td>
+                </tr>`;
+            }).join('');
+        }
+
+        function renderScraperHealth(scraperData) {
+            const container = document.getElementById('scraper-health-cards');
+            if (!container) return;
+
+            const data = scraperData || (typeof globalData !== 'undefined' ? globalData.scraperHealth : {}) || {};
+            const entries = Object.entries(data);
+            if (entries.length === 0) {
+                container.innerHTML = '<div class="company-card" style="text-align:center; color:#888;">No scraper health data available</div>';
+                return;
+            }
+
+            container.innerHTML = entries.map(([name, info]) => {
+                const status = info?.status || '-';
+                const lastRun = info?.lastRun || '-';
+                const count = info?.count ?? '-';
+                const error = info?.error;
+                const statusColor = status === 'Success' ? '#00ff88' : status === 'Partial' ? '#feca57' : '#ff6b6b';
+                const shadow = status === 'Success' ? '0 0 12px rgba(0,255,136,0.3)' : status === 'Partial' ? '0 0 12px rgba(254,202,87,0.3)' : '0 0 12px rgba(255,107,107,0.3)';
+                return `
+                    <div class="company-card" style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 20px; box-shadow:${shadow}; transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-3px)';" onmouseout="this.style.transform='none';">
+                        <div class="company-name" style="color: #fff;">${name}</div>
+                        <div class="company-focus" style="color:${statusColor}; font-weight:700;">${status}</div>
+                        <div class="company-keywords" style="margin-top:12px;">
+                            <span class="keyword">Last run: ${lastRun}</span>
+                            <span class="keyword">Tenders: ${count}</span>
+                        </div>
+                        ${status === 'Failed' && error ? `<div style="margin-top:12px; color:#ff6b6b; font-size:0.85rem;">${error}</div>` : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        function filterTenders(filter) {
+            currentFilter = filter;
+            document.querySelectorAll('.filter-tab').forEach(tab => {
+                tab.classList.remove('active');
+                if (tab.textContent.toLowerCase().includes(filter.toLowerCase()) || 
+                    (filter === 'all' && tab.textContent.includes('All')) ||
+                    (filter === 'HIGH' && tab.textContent.includes('Urgent'))) {
+                    tab.classList.add('active');
+                }
+            });
+            renderTenders(filter);
+        }
+
+        function updateNextRunCountdown() {
+            const el = document.getElementById('next-run-countdown');
+            if (!el) return;
+
+            const now = new Date();
+            const nextRun = new Date(now);
+            nextRun.setHours(8, 0, 0, 0);
+
+            if (now >= nextRun) {
+                nextRun.setDate(nextRun.getDate() + 1);
+            }
+
+            const diffMs = nextRun - now;
+            const diffMinutes = Math.max(0, Math.floor(diffMs / (1000 * 60)));
+            const hours = Math.floor(diffMinutes / 60);
+            const minutes = diffMinutes % 60;
+
+            const text = hours > 0 ? `Next run in ${hours}h ${minutes}m` : `Next run in ${minutes}m`;
+            el.textContent = text;
+        }
+
+        function classifyTender(tender) {
+            const desc = (tender.description || tender.long_description || "").toLowerCase();
+
+            const civilKeywords = [
+              "construction", "civil", "upgrade", "water upgrade", "corridors of freedom",
+              "pumpstation", "pump station", "reticulation", "sewer", "roads",
+              "earthworks", "structural", "tower", "towers", "reservoir",
+              "building", "infrastructure"
+            ];
+
+            const tesKeywords = [
+              "chemical", "chemicals", "dosing", "chlorine", "hypochlorite", "biocide",
+              "surfactant", "dispersant", "amine", "cooling", "cooling tower",
+              "boiler", "steam", "ro", "reverse osmosis", "filtration",
+              "water treatment plant", "softener"
+            ];
+
+            const phakathiKeywords = [
+              "pumps", "pump", "valves", "fabrication", "mechanical", "electrical",
+              "switchgear", "motors", "install", "installation",
+              "maintenance", "commissioning", "steelwork"
+            ];
+
+            const categories = [];
+
+            const hasCivil      = civilKeywords.some(k => desc.includes(k));
+            const hasTES        = tesKeywords.some(k => desc.includes(k));
+            const hasPhakathi   = phakathiKeywords.some(k => desc.includes(k));
+
+            let relevance = "Unknown";
+            // TES or Phakathi always override civil
+            if (hasTES && hasPhakathi) {
+              relevance = "Both";
+            } else if (hasTES) {
+              relevance = "TES";
+            } else if (hasPhakathi) {
+              relevance = "Phakathi";
+            } else if (hasCivil) {
+              relevance = "OutOfScope";
+            }
+
+            if (hasTES) categories.push("Chemical/Water");
+            if (hasPhakathi) categories.push("Mechanical/Electrical");
+            if (relevance === "OutOfScope" && hasCivil) categories.push("Civil/Infrastructure");
+
+            const priority = (tender.priority || "").toUpperCase();
+            const fit = typeof tender.fit_score === "number" ? tender.fit_score : null;
+
+            let bidDecision = "REVIEW";
+            if (relevance === "OutOfScope") {
+              bidDecision = "NO_BID";
+            } else if ((relevance === "TES" || relevance === "Phakathi" || relevance === "Both") && fit !== null && fit >= 5 && priority !== "LOW") {
+              bidDecision = "BID";
+            }
+
+            return { relevance, categories, bidDecision };
+        }
+
+        function computeDecision(tender) {
+            const scores = tender.scores || {};
+            const fit = typeof scores.fit === 'number' ? scores.fit : 0;
+            const suitability = typeof scores.suitability === 'number'
+              ? scores.suitability
+              : (typeof scores.industry === 'number' ? scores.industry : (typeof scores.composite === 'number' ? scores.composite : 0));
+
+            const priority = (tender.priority || scores.priority || 'LOW').toUpperCase();
+            const scopeLabel = (tender.scope || tender.company_scope || tender.category || '').toString().toLowerCase();
+            const notes = (tender.notes || '').toString().toLowerCase();
+            const insight = (tender.ai_insight || tender.aiInsight || '').toString().toLowerCase();
+
+            const outOfScopeSignals = [
+              scopeLabel.includes('out of scope'),
+              scopeLabel.includes('out-of-scope'),
+              scopeLabel.includes('civil'),
+              scopeLabel.includes('infrastructure'),
+              insight.includes('outside our scope'),
+              insight.includes('outside scope')
+            ];
+
+            const isOutOfScope = outOfScopeSignals.some(Boolean);
+
+            const isHighPriority = priority === 'HIGH';
+            const isMediumPriority = priority === 'MEDIUM';
+
+            // 1) Hard No-Bid if clearly out-of-scope.
+            if (isOutOfScope) {
+              return {
+                label: 'No-Bid',
+                className: 'nobid',
+                reason: 'Outside TES / Phakathi scope'
+              };
+            }
+
+            // 2) Strong Bid if good scores + decent priority.
+            if (fit >= 7 && suitability >= 6 && (isHighPriority || isMediumPriority)) {
+              return {
+                label: 'Bid',
+                className: 'bid',
+                reason: 'Strong technical & strategic fit'
+              };
+            }
+
+            // 3) No-Bid on very weak fit.
+            if (fit <= 3 || suitability <= 3) {
+              return {
+                label: 'No-Bid',
+                className: 'nobid',
+                reason: 'Weak fit / unsuitable opportunity'
+              };
+            }
+
+            // 4) Default: Consider.
+            return {
+              label: 'Consider',
+              className: 'consider',
+              reason: 'Needs human review'
+            };
+        }
+
+        function updatePrintHeader(meta, tendersSummary) {
+            const lastSyncSpan = document.getElementById("print-last-sync");
+            const nextRunSpan = document.getElementById("print-next-run");
+            const totalSpan = document.getElementById("print-total-tenders");
+            const tesSpan = document.getElementById("print-tes-tenders");
+            const pakatiSpan = document.getElementById("print-phakathi-tenders");
+
+            if (lastSyncSpan && meta && meta.last_sync) {
+                lastSyncSpan.textContent = "Last sync: " + meta.last_sync;
+            }
+            if (nextRunSpan && meta && meta.next_run) {
+                nextRunSpan.textContent = "Next run: " + meta.next_run;
+            }
+
+            if (tendersSummary) {
+                if (totalSpan) totalSpan.textContent = String(tendersSummary.total || "0");
+                if (tesSpan) tesSpan.textContent = String(tendersSummary.tes || "0");
+                if (pakatiSpan) pakatiSpan.textContent = String(tendersSummary.phakathi || "0");
+            }
+        }
+
+        function getKpiSummary() {
+            const totalKpi = document.querySelector(".stat-value.total");
+            const tesKpi = document.querySelector(".stat-value.tes-color");
+            const pakatiKpi = document.querySelector(".stat-value.phakathi-color");
+            return {
+                total: totalKpi ? totalKpi.textContent.trim() : "0",
+                tes: tesKpi ? tesKpi.textContent.trim() : "0",
+                phakathi: pakatiKpi ? pakatiKpi.textContent.trim() : "0"
+            };
+        }
+
+        function generateAIInsight(tender) {
+            const company = (tender.company || '').toUpperCase();
+            const priority = (tender.priority || '').toUpperCase();
+            const fitScore = Number.isFinite(tender.fit_score) ? tender.fit_score : (Number.isFinite(tender.score) ? tender.score : null);
+            const revenueScore = Number.isFinite(tender.revenue_score) ? tender.revenue_score : null;
+            const riskScore = Number.isFinite(tender.risk_score) ? tender.risk_score : null;
+            const { relevance, bidDecision } = classifyTender(tender);
+
+            if (relevance === 'OutOfScope') {
+                const rel = 'This tender is a civil/infrastructure upgrade. Neither TES nor Phakathi operate in this category.';
+                const opp = 'Opportunity evaluation: outside our scope; deprioritise unless strategy changes.';
+                const act = 'Recommended action: NO BID — mark as not relevant and exclude from pursuit.';
+                return `${rel}\n${opp}\n${act}`;
+            }
+
+            // Relevance Assessment
+            let relevanceText = 'Relevance unclear; tender should be manually reviewed.';
+            if (relevance === 'Both' || company === 'BOTH') {
+                relevanceText = 'Both TES and Phakathi may participate given mixed scope indicators.';
+            } else if (relevance === 'TES' || company === 'TES') {
+                relevanceText = 'The scope indicates strong relevance for TES due to water treatment chemicals, cooling, dosing, RO, or boiler references.';
+            } else if (relevance === 'Phakathi' || company === 'PHAKATHI') {
+                relevanceText = 'This tender aligns with Phakathi’s mechanical/electrical offering based on installation, maintenance, pumps, or fabrication scope.';
+            }
+
+            // Opportunity Evaluation
+            const oppLines = [];
+            const priorityText = priority ? `Priority: ${priority.toLowerCase()}.` : '';
+            if (priorityText) oppLines.push(priorityText);
+            if (priority === 'HIGH') oppLines.push('Time-sensitive tender requiring urgent attention.');
+            if (fitScore !== null && fitScore >= 5) oppLines.push('Strong match to internal capability scoring.');
+            if (revenueScore !== null && revenueScore >= 5) oppLines.push('Revenue potential appears attractive.');
+            if (riskScore !== null && riskScore >= 60) oppLines.push('Potential risk due to unclear scope, competition, or contractual complexity.');
+            const opportunity = oppLines.length ? oppLines.join(' ') : 'Opportunity signal is moderate; further validation needed.';
+
+            // Recommended Action
+            let action = 'Recommended next step: review historical awards, confirm volume requirements, and prepare pricing scenarios.';
+            if (relevance === 'Phakathi' || company === 'PHAKATHI') {
+                action = 'Recommended action: request technical drawings, verify site conditions, and assess fabrication or installation lead times.';
+            }
+            if (relevance === 'Both' || company === 'BOTH') {
+                action = 'Recommended action: split review between TES and Phakathi leads, confirm scope boundaries, and price jointly if feasible.';
+            }
+            if (bidDecision === 'NO_BID') {
+                action = 'Recommended action: NO BID — outside target scope.';
+            }
+
+            return `${relevanceText}\n${opportunity}\n${action}`;
+        }
+
+        function openTenderModal(index) {
+            const tender = currentTenders[index];
+            const backdrop = document.getElementById('tender-modal-backdrop');
+            if (!tender || !backdrop) return;
+
+            const getVal = (val) => (val !== undefined && val !== null && val !== '' ? val : '-');
+            const days = getDaysUntil(tender.closing_date);
+            let daysText = '-';
+            if (days !== null) {
+                daysText = days < 0 ? 'Closed' : `${days} day${days === 1 ? '' : 's'} remaining`;
+            }
+
+            document.getElementById('modal-tender-title').textContent = getVal(tender.title);
+            document.getElementById('modal-tender-source').textContent = getVal(tender.source);
+            document.getElementById('modal-tender-company').textContent = getVal(tender.company);
+            document.getElementById('modal-tender-priority').textContent = getVal(tender.priority);
+            document.getElementById('modal-tender-close-date').textContent = getVal(tender.closing_date);
+            document.getElementById('modal-tender-days-remaining').textContent = daysText;
+            document.getElementById('modal-fit-score').textContent = getVal(tender.score);
+            document.getElementById('modal-revenue-score').textContent = getVal(tender.revenue_score);
+            document.getElementById('modal-suitability-score').textContent = getVal(tender.suitability_score ?? tender.score);
+            document.getElementById('modal-risk-score').textContent = getVal(tender.risk_score);
+            document.getElementById('modal-tender-description').textContent = getVal(tender.description || tender.long_description);
+            document.getElementById('modal-tender-notes').textContent = getVal(tender.notes || tender.category || tender.reason);
+            document.getElementById('modal-tender-ai-insight').textContent = generateAIInsight(tender);
+            const decision = computeDecision(tender);
+            const aiInsightEl = document.getElementById('modal-tender-ai-insight');
+            if (aiInsightEl) {
+                aiInsightEl.insertAdjacentHTML('afterend', `<div style="margin-top:8px;">AI Recommendation: <span class="decision-pill ${decision.className}" style="padding:4px 8px; font-size:0.75rem;">${decision.label}<span class="reason"> · ${decision.reason}</span></span></div>`);
+            }
+
+            const openBtn = document.getElementById('modal-open-link');
+            if (openBtn) {
+                openBtn.onclick = () => {
+                    if (tender.url) window.open(tender.url, '_blank');
+                };
+            }
+
+            backdrop.classList.remove('hidden');
+        }
+
+        function closeTenderModal() {
+            const backdrop = document.getElementById('tender-modal-backdrop');
+            if (!backdrop) return;
+            backdrop.classList.add('hidden');
+        }
+        
+        function showTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            event.target.classList.add('active');
+            
+            if (tabId === 'calendar') renderCalendar();
+            if (tabId === 'sources') renderScraperHealth(typeof globalData !== 'undefined' ? globalData.scraperHealth : {});
+        }
+        
+        function renderCalendar() {
+            const grid = document.getElementById('calendarGrid');
+            const monthLabel = document.getElementById('calendarMonth');
+            
+            const year = currentMonth.getFullYear();
+            const month = currentMonth.getMonth();
+            
+            monthLabel.textContent = currentMonth.toLocaleDateString('en-ZA', { month: 'long', year: 'numeric' });
+            
+            const firstDay = new Date(year, month, 1);
+            const lastDay = new Date(year, month + 1, 0);
+            const startDay = firstDay.getDay();
+            const daysInMonth = lastDay.getDate();
+            
+            // Get tenders by date
+            const tendersByDate = {};
+            tenders.forEach(t => {
+                if (t.closing_date) {
+                    const date = t.closing_date;
+                    if (!tendersByDate[date]) tendersByDate[date] = [];
+                    tendersByDate[date].push(t);
+                }
+            });
+            
+            let html = '';
+            const today = new Date();
+            today.setHours(0,0,0,0);
+            
+            // Previous month days
+            for (let i = 0; i < startDay; i++) {
+                const day = new Date(year, month, -(startDay - i - 1));
+                html += `<div class="calendar-day other-month">${day.getDate()}</div>`;
+            }
+            
+            // Current month days
+            for (let day = 1; day <= daysInMonth; day++) {
+                const date = new Date(year, month, day);
+                const dateStr = date.toISOString().split('T')[0];
+                const isToday = date.getTime() === today.getTime();
+                const tendersOnDay = tendersByDate[dateStr] || [];
+                const hasTenders = tendersOnDay.length > 0;
+                
+                html += `<div class="calendar-day ${isToday ? 'today' : ''} ${hasTenders ? 'has-tenders' : ''}" 
+                    onclick="showDayTenders('${dateStr}')" title="${tendersOnDay.length} tender(s)">
+                    ${day}
+                    ${hasTenders ? `<span class="tender-count">${tendersOnDay.length}</span>` : ''}
+                </div>`;
+            }
+            
+            grid.innerHTML = html;
+        }
+        
+        function showDayTenders(dateStr) {
+            const container = document.getElementById('dayTenders');
+            const dayTenders = tenders.filter(t => t.closing_date === dateStr);
+            
+            if (dayTenders.length === 0) {
+                container.innerHTML = `<p style="color: #888; text-align: center;">No tenders closing on ${dateStr}</p>`;
+                return;
+            }
+            
+            container.innerHTML = `
+                <h3 style="margin-bottom: 15px;">📅 Closing on ${new Date(dateStr).toLocaleDateString('en-ZA', { weekday: 'long', day: 'numeric', month: 'long' })}</h3>
+                ${dayTenders.map(t => `
+                    <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; margin: 10px 0; cursor: pointer;" onclick="window.open('${t.url}', '_blank')">
+                        <span style="color: #667eea; font-weight: bold;">${t.ref}</span>
+                        <span class="company-badge company-${t.company}" style="margin-left: 10px;">${t.company}</span>
+                        <div style="color: #ccc; margin-top: 5px;">${t.title}</div>
+                        <div style="color: #888; font-size: 0.8rem; margin-top: 5px;">📍 ${t.client}</div>
+                    </div>
+                `).join('')}
+            `;
+        }
+        
+        function changeMonth(delta) {
+            currentMonth.setMonth(currentMonth.getMonth() + delta);
+            renderCalendar();
+        }
+        
+        // Initial render
+        const modalCloseBtn = document.getElementById('modal-close-btn');
+        if (modalCloseBtn) modalCloseBtn.addEventListener('click', closeTenderModal);
+        const modalBackdrop = document.getElementById('tender-modal-backdrop');
+        if (modalBackdrop) {
+            modalBackdrop.addEventListener('click', (e) => {
+                if (e.target === modalBackdrop) closeTenderModal();
+            });
+        }
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeTenderModal();
+        });
+        const hideOutCheckbox = document.getElementById('hide-out-of-scope');
+        if (hideOutCheckbox) {
+            hideOutCheckbox.addEventListener('change', () => renderTenders(currentFilter));
+        }
+        const exportPdfBtn = document.getElementById("export-pdf-btn");
+        if (exportPdfBtn) {
+            exportPdfBtn.addEventListener("click", () => {
+                window.print();
+            });
+        }
+
+        const exportEmailBtn = document.getElementById("export-email-btn");
+        if (exportEmailBtn) {
+            exportEmailBtn.addEventListener("click", () => {
+                if (!window.globalData || !window.globalData.dashboardSummary) {
+                    const total = document.querySelector(".stat-value.total")?.textContent?.trim() || "N/A";
+                    const tes = document.querySelector(".stat-value.tes-color")?.textContent?.trim() || "N/A";
+                    const pakati = document.querySelector(".stat-value.phakathi-color")?.textContent?.trim() || "N/A";
+
+                    const subject = encodeURIComponent("Tender Intelligence – Daily Summary");
+                    const bodyLines = [
+                        "Tender Intelligence – Daily Summary",
+                        "",
+                        `Total tenders today: ${total}`,
+                        `TES-fit tenders: ${tes}`,
+                        `Phakathi-fit tenders: ${pakati}`,
+                        "",
+                        "Sent from the Tender Intelligence dashboard."
+                    ];
+                    const body = encodeURIComponent(bodyLines.join("\n"));
+
+                    window.location.href = `mailto:?subject=${subject}&body=${body}`;
+                } else {
+                    const subject = encodeURIComponent("Tender Intelligence – Daily Summary");
+                    const body = encodeURIComponent(window.globalData.dashboardSummary);
+                    window.location.href = `mailto:?subject=${subject}&body=${body}`;
+                }
+            });
+        }
+
+        const lastSyncText = document.querySelector('.last-sync')?.textContent || '';
+        const splitSync = lastSyncText.split('|');
+        const parsedLastSync = splitSync[0]?.replace('🔄','').trim() || '';
+        const parsedNextRun = splitSync[1]?.replace('Next run:', '').trim() || 'Daily 08:00';
+        const initialMeta = { last_sync: parsedLastSync || 'Last sync: –', next_run: parsedNextRun || 'Daily 08:00' };
+        const initialSummary = getKpiSummary();
+        updatePrintHeader(initialMeta, initialSummary);
+        window.addEventListener("beforeprint", () => {
+            const metaNow = window.dashboardMeta || initialMeta;
+            updatePrintHeader(metaNow, getKpiSummary());
+        });
+
+        fetch("/api/tenders")
+            .then(res => res.json())
+            .then(data => {
+                const isArray = Array.isArray(data);
+                const meta = isArray ? null : (data.meta || null);
+                const tendersData = isArray ? data : (data.tenders || []);
+
+                tenders = tendersData; // Update global variable
+                window.tendersData = tenders;
+                window.dashboardMeta = meta;
+
+                // Update last sync + next run labels if elements exist
+                const lastSyncEl = document.getElementById("last-sync-text");
+                const nextRunEl = document.getElementById("next-run-text");
+
+                if (lastSyncEl && meta && meta.last_sync) {
+                    lastSyncEl.textContent = meta.last_sync;
+                }
+                if (nextRunEl && meta && meta.next_run) {
+                    nextRunEl.textContent = meta.next_run;
+                }
+
+                renderTenders('all');
+                updatePrintHeader(meta || initialMeta, getKpiSummary());
+            })
+            .catch(err => console.error("Error fetching tenders:", err));
+
+        updateNextRunCountdown();
+        setInterval(updateNextRunCountdown, 60000);
+    </script>
+</body>
+</html>

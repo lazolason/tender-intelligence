@@ -190,6 +190,8 @@ def _load_existing_tenders(json_path):
         try:
             with open(json_path, "r") as jf:
                 data = json.load(jf)
+                if isinstance(data, dict) and "tenders" in data:
+                    return data["tenders"]
                 return data if isinstance(data, list) else []
         except Exception as exc:
             log_error(LOG_FILE, f"Failed to read existing tenders snapshot: {exc}")
@@ -239,8 +241,20 @@ def save_outputs(new_items):
 
     if new_items:
         merged_items = _merge_tenders(new_items, existing_items)
+        
+        meta = {
+            "last_sync": datetime.now().strftime("%Y-%m-%d %H:%M"),
+            "next_run": "Daily 08:00"
+        }
+
+        output_payload = {
+            "meta": meta,
+            "tenders": merged_items
+        }
+
         with open(json_path, "w") as jf:
-            json.dump(merged_items, jf, indent=4)
+            json.dump(output_payload, jf, indent=4)
+            
         write_log(
             LOG_FILE,
             f"Dashboard snapshot updated: {len(new_items)} new / {len(merged_items)} retained"
