@@ -126,6 +126,7 @@
         .decision-pill.consider { background: linear-gradient(135deg, #f6ad55, #fbd38d); border-color: rgba(255, 221, 150, 0.6); color: #1a1308; }
         .decision-pill.nobid { background: linear-gradient(135deg, #4a5568, #2d3748); border-color: rgba(203, 213, 224, 0.3); color: #e2e8f0; }
         .decision-pill .reason { opacity: 0.8; font-weight: 400; }
+        .decision-pill .confidence { opacity: 0.7; font-weight: 400; font-size: 0.7rem; }
         
         .footer { text-align: center; padding: 40px; color: #444; font-size: 0.85rem; }
         .empty-state { text-align: center; padding: 60px; color: #666; }
@@ -145,6 +146,8 @@
         .tender-modal-ai { margin-top: 12px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.08); }
         .tender-modal-ai h3 { margin-bottom: 6px; color: #fff; }
         .tender-modal-ai p { color: #bbb; line-height: 1.5; }
+        .tender-modal-ai-reco { margin-top: 12px; font-size: 0.85rem; }
+        .tender-modal-ai-reco h3 { margin-bottom: 4px; font-size: 0.9rem; }
         .tender-modal-footer { margin-top: 16px; display: flex; justify-content: flex-end; }
         .modal-open-link-btn { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 12px 20px; border-radius: 10px; cursor: pointer; font-weight: 600; }
         .hidden { display: none; }
@@ -677,6 +680,10 @@
                 <div class="tender-modal-ai">
                     <h3>AI Insight</h3>
                     <p id="modal-tender-ai-insight">Analyzing...</p>
+                    <div class="tender-modal-ai-reco">
+                        <h3>AI Recommendation</h3>
+                        <p id="modal-tender-ai-reco"></p>
+                    </div>
                 </div>
             </div>
             <div class="tender-modal-footer">
@@ -758,21 +765,22 @@
             
             list.innerHTML = classified.map((item, idx) => {
                 const t = item.tender;
+                const scores = t.scores || {};
                 const { relevance, categories, bidDecision } = item.classification;
                 const title = t.title || '-';
                 const source = t.source || '-';
                 const fit = t.company || '-';
                 const priority = t.priority || '-';
                 const closeDate = t.closing_date || '-';
-                const fitScore = (t.score ?? '-') || '-';
-                const revenueScore = (t.revenue_score ?? '-') || '-';
-                const riskScore = (t.risk_score ?? '-') || '-';
+                const fitScore = (t.score ?? scores.fit ?? scores.fit_score ?? '-') || '-';
+                const revenueScore = (t.revenue_score ?? scores.revenue ?? scores.revenue_score ?? '-') || '-';
+                const riskScore = (t.risk_score ?? scores.risk ?? scores.risk_score ?? '-') || '-';
                 const status = t.status || getCountdownHtml(t.closing_date) || '-';
                 const link = t.url ? `<a href="#" class="view-btn" style="padding: 6px 15px; font-size: 0.8rem;" onclick="openTenderModal(${idx}); return false;">View ↗</a>` : `<a href="#" class="view-btn" style="padding: 6px 15px; font-size: 0.8rem;" onclick="openTenderModal(${idx}); return false;">View ↗</a>`;
                 const decision = computeDecision(t);
                 const scopeClass = relevance === 'OutOfScope' ? 'scope-pill-out' : relevance === 'TES' ? 'scope-pill-tes' : relevance === 'Phakathi' ? 'scope-pill-phakathi' : relevance === 'Both' ? 'scope-pill-both' : 'scope-pill-out';
                 const scopeText = relevance === 'OutOfScope' ? 'Not in scope' : relevance === 'TES' ? 'TES' : relevance === 'Phakathi' ? 'Phakathi' : relevance === 'Both' ? 'TES + Phakathi' : 'Review';
-                const decisionPill = `<span class="decision-pill ${decision.className}">${decision.label}<span class="reason"> · ${decision.reason}</span></span>`;
+                const decisionPill = `<span class="decision-pill ${decision.className}">${decision.label}<span class="reason"> · ${decision.reason}</span><span class="confidence"> · ${decision.confidence}%</span></span>`;
                 const categoryTags = (categories || []).map(c => `<span class="category-tag">${c}</span>`).join('');
                 return `<tr style="border-bottom: 1px solid rgba(255,255,255,0.05); transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'">
                     <td style="padding: 15px;">
@@ -924,13 +932,16 @@
             const fit = typeof scores.fit === 'number' ? scores.fit : 0;
             const suitability = typeof scores.suitability === 'number'
               ? scores.suitability
-              : (typeof scores.industry === 'number' ? scores.industry : (typeof scores.composite === 'number' ? scores.composite : 0));
+              : (typeof scores.industry === 'number'
+                  ? scores.industry
+                  : (typeof scores.composite === 'number' ? scores.composite : 0));
 
             const priority = (tender.priority || scores.priority || 'LOW').toUpperCase();
             const scopeLabel = (tender.scope || tender.company_scope || tender.category || '').toString().toLowerCase();
             const notes = (tender.notes || '').toString().toLowerCase();
             const insight = (tender.ai_insight || tender.aiInsight || '').toString().toLowerCase();
 
+            // Existing out-of-scope detection
             const outOfScopeSignals = [
               scopeLabel.includes('out of scope'),
               scopeLabel.includes('out-of-scope'),
@@ -940,44 +951,89 @@
               insight.includes('outside scope')
             ];
 
-            const isOutOfScope = outOfScopeSignals.some(Boolean);
+            const textBlob = [
+              tender.title || '',
+              tender.description || '',
+              tender.category || '',
+              notes,
+              insight
+            ].join(' ').toLowerCase();
+
+            const civilSignals = [
+              'civil',
+              'construction',
+              'infrastructure',
+              'pumpstation',
+              'pump station',
+              'earthworks',
+              'building',
+              'upgrade',
+              'roads',
+              'stormwater'
+            ];
+
+            const isCivil = civilSignals.some(sig => textBlob.includes(sig));
+            const isOutOfScope = outOfScopeSignals.some(Boolean) || isCivil;
 
             const isHighPriority = priority === 'HIGH';
             const isMediumPriority = priority === 'MEDIUM';
 
-            // 1) Hard No-Bid if clearly out-of-scope.
+            // Helper to build a decision object
+            function makeDecision(label, className, reason, confidence) {
+              let level = 'medium';
+              if (confidence >= 85) level = 'high';
+              else if (confidence < 60) level = 'low';
+              return { label, className, reason, confidence, level };
+            }
+
+            const avgScore = (fit + suitability) / 2; // 0–10 rough strength
+
+            // 1) Hard No-Bid if clearly out-of-scope / civil-only.
             if (isOutOfScope) {
-              return {
-                label: 'No-Bid',
-                className: 'nobid',
-                reason: 'Outside TES / Phakathi scope'
-              };
+              // Very high confidence – we know we don't play in civil-only space.
+              return makeDecision(
+                'No-Bid',
+                'nobid',
+                'Outside TES / Phakathi scope (civil / infrastructure)',
+                96
+              );
             }
 
             // 2) Strong Bid if good scores + decent priority.
             if (fit >= 7 && suitability >= 6 && (isHighPriority || isMediumPriority)) {
-              return {
-                label: 'Bid',
-                className: 'bid',
-                reason: 'Strong technical & strategic fit'
-              };
+              // Confidence grows with score strength.
+              let conf = Math.round(70 + avgScore * 3); // 70–100
+              if (conf > 98) conf = 98;
+              return makeDecision(
+                'Bid',
+                'bid',
+                'Strong technical and strategic fit',
+                conf
+              );
             }
 
             // 3) No-Bid on very weak fit.
             if (fit <= 3 || suitability <= 3) {
-              return {
-                label: 'No-Bid',
-                className: 'nobid',
-                reason: 'Weak fit / unsuitable opportunity'
-              };
+              // Confidence also high here – we know it is a poor fit.
+              let conf = Math.round(75 + (3 - Math.min(fit, suitability)) * 5);
+              if (conf > 95) conf = 95;
+              return makeDecision(
+                'No-Bid',
+                'nobid',
+                'Weak fit / unsuitable opportunity',
+                conf
+              );
             }
 
-            // 4) Default: Consider.
-            return {
-              label: 'Consider',
-              className: 'consider',
-              reason: 'Needs human review'
-            };
+            // 4) Default: Consider (borderline / mixed / incomplete info).
+            let conf = Math.round(55 + avgScore * 2); // roughly 55–75
+            if (conf > 80) conf = 80;
+            return makeDecision(
+              'Consider',
+              'consider',
+              'Needs human review (mixed or unclear scope)',
+              conf
+            );
         }
 
         function updatePrintHeader(meta, tendersSummary) {
@@ -1013,11 +1069,22 @@
         }
 
         function generateAIInsight(tender) {
+            const scores = tender.scores || {};
             const company = (tender.company || '').toUpperCase();
             const priority = (tender.priority || '').toUpperCase();
-            const fitScore = Number.isFinite(tender.fit_score) ? tender.fit_score : (Number.isFinite(tender.score) ? tender.score : null);
-            const revenueScore = Number.isFinite(tender.revenue_score) ? tender.revenue_score : null;
-            const riskScore = Number.isFinite(tender.risk_score) ? tender.risk_score : null;
+            
+            const getVal = (keys) => {
+                for (const k of keys) {
+                    if (Number.isFinite(tender[k])) return tender[k];
+                    if (Number.isFinite(scores[k])) return scores[k];
+                }
+                return null;
+            };
+
+            const fitScore = getVal(['fit_score', 'score', 'fit']);
+            const revenueScore = getVal(['revenue_score', 'revenue']);
+            const riskScore = getVal(['risk_score', 'risk']);
+            
             const { relevance, bidDecision } = classifyTender(tender);
 
             if (relevance === 'OutOfScope') {
@@ -1067,6 +1134,15 @@
             const backdrop = document.getElementById('tender-modal-backdrop');
             if (!tender || !backdrop) return;
 
+            const scores = tender.scores || {};
+            const getScoreVal = (keys) => {
+                for (const k of keys) {
+                    if (tender[k] !== undefined && tender[k] !== null) return tender[k];
+                    if (scores[k] !== undefined && scores[k] !== null) return scores[k];
+                }
+                return '-';
+            };
+
             const getVal = (val) => (val !== undefined && val !== null && val !== '' ? val : '-');
             const days = getDaysUntil(tender.closing_date);
             let daysText = '-';
@@ -1080,17 +1156,23 @@
             document.getElementById('modal-tender-priority').textContent = getVal(tender.priority);
             document.getElementById('modal-tender-close-date').textContent = getVal(tender.closing_date);
             document.getElementById('modal-tender-days-remaining').textContent = daysText;
-            document.getElementById('modal-fit-score').textContent = getVal(tender.score);
-            document.getElementById('modal-revenue-score').textContent = getVal(tender.revenue_score);
-            document.getElementById('modal-suitability-score').textContent = getVal(tender.suitability_score ?? tender.score);
-            document.getElementById('modal-risk-score').textContent = getVal(tender.risk_score);
+            document.getElementById('modal-fit-score').textContent = getScoreVal(['score', 'fit', 'fit_score']);
+            document.getElementById('modal-revenue-score').textContent = getScoreVal(['revenue_score', 'revenue']);
+            document.getElementById('modal-suitability-score').textContent = getScoreVal(['suitability_score', 'suitability', 'industry', 'industry_score', 'composite', 'composite_score']);
+            document.getElementById('modal-risk-score').textContent = getScoreVal(['risk_score', 'risk']);
             document.getElementById('modal-tender-description').textContent = getVal(tender.description || tender.long_description);
             document.getElementById('modal-tender-notes').textContent = getVal(tender.notes || tender.category || tender.reason);
             document.getElementById('modal-tender-ai-insight').textContent = generateAIInsight(tender);
             const decision = computeDecision(tender);
             const aiInsightEl = document.getElementById('modal-tender-ai-insight');
             if (aiInsightEl) {
-                aiInsightEl.insertAdjacentHTML('afterend', `<div style="margin-top:8px;">AI Recommendation: <span class="decision-pill ${decision.className}" style="padding:4px 8px; font-size:0.75rem;">${decision.label}<span class="reason"> · ${decision.reason}</span></span></div>`);
+                const existingRec = aiInsightEl.parentNode.querySelector('.ai-recommendation-container');
+                if (existingRec) existingRec.remove();
+                aiInsightEl.insertAdjacentHTML('afterend', `<div class="ai-recommendation-container" style="margin-top:8px;">AI Recommendation: <span class="decision-pill ${decision.className}" style="padding:4px 8px; font-size:0.75rem;">${decision.label}<span class="reason"> · ${decision.reason}</span><span class="confidence"> · ${decision.confidence}%</span></span></div>`);
+            }
+            const recoEl = document.getElementById('modal-tender-ai-reco');
+            if (recoEl && decision) {
+                recoEl.textContent = `${decision.label} — ${decision.confidence}% confidence. ${decision.reason}`;
             }
 
             const openBtn = document.getElementById('modal-open-link');
