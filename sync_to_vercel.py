@@ -18,6 +18,7 @@ OUTPUT_DIR = "/Users/lazolasonqishe/Documents/MASTER/TENDERS/00_System/04_Automa
 VERCEL_DIR = "/Users/lazolasonqishe/Documents/MASTER/TENDERS/00_System/04_Automation/vercel-dashboard"
 TENDERS_JSON = os.path.join(OUTPUT_DIR, "new_tenders.json")
 DASHBOARD_HTML = os.path.join(VERCEL_DIR, "index.html")
+TENDERS_DATA_JSON = os.path.join(VERCEL_DIR, "tenders.json")  # Full dataset for client-side
 
 # Source URLs for tender portals
 SOURCE_URLS = {
@@ -80,8 +81,17 @@ def generate_dashboard_html(tenders):
     medium_count = sum(1 for t in tenders if t.get("scores", {}).get("priority") == "MEDIUM")
     low_count = sum(1 for t in tenders if t.get("scores", {}).get("priority") == "LOW")
     
+    # Source breakdown for freshness stats
+    from collections import Counter
+    source_counts = Counter(t.get("source", "Unknown") for t in tenders)
+    source_breakdown = " | ".join([f"{src}: {count}" for src, count in sorted(source_counts.items(), key=lambda x: -x[1])[:5]])
+    
+    # QA Check: Log scrape vs display discrepancy
+    if total != len(tenders):
+        print(f"⚠️ WARNING: Tender count mismatch - scraped {total} but processing {len(tenders)}")
+    
     js_tenders = []
-    for t in tenders[:20]:
+    for t in tenders:  # Process ALL tenders, not just first 20
         scores = t.get("scores", {})
         tes_score = scores.get("tes_suitability", 0)
         phakathi_score = scores.get("phakathi_suitability", 0)
@@ -130,6 +140,11 @@ def generate_dashboard_html(tenders):
             "closing_date": t.get("closing_date", ""),
             "contact": t.get("contact", "")
         })
+    
+    # Save full dataset as separate JSON for client-side loading
+    with open(TENDERS_DATA_JSON, 'w') as f:
+        json.dump(js_tenders, f, indent=2)
+    print(f"   💾 Saved {len(js_tenders)} tenders to tenders.json for client-side access")
     
     tenders_json = json.dumps(js_tenders, indent=8)
     last_updated = datetime.now().strftime("%d %b %Y, %H:%M")
@@ -270,6 +285,7 @@ def generate_dashboard_html(tenders):
             <h1>🎯 Tender Intelligence</h1>
             <p class="subtitle"><span class="status"></span>TES & Phakathi Automation Engine</p>
             <div class="last-sync">🔄 Last synced: {last_updated}</div>
+            <div class="last-sync" style="margin-top: 10px; background: rgba(72,219,251,0.2); border-color: rgba(72,219,251,0.3);">📊 {source_breakdown}</div>
         </header>
         
         <nav class="tab-nav">
@@ -290,16 +306,31 @@ def generate_dashboard_html(tenders):
             </div>
             
             <div class="section">
-                <h2>📋 Active Tenders</h2>
+                <h2>📋 Active Tenders (<span id="displayedCount">{total}</span> of <span id="totalCount">{total}</span>)</h2>
+                
+                <!-- Search Box -->
+                <div style="margin-bottom: 20px;">
+                    <input type="text" id="searchBox" placeholder="🔍 Search by ref, title, description, source..." 
+                           style="width: 100%; padding: 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.2); 
+                                  background: rgba(255,255,255,0.05); color: #fff; font-size: 1rem;"
+                           oninput="searchTenders()">
+                </div>
+                
                 <div class="filter-tabs">
-                    <button class="filter-tab active" onclick="filterTenders('all')">All ({total})</button>
-                    <button class="filter-tab" onclick="filterTenders('TES')">💧 TES ({tes_count})</button>
-                    <button class="filter-tab" onclick="filterTenders('Phakathi')">⚙️ Phakathi ({phakathi_count})</button>
-                    <button class="filter-tab high" onclick="filterTenders('HIGH')">🔥 HIGH ({high_count})</button>
-                    <button class="filter-tab medium" onclick="filterTenders('MEDIUM')">⚡ MEDIUM ({medium_count})</button>
-                    <button class="filter-tab low" onclick="filterTenders('LOW')">📝 LOW ({low_count})</button>
+                    <button class="filter-tab active" onclick="filterTenders('all')">All (<span id="countAll">{total}</span>)</button>
+                    <button class="filter-tab" onclick="filterTenders('TES')">💧 TES (<span id="countTES">{tes_count}</span>)</button>
+                    <button class="filter-tab" onclick="filterTenders('Phakathi')">⚙️ Phakathi (<span id="countPhakathi">{phakathi_count}</span>)</button>
+                    <button class="filter-tab high" onclick="filterTenders('HIGH')">🔥 HIGH (<span id="countHIGH">{high_count}</span>)</button>
+                    <button class="filter-tab medium" onclick="filterTenders('MEDIUM')">⚡ MEDIUM (<span id="countMEDIUM">{medium_count}</span>)</button>
+                    <button class="filter-tab low" onclick="filterTenders('LOW')">📝 LOW (<span id="countLOW">{low_count}</span>)</button>
                 </div>
                 <ul class="tender-list" id="tenderList"></ul>
+                <div id="loadMoreContainer" style="text-align: center; margin-top: 20px; display: none;">
+                    <button onclick="loadMore()" style="padding: 12px 30px; border-radius: 25px; border: 1px solid rgba(102,126,234,0.5); 
+                                                         background: rgba(102,126,234,0.2); color: #667eea; cursor: pointer; font-size: 1rem; font-weight: 600;">
+                        Load More (<span id="remainingCount">0</span> remaining)
+                    </button>
+                </div>
             </div>
         </div>
         
@@ -407,9 +438,30 @@ def generate_dashboard_html(tenders):
     </div>
     
     <script>
-        const tenders = {tenders_json};
+        let allTenders = [];
         let currentFilter = 'all';
         let currentMonth = new Date();
+        let currentSearchTerm = '';
+        let displayedCount = 0;
+        const itemsPerPage = 20;
+        
+        // Load tenders from external JSON
+        fetch('tenders.json')
+            .then(response => response.json())
+            .then(data => {{
+                allTenders = data;
+                console.log(`✅ Loaded ${{allTenders.length}} tenders from tenders.json`);
+                document.getElementById('totalCount').textContent = allTenders.length;
+                renderTenders('all');
+                renderCalendar();
+            }})
+            .catch(err => {{
+                console.error('❌ Error loading tenders:', err);
+                // Fallback to embedded data
+                allTenders = {tenders_json};
+                renderTenders('all');
+                renderCalendar();
+            }});
         
         // Calculate days until closing
         function getDaysUntil(dateStr) {{
@@ -432,18 +484,38 @@ def generate_dashboard_html(tenders):
             return `<span class="countdown normal">📅 ${{days}} days</span>`;
         }}
         
-        function renderTenders(filter) {{
+        function searchTenders() {{
+            currentSearchTerm = document.getElementById('searchBox').value.toLowerCase();
+            displayedCount = 0;
+            renderTenders(currentFilter);
+        }}
+        
+        function renderTenders(filter, append = false) {{
             const list = document.getElementById('tenderList');
-            let filtered = tenders.filter(t => getDaysUntil(t.closing_date) === null || getDaysUntil(t.closing_date) >= 0);
+            if (!append) {{
+                list.innerHTML = '';
+                displayedCount = 0;
+            }}
             
+            // Filter by status (not closed)
+            let filtered = allTenders.filter(t => getDaysUntil(t.closing_date) === null || getDaysUntil(t.closing_date) >= 0);
+            
+            // Apply category/priority filter
             if (filter === 'TES' || filter === 'Phakathi' || filter === 'Both') {{
                 filtered = filtered.filter(t => t.company === filter);
-            }} else if (filter === 'HIGH') {{
-                filtered = filtered.filter(t => t.priority === 'HIGH');
-            }} else if (filter === 'MEDIUM') {{
-                filtered = filtered.filter(t => t.priority === 'MEDIUM');
-            }} else if (filter === 'LOW') {{
-                filtered = filtered.filter(t => t.priority === 'LOW');
+            }} else if (filter === 'HIGH' || filter === 'MEDIUM' || filter === 'LOW') {{
+                filtered = filtered.filter(t => t.priority === filter);
+            }}
+            
+            // Apply search filter
+            if (currentSearchTerm) {{
+                filtered = filtered.filter(t => 
+                    (t.ref || '').toLowerCase().includes(currentSearchTerm) ||
+                    (t.title || '').toLowerCase().includes(currentSearchTerm) ||
+                    (t.description || '').toLowerCase().includes(currentSearchTerm) ||
+                    (t.source || '').toLowerCase().includes(currentSearchTerm) ||
+                    (t.client || '').toLowerCase().includes(currentSearchTerm)
+                );
             }}
             
             // Sort by closing date (urgent first)
@@ -453,12 +525,29 @@ def generate_dashboard_html(tenders):
                 return daysA - daysB;
             }});
             
+            // Update filter counts dynamically
+            const allActive = allTenders.filter(t => getDaysUntil(t.closing_date) === null || getDaysUntil(t.closing_date) >= 0);
+            document.getElementById('countAll').textContent = allActive.length;
+            document.getElementById('countTES').textContent = allActive.filter(t => t.company === 'TES').length;
+            document.getElementById('countPhakathi').textContent = allActive.filter(t => t.company === 'Phakathi').length;
+            document.getElementById('countHIGH').textContent = allActive.filter(t => t.priority === 'HIGH').length;
+            document.getElementById('countMEDIUM').textContent = allActive.filter(t => t.priority === 'MEDIUM').length;
+            document.getElementById('countLOW').textContent = allActive.filter(t => t.priority === 'LOW').length;
+            
+            document.getElementById('displayedCount').textContent = filtered.length;
+            
             if (filtered.length === 0) {{
-                list.innerHTML = '<li class="empty-state"><h3>No tenders found</h3><p>Try a different filter...</p></li>';
+                list.innerHTML = '<li class="empty-state"><h3>No tenders found</h3><p>Try adjusting your filters or search term...</p></li>';
+                document.getElementById('loadMoreContainer').style.display = 'none';
                 return;
             }}
             
-            list.innerHTML = filtered.map(t => {{
+            // Pagination: Show first page or append next page
+            const startIndex = append ? displayedCount : 0;
+            const endIndex = Math.min(startIndex + itemsPerPage, filtered.length);
+            const toDisplay = filtered.slice(startIndex, endIndex);
+            
+            const html = toDisplay.map(t => {{
                 const desc = t.description && t.description !== t.title ? t.description : '';
                 const isPdf = t.url && t.url.endsWith('.pdf');
                 const daysLeft = getDaysUntil(t.closing_date);
@@ -492,6 +581,29 @@ def generate_dashboard_html(tenders):
                     </div>
                 </li>`;
             }}).join('');
+            
+            if (append) {{
+                list.innerHTML += html;
+            }} else {{
+                list.innerHTML = html;
+            }}
+            
+            displayedCount = endIndex;
+            
+            // Show/hide load more button
+            if (endIndex < filtered.length) {{
+                document.getElementById('loadMoreContainer').style.display = 'block';
+                document.getElementById('remainingCount').textContent = filtered.length - endIndex;
+            }} else {{
+                document.getElementById('loadMoreContainer').style.display = 'none';
+            }}
+            
+            // Store current filtered set for load more
+            window.currentFiltered = filtered;
+        }}
+        
+        function loadMore() {{
+            renderTenders(currentFilter, true);
         }}
         
         function filterTenders(filter) {{
@@ -618,7 +730,13 @@ def sync():
     print("🔄 Syncing tender data to Vercel...")
     
     tenders = load_tenders()
-    print(f"   Found {len(tenders)} tenders")
+    scraped_count = len(tenders)
+    print(f"   Found {scraped_count} tenders")
+    
+    # QA Check: Verify JSON file exists and matches
+    if os.path.exists(TENDERS_JSON):
+        file_size = os.path.getsize(TENDERS_JSON)
+        print(f"   📁 Source file: {file_size:,} bytes")
     
     html = generate_dashboard_html(tenders)
     
@@ -626,6 +744,16 @@ def sync():
     with open(DASHBOARD_HTML, "w") as f:
         f.write(html)
     print(f"   ✅ Dashboard HTML updated")
+    
+    # QA Check: Verify tenders.json was created
+    if os.path.exists(TENDERS_DATA_JSON):
+        with open(TENDERS_DATA_JSON, 'r') as f:
+            displayed_tenders = json.load(f)
+            displayed_count = len(displayed_tenders)
+            if displayed_count != scraped_count:
+                print(f"   ⚠️ WARNING: Count mismatch - scraped {scraped_count} but displaying {displayed_count}")
+            else:
+                print(f"   ✅ QA Pass: {scraped_count} tenders scraped = {displayed_count} displayed")
     
     print("   🚀 Pushing to GitHub (triggers Vercel auto-deploy)...")
     success, output = push_to_github()
