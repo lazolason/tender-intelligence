@@ -107,9 +107,11 @@ TES_KEYWORDS = [
     # Corrosion Inhibitors
     "corrosion inhibitor", "corrosion control", "corrosion barrier",
     
-    # Biocides
+    # Biocides & Disinfectants
     "biocide", "biocidal", "antimicrobial", "microbiological control",
     "oxidizing biocide", "non-oxidizing biocide", "biological control",
+    "chlorine", "chlorination", "chlorine dioxide", "hypochlorite",
+    "calcium hypochlorite", "sodium hypochlorite", "bleach", "disinfectant",
     
     # Dispersants
     "dispersant", "fouling dispersant", "mud dispersant", "ash dispersant",
@@ -200,9 +202,11 @@ PHAKATHI_KEYWORDS = [
     "belt splice", "conveyor parts",
     
     # === 8. MECHANICAL COMPONENTS (NEW) ===
-    "coupling", "flexible coupling", "gear coupling",
+    "coupling", "flexible coupling", "gear coupling", "coupling adaptor",
     "gasket", "gland packing", "mechanical seal",
     "o-ring", "seal kit",
+    "fittings", "fitting", "galvanised fitting", "pipe fitting",
+    "adaptor", "washer",
     
     # === 9. HEAT TREATMENT ===
     "heat treatment", "stress relieving", "annealing",

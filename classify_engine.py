@@ -29,13 +29,17 @@ def keyword_hits(text: str, keywords: list) -> int:
 def should_exclude(text: str) -> tuple:
     """
     Check if tender matches exclusion keywords. Returns (should_exclude, reason).
-    If any core TES/Phakathi signals are present, skip exclusion so we don't drop mechanical/water tenders.
+    Only allow override if STRONG signals are present (not just any keyword match).
     """
-    has_core_signal = any(kw in text for kw in TES_KEYWORDS + PHAKATHI_KEYWORDS + SWITCHGEAR_KEYWORDS)
+    from keyword_rules import TES_STRONG_SIGNALS, PHAKATHI_STRONG_SIGNALS
+    
+    # Check for strong override signals (water treatment, pump supply, etc.)
+    has_strong_signal = any(kw in text for kw in TES_STRONG_SIGNALS + PHAKATHI_STRONG_SIGNALS)
+    
     for kw in EXCLUDE_KEYWORDS:
         if kw in text:
-            if has_core_signal:
-                # Allow through when mechanical/water signals exist
+            if has_strong_signal:
+                # Allow through ONLY when strong water treatment/mechanical supply signals exist
                 return False, None
             return True, f"Excluded: '{kw}' (out of scope)"
     return False, None
