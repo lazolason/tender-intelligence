@@ -22,7 +22,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from classify_engine import classify_tender
 
 
-def scrape_eskom_tenders(max_tenders=20):
+def scrape_eskom_tenders(max_tenders=50):
     """
     Scrape tenders directly from Eskom's tender bulletin portal
     """
@@ -50,8 +50,9 @@ def scrape_eskom_tenders(max_tenders=20):
         else:
             driver = webdriver.Chrome(options=chrome_options)
         
-        # Navigate to Eskom tender bulletin
-        url = "https://tenderbulletin.eskom.co.za/"
+        # Navigate to Eskom tender bulletin - use search page which has all opportunities
+        # Use large page size to get all tenders at once (they have ~60-80 active tenders)
+        url = "https://tenderbulletin.eskom.co.za/search?pageSize=100&page=1"
         driver.get(url)
         
         # Wait for page to load
@@ -67,80 +68,89 @@ def scrape_eskom_tenders(max_tenders=20):
         except:
             print(f"   ⚠️ Content did not load as expected")
         
-        # Look for current tender opportunities section
-        # Based on screenshot, there's a section showing current tenders
-        try:
-            # Find tender cards/rows - React apps use various divs
-            tender_elements = driver.find_elements(By.CSS_SELECTOR, "[class*='card'], [class*='tender'], [class*='opportunity'], div[role='article'], li")
-            print(f"   Found {len(tender_elements)} potential tender elements")
+        # Scrape multiple pages
+        page_num = 1
+        max_pages = 5  # Limit to prevent infinite loops
+        
+        while page_num <= max_pages and len(tenders) < max_tenders:
+            print(f"   📄 Scraping page {page_num}...")
             
-            if len(tender_elements) == 0:
-                # Try to get page source to debug
-                page_source = driver.page_source
-                if "Current Tender" in page_source or "opportunity" in page_source.lower():
-                    print(f"   Page contains tender information in HTML but not easily selectable")
-                    # Try extracting from page source with regex
-                    refs = re.findall(r'[A-Z]{2,}/\d{4}/[A-Z0-9]{2,}', page_source)
-                    if refs:
-                        print(f"   Found {len(set(refs))} reference numbers in page source: {set(refs)}")
-        
-        except Exception as e:
-            print(f"   Error finding tender elements: {e}")
-            return tenders
-        
-        time.sleep(2)
-        
-        # Extract tender information
-        count = 0
-        for idx, element in enumerate(tender_elements[:max_tenders * 3]):
+            time.sleep(3)  # Wait for page content
+            
+            # Look for current tender opportunities section
             try:
-                # Get all text from element
-                element_text = element.text.strip()
+                # Find tender cards/rows - React apps use various divs
+                tender_elements = driver.find_elements(By.CSS_SELECTOR, "[class*='card'], [class*='tender'], [class*='opportunity'], div[role='article'], li")
+                print(f"   Found {len(tender_elements)} potential tender elements")
                 
-                # DEBUG: Print first 3 elements
-                if idx < 3:
-                    print(f"   Element {idx+1} text (first 100 chars): {element_text[:100]}")
-                
-                if not element_text or len(element_text) < 15:
-                    continue
-                
-                # Look for reference number (e.g., ERI/2022/BMS/08, MWP2457DX, etc.)
-                ref_match = re.search(r'[A-Z]{2,}/\d{4}/[A-Z0-9]{2,}|[A-Z]{3}\d{4}[A-Z]{2}', element_text)
-                if not ref_match:
-                    continue
-                
-                ref = ref_match.group(0).strip()
-                print(f"   Found ref: {ref}")
-                
-                # Get title - usually first substantial text line
-                lines = element_text.split('\n')
-                title = ""
-                for line in lines:
-                    clean_line = line.strip()
-                    if len(clean_line) > 15 and not clean_line.startswith(ref) and not clean_line.isdigit():
-                        title = clean_line
-                        break
-                
-                if not title or len(title) < 15:
-                    title = element_text[:100]
-                
-                # Try to find link
+                if len(tender_elements) == 0:
+                    # Try to get page source to debug
+                    page_source = driver.page_source
+                    if "Current Tender" in page_source or "opportunity" in page_source.lower():
+                        print(f"   Page contains tender information in HTML but not easily selectable")
+                        # Try extracting from page source with regex
+                        refs = re.findall(r'[A-Z]{2,}/\d{4}/[A-Z0-9]{2,}', page_source)
+                        if refs:
+                            print(f"   Found {len(set(refs))} reference numbers in page source: {set(refs)}")
+            
+            except Exception as e:
+                print(f"   Error finding tender elements: {e}")
+                break
+            
+            # Extract tender information from current page
+            count_this_page = 0
+            for idx, element in enumerate(tender_elements):
                 try:
-                    link_elem = element.find_element(By.TAG_NAME, "a")
-                    href = link_elem.get_attribute("href")
-                    if not href.startswith("http"):
-                        href = "https://tenderbulletin.eskom.co.za" + href if href.startswith("/") else "https://tenderbulletin.eskom.co.za/"
-                except:
-                    href = "https://tenderbulletin.eskom.co.za/"
-                
-                # Extract closing date if visible
-                closing_date = ""
-                date_match = re.search(r'\d{4}-[A-Z][a-z]{2}-\d{2}|\d{1,2}/\d{1,2}/\d{4}|\d{1,2}\s+[A-Z][a-z]{2}\s+\d{4}', element_text)
-                if date_match:
-                    closing_date = date_match.group(0)
-                
-                # Only add if not duplicate
-                if not any(t["ref"] == ref for t in tenders):
+                    # Get all text from element
+                    element_text = element.text.strip()
+                    
+                    # DEBUG: Print first element on first page
+                    if idx == 0 and page_num == 1:
+                        print(f"   Element {idx+1} text (first 100 chars): {element_text[:100]}")
+                    
+                    if not element_text or len(element_text) < 15:
+                        continue
+                    
+                    # Look for reference number (e.g., E2253GXGPLET, ERI/2022/BMS/08, MWP2457DX, etc.)
+                    ref_match = re.search(r'[A-Z]\d{4}[A-Z]{2,}[A-Z0-9]+|[A-Z]{2,}/\d{4}/[A-Z0-9]{2,}|[A-Z]{3}\d{4}[A-Z]{2}', element_text)
+                    if not ref_match:
+                        continue
+                    
+                    ref = ref_match.group(0).strip()
+                    
+                    # Skip if already have this tender
+                    if any(t["ref"] == ref for t in tenders):
+                        continue
+                    
+                    print(f"   Found ref: {ref}")
+                    
+                    # Get title - usually first substantial text line
+                    lines = element_text.split('\n')
+                    title = ""
+                    for line in lines:
+                        clean_line = line.strip()
+                        if len(clean_line) > 15 and not clean_line.startswith(ref) and not clean_line.isdigit():
+                            title = clean_line
+                            break
+                    
+                    if not title or len(title) < 15:
+                        title = element_text[:100]
+                    
+                    # Try to find link
+                    try:
+                        link_elem = element.find_element(By.TAG_NAME, "a")
+                        href = link_elem.get_attribute("href")
+                        if not href.startswith("http"):
+                            href = "https://tenderbulletin.eskom.co.za" + href if href.startswith("/") else "https://tenderbulletin.eskom.co.za/"
+                    except:
+                        href = "https://tenderbulletin.eskom.co.za/"
+                    
+                    # Extract closing date if visible
+                    closing_date = ""
+                    date_match = re.search(r'\d{4}-[A-Z][a-z]{2}-\d{2}|\d{1,2}/\d{1,2}/\d{4}|\d{1,2}\s+[A-Z][a-z]{2}\s+\d{4}', element_text)
+                    if date_match:
+                        closing_date = date_match.group(0)
+                    
                     tender = {
                         "ref": ref,
                         "source": "Eskom",
@@ -160,16 +170,38 @@ def scrape_eskom_tenders(max_tenders=20):
                     tender["reason"] = classification.get("reason", "")
                     
                     tenders.append(tender)
-                    count += 1
-                    print(f"   ✓ Tender {count}: {ref} - {title[:50]}")
+                    count_this_page += 1
+                    print(f"   ✓ Tender {len(tenders)}: {ref} - {title[:50]}")
                     
-                    if count >= max_tenders:
+                    if len(tenders) >= max_tenders:
                         break
+                
+                except Exception as e:
+                    if idx < 3 and page_num == 1:
+                        print(f"   Error extracting element {idx+1}: {e}")
+                    continue
             
-            except Exception as e:
-                if idx < 3:
-                    print(f"   Error extracting element {idx+1}: {e}")
-                continue
+            print(f"   Found {count_this_page} tenders on page {page_num}")
+            
+            # Navigate to next page by URL
+            if len(tenders) < max_tenders:
+                try:
+                    page_num += 1
+                    next_url = f"https://tenderbulletin.eskom.co.za/search?pageSize=20&page={page_num}"
+                    print(f"   Loading page {page_num}...")
+                    driver.get(next_url)
+                    time.sleep(5)  # Wait for page to load
+                    
+                    # Check if we got new content (page exists)
+                    page_source = driver.page_source
+                    if "No tenders" in page_source or "No results" in page_source or len(driver.find_elements(By.CSS_SELECTOR, "[class*='card'], [class*='tender']")) == 0:
+                        print(f"   Reached last page")
+                        break
+                except Exception as e:
+                    print(f"   Could not navigate to next page: {e}")
+                    break
+            else:
+                break
         
         driver.quit()
         

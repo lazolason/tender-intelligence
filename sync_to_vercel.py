@@ -12,7 +12,8 @@ from urllib.parse import quote
 
 # Paths
 AUTOMATION_DIR = os.path.dirname(os.path.abspath(__file__))
-OUTPUT_DIR = os.path.join(AUTOMATION_DIR, "output")
+# Tenders are written to MASTER folder by tenderscan.py (see config.yaml)
+OUTPUT_DIR = "/Users/lazolasonqishe/Documents/MASTER/TENDERS/00_System/04_Automation/output"
 # Vercel dashboard is in the MASTER folder (separate git repo: lazolason/tender-dashboard)
 VERCEL_DIR = "/Users/lazolasonqishe/Documents/MASTER/TENDERS/00_System/04_Automation/vercel-dashboard"
 TENDERS_JSON = os.path.join(OUTPUT_DIR, "new_tenders.json")
