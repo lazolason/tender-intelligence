@@ -1068,6 +1068,15 @@
             };
         }
 
+        async function loadTenderPayload() {
+            const res = await fetch("./tenders.json?ts=" + Date.now(), { cache: "no-store" });
+            if (!res.ok) throw new Error(`Failed to load tenders.json: ${res.status}`);
+            const payload = await res.json();
+            const tenderList = Array.isArray(payload) ? payload : (payload.tenders || payload.data || []);
+            const meta = (!Array.isArray(payload) && payload.meta) ? payload.meta : {};
+            return { tenders: tenderList, meta };
+        }
+
         function generateAIInsight(tender) {
             const scores = tender.scores || {};
             const company = (tender.company || '').toUpperCase();
@@ -1294,6 +1303,7 @@
         });
         const hideOutCheckbox = document.getElementById('hide-out-of-scope');
         if (hideOutCheckbox) {
+            hideOutCheckbox.checked = false;
             hideOutCheckbox.addEventListener('change', () => renderTenders(currentFilter));
         }
         const exportPdfBtn = document.getElementById("export-pdf-btn");
@@ -1344,30 +1354,27 @@
             updatePrintHeader(metaNow, getKpiSummary());
         });
 
-        fetch("/api/tenders")
-            .then(res => res.json())
-            .then(data => {
-                const isArray = Array.isArray(data);
-                const meta = isArray ? null : (data.meta || null);
-                const tendersData = isArray ? data : (data.tenders || []);
+        loadTenderPayload()
+            .then(({ tenders: loadedTenders, meta }) => {
+                const effectiveMeta = meta || {};
 
-                tenders = tendersData; // Update global variable
-                window.tendersData = tenders;
-                window.dashboardMeta = meta;
+                tenders = loadedTenders; // Update global variable
+                window.tendersData = loadedTenders;
+                window.dashboardMeta = effectiveMeta;
 
                 // Update last sync + next run labels if elements exist
                 const lastSyncEl = document.getElementById("last-sync-text");
                 const nextRunEl = document.getElementById("next-run-text");
 
-                if (lastSyncEl && meta && meta.last_sync) {
-                    lastSyncEl.textContent = meta.last_sync;
+                if (lastSyncEl && effectiveMeta.last_sync) {
+                    lastSyncEl.textContent = effectiveMeta.last_sync;
                 }
-                if (nextRunEl && meta && meta.next_run) {
-                    nextRunEl.textContent = meta.next_run;
+                if (nextRunEl && effectiveMeta.next_run) {
+                    nextRunEl.textContent = effectiveMeta.next_run;
                 }
 
                 renderTenders('all');
-                updatePrintHeader(meta || initialMeta, getKpiSummary());
+                updatePrintHeader(effectiveMeta || initialMeta, getKpiSummary());
             })
             .catch(err => console.error("Error fetching tenders:", err));
 
