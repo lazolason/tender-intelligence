@@ -801,13 +801,18 @@
                 const revenueScore = (t.revenue_score ?? scores.revenue ?? scores.revenue_score ?? '-') || '-';
                 const riskScore = (t.risk_score ?? scores.risk ?? scores.risk_score ?? '-') || '-';
                 const status = t.status || getCountdownHtml(t.closing_date) || '-';
-                const link = t.url ? `<a href="#" class="view-btn" style="padding: 6px 15px; font-size: 0.8rem;" onclick="openTenderModal(${idx}); return false;">View ↗</a>` : `<a href="#" class="view-btn" style="padding: 6px 15px; font-size: 0.8rem;" onclick="openTenderModal(${idx}); return false;">View ↗</a>`;
+                const link = t.url ? `<a href="${t.url}" target="_blank" rel="noopener" class="view-btn" style="padding: 6px 15px; font-size: 0.8rem;" onclick="event.stopPropagation()">Open ↗</a>` : '-';
                 const decision = computeDecision(t);
                 const scopeClass = relevance === 'OutOfScope' ? 'scope-pill-out' : relevance === 'TES' ? 'scope-pill-tes' : relevance === 'Phakathi' ? 'scope-pill-phakathi' : relevance === 'Both' ? 'scope-pill-both' : 'scope-pill-out';
                 const scopeText = relevance === 'OutOfScope' ? 'Not in scope' : relevance === 'TES' ? 'TES' : relevance === 'Phakathi' ? 'Phakathi' : relevance === 'Both' ? 'TES + Phakathi' : 'Review';
                 const decisionPill = `<span class="decision-pill ${decision.className}">${decision.label}<span class="reason"> · ${decision.reason}</span><span class="confidence"> · ${decision.confidence}%</span></span>`;
                 const categoryTags = (categories || []).map(c => `<span class="category-tag">${c}</span>`).join('');
-                return `<tr style="border-bottom: 1px solid rgba(255,255,255,0.05); transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'">
+                return `<tr
+                    style="border-bottom: 1px solid rgba(255,255,255,0.05); transition: background 0.2s; cursor: pointer;"
+                    onclick="openTenderModal(${idx});"
+                    title="Click to view tender details"
+                    onmouseover="this.style.background='rgba(255,255,255,0.05)'"
+                    onmouseout="this.style.background='transparent'">
                     <td style="padding: 15px;">
                         <div style="font-weight: 600; color: #fff; margin-bottom: 4px;">${title}</div>
                         <div style="font-size: 0.8rem; color: #667eea;">${t.ref || '-'}</div>
