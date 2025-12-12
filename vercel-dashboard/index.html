@@ -697,6 +697,31 @@
         let currentTenders = [];
         let currentFilter = 'all';
         let currentMonth = new Date();
+
+        function getCompany(t) {
+            return (t.company || t.category || "").trim();
+        }
+
+        function getPriority(t) {
+            return (t.priority || t.scores?.priority || "").toUpperCase();
+        }
+
+        function normalizeTender(t) {
+            const company = (t.company || t.category || "").trim();
+            const scores = t.scores || {
+                fit: t.score ?? t.fit ?? t.fit_score,
+                revenue: t.revenue_score ?? t.revenue,
+                risk: t.risk_score ?? t.risk,
+                suitability: t.suitability_score ?? t.suitability ?? t.industry ?? t.composite
+            };
+
+            return {
+                ...t,
+                company,
+                priority: (t.priority || "").toUpperCase(),
+                scores
+            };
+        }
         
         // Calculate days until closing
         function getDaysUntil(dateStr) {
@@ -733,13 +758,13 @@
             let filtered = tenders.filter(t => getDaysUntil(t.closing_date) === null || getDaysUntil(t.closing_date) >= 0);
             
             if (filter === 'TES' || filter === 'Phakathi' || filter === 'Both') {
-                filtered = filtered.filter(t => t.company === filter);
+                filtered = filtered.filter(t => getCompany(t) === filter);
             } else if (filter === 'HIGH') {
-                filtered = filtered.filter(t => t.priority === 'HIGH');
+                filtered = filtered.filter(t => getPriority(t) === 'HIGH');
             } else if (filter === 'MEDIUM') {
-                filtered = filtered.filter(t => t.priority === 'MEDIUM');
+                filtered = filtered.filter(t => getPriority(t) === 'MEDIUM');
             } else if (filter === 'LOW') {
-                filtered = filtered.filter(t => t.priority === 'LOW');
+                filtered = filtered.filter(t => getPriority(t) === 'LOW');
             }
             
             // Sort by closing date (urgent first)
@@ -769,8 +794,8 @@
                 const { relevance, categories, bidDecision } = item.classification;
                 const title = t.title || '-';
                 const source = t.source || '-';
-                const fit = t.company || '-';
-                const priority = t.priority || '-';
+                const company = getCompany(t) || '-';
+                const priority = getPriority(t) || '-';
                 const closeDate = t.closing_date || '-';
                 const fitScore = (t.score ?? scores.fit ?? scores.fit_score ?? '-') || '-';
                 const revenueScore = (t.revenue_score ?? scores.revenue ?? scores.revenue_score ?? '-') || '-';
@@ -789,7 +814,7 @@
                         <div style="margin-top:4px;">${categoryTags}</div>
                     </td>
                     <td style="padding: 15px; color: #ccc;">${source}</td>
-                    <td style="padding: 15px; color: #ccc;">${fit}</td>
+                    <td style="padding: 15px; color: #ccc;">${company}</td>
                     <td style="padding: 15px; color: #ccc;">${priority}</td>
                     <td style="padding: 15px; color: #ccc;">${closeDate}</td>
                     <td style="padding: 15px; font-weight: bold; color: #fff;">${fitScore}</td>
@@ -1069,12 +1094,26 @@
         }
 
         async function loadTenderPayload() {
-            const res = await fetch("./tenders.json?ts=" + Date.now(), { cache: "no-store" });
-            if (!res.ok) throw new Error(`Failed to load tenders.json: ${res.status}`);
-            const payload = await res.json();
-            const tenderList = Array.isArray(payload) ? payload : (payload.tenders || payload.data || []);
-            const meta = (!Array.isArray(payload) && payload.meta) ? payload.meta : {};
-            return { tenders: tenderList, meta };
+            const candidates = [
+                "/tenders.json",
+                "./tenders.json",
+                "../tenders.json",
+            ];
+
+            let lastErr;
+            for (const url of candidates) {
+                try {
+                    const res = await fetch(url + "?ts=" + Date.now(), { cache: "no-store" });
+                    if (!res.ok) throw new Error(`${url} -> ${res.status}`);
+                    const payload = await res.json();
+                    const tenderList = Array.isArray(payload) ? payload : (payload.tenders || payload.data || []);
+                    const meta = (!Array.isArray(payload) && payload.meta) ? payload.meta : {};
+                    return { tenders: tenderList, meta };
+                } catch (e) {
+                    lastErr = e;
+                }
+            }
+            throw lastErr || new Error("Unable to load tenders.json from any candidate path");
         }
 
         function generateAIInsight(tender) {
@@ -1161,7 +1200,7 @@
 
             document.getElementById('modal-tender-title').textContent = getVal(tender.title);
             document.getElementById('modal-tender-source').textContent = getVal(tender.source);
-            document.getElementById('modal-tender-company').textContent = getVal(tender.company);
+            document.getElementById('modal-tender-company').textContent = getVal(getCompany(tender));
             document.getElementById('modal-tender-priority').textContent = getVal(tender.priority);
             document.getElementById('modal-tender-close-date').textContent = getVal(tender.closing_date);
             document.getElementById('modal-tender-days-remaining').textContent = daysText;
@@ -1276,7 +1315,7 @@
                 ${dayTenders.map(t => `
                     <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; margin: 10px 0; cursor: pointer;" onclick="window.open('${t.url}', '_blank')">
                         <span style="color: #667eea; font-weight: bold;">${t.ref}</span>
-                        <span class="company-badge company-${t.company}" style="margin-left: 10px;">${t.company}</span>
+                        <span class="company-badge company-${getCompany(t)}" style="margin-left: 10px;">${getCompany(t)}</span>
                         <div style="color: #ccc; margin-top: 5px;">${t.title}</div>
                         <div style="color: #888; font-size: 0.8rem; margin-top: 5px;">📍 ${t.client}</div>
                     </div>
@@ -1358,8 +1397,8 @@
             .then(({ tenders: loadedTenders, meta }) => {
                 const effectiveMeta = meta || {};
 
-                tenders = loadedTenders; // Update global variable
-                window.tendersData = loadedTenders;
+                tenders = loadedTenders.map(normalizeTender); // Update global variable
+                window.tendersData = tenders;
                 window.dashboardMeta = effectiveMeta;
 
                 // Update last sync + next run labels if elements exist
@@ -1376,7 +1415,11 @@
                 renderTenders('all');
                 updatePrintHeader(effectiveMeta || initialMeta, getKpiSummary());
             })
-            .catch(err => console.error("Error fetching tenders:", err));
+            .catch(err => {
+                console.error("Error fetching tenders:", err);
+                const el = document.getElementById("next-run-countdown");
+                if (el) el.textContent = "❌ Failed to load tenders.json: " + err.message;
+            });
 
         updateNextRunCountdown();
         setInterval(updateNextRunCountdown, 60000);
