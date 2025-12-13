@@ -1,0 +1,7 @@
+{
+  "rewrites": [
+    { "source": "/", "destination": "/vercel-dashboard/index.html" },
+    { "source": "/tenders.json", "destination": "/vercel-dashboard/tenders.json" },
+    { "source": "/public/:path*", "destination": "/vercel-dashboard/public/:path*" }
+  ]
+}
