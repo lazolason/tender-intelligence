@@ -1192,8 +1192,19 @@
         }
 
         async function loadTenderPayload() {
-            // Canonical: root-level tenders.json (Vercel static asset)
-            const candidates = ["/tenders.json", "./tenders.json", "../tenders.json"];
+            // Try a few common static-asset locations (depends on Vercel root/output directory settings)
+            const candidates = [
+                "/tenders.json",
+                "/public/build/tenders.json",
+                "/public/tenders-latest.json",
+                "./tenders.json",
+                "./public/build/tenders.json",
+                "./public/tenders-latest.json",
+                "/vercel-dashboard/tenders.json",
+                "/vercel-dashboard/public/build/tenders.json",
+                "/vercel-dashboard/public/tenders-latest.json",
+                "../tenders.json"
+            ];
 
             let lastErr;
             for (const url of candidates) {
