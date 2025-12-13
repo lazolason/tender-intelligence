@@ -1,58 +1,147 @@
 {
-    "generated_at": "2025-12-13 12:35",
-    "build_id": "2025-12-13 12:35 · e1eabda",
-    "build_sha": "e1eabda",
+    "generated_at": "2025-12-13 08:01",
+    "build_id": "2025-12-13 08:01 · 150c022",
+    "build_sha": "150c022",
     "next_run": "Daily 08:00",
     "counts": {
-        "total": 3,
+        "total": 33,
         "by_company": {
-            "Unknown": 3
+            "Unknown": 22,
+            "Phakathi": 6,
+            "TES": 5
         },
         "by_priority": {
-            "MEDIUM": 2,
-            "LOW": 1
+            "MEDIUM": 18,
+            "LOW": 14,
+            "HIGH": 1
         },
         "by_source": {
-            "Rand Water": 2,
-            "City of Ekurhuleni": 1
+            "Eskom": 12,
+            "National Treasury": 12,
+            "Johannesburg Water": 7,
+            "Rand Water": 2
         }
     },
     "top": [
         {
-            "title": "Open Tenders (Over R750 000)",
-            "source": "City of Ekurhuleni",
-            "company": "Unknown",
-            "priority": "LOW",
-            "close_date": "11/12/2025",
-            "fit": null,
-            "revenue": null,
-            "risk": null,
-            "suitability": 4.5,
-            "url": ""
+            "title": "REGRET LETTER: THE MECHANICAL REFURBISHMENT OF THE DEMINERALISATION AND CONDENSATE POLISHING REGENER",
+            "source": "Eskom",
+            "company": "TES",
+            "priority": "HIGH",
+            "close_date": "2025-Dec-31",
+            "fit": 9.0,
+            "revenue": 5.0,
+            "risk": 7.0,
+            "suitability": 10.0,
+            "url": "https://tenderbulletin.eskom.co.za/tender/93737"
         },
         {
-            "title": "RW10397693/25RR - THE SUPPLY AND DELIVERY OF AMMONIUM HYDROXIDE TO RAND WATER’S ZWARTKOPJES, EIKENHOF, PALMIET, AND MA",
-            "source": "Rand Water",
-            "company": "Unknown",
+            "title": "cancelation of the tender for tender for the establishment of an enabling contract to provide for fi",
+            "source": "Eskom",
+            "company": "TES",
             "priority": "MEDIUM",
-            "close_date": "2026-01-19",
-            "fit": null,
-            "revenue": null,
-            "risk": null,
-            "suitability": 5.8,
-            "url": "https://www.randwater.co.za/./media/sc_pdf/RW10397693 25RR.pdf"
+            "close_date": "2025-Dec-31",
+            "fit": 7.0,
+            "revenue": 5.0,
+            "risk": 7.0,
+            "suitability": 10.0,
+            "url": "https://tenderbulletin.eskom.co.za/tender/93799"
         },
         {
-            "title": "RW10413976-25 CALCIUM HYPOCHLORITE GRANULES - SUPPLY AND DELIVERY OF CALCIUM HYPOCHLORITE GRANULES TO RAND WATER SITES FOR A PERIOD OF SIXTY (60) ",
-            "source": "Rand Water",
+            "title": "Bidders - UNIT 1 & 2 EXCITATION SYSTEM REPLACEMENT AT VANDERKLOOF HYDRO-POWER STATION",
+            "source": "Eskom",
             "company": "Unknown",
             "priority": "MEDIUM",
-            "close_date": "2026-01-30",
-            "fit": null,
-            "revenue": null,
-            "risk": null,
-            "suitability": 5.3,
-            "url": "https://www.randwater.co.za/./media/sc_pdf/RW010413976-25 RW Advert.pdf"
+            "close_date": "2026-Jan-01",
+            "fit": 5.0,
+            "revenue": 5.0,
+            "risk": 7.0,
+            "suitability": 10.0,
+            "url": "https://tenderbulletin.eskom.co.za/tender/91576"
+        },
+        {
+            "title": "Cancellation of the Supply and delivery of Solar PV Demo Plant Spares on an “as-and-when” required b",
+            "source": "Eskom",
+            "company": "Unknown",
+            "priority": "MEDIUM",
+            "close_date": "2026-Jan-05",
+            "fit": 5.0,
+            "revenue": 5.0,
+            "risk": 7.0,
+            "suitability": 10.0,
+            "url": "https://tenderbulletin.eskom.co.za/tender/93734"
+        },
+        {
+            "title": "Request for Proposal for The Provision of Outcome-Based Physical Guarding Services and Security Tech",
+            "source": "Eskom",
+            "company": "Unknown",
+            "priority": "MEDIUM",
+            "close_date": "2026-Jan-12",
+            "fit": 6.0,
+            "revenue": 5.0,
+            "risk": 7.0,
+            "suitability": 10.0,
+            "url": "https://tenderbulletin.eskom.co.za/tender/93395"
+        },
+        {
+            "title": "Kusile Power Station Generator and Electrical Unitized Plant for work during outages to a suitably q",
+            "source": "Eskom",
+            "company": "Unknown",
+            "priority": "MEDIUM",
+            "close_date": "2025-Dec-15",
+            "fit": 5.0,
+            "revenue": 8.0,
+            "risk": 7.0,
+            "suitability": 10.0,
+            "url": "https://tenderbulletin.eskom.co.za/tender/93535"
+        },
+        {
+            "title": "• Actions/ initiatives must be simple, relatable and actionable. • Action plans to be aligned to the",
+            "source": "Eskom",
+            "company": "TES",
+            "priority": "MEDIUM",
+            "close_date": "2025-Dec-15",
+            "fit": 7.0,
+            "revenue": 5.0,
+            "risk": 7.0,
+            "suitability": 10.0,
+            "url": "https://tenderbulletin.eskom.co.za/tender/93731"
+        },
+        {
+            "title": "CANCELATION - Alien and Invasive species control and Eradication for a period of five years at Letha",
+            "source": "Eskom",
+            "company": "Unknown",
+            "priority": "MEDIUM",
+            "close_date": "2025-Dec-18",
+            "fit": 5.0,
+            "revenue": 5.0,
+            "risk": 7.0,
+            "suitability": 10.0,
+            "url": "https://tenderbulletin.eskom.co.za/tender/93567"
+        },
+        {
+            "title": "Regret and Award - Tender E1250GXPOU - Access Roads Rehabilitation Palmiet Pumped Storage Scheme",
+            "source": "Eskom",
+            "company": "Unknown",
+            "priority": "MEDIUM",
+            "close_date": "2025-Dec-31",
+            "fit": 8.0,
+            "revenue": 5.0,
+            "risk": 7.0,
+            "suitability": 10.0,
+            "url": "https://tenderbulletin.eskom.co.za/tender/93337"
+        },
+        {
+            "title": "CANCELLATION: Design, manufacture, procure, installation, and commissioning of Duvha Power Station E",
+            "source": "Eskom",
+            "company": "Phakathi",
+            "priority": "MEDIUM",
+            "close_date": "2025-Dec-31",
+            "fit": 5.0,
+            "revenue": 5.0,
+            "risk": 7.0,
+            "suitability": 10.0,
+            "url": "https://tenderbulletin.eskom.co.za/tender/93562"
         }
     ]
 }

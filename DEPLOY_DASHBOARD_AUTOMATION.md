@@ -24,6 +24,12 @@ The workflow:
 - `vercel-dashboard/public/tenders-YYYY-MM-DD.json` (dated snapshot)
 - `vercel-dashboard/public/summary.json` (counts + top opportunities for fast UI reads)
 
+## Local manual update (if you refresh tenders-latest.json yourself)
+
+If you copy fresh tender data into `vercel-dashboard/public/tenders-latest.json`, regenerate the matching `summary.json` like this:
+
+`python3 tools/generate_dashboard_summary.py --in vercel-dashboard/public/tenders-latest.json --out vercel-dashboard/public/summary.json`
+
 ## Notes
 
 - The snapshot builder uses **non-Selenium** scrapers for CI stability.

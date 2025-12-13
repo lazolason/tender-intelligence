@@ -2,9 +2,9 @@ const config = {
     cacheKey: "ti_dashboard_payload_v1",
     cacheTtlMs: 60 * 60 * 1000, // 1 hour
     tenderJsonUrls: [
-        "/tenders.json",
-        "/public/build/tenders.json",
         "/public/tenders-latest.json",
+        "/public/build/tenders.json",
+        "/tenders.json",
         "./tenders.json",
         "./public/build/tenders.json",
         "./public/tenders-latest.json",
@@ -447,6 +447,7 @@ function readCachedPayload() {
         const age = Date.now() - storedAtMs;
         if (age > config.cacheTtlMs) {
             localStorage.removeItem(config.cacheKey);
+            console.info("[Tender Intelligence] Cache expired (age ms):", age);
             return null;
         }
         const payload = cached.payload;
@@ -490,31 +491,50 @@ function clearCachedPayload() {
 
 async function loadTenderPayload({ forceRefresh } = {}) {
     if (forceRefresh) {
+        console.info("[Tender Intelligence] Manual refresh requested; clearing cache and refetching.");
         clearCachedPayload();
     }
 
     let lastErr;
     for (const url of config.tenderJsonUrls) {
         try {
+            console.info("[Tender Intelligence] Fetching data from:", url);
             const res = await fetch(url + "?ts=" + Date.now(), { cache: "no-store" });
             if (!res.ok) throw new Error(`${url} -> ${res.status}`);
             const payload = await res.json();
             const { tenderList, meta } = validatePayloadShape(payload);
             writeCachedPayload(payload);
+            console.info(
+                "[Tender Intelligence] Using live payload:",
+                url,
+                "records=",
+                tenderList.length,
+                "build=",
+                meta?.build_id || meta?.last_sync || "–"
+            );
             return { tenders: tenderList, meta: meta || {}, source: url };
         } catch (e) {
             lastErr = e;
+            console.warn("[Tender Intelligence] Fetch failed:", url, e?.message || e);
         }
     }
 
     if (!forceRefresh) {
         const cached = readCachedPayload();
         if (cached) {
+            console.info(
+                "[Tender Intelligence] Using cached payload:",
+                "records=",
+                cached.tenders.length,
+                "build=",
+                cached.buildId || cached.storedAt || "–"
+            );
             return { tenders: cached.tenders, meta: cached.meta, source: "localStorage", storedAt: cached.storedAt };
         }
     }
 
     const { tenderList, meta } = validatePayloadShape(config.seedPayload);
+    console.warn("[Tender Intelligence] Using seed payload (no live data and cache missing/expired).", lastErr?.message || lastErr);
     return { tenders: tenderList, meta, source: "seed", error: lastErr };
 }
 
