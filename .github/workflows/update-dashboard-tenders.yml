@@ -1,0 +1,50 @@
+name: Update dashboard tenders.json
+
+on:
+  workflow_dispatch:
+  schedule:
+    # 06:05 UTC ~= 08:05 SAST
+    - cron: "5 6 * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-dashboard-tenders
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Build dashboard snapshot
+        run: |
+          python tools/build_dashboard_snapshot.py --out vercel-dashboard/tenders.json --limit 200
+
+      - name: Commit and push if changed
+        run: |
+          if git diff --quiet -- vercel-dashboard/tenders.json; then
+            echo "No changes to vercel-dashboard/tenders.json"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add vercel-dashboard/tenders.json
+          git commit -m "Auto-update dashboard tenders.json"
+          git push
+
