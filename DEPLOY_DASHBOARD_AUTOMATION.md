@@ -2,7 +2,7 @@
 
 The deployed dashboard reads `vercel-dashboard/tenders.json` from the same Vercel site. Because it’s a static asset, it only changes when the file is updated in Git and redeployed.
 
-This repo includes a GitHub Actions workflow that automatically rebuilds and commits `vercel-dashboard/tenders.json` on a schedule, which triggers Vercel’s auto-deploy.
+This repo includes a GitHub Actions workflow that automatically rebuilds and commits dashboard data artifacts on a schedule, which triggers Vercel’s auto-deploy.
 
 ## Workflow
 
@@ -13,8 +13,16 @@ This repo includes a GitHub Actions workflow that automatically rebuilds and com
 The workflow:
 1. Checks out `main`
 2. Installs Python deps from `requirements.txt`
-3. Runs `python tools/build_dashboard_snapshot.py`
-4. Commits + pushes `vercel-dashboard/tenders.json` if it changed
+3. Runs `python tools/build_dashboard_snapshot.py` (atomic publish)
+4. Validates output JSON payloads
+5. Commits + pushes updated artifacts if anything changed
+
+## Output artifacts
+
+- `vercel-dashboard/tenders.json` (primary payload served by Vercel)
+- `vercel-dashboard/public/tenders-latest.json` (same as above, for debugging / future use)
+- `vercel-dashboard/public/tenders-YYYY-MM-DD.json` (dated snapshot)
+- `vercel-dashboard/public/summary.json` (counts + top opportunities for fast UI reads)
 
 ## Notes
 
@@ -25,4 +33,3 @@ The workflow:
 
 - Repo → Settings → Actions → General → Workflow permissions:
   - Set to **Read and write permissions**
-

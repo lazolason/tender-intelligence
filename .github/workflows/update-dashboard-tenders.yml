@@ -34,17 +34,17 @@ jobs:
 
       - name: Build dashboard snapshot
         run: |
-          python tools/build_dashboard_snapshot.py --out vercel-dashboard/tenders.json --limit 200
-          python tools/validate_dashboard_tenders_json.py --path vercel-dashboard/tenders.json
+          python tools/build_dashboard_snapshot.py --out vercel-dashboard/tenders.json --limit 200 --public-dir vercel-dashboard/public
+          python tools/validate_dashboard_tenders_json.py --path vercel-dashboard/tenders.json --summary-path vercel-dashboard/public/summary.json
 
       - name: Commit and push if changed
         run: |
-          if git diff --quiet -- vercel-dashboard/tenders.json; then
-            echo "No changes to vercel-dashboard/tenders.json"
+          if git diff --quiet -- vercel-dashboard/tenders.json vercel-dashboard/public/; then
+            echo "No changes to dashboard artifacts"
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add vercel-dashboard/tenders.json
-          git commit -m "Auto-update dashboard tenders.json"
+          git add vercel-dashboard/tenders.json vercel-dashboard/public/
+          git commit -m "Auto-update dashboard tenders snapshot"
           git push

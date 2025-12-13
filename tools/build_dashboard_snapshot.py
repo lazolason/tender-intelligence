@@ -4,6 +4,7 @@ import json
 import os
 import sys
 from datetime import datetime, timedelta
+from typing import Any, Dict, List, Optional, Tuple
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -35,6 +36,15 @@ def _now_sast_str() -> str:
         return (datetime.utcnow() + timedelta(hours=2)).strftime("%Y-%m-%d %H:%M")
 
 
+def _today_sast_date_str() -> str:
+    try:
+        from zoneinfo import ZoneInfo  # py3.9+
+
+        return datetime.now(ZoneInfo("Africa/Johannesburg")).date().isoformat()
+    except Exception:
+        return (datetime.utcnow() + timedelta(hours=2)).date().isoformat()
+
+
 def _identity(t: dict) -> str:
     ref = (t.get("ref") or "").strip().lower()
     if ref:
@@ -46,6 +56,117 @@ def _identity(t: dict) -> str:
         return json.dumps(t, sort_keys=True, default=str)
     except Exception:
         return str(t)
+
+
+def _as_number(value: Any) -> Optional[float]:
+    if isinstance(value, (int, float)) and not isinstance(value, bool):
+        return float(value)
+    return None
+
+
+def validate_payload(payload: Any) -> Tuple[List[dict], Dict[str, Any]]:
+    if isinstance(payload, list):
+        tenders = payload
+        meta: Dict[str, Any] = {}
+    elif isinstance(payload, dict):
+        tenders = payload.get("tenders") or payload.get("data") or []
+        meta = payload.get("meta") or {}
+    else:
+        raise ValueError("payload must be a list or object")
+
+    if not isinstance(tenders, list):
+        raise ValueError("tenders must be an array")
+    if meta and not isinstance(meta, dict):
+        raise ValueError("meta must be an object when present")
+
+    for i, t in enumerate(tenders[:200]):
+        if not isinstance(t, dict):
+            raise ValueError(f"tender at index {i} must be an object")
+        title = t.get("title")
+        if title is not None and not isinstance(title, str):
+            raise ValueError(f"tender[{i}].title must be a string when present")
+        scores = t.get("scores")
+        if scores is not None and not isinstance(scores, dict):
+            raise ValueError(f"tender[{i}].scores must be an object when present")
+
+    return tenders, meta
+
+
+def atomic_write_json(path: str, payload: Any) -> None:
+    directory = os.path.dirname(os.path.abspath(path))
+    if directory:
+        os.makedirs(directory, exist_ok=True)
+
+    tmp_path = path + ".tmp"
+    try:
+        with open(tmp_path, "w", encoding="utf-8") as f:
+            json.dump(payload, f, ensure_ascii=False, indent=4)
+            f.flush()
+            os.fsync(f.fileno())
+        os.replace(tmp_path, path)
+    finally:
+        try:
+            if os.path.exists(tmp_path):
+                os.remove(tmp_path)
+        except Exception:
+            pass
+
+
+def build_summary(meta: Dict[str, Any], tenders: List[dict]) -> Dict[str, Any]:
+    by_company: Dict[str, int] = {}
+    by_priority: Dict[str, int] = {}
+    by_source: Dict[str, int] = {}
+
+    scored_rows = []
+    for t in tenders:
+        company = (t.get("category") or t.get("company") or "Unknown") or "Unknown"
+        by_company[company] = by_company.get(company, 0) + 1
+
+        source = (t.get("source") or "Unknown") or "Unknown"
+        by_source[source] = by_source.get(source, 0) + 1
+
+        scores = t.get("scores") or {}
+        priority = (scores.get("priority") or t.get("priority") or "UNKNOWN") or "UNKNOWN"
+        priority = str(priority).upper()
+        by_priority[priority] = by_priority.get(priority, 0) + 1
+
+        fit = _as_number(scores.get("fit"))
+        revenue = _as_number(scores.get("revenue"))
+        risk = _as_number(scores.get("risk"))
+        suitability = _as_number(scores.get("industry")) or _as_number(scores.get("composite"))
+        scored_rows.append(
+            (
+                fit if fit is not None else -1.0,
+                revenue if revenue is not None else -1.0,
+                {
+                    "title": t.get("title") or "-",
+                    "source": source,
+                    "company": company,
+                    "priority": priority,
+                    "close_date": t.get("closing_date") or t.get("close_date") or "-",
+                    "fit": fit,
+                    "revenue": revenue,
+                    "risk": risk,
+                    "suitability": suitability,
+                    "url": t.get("url") or "",
+                },
+            )
+        )
+
+    scored_rows.sort(key=lambda x: (x[0], x[1]), reverse=True)
+    top = [row for _, __, row in scored_rows[:10]]
+
+    return {
+        "generated_at": meta.get("last_sync") or _now_sast_str(),
+        "next_run": meta.get("next_run") or "Daily 08:00",
+        "counts": {
+            "total": len(tenders),
+            "by_company": dict(sorted(by_company.items(), key=lambda kv: (-kv[1], kv[0]))),
+            "by_priority": dict(sorted(by_priority.items(), key=lambda kv: (-kv[1], kv[0]))),
+            "by_source": dict(sorted(by_source.items(), key=lambda kv: (-kv[1], kv[0]))),
+        },
+        "top": top,
+    }
 
 
 def build_snapshot(limit: int) -> dict:
@@ -118,16 +239,33 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Build Vercel dashboard tenders.json snapshot")
     parser.add_argument("--out", default="vercel-dashboard/tenders.json", help="Output path for tenders.json")
     parser.add_argument("--limit", type=int, default=200, help="Max tenders to keep in snapshot")
+    parser.add_argument(
+        "--public-dir",
+        default="vercel-dashboard/public",
+        help="Directory for versioned dashboard artifacts (tenders-latest.json, tenders-YYYY-MM-DD.json, summary.json)",
+    )
     args = parser.parse_args()
 
     payload = build_snapshot(limit=args.limit)
-    if not payload.get("tenders") and os.path.exists(args.out):
+    tenders, meta = validate_payload(payload)
+    if not tenders and os.path.exists(args.out):
         # Avoid wiping the dashboard if scrapes return nothing.
         # Keep the previous snapshot unchanged so the workflow does not commit churn.
         return
 
-    with open(args.out, "w", encoding="utf-8") as f:
-        json.dump(payload, f, ensure_ascii=False, indent=4)
+    atomic_write_json(args.out, payload)
+
+    public_dir = os.path.abspath(args.public_dir)
+    os.makedirs(public_dir, exist_ok=True)
+
+    # Versioned artifacts for debugging + historical reference.
+    latest_path = os.path.join(public_dir, "tenders-latest.json")
+    dated_path = os.path.join(public_dir, f"tenders-{_today_sast_date_str()}.json")
+    atomic_write_json(latest_path, payload)
+    atomic_write_json(dated_path, payload)
+
+    summary = build_summary(meta=meta, tenders=tenders)
+    atomic_write_json(os.path.join(public_dir, "summary.json"), summary)
 
 
 if __name__ == "__main__":
