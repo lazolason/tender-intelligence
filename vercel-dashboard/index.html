@@ -18,6 +18,14 @@
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
         .last-sync { display: inline-block; background: rgba(102, 126, 234, 0.2); color: #667eea; padding: 8px 16px; border-radius: 20px; font-size: 0.85rem; margin-top: 15px; border: 1px solid rgba(102, 126, 234, 0.3); }
         .next-run-countdown { margin-top: 6px; font-size: 0.85rem; color: #aaa; }
+        .data-status { margin-top: 10px; padding: 10px 14px; border-radius: 14px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); color: #bbb; font-size: 0.85rem; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; justify-content: space-between; }
+        .data-status strong { color: #fff; font-weight: 600; }
+        .data-status .data-status-left { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+        .data-status .data-pill { padding: 3px 10px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.10); background: rgba(255,255,255,0.04); color: #ddd; }
+        .data-status .data-pill.ok { border-color: rgba(0,255,136,0.35); color: #baffdf; }
+        .data-status .data-pill.warn { border-color: rgba(254,202,87,0.35); color: #ffe6b3; }
+        .data-status .data-pill.err { border-color: rgba(255,107,107,0.35); color: #ffd1d1; }
+        .data-status .data-status-error { color: #ffb3b3; max-width: 800px; overflow-wrap: anywhere; }
         
         /* Tab Navigation */
         .tab-nav { display: flex; justify-content: center; gap: 10px; margin: 30px 0; flex-wrap: wrap; }
@@ -378,6 +386,15 @@
                     <span id="next-run-text">Daily 08:00</span>
                 </div>
                 <div id="next-run-countdown" class="next-run-countdown"></div>
+                <div id="data-status" class="data-status" role="status" aria-live="polite">
+                    <div class="data-status-left">
+                        <span id="data-status-pill" class="data-pill warn">Data: loading…</span>
+                        <span>Source: <strong id="data-status-source">–</strong></span>
+                        <span>Records: <strong id="data-status-count">–</strong></span>
+                        <span>Updated: <strong id="data-status-updated">–</strong></span>
+                    </div>
+                    <div id="data-status-error" class="data-status-error"></div>
+                </div>
             </section>
 
             <section class="section pipeline-section">
@@ -1114,12 +1131,69 @@
             };
         }
 
+        const DASHBOARD_CACHE_KEY = "ti_dashboard_payload_v1";
+        const SEED_TENDER_PAYLOAD = {
+            meta: {
+                last_sync: null,
+                next_run: "Daily 08:00"
+            },
+            tenders: []
+        };
+
+        function setDataStatus({ level, source, count, updated, error }) {
+            const pill = document.getElementById("data-status-pill");
+            const sourceEl = document.getElementById("data-status-source");
+            const countEl = document.getElementById("data-status-count");
+            const updatedEl = document.getElementById("data-status-updated");
+            const errorEl = document.getElementById("data-status-error");
+
+            if (pill) {
+                pill.classList.remove("ok", "warn", "err");
+                if (level) pill.classList.add(level);
+                pill.textContent = level === "ok" ? "Data: live" : level === "warn" ? "Data: cached" : "Data: error";
+            }
+            if (sourceEl) sourceEl.textContent = source || "–";
+            if (countEl) countEl.textContent = typeof count === "number" ? String(count) : (count ?? "–");
+            if (updatedEl) updatedEl.textContent = updated || "–";
+            if (errorEl) errorEl.textContent = error || "";
+        }
+
+        function validatePayloadShape(payload) {
+            const tenderList = Array.isArray(payload) ? payload : (payload?.tenders || payload?.data || []);
+            if (!Array.isArray(tenderList)) throw new Error("Invalid payload: tenders must be an array");
+            const meta = (!Array.isArray(payload) && payload?.meta) ? payload.meta : {};
+            return { tenderList, meta };
+        }
+
+        function readCachedPayload() {
+            try {
+                const raw = localStorage.getItem(DASHBOARD_CACHE_KEY);
+                if (!raw) return null;
+                const cached = JSON.parse(raw);
+                if (!cached || typeof cached !== "object") return null;
+                const payload = cached.payload;
+                const { tenderList, meta } = validatePayloadShape(payload);
+                return {
+                    tenders: tenderList,
+                    meta: meta || {},
+                    storedAt: cached.storedAt || null
+                };
+            } catch {
+                return null;
+            }
+        }
+
+        function writeCachedPayload(payload) {
+            try {
+                localStorage.setItem(DASHBOARD_CACHE_KEY, JSON.stringify({ payload, storedAt: new Date().toISOString() }));
+            } catch {
+                // ignore storage failures
+            }
+        }
+
         async function loadTenderPayload() {
-            const candidates = [
-                "/tenders.json",
-                "./tenders.json",
-                "../tenders.json",
-            ];
+            // Canonical: root-level tenders.json (Vercel static asset)
+            const candidates = ["/tenders.json", "./tenders.json", "../tenders.json"];
 
             let lastErr;
             for (const url of candidates) {
@@ -1127,14 +1201,24 @@
                     const res = await fetch(url + "?ts=" + Date.now(), { cache: "no-store" });
                     if (!res.ok) throw new Error(`${url} -> ${res.status}`);
                     const payload = await res.json();
-                    const tenderList = Array.isArray(payload) ? payload : (payload.tenders || payload.data || []);
-                    const meta = (!Array.isArray(payload) && payload.meta) ? payload.meta : {};
-                    return { tenders: tenderList, meta };
+                    const { tenderList, meta } = validatePayloadShape(payload);
+                    writeCachedPayload(payload);
+                    return { tenders: tenderList, meta: meta || {}, source: url };
                 } catch (e) {
                     lastErr = e;
                 }
             }
-            throw lastErr || new Error("Unable to load tenders.json from any candidate path");
+
+            // Fallback: last-known cached payload
+            const cached = readCachedPayload();
+            if (cached) {
+                return { tenders: cached.tenders, meta: cached.meta, source: "localStorage", storedAt: cached.storedAt };
+            }
+
+            // Fallback: minimal seed data
+            const seed = SEED_TENDER_PAYLOAD;
+            const { tenderList, meta } = validatePayloadShape(seed);
+            return { tenders: tenderList, meta, source: "seed" };
         }
 
         function generateAIInsight(tender) {
@@ -1414,8 +1498,10 @@
             updatePrintHeader(metaNow, getKpiSummary());
         });
 
+        setDataStatus({ level: "warn", source: "initial", count: "–", updated: "–", error: "" });
+
         loadTenderPayload()
-            .then(({ tenders: loadedTenders, meta }) => {
+            .then(({ tenders: loadedTenders, meta, source, storedAt }) => {
                 const effectiveMeta = meta || {};
 
                 tenders = loadedTenders.map(normalizeTender); // Update global variable
@@ -1433,13 +1519,22 @@
                     nextRunEl.textContent = effectiveMeta.next_run;
                 }
 
+                const updated = effectiveMeta.last_sync || storedAt || "–";
+                const level = source === "localStorage" || source === "seed" ? "warn" : "ok";
+                setDataStatus({
+                    level,
+                    source: source || "unknown",
+                    count: loadedTenders.length,
+                    updated,
+                    error: level === "warn" && source === "seed" ? "No live data available yet (showing seed)." : ""
+                });
+
                 renderTenders('all');
                 updatePrintHeader(effectiveMeta || initialMeta, getKpiSummary());
             })
             .catch(err => {
                 console.error("Error fetching tenders:", err);
-                const el = document.getElementById("next-run-countdown");
-                if (el) el.textContent = "❌ Failed to load tenders.json: " + err.message;
+                setDataStatus({ level: "err", source: "error", count: 0, updated: "–", error: err?.message || String(err) });
             });
 
         updateNextRunCountdown();
