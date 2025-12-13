@@ -57,6 +57,12 @@ def main() -> int:
         if "next_run" in meta and not isinstance(meta["next_run"], str):
             print("ERROR: meta.next_run must be a string", file=sys.stderr)
             return 1
+        if "build_sha" in meta and meta["build_sha"] is not None and not isinstance(meta["build_sha"], str):
+            print("ERROR: meta.build_sha must be a string when present", file=sys.stderr)
+            return 1
+        if "build_id" in meta and meta["build_id"] is not None and not isinstance(meta["build_id"], str):
+            print("ERROR: meta.build_id must be a string when present", file=sys.stderr)
+            return 1
 
     # Basic sanity for tender objects (non-fatal, but useful)
     for i, t in enumerate(tenders[:200]):
@@ -104,6 +110,12 @@ def main() -> int:
 
         if not isinstance(summary, dict):
             print("ERROR: summary must be an object", file=sys.stderr)
+            return 1
+        if "build_id" in summary and summary["build_id"] is not None and not isinstance(summary["build_id"], str):
+            print("ERROR: summary.build_id must be a string when present", file=sys.stderr)
+            return 1
+        if "build_sha" in summary and summary["build_sha"] is not None and not isinstance(summary["build_sha"], str):
+            print("ERROR: summary.build_sha must be a string when present", file=sys.stderr)
             return 1
         if "counts" not in summary or not isinstance(summary["counts"], dict):
             print("ERROR: summary.counts must be an object", file=sys.stderr)

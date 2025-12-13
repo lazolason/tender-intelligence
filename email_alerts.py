@@ -21,13 +21,34 @@ EMAIL_CONFIG = {
 }
 
 AUTOMATION_DIR = os.path.dirname(os.path.abspath(__file__))
-TENDERS_JSON = os.path.join(AUTOMATION_DIR, "output", "new_tenders.json")
+DASHBOARD_URL = os.environ.get("DASHBOARD_URL") or "https://tender-intelligence-dashboard.vercel.app/"
 
-def load_tenders():
-    if os.path.exists(TENDERS_JSON):
-        with open(TENDERS_JSON, "r") as f:
-            return json.load(f)
-    return []
+# Canonical dataset: keep email + dashboard consistent by reading the same snapshot artifact.
+DASHBOARD_TENDERS_JSON = os.path.join(AUTOMATION_DIR, "vercel-dashboard", "tenders.json")
+
+# Legacy fallback (local pipeline output)
+LEGACY_TENDERS_JSON = os.path.join(AUTOMATION_DIR, "output", "new_tenders.json")
+
+def load_tender_payload():
+    """Load the canonical tenders payload used by the deployed dashboard."""
+    for path in (DASHBOARD_TENDERS_JSON, LEGACY_TENDERS_JSON):
+        if not os.path.exists(path):
+            continue
+        try:
+            with open(path, "r", encoding="utf-8") as f:
+                payload = json.load(f)
+        except Exception:
+            continue
+
+        if isinstance(payload, list):
+            return {"tenders": payload, "meta": {}, "source_path": path}
+        if isinstance(payload, dict):
+            tenders = payload.get("tenders") or payload.get("data") or []
+            meta = payload.get("meta") or {}
+            if isinstance(tenders, list) and isinstance(meta, dict):
+                return {"tenders": tenders, "meta": meta, "source_path": path}
+
+    return {"tenders": [], "meta": {}, "source_path": None}
 
 def get_days_until_closing(closing_date):
     """Calculate days until closing"""
@@ -56,8 +77,11 @@ def get_urgency_text(days):
         return f"🟡 {days} days left"
     return f"🟢 {days} days left"
 
-def generate_email_html(tenders):
+def generate_email_html(tenders, meta=None):
     """Generate HTML email content"""
+    meta = meta or {}
+    build_id = meta.get("build_id") or meta.get("last_sync") or datetime.now().strftime("%Y-%m-%d %H:%M")
+
     high_priority = [t for t in tenders if t.get("scores", {}).get("priority") == "HIGH"]
     medium_priority = [t for t in tenders if t.get("scores", {}).get("priority") == "MEDIUM"]
     
@@ -93,6 +117,7 @@ def generate_email_html(tenders):
         <div class="container">
             <h1>🎯 Tender Intelligence Daily Digest</h1>
             <p style="color: #888;">{datetime.now().strftime("%A, %d %B %Y")}</p>
+            <p style="color: #888; font-size: 11px; margin-top: 0;">Build stamp: <strong>{build_id}</strong></p>
     """
     
     if high_priority:
@@ -139,7 +164,7 @@ def generate_email_html(tenders):
     
     html += f"""
             <div class="footer">
-                <p>View full dashboard: <a href="https://vercel-dashboard-roan.vercel.app">vercel-dashboard-roan.vercel.app</a></p>
+                <p>View full dashboard: <a href="{DASHBOARD_URL}">{DASHBOARD_URL}</a></p>
                 <p>Tender Intelligence System | TES & Phakathi</p>
             </div>
         </div>
@@ -182,15 +207,18 @@ def send_daily_digest():
     """Main function to send daily digest"""
     print("📧 Preparing daily tender digest...")
     
-    tenders = load_tenders()
+    payload = load_tender_payload()
+    tenders = payload.get("tenders") or []
+    meta = payload.get("meta") or {}
     high_count = sum(1 for t in tenders if t.get("scores", {}).get("priority") == "HIGH")
     
     if high_count == 0:
         print("   No high priority tenders - skipping email")
         return
     
-    subject = f"🎯 {high_count} High Priority Tender{'s' if high_count != 1 else ''} - {datetime.now().strftime('%d %b')}"
-    html = generate_email_html(tenders)
+    stamp = meta.get("build_id") or meta.get("last_sync") or datetime.now().strftime("%Y-%m-%d")
+    subject = f"🎯 {high_count} High Priority Tender{'s' if high_count != 1 else ''} - {stamp}"
+    html = generate_email_html(tenders, meta=meta)
     
     send_email(subject, html)
 

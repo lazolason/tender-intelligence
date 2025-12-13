@@ -2,6 +2,7 @@
 import argparse
 import json
 import os
+import subprocess
 import sys
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional, Tuple
@@ -43,6 +44,20 @@ def _today_sast_date_str() -> str:
         return datetime.now(ZoneInfo("Africa/Johannesburg")).date().isoformat()
     except Exception:
         return (datetime.utcnow() + timedelta(hours=2)).date().isoformat()
+
+def _get_build_sha() -> Optional[str]:
+    for key in ("GITHUB_SHA", "VERCEL_GIT_COMMIT_SHA"):
+        val = (os.environ.get(key) or "").strip()
+        if val:
+            return val[:7]
+
+    try:
+        repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        out = subprocess.check_output(["git", "rev-parse", "--short", "HEAD"], cwd=repo_root, text=True)
+        sha = (out or "").strip()
+        return sha or None
+    except Exception:
+        return None
 
 
 def _identity(t: dict) -> str:
@@ -158,6 +173,8 @@ def build_summary(meta: Dict[str, Any], tenders: List[dict]) -> Dict[str, Any]:
 
     return {
         "generated_at": meta.get("last_sync") or _now_sast_str(),
+        "build_id": meta.get("build_id") or meta.get("last_sync") or _now_sast_str(),
+        "build_sha": meta.get("build_sha"),
         "next_run": meta.get("next_run") or "Daily 08:00",
         "counts": {
             "total": len(tenders),
@@ -227,12 +244,147 @@ def build_snapshot(limit: int) -> dict:
         if len(merged) >= limit:
             break
 
-    meta = {
-        "last_sync": _now_sast_str(),
+    last_sync = _now_sast_str()
+    build_sha = _get_build_sha()
+
+    meta: Dict[str, Any] = {
+        "last_sync": last_sync,
         "next_run": "Daily 08:00",
+        "build_sha": build_sha,
+        "build_id": f"{last_sync} · {build_sha}" if build_sha else last_sync,
     }
 
     return {"meta": meta, "tenders": merged}
+
+
+def render_daily_email_html(payload: Dict[str, Any], summary: Dict[str, Any], dashboard_url: str) -> str:
+    meta = payload.get("meta") or {}
+    tenders: List[dict] = payload.get("tenders") or []
+
+    def esc(s: Any) -> str:
+        return (
+            str(s)
+            .replace("&", "&amp;")
+            .replace("<", "&lt;")
+            .replace(">", "&gt;")
+            .replace('"', "&quot;")
+        )
+
+    build_id = meta.get("build_id") or meta.get("last_sync") or "–"
+    date_line = meta.get("last_sync") or datetime.now().strftime("%Y-%m-%d %H:%M")
+    counts = (summary.get("counts") or {}) if isinstance(summary, dict) else {}
+    by_priority = counts.get("by_priority") or {}
+    total = counts.get("total") or len(tenders)
+
+    # Simple prioritised list (HIGH then MEDIUM then the rest)
+    def prio_key(t: dict) -> int:
+        p = ((t.get("scores") or {}).get("priority") or t.get("priority") or "").upper()
+        return 0 if p == "HIGH" else 1 if p == "MEDIUM" else 2 if p == "LOW" else 3
+
+    ordered = sorted(tenders, key=lambda t: (prio_key(t), (t.get("closing_date") or "9999-99-99")))
+    top_rows = ordered[:10]
+
+    rows_html = ""
+    for t in top_rows:
+        scores = t.get("scores") or {}
+        priority = (scores.get("priority") or t.get("priority") or "UNKNOWN").upper()
+        company = t.get("category") or t.get("company") or "Unknown"
+        title = (t.get("title") or "-").strip()
+        source = t.get("source") or "Unknown"
+        close_date = t.get("closing_date") or "-"
+        url = t.get("url") or ""
+
+        rows_html += f"""
+          <tr>
+            <td class="col-title">
+              <div class="title">{esc(title[:160])}</div>
+              <div class="meta">{esc(source)} · {esc(company)} · closes {esc(close_date)}</div>
+            </td>
+            <td class="col-priority">{esc(priority)}</td>
+            <td class="col-scores">
+              <span>Fit {esc(scores.get("fit", "-"))}</span>
+              <span>Rev {esc(scores.get("revenue", "-"))}</span>
+              <span>Risk {esc(scores.get("risk", "-"))}</span>
+            </td>
+            <td class="col-link">{f'<a href=\"{esc(url)}\" target=\"_blank\" rel=\"noopener noreferrer\">View</a>' if url else '-'}</td>
+          </tr>
+        """
+
+    return f"""<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Tender Intelligence – Daily Email</title>
+    <style>
+      body {{ font-family: Arial, sans-serif; background: #f6f7fb; padding: 18px; color: #111; }}
+      .container {{ max-width: 860px; margin: 0 auto; background: #fff; border-radius: 14px; padding: 18px 18px 10px; border: 1px solid rgba(0,0,0,0.06); }}
+      h1 {{ margin: 0 0 2px 0; font-size: 18px; }}
+      .sub {{ margin: 0 0 10px 0; color: #555; font-size: 12px; }}
+      .stamp {{ margin: 0 0 12px 0; color: #666; font-size: 11px; }}
+      .kpis {{ display: flex; flex-wrap: wrap; gap: 10px; margin: 10px 0 14px; }}
+      .kpi {{ flex: 1 1 160px; border: 1px solid rgba(0,0,0,0.08); border-radius: 12px; padding: 10px 12px; background: #fff; }}
+      .kpi .label {{ color: #666; font-size: 11px; }}
+      .kpi .value {{ font-size: 18px; font-weight: 700; margin-top: 4px; }}
+      table {{ width: 100%; border-collapse: collapse; font-size: 12px; }}
+      th, td {{ border-top: 1px solid rgba(0,0,0,0.08); padding: 10px 8px; vertical-align: top; }}
+      th {{ text-align: left; font-size: 11px; color: #555; letter-spacing: .2px; }}
+      .title {{ font-weight: 700; }}
+      .meta {{ color: #666; font-size: 11px; margin-top: 3px; }}
+      .col-priority {{ width: 90px; font-weight: 700; }}
+      .col-scores {{ width: 170px; color: #333; }}
+      .col-scores span {{ display: inline-block; margin-right: 8px; }}
+      .col-link {{ width: 70px; }}
+      .footer {{ margin-top: 12px; padding-top: 10px; border-top: 1px solid rgba(0,0,0,0.08); color: #666; font-size: 11px; }}
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Tender Intelligence – Daily Digest</h1>
+      <p class="sub">TES &amp; Phakathi decision layer · {esc(date_line)}</p>
+      <p class="stamp">Build stamp: <strong>{esc(build_id)}</strong></p>
+
+      <div class="kpis">
+        <div class="kpi">
+          <div class="label">Total tenders</div>
+          <div class="value">{esc(total)}</div>
+        </div>
+        <div class="kpi">
+          <div class="label">High priority</div>
+          <div class="value">{esc(by_priority.get("HIGH", 0))}</div>
+        </div>
+        <div class="kpi">
+          <div class="label">Medium priority</div>
+          <div class="value">{esc(by_priority.get("MEDIUM", 0))}</div>
+        </div>
+        <div class="kpi">
+          <div class="label">Low priority</div>
+          <div class="value">{esc(by_priority.get("LOW", 0))}</div>
+        </div>
+      </div>
+
+      <h2 style="margin: 0 0 8px 0; font-size: 13px;">Top opportunities</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Priority</th>
+            <th>Scores</th>
+            <th>Link</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows_html}
+        </tbody>
+      </table>
+
+      <div class="footer">
+        Dashboard: <a href="{esc(dashboard_url)}" target="_blank" rel="noopener noreferrer">{esc(dashboard_url)}</a>
+      </div>
+    </div>
+  </body>
+</html>
+"""
 
 
 def main() -> None:
@@ -244,16 +396,32 @@ def main() -> None:
         default="vercel-dashboard/public",
         help="Directory for versioned dashboard artifacts (tenders-latest.json, tenders-YYYY-MM-DD.json, summary.json)",
     )
+    parser.add_argument(
+        "--dashboard-url",
+        default=os.environ.get("DASHBOARD_URL") or "https://tender-intelligence-dashboard.vercel.app/",
+        help="Dashboard URL to embed in generated email artifact",
+    )
     args = parser.parse_args()
 
     payload = build_snapshot(limit=args.limit)
     tenders, meta = validate_payload(payload)
+
+    should_write_main = True
     if not tenders and os.path.exists(args.out):
         # Avoid wiping the dashboard if scrapes return nothing.
-        # Keep the previous snapshot unchanged so the workflow does not commit churn.
-        return
+        # Keep the previous snapshot, but still refresh derived artifacts (summary/email)
+        # to ensure downstream consumers remain consistent.
+        should_write_main = False
+        try:
+            with open(args.out, "r", encoding="utf-8") as f:
+                payload = json.load(f)
+            tenders, meta = validate_payload(payload)
+        except Exception:
+            # If the existing snapshot is unreadable, fail hard (better than silently publishing junk).
+            raise
 
-    atomic_write_json(args.out, payload)
+    if should_write_main:
+        atomic_write_json(args.out, payload)
 
     public_dir = os.path.abspath(args.public_dir)
     os.makedirs(public_dir, exist_ok=True)
@@ -266,6 +434,27 @@ def main() -> None:
 
     summary = build_summary(meta=meta, tenders=tenders)
     atomic_write_json(os.path.join(public_dir, "summary.json"), summary)
+
+    # Build artifacts directory for downstream consumers (email + consistency checks).
+    build_dir = os.path.join(public_dir, "build")
+    os.makedirs(build_dir, exist_ok=True)
+    atomic_write_json(os.path.join(build_dir, "tenders.json"), payload)
+    atomic_write_json(os.path.join(build_dir, "summary.json"), summary)
+    email_html = render_daily_email_html(payload=payload, summary=summary, dashboard_url=args.dashboard_url)
+    tmp_email = os.path.join(build_dir, "daily_email.html.tmp")
+    email_path = os.path.join(build_dir, "daily_email.html")
+    try:
+        with open(tmp_email, "w", encoding="utf-8") as f:
+            f.write(email_html)
+            f.flush()
+            os.fsync(f.fileno())
+        os.replace(tmp_email, email_path)
+    finally:
+        try:
+            if os.path.exists(tmp_email):
+                os.remove(tmp_email)
+        except Exception:
+            pass
 
 
 if __name__ == "__main__":

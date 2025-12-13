@@ -1519,7 +1519,7 @@
                     nextRunEl.textContent = effectiveMeta.next_run;
                 }
 
-                const updated = effectiveMeta.last_sync || storedAt || "–";
+                const updated = effectiveMeta.build_id || effectiveMeta.last_sync || storedAt || "–";
                 const level = source === "localStorage" || source === "seed" ? "warn" : "ok";
                 setDataStatus({
                     level,

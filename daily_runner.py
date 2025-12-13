@@ -123,7 +123,7 @@ def run_daily():
    Dashboard: {'✅' if results.get('sync', {}).get('status') == 'success' else '⚠️'}
    Email:     {'✅' if results.get('email', {}).get('status') == 'sent' else '⚠️'}
    
-   🌐 View Dashboard: https://vercel-dashboard-roan.vercel.app
+   🌐 View Dashboard: https://tender-intelligence-dashboard.vercel.app/
 """)
     
     return results
@@ -179,7 +179,7 @@ def generate_email_summary(results):
         
         <div style="background: #f8f9fa; padding: 20px; border-radius: 12px; margin: 25px 0; text-align: center;">
             <p style="margin: 0 0 15px 0; color: #666;">View all tenders on your dashboard:</p>
-            <a href="https://vercel-dashboard-roan.vercel.app" 
+            <a href="https://tender-intelligence-dashboard.vercel.app/" 
                style="display: inline-block; background: linear-gradient(135deg, #667eea, #764ba2); 
                       color: white; padding: 12px 30px; border-radius: 25px; text-decoration: none;
                       font-weight: 600;">
