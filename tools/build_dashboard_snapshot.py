@@ -306,7 +306,7 @@ def render_daily_email_html(payload: Dict[str, Any], summary: Dict[str, Any], da
               <span>Rev {esc(scores.get("revenue", "-"))}</span>
               <span>Risk {esc(scores.get("risk", "-"))}</span>
             </td>
-            <td class="col-link">{f'<a href=\"{esc(url)}\" target=\"_blank\" rel=\"noopener noreferrer\">View</a>' if url else '-'}</td>
+            <td class="col-link">{f'<a href="{esc(url)}" target="_blank" rel="noopener noreferrer">View</a>' if url else '-'}</td>
           </tr>
         """
 
