@@ -1,0 +1,58 @@
+{
+    "generated_at": "2025-12-13 12:27",
+    "build_id": "2025-12-13 12:27 · c689fbf",
+    "build_sha": "c689fbf",
+    "next_run": "Daily 08:00",
+    "counts": {
+        "total": 3,
+        "by_company": {
+            "Unknown": 3
+        },
+        "by_priority": {
+            "MEDIUM": 2,
+            "LOW": 1
+        },
+        "by_source": {
+            "Rand Water": 2,
+            "City of Ekurhuleni": 1
+        }
+    },
+    "top": [
+        {
+            "title": "Open Tenders (Over R750 000)",
+            "source": "City of Ekurhuleni",
+            "company": "Unknown",
+            "priority": "LOW",
+            "close_date": "11/12/2025",
+            "fit": null,
+            "revenue": null,
+            "risk": null,
+            "suitability": 4.5,
+            "url": ""
+        },
+        {
+            "title": "RW10397693/25RR - THE SUPPLY AND DELIVERY OF AMMONIUM HYDROXIDE TO RAND WATER’S ZWARTKOPJES, EIKENHOF, PALMIET, AND MA",
+            "source": "Rand Water",
+            "company": "Unknown",
+            "priority": "MEDIUM",
+            "close_date": "2026-01-19",
+            "fit": null,
+            "revenue": null,
+            "risk": null,
+            "suitability": 5.8,
+            "url": "https://www.randwater.co.za/./media/sc_pdf/RW10397693 25RR.pdf"
+        },
+        {
+            "title": "RW10413976-25 CALCIUM HYPOCHLORITE GRANULES - SUPPLY AND DELIVERY OF CALCIUM HYPOCHLORITE GRANULES TO RAND WATER SITES FOR A PERIOD OF SIXTY (60) ",
+            "source": "Rand Water",
+            "company": "Unknown",
+            "priority": "MEDIUM",
+            "close_date": "2026-01-30",
+            "fit": null,
+            "revenue": null,
+            "risk": null,
+            "suitability": 5.3,
+            "url": "https://www.randwater.co.za/./media/sc_pdf/RW010413976-25 RW Advert.pdf"
+        }
+    ]
+}
