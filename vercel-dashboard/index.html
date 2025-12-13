@@ -26,6 +26,9 @@
         .data-status .data-pill.warn { border-color: rgba(254,202,87,0.35); color: #ffe6b3; }
         .data-status .data-pill.err { border-color: rgba(255,107,107,0.35); color: #ffd1d1; }
         .data-status .data-status-error { color: #ffb3b3; max-width: 800px; overflow-wrap: anywhere; }
+        .refresh-data-btn { margin-left: auto; padding: 8px 14px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.14); background: rgba(255,255,255,0.08); color: #fff; cursor: pointer; font-size: 0.85rem; font-weight: 600; }
+        .refresh-data-btn:hover { background: rgba(255,255,255,0.16); }
+        .refresh-data-btn:disabled { opacity: 0.6; cursor: not-allowed; }
         
         /* Tab Navigation */
         .tab-nav { display: flex; justify-content: center; gap: 10px; margin: 30px 0; flex-wrap: wrap; }
@@ -464,7 +467,7 @@
 
             <section class="section active-tenders-section">
                 <h2>📋 Active Tenders</h2>
-                <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px;">
+                <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px; align-items: center;">
                     <label style="color: #888; font-size: 0.9rem;">Company
                         <select id="companyFilter" onchange="filterTenders(this.value)" style="margin-left: 8px; padding: 8px 10px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); color: #fff;">
                             <option value="all">All</option>
@@ -484,6 +487,7 @@
                         <input type="checkbox" id="hide-out-of-scope" />
                         Hide out-of-scope
                     </label>
+                    <button id="refresh-data-btn" class="refresh-data-btn" type="button">Refresh data</button>
                 </div>
                 <div style="overflow-x: auto;">
                     <table class="tenders-table" style="width: 100%; border-collapse: collapse;">
@@ -1132,6 +1136,7 @@
         }
 
         const DASHBOARD_CACHE_KEY = "ti_dashboard_payload_v1";
+        const DASHBOARD_CACHE_TTL_MS = 60 * 60 * 1000; // 1 hour
         const SEED_TENDER_PAYLOAD = {
             meta: {
                 last_sync: null,
@@ -1171,12 +1176,22 @@
                 if (!raw) return null;
                 const cached = JSON.parse(raw);
                 if (!cached || typeof cached !== "object") return null;
+                const storedAtMs = cached?.storedAt ? Date.parse(cached.storedAt) : NaN;
+                if (!Number.isFinite(storedAtMs)) return null;
+                const age = Date.now() - storedAtMs;
+                if (age > DASHBOARD_CACHE_TTL_MS) {
+                    localStorage.removeItem(DASHBOARD_CACHE_KEY);
+                    console.info("[Tender Intelligence] Cache expired (age ms):", age);
+                    return null;
+                }
                 const payload = cached.payload;
                 const { tenderList, meta } = validatePayloadShape(payload);
                 return {
                     tenders: tenderList,
                     meta: meta || {},
-                    storedAt: cached.storedAt || null
+                    storedAt: cached.storedAt || null,
+                    buildId: cached?.buildId || meta?.build_id || null,
+                    buildSha: cached?.buildSha || meta?.build_sha || null
                 };
             } catch {
                 return null;
@@ -1185,13 +1200,30 @@
 
         function writeCachedPayload(payload) {
             try {
-                localStorage.setItem(DASHBOARD_CACHE_KEY, JSON.stringify({ payload, storedAt: new Date().toISOString() }));
+                const { meta } = validatePayloadShape(payload);
+                localStorage.setItem(
+                    DASHBOARD_CACHE_KEY,
+                    JSON.stringify({
+                        payload,
+                        storedAt: new Date().toISOString(),
+                        buildId: meta?.build_id || null,
+                        buildSha: meta?.build_sha || null
+                    })
+                );
             } catch {
                 // ignore storage failures
             }
         }
 
-        async function loadTenderPayload() {
+        function clearCachedPayload() {
+            try {
+                localStorage.removeItem(DASHBOARD_CACHE_KEY);
+            } catch {
+                // ignore
+            }
+        }
+
+        async function loadTenderPayload({ forceRefresh } = {}) {
             // Try a few common static-asset locations (depends on Vercel root/output directory settings)
             const candidates = [
                 "/tenders.json",
@@ -1206,29 +1238,54 @@
                 "../tenders.json"
             ];
 
+            if (forceRefresh) {
+                console.info("[Tender Intelligence] Manual refresh requested; clearing cache and refetching.");
+                clearCachedPayload();
+            }
+
             let lastErr;
             for (const url of candidates) {
                 try {
+                    console.info("[Tender Intelligence] Fetching data from:", url);
                     const res = await fetch(url + "?ts=" + Date.now(), { cache: "no-store" });
                     if (!res.ok) throw new Error(`${url} -> ${res.status}`);
                     const payload = await res.json();
                     const { tenderList, meta } = validatePayloadShape(payload);
                     writeCachedPayload(payload);
+                    console.info(
+                        "[Tender Intelligence] Using live payload:",
+                        url,
+                        "records=",
+                        tenderList.length,
+                        "build=",
+                        meta?.build_id || meta?.last_sync || "–"
+                    );
                     return { tenders: tenderList, meta: meta || {}, source: url };
                 } catch (e) {
                     lastErr = e;
+                    console.warn("[Tender Intelligence] Fetch failed:", url, e?.message || e);
                 }
             }
 
             // Fallback: last-known cached payload
-            const cached = readCachedPayload();
-            if (cached) {
-                return { tenders: cached.tenders, meta: cached.meta, source: "localStorage", storedAt: cached.storedAt };
+            if (!forceRefresh) {
+                const cached = readCachedPayload();
+                if (cached) {
+                    console.info(
+                        "[Tender Intelligence] Using cached payload:",
+                        "records=",
+                        cached.tenders.length,
+                        "build=",
+                        cached.buildId || cached.storedAt || "–"
+                    );
+                    return { tenders: cached.tenders, meta: cached.meta, source: "localStorage", storedAt: cached.storedAt };
+                }
             }
 
             // Fallback: minimal seed data
             const seed = SEED_TENDER_PAYLOAD;
             const { tenderList, meta } = validatePayloadShape(seed);
+            console.warn("[Tender Intelligence] Using seed payload (no live data and cache missing/expired).", lastErr?.message || lastErr);
             return { tenders: tenderList, meta, source: "seed" };
         }
 
@@ -1511,37 +1568,68 @@
 
         setDataStatus({ level: "warn", source: "initial", count: "–", updated: "–", error: "" });
 
+        function applyTenderPayload({ loadedTenders, meta, source, storedAt }) {
+            const effectiveMeta = meta || {};
+
+            tenders = loadedTenders.map(normalizeTender);
+            window.tendersData = tenders;
+            window.dashboardMeta = effectiveMeta;
+
+            const lastSyncEl = document.getElementById("last-sync-text");
+            const nextRunEl = document.getElementById("next-run-text");
+
+            if (lastSyncEl && effectiveMeta.last_sync) {
+                lastSyncEl.textContent = effectiveMeta.last_sync;
+            }
+            if (nextRunEl && effectiveMeta.next_run) {
+                nextRunEl.textContent = effectiveMeta.next_run;
+            }
+
+            const updated = effectiveMeta.build_id || effectiveMeta.last_sync || storedAt || "–";
+            const level = source === "localStorage" || source === "seed" ? "warn" : "ok";
+            setDataStatus({
+                level,
+                source: source || "unknown",
+                count: loadedTenders.length,
+                updated,
+                error: level === "warn" && source === "seed" ? "No live data available yet (showing seed)." : ""
+            });
+
+            renderTenders("all");
+            updatePrintHeader(effectiveMeta || initialMeta, getKpiSummary());
+        }
+
+        function refreshDashboardData() {
+            const btn = document.getElementById("refresh-data-btn");
+            if (btn) {
+                btn.disabled = true;
+                btn.textContent = "Refreshing…";
+            }
+
+            return loadTenderPayload({ forceRefresh: true })
+                .then(({ tenders: loadedTenders, meta, source, storedAt }) => {
+                    applyTenderPayload({ loadedTenders, meta, source, storedAt });
+                })
+                .catch(err => {
+                    console.error("Error refreshing tenders:", err);
+                    setDataStatus({ level: "err", source: "error", count: 0, updated: "–", error: err?.message || String(err) });
+                })
+                .finally(() => {
+                    if (btn) {
+                        btn.disabled = false;
+                        btn.textContent = "Refresh data";
+                    }
+                });
+        }
+
+        const refreshBtn = document.getElementById("refresh-data-btn");
+        if (refreshBtn) {
+            refreshBtn.addEventListener("click", refreshDashboardData);
+        }
+
         loadTenderPayload()
             .then(({ tenders: loadedTenders, meta, source, storedAt }) => {
-                const effectiveMeta = meta || {};
-
-                tenders = loadedTenders.map(normalizeTender); // Update global variable
-                window.tendersData = tenders;
-                window.dashboardMeta = effectiveMeta;
-
-                // Update last sync + next run labels if elements exist
-                const lastSyncEl = document.getElementById("last-sync-text");
-                const nextRunEl = document.getElementById("next-run-text");
-
-                if (lastSyncEl && effectiveMeta.last_sync) {
-                    lastSyncEl.textContent = effectiveMeta.last_sync;
-                }
-                if (nextRunEl && effectiveMeta.next_run) {
-                    nextRunEl.textContent = effectiveMeta.next_run;
-                }
-
-                const updated = effectiveMeta.build_id || effectiveMeta.last_sync || storedAt || "–";
-                const level = source === "localStorage" || source === "seed" ? "warn" : "ok";
-                setDataStatus({
-                    level,
-                    source: source || "unknown",
-                    count: loadedTenders.length,
-                    updated,
-                    error: level === "warn" && source === "seed" ? "No live data available yet (showing seed)." : ""
-                });
-
-                renderTenders('all');
-                updatePrintHeader(effectiveMeta || initialMeta, getKpiSummary());
+                applyTenderPayload({ loadedTenders, meta, source, storedAt });
             })
             .catch(err => {
                 console.error("Error fetching tenders:", err);
