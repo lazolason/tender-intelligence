@@ -1,5 +1,6 @@
 {
-  "dependencies": {
-    "express": "^5.2.1"
+  "name": "tender-intelligence-dashboard",
+  "scripts": {
+    "build": "cp output/new_tenders.json vercel-dashboard/tenders.json"
   }
 }
