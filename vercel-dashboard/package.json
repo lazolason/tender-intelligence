@@ -1,6 +1,11 @@
 {
   "name": "tender-intelligence-dashboard",
+  "private": true,
   "scripts": {
-    "build": "cp output/new_tenders.json vercel-dashboard/tenders.json"
+    "build": "echo \"Static dashboard: no build step\"",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
   }
 }
