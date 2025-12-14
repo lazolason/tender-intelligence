@@ -11,10 +11,6 @@ ENV/
 logs/
 *.log
 
-# Output
-output/*.json
-output/*.txt
-
 # Secrets
 .env
 *.env.local
