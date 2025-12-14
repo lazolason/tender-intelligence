@@ -9,7 +9,7 @@ gunicorn==21.2.0
 # Scraping
 requests==2.31.0
 beautifulsoup4==4.12.2
-lxml==4.9.3
+lxml>=4.9.3
 
 # Selenium (for National Treasury - optional on cloud)
 selenium==4.15.2
