@@ -854,6 +854,197 @@ function refreshDashboardData() {
         });
 }
 
+// ====================================
+// Advanced Filters Integration
+// ====================================
+let advancedFiltersInstance = null;
+
+function toggleAdvancedFilters() {
+    const panel = document.getElementById('advancedFiltersPanel');
+    if (panel) {
+        panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+        
+        // Initialize filters if first time opening
+        if (panel.style.display === 'block' && !advancedFiltersInstance) {
+            initializeAdvancedFilters();
+        }
+    }
+}
+
+function initializeAdvancedFilters() {
+    if (!window.AdvancedFilters) return;
+    
+    advancedFiltersInstance = new window.AdvancedFilters();
+    advancedFiltersInstance.setTenders(state.currentTenders.map((t, idx) => ({
+        tender: t,
+        classification: classifyTender(t)
+    })));
+    
+    // Set up callback for filter changes
+    advancedFiltersInstance.onFilterChange = (filteredTenders) => {
+        renderFilteredTenders(filteredTenders);
+        updateActiveFilterCount();
+    };
+    
+    // Set up event listeners
+    const searchBox = document.getElementById('advancedSearchBox');
+    if (searchBox) {
+        searchBox.addEventListener('input', (e) => {
+            if (window.SmartSearch && e.target.value.trim()) {
+                const smartFiltered = window.SmartSearch.applySmartFilters(
+                    advancedFiltersInstance.allTenders,
+                    e.target.value
+                );
+                renderFilteredTenders(smartFiltered);
+            } else {
+                advancedFiltersInstance.setSearchTerm(e.target.value);
+            }
+        });
+    }
+    
+    const dateStart = document.getElementById('dateStart');
+    const dateEnd = document.getElementById('dateEnd');
+    if (dateStart && dateEnd) {
+        dateStart.addEventListener('change', () => {
+            advancedFiltersInstance.setDateRange(dateStart.value, dateEnd.value);
+        });
+        dateEnd.addEventListener('change', () => {
+            advancedFiltersInstance.setDateRange(dateStart.value, dateEnd.value);
+        });
+    }
+    
+    // Load saved searches into dropdown
+    const savedSelect = document.getElementById('savedSearchSelect');
+    if (savedSelect) {
+        updateSavedSearchesDropdown();
+        savedSelect.addEventListener('change', (e) => {
+            if (e.target.value) {
+                advancedFiltersInstance.loadSearch(e.target.value);
+                renderFilteredTenders(advancedFiltersInstance.getFilteredTenders());
+                updateActiveFilterCount();
+            }
+        });
+    }
+}
+
+function setQuickDateFilter(type) {
+    const today = new Date();
+    const dateStart = document.getElementById('dateStart');
+    const dateEnd = document.getElementById('dateEnd');
+    
+    if (!dateStart || !dateEnd) return;
+    
+    switch(type) {
+        case 'thisWeek':
+            const endOfWeek = new Date(today);
+            endOfWeek.setDate(today.getDate() + (7 - today.getDay()));
+            dateStart.value = today.toISOString().split('T')[0];
+            dateEnd.value = endOfWeek.toISOString().split('T')[0];
+            break;
+        case 'nextWeek':
+            const nextWeekStart = new Date(today);
+            nextWeekStart.setDate(today.getDate() + (7 - today.getDay()) + 1);
+            const nextWeekEnd = new Date(nextWeekStart);
+            nextWeekEnd.setDate(nextWeekStart.getDate() + 6);
+            dateStart.value = nextWeekStart.toISOString().split('T')[0];
+            dateEnd.value = nextWeekEnd.toISOString().split('T')[0];
+            break;
+        case 'thisMonth':
+            const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+            dateStart.value = today.toISOString().split('T')[0];
+            dateEnd.value = endOfMonth.toISOString().split('T')[0];
+            break;
+    }
+    
+    if (advancedFiltersInstance) {
+        advancedFiltersInstance.setDateRange(dateStart.value, dateEnd.value);
+    }
+}
+
+function saveCurrentSearch() {
+    if (!advancedFiltersInstance) return;
+    
+    const name = prompt('Enter a name for this search:');
+    if (name) {
+        advancedFiltersInstance.saveSearch(name);
+        updateSavedSearchesDropdown();
+        alert('Search saved successfully!');
+    }
+}
+
+function deleteSavedSearch() {
+    const savedSelect = document.getElementById('savedSearchSelect');
+    if (!savedSelect || !savedSelect.value) {
+        alert('Please select a saved search to delete');
+        return;
+    }
+    
+    if (confirm(`Delete saved search "${savedSelect.value}"?`)) {
+        advancedFiltersInstance.deleteSavedSearch(savedSelect.value);
+        updateSavedSearchesDropdown();
+        savedSelect.value = '';
+    }
+}
+
+function updateSavedSearchesDropdown() {
+    const savedSelect = document.getElementById('savedSearchSelect');
+    if (!savedSelect || !advancedFiltersInstance) return;
+    
+    const searches = advancedFiltersInstance.activeFilters.savedSearches;
+    savedSelect.innerHTML = '<option value="">-- Select Saved Search --</option>';
+    
+    searches.forEach(search => {
+        const option = document.createElement('option');
+        option.value = search.name;
+        option.textContent = search.name;
+        savedSelect.appendChild(option);
+    });
+}
+
+function clearAllAdvancedFilters() {
+    if (!advancedFiltersInstance) return;
+    
+    advancedFiltersInstance.clearAllFilters();
+    
+    // Clear UI elements
+    const searchBox = document.getElementById('advancedSearchBox');
+    const dateStart = document.getElementById('dateStart');
+    const dateEnd = document.getElementById('dateEnd');
+    const savedSelect = document.getElementById('savedSearchSelect');
+    
+    if (searchBox) searchBox.value = '';
+    if (dateStart) dateStart.value = '';
+    if (dateEnd) dateEnd.value = '';
+    if (savedSelect) savedSelect.value = '';
+    
+    renderTenders();
+    updateActiveFilterCount();
+}
+
+function updateActiveFilterCount() {
+    const countDiv = document.getElementById('activeFilterCount');
+    if (!countDiv || !advancedFiltersInstance) return;
+    
+    const count = advancedFiltersInstance.getActiveFilterCount();
+    countDiv.textContent = count === 0 ? 'No filters active' : `${count} filter${count > 1 ? 's' : ''} active`;
+}
+
+function renderFilteredTenders(filteredTenders) {
+    const list = document.getElementById('tender-table-body') || document.getElementById('tenderList');
+    if (!list) return;
+    
+    list.innerHTML = '';
+    
+    if (filteredTenders.length === 0) {
+        list.innerHTML = '<tr><td colspan="12" class="empty-state" style="text-align:center; padding: 40px;"><h3>No tenders found</h3><p>Try adjusting your filters...</p></td></tr>';
+        return;
+    }
+    
+    filteredTenders.forEach((item, idx) => {
+        list.appendChild(createTenderRow(item, idx));
+    });
+}
+
 function init() {
     const modalCloseBtn = document.getElementById('modal-close-btn');
     if (modalCloseBtn) modalCloseBtn.addEventListener('click', closeTenderModal);
