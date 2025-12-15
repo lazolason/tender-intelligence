@@ -338,6 +338,49 @@ if __name__ == "__main__":
     # Save results
     save_outputs(new_items)
     
+    # Send email alerts for urgent tenders (if enabled)
+    if CONFIG.get('email_alerts', {}).get('enabled', False):
+        try:
+            from utils.email_alerts import EmailAlerter
+            from datetime import datetime, timedelta
+            
+            # Calculate days until closing for each tender
+            urgent_threshold = CONFIG.get('email_alerts', {}).get('urgent_threshold_days', 3)
+            urgent_tenders = []
+            
+            for tender in new_items:
+                # Check if HIGH priority
+                priority = tender.get('scores', {}).get('priority', tender.get('priority', ''))
+                if priority != 'HIGH':
+                    continue
+                
+                # Check closing date
+                closing_date = tender.get('closing_date')
+                if not closing_date:
+                    continue
+                
+                try:
+                    closing_dt = datetime.fromisoformat(closing_date.replace('Z', '+00:00'))
+                    days_until = (closing_dt - datetime.now()).days
+                    
+                    if 0 <= days_until <= urgent_threshold:
+                        urgent_tenders.append(tender)
+                except (ValueError, AttributeError):
+                    continue
+            
+            # Send email if there are urgent tenders
+            if urgent_tenders:
+                smtp_config = CONFIG['email_alerts']['smtp']
+                alerter = EmailAlerter(smtp_config)
+                alerter.send_urgent_alert(urgent_tenders)
+                write_log(LOG_FILE, f"📧 Email alert sent for {len(urgent_tenders)} urgent tender(s)")
+            else:
+                write_log(LOG_FILE, "📧 No urgent tenders requiring email alerts")
+                
+        except Exception as e:
+            write_log(LOG_FILE, f"⚠️ Email alert failed: {e}")
+            print(f"⚠️ Email alert failed: {e}")
+    
     write_log(LOG_FILE, "=" * 50)
     write_log(LOG_FILE, f"TENDER ENGINE COMPLETE - Added: {added_count}")
     write_log(LOG_FILE, "=" * 50)

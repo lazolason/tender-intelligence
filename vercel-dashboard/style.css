@@ -300,6 +300,47 @@
             }
         }
         
+        /* Quick Filter Buttons */
+        .quick-filter-btn {
+            padding: 6px 12px;
+            border-radius: 8px;
+            background: rgba(102, 126, 234, 0.2);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            color: #667eea;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        
+        .quick-filter-btn:hover {
+            background: rgba(102, 126, 234, 0.35);
+            border-color: rgba(102, 126, 234, 0.5);
+            color: #fff;
+        }
+        
+        /* Advanced Filters */
+        .advanced-filters {
+            animation: slideDown 0.3s ease-out;
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
         @media (max-width: 768px) { 
             h1 { font-size: 2rem; } 
             .stat-value { font-size: 1.8rem; } 

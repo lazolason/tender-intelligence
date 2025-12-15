@@ -665,6 +665,7 @@ function showTab(tabId) {
     event.target.classList.add('active');
 
     if (tabId === 'calendar') renderCalendar();
+    if (tabId === 'analytics') initializeAnalytics();
     if (tabId === 'sources') renderScraperHealth(typeof globalData !== 'undefined' ? globalData.scraperHealth : {});
 }
 
@@ -739,6 +740,50 @@ function showDayTenders(dateStr) {
     `;
 }
 
+function initializeAnalytics() {
+    if (!state.tenders || state.tenders.length === 0) {
+        console.warn('No tenders available for analytics');
+        return;
+    }
+    
+    // Create analytics instance
+    const tenderItems = state.tenders.map((t, idx) => ({
+        tender: t,
+        classification: classifyTender(t)
+    }));
+    
+    const analytics = new TenderAnalytics(tenderItems);
+    const summary = analytics.generateSummary();
+    
+    // Update stat cards
+    document.getElementById('analytics-total-tenders').textContent = summary.totalTenders;
+    document.getElementById('analytics-avg-per-week').textContent = summary.avgTendersPerWeek;
+    document.getElementById('analytics-top-source').textContent = summary.topSource;
+    document.getElementById('analytics-top-company').textContent = summary.topCompany;
+    
+    // Update priority chart
+    document.getElementById('analytics-priority-chart').innerHTML = analytics.renderPriorityChart();
+    
+    // Update source breakdown
+    document.getElementById('analytics-source-chart').innerHTML = analytics.renderSourceStats();
+    
+    // Update keyword cloud
+    document.getElementById('analytics-keyword-cloud').innerHTML = analytics.renderKeywordCloud();
+    
+    // Generate insights
+    const insights = [
+        `Total tenders tracked: <strong>${summary.totalTenders}</strong>`,
+        `Most active source: <strong>${summary.topSource}</strong> with <strong>${analytics.getSourceDistribution()[summary.topSource] || 0}</strong> tenders`,
+        `High priority tenders: <strong>${summary.highPriority}</strong> | Medium: <strong>${summary.mediumPriority}</strong> | Low: <strong>${summary.lowPriority}</strong>`,
+        `${summary.avgTendersPerWeek > 0 ? `Average <strong>${summary.avgTendersPerWeek}</strong> tenders per week` : 'Not enough data for weekly average'}`
+    ];
+    
+    insights.forEach((insight, idx) => {
+        const el = document.getElementById(`insight-${idx + 1}`);
+        if (el) el.innerHTML = '✓ ' + insight;
+    });
+}
+
 function changeMonth(delta) {
     state.currentMonth.setMonth(state.currentMonth.getMonth() + delta);
     renderCalendar();
@@ -750,6 +795,9 @@ function applyTenderPayload({ loadedTenders, meta, source, storedAt, error }) {
     state.tenders = loadedTenders.map(normalizeTender);
     window.tendersData = state.tenders;
     window.dashboardMeta = effectiveMeta;
+    
+    // Store allTenders globally for notifications
+    window.allTenders = state.tenders;
 
     const lastSyncEl = document.getElementById("last-sync-text");
     const nextRunEl = document.getElementById("next-run-text");
@@ -773,6 +821,16 @@ function applyTenderPayload({ loadedTenders, meta, source, storedAt, error }) {
 
     renderTenders();
     updatePrintHeader(effectiveMeta || initialMeta, getKpiSummary());
+    
+    // Dispatch event for notifications system
+    window.dispatchEvent(new CustomEvent('tendersLoaded', { 
+        detail: { 
+            tenders: state.tenders.map((t, idx) => ({ 
+                tender: t, 
+                classification: classifyTender(t) 
+            }))
+        } 
+    }));
 }
 
 function refreshDashboardData() {

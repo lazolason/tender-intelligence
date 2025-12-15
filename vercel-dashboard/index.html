@@ -43,6 +43,7 @@
         <nav class="tab-nav">
             <button class="tab-btn active" onclick="showTab('dashboard')">📊 Dashboard</button>
             <button class="tab-btn" onclick="showTab('calendar')">📅 Bid Calendar</button>
+            <button class="tab-btn" onclick="showTab('analytics')">📈 Analytics</button>
             <button class="tab-btn" onclick="showTab('sources')">📂 Sources</button>
         </nav>
 
@@ -76,6 +77,29 @@
                     <span id="last-sync-text">10 Dec 2025, 13:50</span>
                     <span> | Next run:</span>
                     <span id="next-run-text">Daily 08:00</span>
+                    <span style="margin-left: 20px;">|</span>
+                    <button id="enableNotifications" class="notification-btn" style="
+                        margin-left: 10px;
+                        padding: 6px 14px; 
+                        border-radius: 16px; 
+                        background: rgba(255,107,107,0.2);
+                        border: 1px solid rgba(255,107,107,0.3);
+                        color: #ff6b6b;
+                        cursor: pointer;
+                        font-size: 0.85rem;
+                        display: none;">
+                        🔔 Enable Alerts
+                    </button>
+                    <span id="notificationStatus" style="
+                        margin-left: 10px;
+                        padding: 6px 14px; 
+                        border-radius: 16px; 
+                        background: rgba(72,219,251,0.2);
+                        color: #48dbfb;
+                        font-size: 0.85rem;
+                        display: none;">
+                        ✅ Alerts Active
+                    </span>
                 </div>
                 <div id="next-run-countdown" class="next-run-countdown"></div>
                 <div id="data-status" class="data-status" role="status" aria-live="polite">
@@ -156,7 +180,123 @@
 
             <section class="section active-tenders-section">
                 <h2>📋 Active Tenders</h2>
+                
+                <!-- Advanced Filters Section -->
+                <div id="advancedFiltersPanel" class="advanced-filters" style="
+                    background: rgba(255,255,255,0.03);
+                    padding: 20px;
+                    border-radius: 12px;
+                    margin-bottom: 20px;
+                    border: 1px solid rgba(255,255,255,0.1);
+                    display: none;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                        <h3 style="margin: 0; color: #667eea;">🔍 Advanced Filters</h3>
+                        <button onclick="toggleAdvancedFilters()" style="
+                            padding: 6px 12px;
+                            border-radius: 8px;
+                            background: rgba(255,107,107,0.2);
+                            border: 1px solid rgba(255,107,107,0.3);
+                            color: #ff6b6b;
+                            cursor: pointer;
+                            font-size: 0.85rem;">
+                            ✕ Close
+                        </button>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+                        <!-- Search Box -->
+                        <div class="filter-group">
+                            <label style="display: block; margin-bottom: 8px; color: #888; font-size: 0.9rem;">Smart Search:</label>
+                            <input type="text" id="advancedSearchBox" placeholder="Try: 'closing today', 'this week', 'eskom'" style="
+                                width: 100%;
+                                padding: 10px;
+                                border-radius: 8px;
+                                background: rgba(255,255,255,0.05);
+                                border: 1px solid rgba(255,255,255,0.2);
+                                color: #fff;
+                                font-size: 0.9rem;">
+                            <div style="font-size: 0.75rem; color: #666; margin-top: 5px;">
+                                💡 Try: "closing today", "this week", "urgent", "eskom"
+                            </div>
+                        </div>
+
+                        <!-- Date Range -->
+                        <div class="filter-group">
+                            <label style="display: block; margin-bottom: 8px; color: #888; font-size: 0.9rem;">Closing Date Range:</label>
+                            <div style="display: flex; gap: 8px; align-items: center;">
+                                <input type="date" id="dateStart" style="
+                                    flex: 1;
+                                    padding: 8px;
+                                    border-radius: 8px;
+                                    background: rgba(255,255,255,0.05);
+                                    border: 1px solid rgba(255,255,255,0.2);
+                                    color: #fff;
+                                    font-size: 0.85rem;">
+                                <span style="color: #888;">to</span>
+                                <input type="date" id="dateEnd" style="
+                                    flex: 1;
+                                    padding: 8px;
+                                    border-radius: 8px;
+                                    background: rgba(255,255,255,0.05);
+                                    border: 1px solid rgba(255,255,255,0.2);
+                                    color: #fff;
+                                    font-size: 0.85rem;">
+                            </div>
+                            <div style="display: flex; gap: 5px; margin-top: 8px; flex-wrap: wrap;">
+                                <button onclick="setQuickDateFilter('thisWeek')" class="quick-filter-btn">This Week</button>
+                                <button onclick="setQuickDateFilter('nextWeek')" class="quick-filter-btn">Next Week</button>
+                                <button onclick="setQuickDateFilter('thisMonth')" class="quick-filter-btn">This Month</button>
+                            </div>
+                        </div>
+
+                        <!-- Saved Searches -->
+                        <div class="filter-group">
+                            <label style="display: block; margin-bottom: 8px; color: #888; font-size: 0.9rem;">Saved Searches:</label>
+                            <select id="savedSearchSelect" style="
+                                width: 100%;
+                                padding: 10px;
+                                border-radius: 8px;
+                                background: rgba(255,255,255,0.05);
+                                border: 1px solid rgba(255,255,255,0.2);
+                                color: #fff;
+                                font-size: 0.9rem;">
+                                <option value="">-- Select Saved Search --</option>
+                            </select>
+                            <div style="display: flex; gap: 5px; margin-top: 8px;">
+                                <button onclick="saveCurrentSearch()" class="quick-filter-btn" style="flex: 1;">💾 Save Current</button>
+                                <button onclick="deleteSavedSearch()" class="quick-filter-btn" style="flex: 1; background: rgba(255,107,107,0.2); border-color: rgba(255,107,107,0.3); color: #ff6b6b;">🗑️ Delete</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 10px; margin-top: 15px; justify-content: space-between; align-items: center;">
+                        <div id="activeFilterCount" style="color: #888; font-size: 0.9rem;">
+                            No filters active
+                        </div>
+                        <button onclick="clearAllAdvancedFilters()" style="
+                            padding: 10px 20px;
+                            border-radius: 20px;
+                            background: rgba(255,107,107,0.2);
+                            border: 1px solid rgba(255,107,107,0.3);
+                            color: #ff6b6b;
+                            cursor: pointer;">
+                            Clear All Filters
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Simple Filters Row -->
                 <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px; align-items: center;">
+                    <button onclick="toggleAdvancedFilters()" style="
+                        padding: 8px 16px;
+                        border-radius: 10px;
+                        background: rgba(102,126,234,0.2);
+                        border: 1px solid rgba(102,126,234,0.3);
+                        color: #667eea;
+                        cursor: pointer;
+                        font-size: 0.9rem;">
+                        🔍 Advanced Filters
+                    </button>
                     <label style="color: #888; font-size: 0.9rem;">Company
                         <select id="companyFilter" onchange="filterTenders(this.value)" style="margin-left: 8px; padding: 8px 10px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); color: #fff;">
                             <option value="all">All</option>
@@ -297,6 +437,71 @@
             </div>
         </div>
 
+        <!-- ANALYTICS TAB -->
+        <div id="analytics" class="tab-content">
+            <section class="section">
+                <h2>📊 Tender Analytics & Insights</h2>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px;">
+                    <div class="stat-card">
+                        <div class="stat-value total" id="analytics-total-tenders">0</div>
+                        <div class="stat-label">Total Tenders</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="analytics-avg-per-week" style="color: #667eea;">0</div>
+                        <div class="stat-label">Avg Per Week</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="analytics-top-source" style="color: #48dbfb; font-size: 1.5rem;">–</div>
+                        <div class="stat-label">Top Source</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="analytics-top-company" style="color: #feca57; font-size: 1.5rem;">–</div>
+                        <div class="stat-label">Top Company</div>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px;">
+                    <!-- Priority Distribution -->
+                    <div style="background: rgba(255,255,255,0.02); padding: 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08);">
+                        <h3 style="margin-bottom: 15px; color: #fff;">Priority Distribution</h3>
+                        <div id="analytics-priority-chart"></div>
+                    </div>
+
+                    <!-- Source Breakdown -->
+                    <div style="background: rgba(255,255,255,0.02); padding: 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08);">
+                        <h3 style="margin-bottom: 15px; color: #fff;">Top Sources</h3>
+                        <div id="analytics-source-chart"></div>
+                    </div>
+                </div>
+
+                <!-- Keyword Cloud -->
+                <div style="margin-top: 30px; background: rgba(255,255,255,0.02); padding: 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08);">
+                    <h3 style="margin-bottom: 15px; color: #fff;">🏷️ Most Common Keywords</h3>
+                    <div id="analytics-keyword-cloud" style="
+                        display: flex;
+                        flex-wrap: wrap;
+                        align-items: center;
+                        justify-content: center;
+                        gap: 10px;
+                        min-height: 150px;
+                        align-content: center;
+                        "></div>
+                </div>
+
+                <!-- Data Insights -->
+                <div style="margin-top: 30px; background: rgba(102,126,234,0.05); padding: 20px; border-radius: 12px; border: 1px solid rgba(102,126,234,0.2);">
+                    <h3 style="margin-bottom: 15px; color: #667eea;">💡 Key Insights</h3>
+                    <ul style="list-style: none; color: #ccc; line-height: 2;">
+                        <li id="insight-1">✓ Loading analytics...</li>
+                        <li id="insight-2"></li>
+                        <li id="insight-3"></li>
+                        <li id="insight-4"></li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+
         <!-- SOURCES TAB -->
         <div id="sources" class="tab-content">
             <div class="section">
@@ -418,9 +623,198 @@
         </div>
     </div>
     
+    <script src="js/notifications.js"></script>
+    <script src="js/advanced-filters.js"></script>
+    <script src="js/analytics.js"></script>
     <script src="script.js"></script>
+    <script>
+        // Initialize Advanced Filters
+        let advancedFilters = null;
+        
+        function toggleAdvancedFilters() {
+            const panel = document.getElementById('advancedFiltersPanel');
+            panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+        }
+        
+        function setQuickDateFilter(period) {
+            const today = new Date();
+            const startInput = document.getElementById('dateStart');
+            const endInput = document.getElementById('dateEnd');
+            
+            let startDate, endDate;
+            
+            switch(period) {
+                case 'thisWeek':
+                    startDate = new Date(today);
+                    endDate = new Date(today);
+                    endDate.setDate(endDate.getDate() + 7);
+                    break;
+                case 'nextWeek':
+                    startDate = new Date(today);
+                    startDate.setDate(startDate.getDate() + 7);
+                    endDate = new Date(startDate);
+                    endDate.setDate(endDate.getDate() + 7);
+                    break;
+                case 'thisMonth':
+                    startDate = new Date(today);
+                    endDate = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+                    break;
+            }
+            
+            startInput.value = startDate.toISOString().split('T')[0];
+            endInput.value = endDate.toISOString().split('T')[0];
+            
+            if (advancedFilters) {
+                advancedFilters.setDateRange(startDate, endDate);
+            }
+        }
+        
+        function saveCurrentSearch() {
+            const name = prompt('Enter a name for this search:');
+            if (name && advancedFilters) {
+                advancedFilters.saveSearch(name);
+                updateSavedSearchesDropdown();
+                alert('Search saved successfully!');
+            }
+        }
+        
+        function deleteSavedSearch() {
+            const select = document.getElementById('savedSearchSelect');
+            const name = select.value;
+            if (name && confirm(`Delete saved search "${name}"?`)) {
+                advancedFilters.deleteSavedSearch(name);
+                updateSavedSearchesDropdown();
+                select.value = '';
+            }
+        }
+        
+        function updateSavedSearchesDropdown() {
+            const select = document.getElementById('savedSearchSelect');
+            const searches = advancedFilters.activeFilters.savedSearches;
+            
+            select.innerHTML = '<option value="">-- Select Saved Search --</option>';
+            searches.forEach(search => {
+                const option = document.createElement('option');
+                option.value = search.name;
+                option.textContent = search.name;
+                select.appendChild(option);
+            });
+        }
+        
+        function clearAllAdvancedFilters() {
+            if (advancedFilters) {
+                advancedFilters.clearAllFilters();
+                document.getElementById('advancedSearchBox').value = '';
+                document.getElementById('dateStart').value = '';
+                document.getElementById('dateEnd').value = '';
+                updateActiveFilterCount();
+            }
+        }
+        
+        function updateActiveFilterCount() {
+            if (!advancedFilters) return;
+            
+            const count = advancedFilters.getActiveFilterCount();
+            const countEl = document.getElementById('activeFilterCount');
+            
+            if (count === 0) {
+                countEl.textContent = 'No filters active';
+                countEl.style.color = '#888';
+            } else {
+                countEl.textContent = `${count} filter${count > 1 ? 's' : ''} active`;
+                countEl.style.color = '#667eea';
+            }
+        }
+        
+        // Initialize Notification Manager
+        let notificationMgr = null;
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize Advanced Filters
+            advancedFilters = new AdvancedFilters();
+            
+            // Setup event listeners for advanced search
+            const searchBox = document.getElementById('advancedSearchBox');
+            if (searchBox) {
+                let searchTimeout;
+                searchBox.addEventListener('input', (e) => {
+                    clearTimeout(searchTimeout);
+                    searchTimeout = setTimeout(() => {
+                        advancedFilters.setSearchTerm(e.target.value);
+                        updateActiveFilterCount();
+                    }, 300); // Debounce search
+                });
+            }
+            
+            // Date range listeners
+            const dateStart = document.getElementById('dateStart');
+            const dateEnd = document.getElementById('dateEnd');
+            if (dateStart && dateEnd) {
+                const updateDates = () => {
+                    const start = dateStart.value ? new Date(dateStart.value) : null;
+                    const end = dateEnd.value ? new Date(dateEnd.value) : null;
+                    advancedFilters.setDateRange(start, end);
+                    updateActiveFilterCount();
+                };
+                dateStart.addEventListener('change', updateDates);
+                dateEnd.addEventListener('change', updateDates);
+            }
+            
+            // Saved searches dropdown
+            const savedSearchSelect = document.getElementById('savedSearchSelect');
+            if (savedSearchSelect) {
+                savedSearchSelect.addEventListener('change', (e) => {
+                    if (e.target.value) {
+                        advancedFilters.loadSearch(e.target.value);
+                        updateActiveFilterCount();
+                        // TODO: Trigger re-render of tenders
+                    }
+                });
+                updateSavedSearchesDropdown();
+            }
+            
+            // Setup callback for filter changes
+            advancedFilters.onFilterChange = (filteredTenders) => {
+                // TODO: Integrate with existing render function
+                console.log('Filters changed, filtered tenders:', filteredTenders.length);
+                updateActiveFilterCount();
+            };
+            
+            const enableBtn = document.getElementById('enableNotifications');
+            const statusSpan = document.getElementById('notificationStatus');
+            
+            if ('Notification' in window) {
+                notificationMgr = new NotificationManager();
+                notificationMgr.loadNotifiedTenders();
+                
+                if (Notification.permission === 'granted') {
+                    statusSpan.style.display = 'inline-block';
+                } else if (Notification.permission === 'default') {
+                    enableBtn.style.display = 'inline-block';
+                    enableBtn.addEventListener('click', async () => {
+                        const granted = await notificationMgr.requestPermission();
+                        if (granted) {
+                            enableBtn.style.display = 'none';
+                            statusSpan.style.display = 'inline-block';
+                            // Setup auto-check when tenders are loaded
+                            if (window.allTenders && window.allTenders.length > 0) {
+                                notificationMgr.setupAutoCheck(window.allTenders, 30);
+                            }
+                        }
+                    });
+                }
+                
+                // Setup notifications when tenders are loaded
+                window.addEventListener('tendersLoaded', (event) => {
+                    if (notificationMgr && notificationMgr.permission === 'granted') {
+                        notificationMgr.setupAutoCheck(event.detail.tenders, 30);
+                    }
+                });
+            }
+        });
+    </script>
     <div style="opacity:.6;font-size:12px;margin-top:12px">
-      Build marker: V3 UI present · commit 377e345+
+      Build marker: V3 UI present · commit 377e345+ · Notifications v1
     </div>
 </body>
 </html>

@@ -59,6 +59,19 @@ email:
   smtp_port: 587
   from_address: ""
   to_addresses: []
+
+# Email alerts for urgent tenders
+email_alerts:
+  enabled: false  # Set to true to enable urgent tender notifications
+  smtp:
+    server: "smtp.gmail.com"
+    port: 587
+    sender_email: ""  # Your email address
+    sender_password: ""  # Your app-specific password (not regular password)
+    recipients:
+      # - "team@tes.co.za"
+      # - "team@phakathi.co.za"
+  urgent_threshold_days: 3  # Alert for HIGH priority tenders closing within N days
   
 # Logging settings
 logging:
