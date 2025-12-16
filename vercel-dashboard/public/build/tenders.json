@@ -1,9 +1,9 @@
 {
     "meta": {
-        "last_sync": "2025-12-15 08:17",
+        "last_sync": "2025-12-16 08:16",
         "next_run": "Daily 08:00",
-        "build_sha": "3bd3b7d",
-        "build_id": "2025-12-15 08:17 · 3bd3b7d"
+        "build_sha": "c0ee2ac",
+        "build_id": "2025-12-16 08:16 · c0ee2ac"
     },
     "tenders": [
         {
@@ -11,7 +11,7 @@
             "title": "Open Tenders (Over R750 000)",
             "short_title": "Open_Tenders_Over_R750",
             "client": "City of Ekurhuleni",
-            "closing_date": "11/12/2025",
+            "closing_date": "15/12/2025",
             "description": "Open Tenders (Over R750 000)",
             "category": "Unknown",
             "reason": "No clear classification signals detected",
