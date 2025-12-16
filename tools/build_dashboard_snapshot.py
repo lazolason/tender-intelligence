@@ -257,6 +257,81 @@ def build_snapshot(limit: int) -> dict:
     return {"meta": meta, "tenders": merged}
 
 
+def _load_scrape_inputs(paths: List[str]) -> List[dict]:
+    tenders: List[dict] = []
+    for path in paths:
+        if not path or not os.path.exists(path):
+            continue
+        try:
+            with open(path, "r", encoding="utf-8") as f:
+                payload = json.load(f)
+        except Exception:
+            continue
+
+        if isinstance(payload, dict):
+            if isinstance(payload.get("tenders"), list):
+                tenders.extend([t for t in payload["tenders"] if isinstance(t, dict)])
+                continue
+            if isinstance(payload.get("data"), list):
+                tenders.extend([t for t in payload["data"] if isinstance(t, dict)])
+                continue
+        if isinstance(payload, list):
+            tenders.extend([t for t in payload if isinstance(t, dict)])
+
+    return tenders
+
+
+def build_snapshot_from_inputs(paths: List[str], limit: int) -> dict:
+    raw = _load_scrape_inputs(paths)
+    all_tenders = raw
+
+    merged = []
+    seen = set()
+    for tender in all_tenders:
+        ident = _identity(tender)
+        if ident in seen:
+            continue
+        seen.add(ident)
+
+        title = tender.get("title", "") or ""
+        description = tender.get("description", title) or ""
+        client = tender.get("client", "") or ""
+        closing_date = tender.get("closing_date", "") or ""
+
+        classification = classify_tender(title, description)
+        category = classification.get("category", tender.get("category", "Unknown"))
+        if category == "EXCLUDED":
+            continue
+
+        tender["category"] = category
+        tender["reason"] = classification.get("reason", tender.get("reason", ""))
+        tender["short_title"] = classification.get("short_title", tender.get("short_title", ""))
+
+        tender["scores"] = score_tender(
+            title=title,
+            description=description,
+            client=client,
+            closing_date=closing_date,
+            category=category,
+        )
+
+        merged.append(tender)
+        if len(merged) >= limit:
+            break
+
+    last_sync = _now_sast_str()
+    build_sha = _get_build_sha()
+    meta: Dict[str, Any] = {
+        "last_sync": last_sync,
+        "next_run": "Daily 08:00",
+        "build_sha": build_sha,
+        "build_id": f"{last_sync} · {build_sha}" if build_sha else last_sync,
+        "inputs": [os.path.basename(p) for p in paths],
+    }
+
+    return {"meta": meta, "tenders": merged}
+
+
 def render_daily_email_html(payload: Dict[str, Any], summary: Dict[str, Any], dashboard_url: str) -> str:
     meta = payload.get("meta") or {}
     tenders: List[dict] = payload.get("tenders") or []
@@ -392,6 +467,12 @@ def main() -> None:
     parser.add_argument("--out", default="vercel-dashboard/tenders.json", help="Output path for tenders.json")
     parser.add_argument("--limit", type=int, default=200, help="Max tenders to keep in snapshot")
     parser.add_argument(
+        "--inputs",
+        nargs="*",
+        default=None,
+        help="Optional input JSON files (from matrix scrapes). When set, skips scraping and builds snapshot from inputs.",
+    )
+    parser.add_argument(
         "--public-dir",
         default="vercel-dashboard/public",
         help="Directory for versioned dashboard artifacts (tenders-latest.json, tenders-YYYY-MM-DD.json, summary.json)",
@@ -403,7 +484,7 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    payload = build_snapshot(limit=args.limit)
+    payload = build_snapshot_from_inputs(paths=args.inputs, limit=args.limit) if args.inputs else build_snapshot(limit=args.limit)
     tenders, meta = validate_payload(payload)
 
     should_write_main = True

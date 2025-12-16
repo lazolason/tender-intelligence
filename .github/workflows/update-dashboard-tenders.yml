@@ -14,8 +14,12 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  update:
+  scrape:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        scraper: [municipalities, soes, national_treasury, joburg_water, eskom]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -27,15 +31,110 @@ jobs:
         with:
           python-version: "3.11"
 
+      - name: Cache pip dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Cache venv
+        uses: actions/cache@v3
+        with:
+          path: .venv
+          key: ${{ runner.os }}-venv-${{ hashFiles('**/requirements.txt') }}
+
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
+          python -m venv .venv
+          source .venv/bin/activate
+          pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Build dashboard snapshot
+      - name: Run ${{ matrix.scraper }}
+        id: run_scraper
         run: |
-          python tools/build_dashboard_snapshot.py --out vercel-dashboard/tenders.json --limit 200 --public-dir vercel-dashboard/public
-          python tools/validate_dashboard_tenders_json.py --path vercel-dashboard/tenders.json --summary-path vercel-dashboard/public/summary.json
+          mkdir -p artifacts
+          .venv/bin/python tools/scrape_source.py --scraper "${{ matrix.scraper }}" --out "artifacts/${{ matrix.scraper }}.json"
+        continue-on-error: true
+
+      - name: Upload scraper artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: scrape-${{ matrix.scraper }}
+          path: artifacts/${{ matrix.scraper }}.json
+
+  aggregate:
+    runs-on: ubuntu-latest
+    needs: scrape
+    if: always()
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Cache pip dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Cache venv
+        uses: actions/cache@v3
+        with:
+          path: .venv
+          key: ${{ runner.os }}-venv-${{ hashFiles('**/requirements.txt') }}
+
+      - name: Install dependencies
+        run: |
+          python -m venv .venv
+          source .venv/bin/activate
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Download scrape artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Aggregate and build dashboard snapshot
+        id: build_snapshot
+        run: |
+          set -e
+          mapfile -t INPUTS < <(find artifacts -type f -name '*.json' 2>/dev/null | sort || true)
+          if [ "${#INPUTS[@]}" -gt 0 ]; then
+            .venv/bin/python tools/build_dashboard_snapshot.py --inputs "${INPUTS[@]}" --out vercel-dashboard/tenders.json --limit 200 --public-dir vercel-dashboard/public
+          else
+            .venv/bin/python tools/build_dashboard_snapshot.py --out vercel-dashboard/tenders.json --limit 200 --public-dir vercel-dashboard/public
+          fi
+          .venv/bin/python tools/validate_dashboard_tenders_json.py --path vercel-dashboard/tenders.json --summary-path vercel-dashboard/public/summary.json
+
+          # Extract failures (if any) for notifications
+          .venv/bin/python - <<'PY'
+          import glob, json, os
+          failing = []
+          for p in glob.glob('artifacts/**/*.json', recursive=True):
+              try:
+                  with open(p,'r',encoding='utf-8') as f:
+                      payload = json.load(f)
+                  if isinstance(payload, dict) and payload.get('status') != 'success':
+                      failing.append(payload.get('scraper') or os.path.basename(p))
+              except Exception:
+                  continue
+          with open(os.environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as f:
+              f.write(f\"has_failures={'true' if failing else 'false'}\\n\")
+              f.write(f\"failing={','.join(failing)}\\n\")
+          PY
 
       - name: Commit and push if changed
         run: |
@@ -48,3 +147,12 @@ jobs:
           git add vercel-dashboard/tenders.json vercel-dashboard/public/
           git commit -m "Auto-update dashboard tenders snapshot"
           git push
+
+      - name: Notify on failure
+        if: steps.build_snapshot.outputs.has_failures == 'true'
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          text: "🚨 Tender scraper failed! Failing: ${{ steps.build_snapshot.outputs.failing }}"
+          webhook_url: ${{ secrets.SLACK_WEBHOOK }}
+          fields: repo,commit,author,took

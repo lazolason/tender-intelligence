@@ -9,11 +9,15 @@ from datetime import datetime
 import traceback
 import sys
 import os
+import logging
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from utils.text_cleaner import clean_text
+from utils.retry_tools import safe_get
 from classify_engine import classify_tender
+
+logger = logging.getLogger(__name__)
 
 
 class BaseMunicipalityScraper:
@@ -26,11 +30,19 @@ class BaseMunicipalityScraper:
         self.headers = {
             "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"
         }
+        self.last_error = None
     
     def fetch_page(self):
         try:
-            response = requests.get(self.url, headers=self.headers, timeout=self.timeout, verify=False)
-            response.raise_for_status()
+            response = safe_get(
+                self.url,
+                headers=self.headers,
+                timeout=self.timeout,
+                verify=False,
+                log=logger,
+            )
+            if response is None:
+                raise RuntimeError("No response returned")
             return response.text
         except Exception as e:
             raise Exception(f"Error fetching {self.name}: {e}")
@@ -41,10 +53,12 @@ class BaseMunicipalityScraper:
     
     def run(self):
         try:
+            self.last_error = None
             html = self.fetch_page()
             return self.parse_tenders(html)
         except Exception as e:
             # Gracefully ignore availability errors (e.g., 404s) and return empty
+            self.last_error = str(e)
             print(f"  Error: {e}")
             return []
 
@@ -284,6 +298,7 @@ def scrape_all_municipalities(timeout: int = 15):
     ]
     
     all_tenders = []
+    failed_sources = []
     
     for scraper in scrapers:
         try:
@@ -291,9 +306,15 @@ def scrape_all_municipalities(timeout: int = 15):
             tenders = scraper.run()
             all_tenders.extend(tenders)
             print(f"  Found {len(tenders)} tenders")
+            if scraper.last_error:
+                failed_sources.append(scraper.name)
         except Exception as e:
             print(f"  Error: {e}")
+            failed_sources.append(scraper.name)
             continue
+
+    if failed_sources:
+        print(f"  ❌ Failed municipality sources: {', '.join(sorted(set(failed_sources)))}")
     
     return all_tenders
 

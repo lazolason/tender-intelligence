@@ -9,6 +9,7 @@ import sys
 import time
 import re
 import subprocess
+import logging
 from datetime import datetime
 from pathlib import Path
 
@@ -20,11 +21,17 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import TimeoutException, NoSuchElementException
+from selenium.common.exceptions import TimeoutException, NoSuchElementException, WebDriverException
 
 from classify_engine import classify_tender
+from utils.retry_tools import safe_driver_get, build_selenium_get_with_retry
 from tools.chromedriver_manager import (
     get_driver_path, verify_driver_alignment, setup_environment, print_driver_info
+)
+
+logger = logging.getLogger(__name__)
+driver_get_with_retry = build_selenium_get_with_retry(
+    (WebDriverException, TimeoutException, ConnectionError)
 )
 
 # ==========================================================
@@ -220,6 +227,8 @@ class NationalTreasuryScraper:
         """Main scraping function"""
         print("\n🏛️ National Treasury eTender Scraper")
         print("=" * 40)
+        failed_urls = []
+        loaded_any = False
         
         try:
             self._setup_driver()
@@ -228,7 +237,12 @@ class NationalTreasuryScraper:
                 print(f"\n🌐 Loading: {url}")
                 
                 try:
-                    self.driver.get(url)
+                    if not safe_driver_get(
+                        self.driver, url, driver_get_with_retry=driver_get_with_retry, log=logger
+                    ):
+                        failed_urls.append(url)
+                        continue
+                    loaded_any = True
                     time.sleep(3)
                     
                     page_tenders = self._scrape_opportunities_page()
@@ -238,10 +252,18 @@ class NationalTreasuryScraper:
                     
                 except Exception as e:
                     print(f"   ⚠️ Failed to load: {e}")
+                    failed_urls.append(url)
                     continue
+
+            if failed_urls:
+                print(f"\n   ❌ Failed National Treasury URLs: {', '.join(failed_urls)}")
+
+            if not loaded_any:
+                raise RuntimeError("National Treasury: failed to load any pages")
             
         except Exception as e:
             print(f"❌ Scraper error: {e}")
+            raise
         
         finally:
             self._close_driver()

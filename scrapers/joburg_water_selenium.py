@@ -7,11 +7,14 @@
 import sys
 import os
 import re
+import logging
 from datetime import datetime, timedelta
 from bs4 import BeautifulSoup
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from classify_engine import classify_tender
+
+logger = logging.getLogger(__name__)
 
 def scrape_joburg_water_selenium():
     """Scrape Johannesburg Water using Selenium for JS-rendered content"""
@@ -20,7 +23,13 @@ def scrape_joburg_water_selenium():
     try:
         from selenium import webdriver
         from selenium.webdriver.chrome.options import Options
+        from selenium.common.exceptions import TimeoutException, WebDriverException
         import time
+        from utils.retry_tools import safe_driver_get, build_selenium_get_with_retry
+
+        driver_get_with_retry = build_selenium_get_with_retry(
+            (WebDriverException, TimeoutException, ConnectionError)
+        )
         
         options = Options()
         options.add_argument('--headless')
@@ -32,7 +41,8 @@ def scrape_joburg_water_selenium():
         driver.set_page_load_timeout(30)
         
         url = "https://www.johannesburgwater.co.za/tenders/"
-        driver.get(url)
+        if not safe_driver_get(driver, url, driver_get_with_retry=driver_get_with_retry, log=logger):
+            raise RuntimeError("Johannesburg Water: failed to load page")
         time.sleep(6)  # Wait for DataTable to load
         
         html = driver.page_source
@@ -155,6 +165,7 @@ def scrape_joburg_water_selenium():
         
     except Exception as e:
         print(f"    Johannesburg Water Selenium error: {e}")
+        raise
     
     # Deduplicate by reference
     seen = set()

@@ -25,6 +25,8 @@ from scrapers.soes import scrape_all_soes
 from utils.excel_writer import ExcelWriter
 from utils.folder_tools import create_tender_folder, folder_creation_log
 from utils.logging_tools import write_log, log_start, log_end, log_error, rotate_log_if_needed
+from utils.data_validator import TenderValidator, format_validation_report
+from utils.scraper_monitor import ScraperMonitor
 
 # Import scoring engine
 from scoring_engine import score_tender
@@ -57,55 +59,70 @@ os.makedirs(os.path.dirname(LOG_FILE), exist_ok=True)
 # ----------------------------------------------------------
 # INITIALISE EXCEL WRITER
 # ----------------------------------------------------------
-excel_writer = ExcelWriter(EXCEL_PATH, SHEET_NAME)
+excel_writer = ExcelWriter(EXCEL_PATH, SHEET_NAME, log_file_path=LOG_FILE)
 
 # ----------------------------------------------------------
 # RUN ALL SCRAPERS
 # ----------------------------------------------------------
-def run_all_scrapers():
+def run_all_scrapers(monitor: ScraperMonitor = None):
     all_tenders = []
+    failed_sources = []
+    monitor = monitor or ScraperMonitor(output_dir=OUTPUT_DIR)
     
     # Municipalities
     write_log(LOG_FILE, "=== Scraping Municipalities ===")
     try:
-        muni_tenders = scrape_all_municipalities()
+        with monitor.track("Municipalities") as run:
+            muni_tenders = scrape_all_municipalities()
+            run.tenders_found = len(muni_tenders)
         all_tenders.extend(muni_tenders)
         write_log(LOG_FILE, f"Municipalities: {len(muni_tenders)} tenders found")
     except Exception as e:
         log_error(LOG_FILE, f"Municipality scraper failed: {e}")
+        failed_sources.append("Municipalities")
     
     # SOEs
     write_log(LOG_FILE, "=== Scraping SOEs ===")
     try:
-        soe_tenders = scrape_all_soes()
+        with monitor.track("SOEs") as run:
+            soe_tenders = scrape_all_soes()
+            run.tenders_found = len(soe_tenders)
         all_tenders.extend(soe_tenders)
         write_log(LOG_FILE, f"SOEs: {len(soe_tenders)} tenders found")
     except Exception as e:
         log_error(LOG_FILE, f"SOE scraper failed: {e}")
+        failed_sources.append("SOEs")
     
     # National Treasury (Selenium) - Optional
     if ENABLE_SELENIUM:
         write_log(LOG_FILE, "=== Scraping National Treasury (Selenium) ===")
         try:
-            from scrapers.national_treasury_selenium import scrape_national_treasury
-            nt_tenders = scrape_national_treasury()
+            with monitor.track("National Treasury") as run:
+                from scrapers.national_treasury_selenium import scrape_national_treasury
+                nt_tenders = scrape_national_treasury()
+                run.tenders_found = len(nt_tenders)
             all_tenders.extend(nt_tenders)
             write_log(LOG_FILE, f"National Treasury: {len(nt_tenders)} tenders found")
         except ImportError:
             log_error(LOG_FILE, "Selenium not available - skipping National Treasury")
+            failed_sources.append("National Treasury (Selenium import)")
         except Exception as e:
             log_error(LOG_FILE, f"National Treasury scraper failed: {e}")
+            failed_sources.append("National Treasury")
     
     # Johannesburg Water (Selenium) - Optional
     if ENABLE_SELENIUM:
         write_log(LOG_FILE, "=== Scraping Johannesburg Water (Selenium) ===")
         try:
-            from scrapers.joburg_water_selenium import scrape_joburg_water_selenium
-            jw_tenders = scrape_joburg_water_selenium()
+            with monitor.track("Johannesburg Water") as run:
+                from scrapers.joburg_water_selenium import scrape_joburg_water_selenium
+                jw_tenders = scrape_joburg_water_selenium()
+                run.tenders_found = len(jw_tenders)
             all_tenders.extend(jw_tenders)
             write_log(LOG_FILE, f"Johannesburg Water: {len(jw_tenders)} tenders found")
         except Exception as e:
             log_error(LOG_FILE, f"Johannesburg Water scraper failed: {e}")
+            failed_sources.append("Johannesburg Water")
     
     # NOTE: Disabled non-functional scrapers (405 errors on etenders.gov.za API)
     # TODO: Research correct etenders.gov.za API endpoints for:
@@ -118,13 +135,19 @@ def run_all_scrapers():
     if ENABLE_SELENIUM:
         write_log(LOG_FILE, "=== Scraping Eskom Tender Bulletin ===")
         try:
-            from scrapers.eskom_direct import scrape_eskom_tenders
-            eskom_tenders = scrape_eskom_tenders()
+            with monitor.track("Eskom Tender Bulletin") as run:
+                from scrapers.eskom_direct import scrape_eskom_tenders
+                eskom_tenders = scrape_eskom_tenders()
+                run.tenders_found = len(eskom_tenders)
             all_tenders.extend(eskom_tenders)
             write_log(LOG_FILE, f"Eskom: {len(eskom_tenders)} tenders found")
         except Exception as e:
             log_error(LOG_FILE, f"Eskom tender bulletin scraper failed: {e}")
+            failed_sources.append("Eskom Tender Bulletin")
     
+    if failed_sources:
+        write_log(LOG_FILE, f"Failed sources this run: {', '.join(sorted(set(failed_sources)))}", "WARNING")
+
     return all_tenders
 
 # ----------------------------------------------------------
@@ -317,6 +340,10 @@ def save_outputs(new_items):
             for t in items:
                 sf.write(f"  - {t['ref']} | {t['title'][:50]}... | {t['category']}\n")
 
+        # Validation report (if available)
+        if isinstance(globals().get("VALIDATION_REPORT_TEXT"), str) and globals().get("VALIDATION_REPORT_TEXT"):
+            sf.write(globals().get("VALIDATION_REPORT_TEXT"))
+
 # ----------------------------------------------------------
 # MAIN ENTRY POINT
 # ----------------------------------------------------------
@@ -327,41 +354,101 @@ if __name__ == "__main__":
     write_log(LOG_FILE, "TENDER ENGINE RUN STARTED (WITH AI SCORING)")
     write_log(LOG_FILE, "=" * 50)
     
-    # Scrape all sources
-    all_tenders = run_all_scrapers()
+    # Scrape all sources (with monitoring)
+    monitor = ScraperMonitor(output_dir=OUTPUT_DIR)
+    all_tenders = run_all_scrapers(monitor)
+
+    # Save scraper health report
+    try:
+        monitor.generate_report(output_path=os.path.join(OUTPUT_DIR, "scraper_health.json"))
+    except Exception as exc:
+        log_error(LOG_FILE, f"Failed to write scraper health report: {exc}")
     
     write_log(LOG_FILE, f"Total tenders scraped: {len(all_tenders)}")
+
+    # Alert on repeated failures (3 consecutive failures)
+    if CONFIG.get("email_alerts", {}).get("enabled", False):
+        try:
+            should_alert, failing = monitor.should_alert_on_failures(threshold=3)
+            if should_alert:
+                from utils.email_alerts import EmailAlerter
+
+                smtp_config = (CONFIG.get("email_alerts", {}) or {}).get("smtp", {}) or {}
+                alerter = EmailAlerter(smtp_config)
+                sent = alerter.send_scraper_failure_alert(failing)
+                if sent:
+                    monitor.mark_alerted(failing, threshold=3)
+        except Exception as exc:
+            log_error(LOG_FILE, f"Failed to send scraper failure alert: {exc}")
+    
+    # Validate scraped tenders before scoring/processing
+    validator = TenderValidator()
+    valid_tenders = []
+    invalid_count = 0
+    valid_count = 0
+    error_counts = {}
+    warning_counts = {}
+    invalid_examples = []
+
+    for tender in all_tenders:
+        result = validator.validate_with_warnings(tender)
+        if result.valid:
+            valid_tenders.append(tender)
+            valid_count += 1
+        else:
+            invalid_count += 1
+            ref = tender.get("ref") or "NA"
+            log_error(LOG_FILE, f"Invalid tender {ref}: {result.errors}")
+            for msg in result.errors:
+                error_counts[msg] = error_counts.get(msg, 0) + 1
+            if len(invalid_examples) < 20:
+                invalid_examples.append(f"{ref} ({tender.get('source','Unknown')}): {', '.join(result.errors)}")
+
+        for msg in result.warnings:
+            warning_counts[msg] = warning_counts.get(msg, 0) + 1
+
+    VALIDATION_REPORT_TEXT = format_validation_report(
+        total=len(all_tenders),
+        valid_count=valid_count,
+        invalid_count=invalid_count,
+        error_counts=error_counts,
+        warning_counts=warning_counts,
+        invalid_examples=invalid_examples,
+    )
+
+    write_log(LOG_FILE, f"Validation complete: {valid_count} valid / {invalid_count} invalid")
     
     # Process, classify & SCORE
-    added_count, new_items = process_tenders(all_tenders)
+    added_count, new_items = process_tenders(valid_tenders)
     
     # Save results
     save_outputs(new_items)
     
     # Send email alerts for urgent tenders (if enabled)
-    if CONFIG.get('email_alerts', {}).get('enabled', False):
+    if CONFIG.get("email_alerts", {}).get("enabled", False):
         try:
             from utils.email_alerts import EmailAlerter
-            from datetime import datetime, timedelta
             
             # Calculate days until closing for each tender
-            urgent_threshold = CONFIG.get('email_alerts', {}).get('urgent_threshold_days', 3)
+            urgent_threshold = CONFIG.get("email_alerts", {}).get("urgent_threshold_days", 3)
             urgent_tenders = []
             
             for tender in new_items:
                 # Check if HIGH priority
-                priority = tender.get('scores', {}).get('priority', tender.get('priority', ''))
-                if priority != 'HIGH':
+                priority = (tender.get("scores", {}).get("priority") or tender.get("priority") or "").upper()
+                if priority != "HIGH":
                     continue
                 
                 # Check closing date
-                closing_date = tender.get('closing_date')
+                closing_date = tender.get("closing_date")
                 if not closing_date:
                     continue
                 
                 try:
-                    closing_dt = datetime.fromisoformat(closing_date.replace('Z', '+00:00'))
-                    days_until = (closing_dt - datetime.now()).days
+                    closing_dt = datetime.fromisoformat(closing_date.replace("Z", "+00:00"))
+                    today = datetime.now(closing_dt.tzinfo).replace(hour=0, minute=0, second=0, microsecond=0)
+                    closing_day = closing_dt.replace(hour=0, minute=0, second=0, microsecond=0)
+                    days_until = int((closing_day - today).days)
                     
                     if 0 <= days_until <= urgent_threshold:
                         urgent_tenders.append(tender)
@@ -370,10 +457,13 @@ if __name__ == "__main__":
             
             # Send email if there are urgent tenders
             if urgent_tenders:
-                smtp_config = CONFIG['email_alerts']['smtp']
+                smtp_config = CONFIG["email_alerts"]["smtp"]
                 alerter = EmailAlerter(smtp_config)
-                alerter.send_urgent_alert(urgent_tenders)
-                write_log(LOG_FILE, f"📧 Email alert sent for {len(urgent_tenders)} urgent tender(s)")
+                sent = alerter.send_urgent_alert(urgent_tenders)
+                if sent:
+                    write_log(LOG_FILE, f"📧 Email alert sent for {len(urgent_tenders)} urgent tender(s)")
+                else:
+                    write_log(LOG_FILE, "⚠️ Email alert was not sent (check SMTP config / logs).")
             else:
                 write_log(LOG_FILE, "📧 No urgent tenders requiring email alerts")
                 

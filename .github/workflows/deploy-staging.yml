@@ -1,0 +1,59 @@
+name: Deploy to Staging
+
+on:
+  push:
+    branches: [staging]
+  pull_request:
+    branches: [staging]
+
+jobs:
+  deploy-staging:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install Vercel CLI
+        run: npm install -g vercel@latest
+
+      - name: Prepare Vercel project config
+        run: |
+          mkdir -p .vercel
+          cat > .vercel/project.json <<EOF
+          {"orgId":"${{ secrets.VERCEL_ORG_ID }}","projectId":"${{ secrets.VERCEL_PROJECT_ID }}"}
+          EOF
+
+      - name: Deploy to Vercel (Preview / Staging)
+        id: vercel_deploy
+        run: |
+          set -e
+          DEPLOY_LOG="$(mktemp)"
+          vercel deploy --token "${{ secrets.VERCEL_TOKEN }}" --yes | tee "$DEPLOY_LOG"
+          DEPLOY_URL="$(grep -Eo 'https?://[^ ]+\.vercel\.app' "$DEPLOY_LOG" | tail -n 1)"
+          if [ -z "$DEPLOY_URL" ]; then
+            echo "Could not detect deploy URL" >&2
+            exit 1
+          fi
+          echo "url=$DEPLOY_URL" >> "$GITHUB_OUTPUT"
+
+      - name: Comment PR with staging URL
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const url = `${{ steps.vercel_deploy.outputs.url }}`;
+            await github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `🚀 Staging deployed: ${url}`
+            });
+

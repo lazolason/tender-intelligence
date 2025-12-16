@@ -1,20 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="manifest" href="manifest.json">
-    <title>Tender Intelligence Dashboard</title>
+	<head>
+	    <meta charset="UTF-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	    <meta name="theme-color" content="#667eea">
+	    <meta name="apple-mobile-web-app-capable" content="yes">
+	    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+	    <link rel="manifest" href="/manifest.json">
+	    <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+	    <title>Tender Intelligence Dashboard</title>
+	    <script>
+	        (function () {
+	            try {
+                const theme = localStorage.getItem('theme') || 'dark';
+                document.documentElement.setAttribute('data-theme', theme);
+            } catch (e) {}
+        })();
+    </script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
-        <header class="main-header">
-            <h1>Tender Intelligence</h1>
-            <p class="subtitle"><span class="status"></span>TES & Phakathi decision layer</p>
-        </header>
+	        <header class="main-header">
+	            <h1>Tender Intelligence</h1>
+	            <p class="subtitle"><span class="status"></span>TES & Phakathi decision layer</p>
+	            <button id="installBtn" class="install-btn" type="button" aria-label="Install app" style="display:none">
+	                ⬇️ Install App
+	            </button>
+	            <button id="themeToggle" class="theme-toggle" type="button" aria-label="Toggle theme">
+	                <span class="theme-icon">🌙</span>
+	            </button>
+	        </header>
 
         <div id="print-report-header" class="print-header">
             <h1>Tender Intelligence – Daily Report</h1>
@@ -41,7 +57,9 @@
         </div>
 
         <nav class="tab-nav">
-            <button class="tab-btn active" onclick="showTab('dashboard')">📊 Dashboard</button>
+            <button class="tab-btn active" onclick="showTab('dashboard')">
+                📊 Dashboard <span id="watchlistNavBadge" class="watchlist-badge hidden" aria-label="Watchlist count">0</span>
+            </button>
             <button class="tab-btn" onclick="showTab('calendar')">📅 Bid Calendar</button>
             <button class="tab-btn" onclick="showTab('analytics')">📈 Analytics</button>
             <button class="tab-btn" onclick="showTab('sources')">📂 Sources</button>
@@ -50,8 +68,13 @@
         <!-- DASHBOARD TAB -->
         <div id="dashboard" class="tab-content active">
             <div class="export-actions">
-                <button id="export-pdf-btn" class="export-btn">Export as PDF</button>
-                <button id="export-email-btn" class="export-btn secondary">Email summary</button>
+                <div class="export-buttons" aria-label="Export options">
+                    <button id="export-pdf-btn" class="export-btn" type="button" onclick="exportToPDF()">📄 Export PDF</button>
+                    <button class="export-btn" type="button" onclick="exportToExcel()">📊 Export Excel</button>
+                    <button class="export-btn secondary" type="button" onclick="exportToCSV()">📋 Export CSV</button>
+                    <button class="export-btn secondary" type="button" onclick="printTenders()">🖨️ Print</button>
+                </div>
+                <button id="export-email-btn" class="export-btn secondary" type="button">Email summary</button>
             </div>
             <section>
                 <div class="stats">
@@ -72,39 +95,32 @@
                         <div class="stat-label">High-priority tenders</div>
                     </div>
                 </div>
-                <div class="last-sync">
-                    <span>🔄 Last sync:</span>
-                    <span id="last-sync-text">10 Dec 2025, 13:50</span>
-                    <span> | Next run:</span>
-                    <span id="next-run-text">Daily 08:00</span>
-                    <span style="margin-left: 20px;">|</span>
-                    <button id="enableNotifications" class="notification-btn" style="
-                        margin-left: 10px;
-                        padding: 6px 14px; 
-                        border-radius: 16px; 
-                        background: rgba(255,107,107,0.2);
-                        border: 1px solid rgba(255,107,107,0.3);
-                        color: #ff6b6b;
-                        cursor: pointer;
-                        font-size: 0.85rem;
-                        display: none;">
-                        🔔 Enable Alerts
-                    </button>
-                    <span id="notificationStatus" style="
-                        margin-left: 10px;
-                        padding: 6px 14px; 
-                        border-radius: 16px; 
-                        background: rgba(72,219,251,0.2);
-                        color: #48dbfb;
-                        font-size: 0.85rem;
-                        display: none;">
-                        ✅ Alerts Active
-                    </span>
-                </div>
+	                <div class="last-sync">
+	                    <span>🔄 Last sync:</span>
+	                    <span id="last-sync-text">10 Dec 2025, 13:50</span>
+	                    <span> | Next run:</span>
+	                    <span id="next-run-text">Daily 08:00</span>
+	                </div>
+	                <div class="notification-settings" aria-label="Notification settings">
+	                    <button id="enableNotifications" class="notification-pill notification-pill-enable" type="button" style="display: none;">
+	                        🔔 Enable Alerts
+	                    </button>
+	                    <span id="notificationStatus" class="notification-pill notification-pill-status" style="display: none;">
+	                        ✅ Alerts Active
+	                    </span>
+	                </div>
+	                <div class="watchlist-settings" aria-label="Watchlist settings">
+	                    <span class="notification-pill watchlist-pill">⭐ Watchlist</span>
+	                    <select id="watchlistModeSelect" class="watchlist-mode-select" aria-label="Watchlist mode">
+	                        <option value="shared">Shared</option>
+	                        <option value="personal">Personal</option>
+	                    </select>
+	                </div>
                 <div id="next-run-countdown" class="next-run-countdown"></div>
                 <div id="data-status" class="data-status" role="status" aria-live="polite">
                     <div class="data-status-left">
                         <span id="data-status-pill" class="data-pill warn">Data: loading…</span>
+                        <span id="offlinePill" class="data-pill warn hidden">Offline</span>
                         <span>Source: <strong id="data-status-source">–</strong></span>
                         <span>Records: <strong id="data-status-count">–</strong></span>
                         <span>Updated: <strong id="data-status-updated">–</strong></span>
@@ -176,154 +192,106 @@
                         <span style="text-align: right; color: #fff;">28%</span>
                     </div>
                 </div>
-            </section>
+	            </section>
 
-            <section class="section active-tenders-section">
-                <h2>📋 Active Tenders</h2>
-                
-                <!-- Advanced Filters Section -->
-                <div id="advancedFiltersPanel" class="advanced-filters" style="
-                    background: rgba(255,255,255,0.03);
-                    padding: 20px;
-                    border-radius: 12px;
-                    margin-bottom: 20px;
-                    border: 1px solid rgba(255,255,255,0.1);
-                    display: none;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                        <h3 style="margin: 0; color: #667eea;">🔍 Advanced Filters</h3>
-                        <button onclick="toggleAdvancedFilters()" style="
-                            padding: 6px 12px;
-                            border-radius: 8px;
-                            background: rgba(255,107,107,0.2);
-                            border: 1px solid rgba(255,107,107,0.3);
-                            color: #ff6b6b;
-                            cursor: pointer;
-                            font-size: 0.85rem;">
-                            ✕ Close
-                        </button>
-                    </div>
-                    
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
-                        <!-- Search Box -->
-                        <div class="filter-group">
-                            <label style="display: block; margin-bottom: 8px; color: #888; font-size: 0.9rem;">Smart Search:</label>
-                            <input type="text" id="advancedSearchBox" placeholder="Try: 'closing today', 'this week', 'eskom'" style="
-                                width: 100%;
-                                padding: 10px;
-                                border-radius: 8px;
-                                background: rgba(255,255,255,0.05);
-                                border: 1px solid rgba(255,255,255,0.2);
-                                color: #fff;
-                                font-size: 0.9rem;">
-                            <div style="font-size: 0.75rem; color: #666; margin-top: 5px;">
-                                💡 Try: "closing today", "this week", "urgent", "eskom"
-                            </div>
-                        </div>
+	            <div id="advancedFiltersPanel" class="advanced-filters-container">
+	                <div class="advanced-filters-header">
+	                    <h3 class="advanced-filters-title">🔍 Advanced Filters</h3>
+	                    <button id="advancedFiltersToggle" class="quick-filter-btn" type="button" onclick="toggleAdvancedFilters()" aria-expanded="false" aria-controls="advancedFiltersBody">▼ Expand</button>
+	                </div>
+	                <div id="advancedFiltersBody" class="advanced-filters-body" style="display: none;">
+	                    <div class="advanced-filters-grid">
+	                        <div class="filter-group">
+	                            <label class="advanced-filter-label">Search</label>
+	                            <input type="text" id="tenderSearchBox" class="advanced-select" placeholder="Search tenders…" />
+	                            <div class="advanced-search-hint">💡 Try: 'closing today', 'this week', 'urgent', 'eskom', 'tes'</div>
+	                        </div>
+	                        <div class="filter-group">
+	                            <label class="advanced-filter-label">Sources</label>
+	                            <div id="sourcesMultiSelectMount"></div>
+	                        </div>
+	                        <div class="filter-group">
+	                            <label class="advanced-filter-label">Priorities</label>
+	                            <div id="prioritiesMultiSelectMount"></div>
+	                        </div>
+	                        <div class="filter-group">
+	                            <label class="advanced-filter-label">Companies</label>
+	                            <div id="companiesMultiSelectMount"></div>
+	                        </div>
+	                        <div class="filter-group">
+	                            <label class="advanced-filter-label">Closing Date</label>
+	                            <div class="advanced-date-range">
+	                                <input type="date" id="dateStart" class="advanced-date-input" />
+	                                <span class="advanced-date-sep">to</span>
+	                                <input type="date" id="dateEnd" class="advanced-date-input" />
+	                            </div>
+	                            <div class="advanced-quick-filters">
+	                                <button type="button" onclick="setQuickDateFilter('thisWeek')" class="quick-filter-btn">This Week</button>
+	                                <button type="button" onclick="setQuickDateFilter('nextWeek')" class="quick-filter-btn">Next Week</button>
+	                                <button type="button" onclick="setQuickDateFilter('thisMonth')" class="quick-filter-btn">This Month</button>
+	                            </div>
+	                        </div>
+	                    </div>
+	                    <div class="advanced-saved-row">
+	                        <div class="filter-group">
+	                            <label class="advanced-filter-label">Saved searches</label>
+	                            <select id="savedSearchSelect" class="advanced-select">
+	                                <option value="">-- Select Saved Search --</option>
+	                            </select>
+	                        </div>
+	                        <div class="advanced-actions">
+	                            <button type="button" onclick="saveCurrentSearch()" class="quick-filter-btn">💾 Save Current</button>
+	                            <button type="button" onclick="clearAllAdvancedFilters()" class="quick-filter-btn advanced-clear-btn">Clear All Filters</button>
+	                        </div>
+	                    </div>
+	                    <div id="activeFilterCount" class="advanced-filter-count">No filters active</div>
+	                </div>
+	            </div>
 
-                        <!-- Date Range -->
-                        <div class="filter-group">
-                            <label style="display: block; margin-bottom: 8px; color: #888; font-size: 0.9rem;">Closing Date Range:</label>
-                            <div style="display: flex; gap: 8px; align-items: center;">
-                                <input type="date" id="dateStart" style="
-                                    flex: 1;
-                                    padding: 8px;
-                                    border-radius: 8px;
-                                    background: rgba(255,255,255,0.05);
-                                    border: 1px solid rgba(255,255,255,0.2);
-                                    color: #fff;
-                                    font-size: 0.85rem;">
-                                <span style="color: #888;">to</span>
-                                <input type="date" id="dateEnd" style="
-                                    flex: 1;
-                                    padding: 8px;
-                                    border-radius: 8px;
-                                    background: rgba(255,255,255,0.05);
-                                    border: 1px solid rgba(255,255,255,0.2);
-                                    color: #fff;
-                                    font-size: 0.85rem;">
-                            </div>
-                            <div style="display: flex; gap: 5px; margin-top: 8px; flex-wrap: wrap;">
-                                <button onclick="setQuickDateFilter('thisWeek')" class="quick-filter-btn">This Week</button>
-                                <button onclick="setQuickDateFilter('nextWeek')" class="quick-filter-btn">Next Week</button>
-                                <button onclick="setQuickDateFilter('thisMonth')" class="quick-filter-btn">This Month</button>
-                            </div>
-                        </div>
-
-                        <!-- Saved Searches -->
-                        <div class="filter-group">
-                            <label style="display: block; margin-bottom: 8px; color: #888; font-size: 0.9rem;">Saved Searches:</label>
-                            <select id="savedSearchSelect" style="
-                                width: 100%;
-                                padding: 10px;
-                                border-radius: 8px;
-                                background: rgba(255,255,255,0.05);
-                                border: 1px solid rgba(255,255,255,0.2);
-                                color: #fff;
-                                font-size: 0.9rem;">
-                                <option value="">-- Select Saved Search --</option>
-                            </select>
-                            <div style="display: flex; gap: 5px; margin-top: 8px;">
-                                <button onclick="saveCurrentSearch()" class="quick-filter-btn" style="flex: 1;">💾 Save Current</button>
-                                <button onclick="deleteSavedSearch()" class="quick-filter-btn" style="flex: 1; background: rgba(255,107,107,0.2); border-color: rgba(255,107,107,0.3); color: #ff6b6b;">🗑️ Delete</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div style="display: flex; gap: 10px; margin-top: 15px; justify-content: space-between; align-items: center;">
-                        <div id="activeFilterCount" style="color: #888; font-size: 0.9rem;">
-                            No filters active
-                        </div>
-                        <button onclick="clearAllAdvancedFilters()" style="
-                            padding: 10px 20px;
-                            border-radius: 20px;
-                            background: rgba(255,107,107,0.2);
-                            border: 1px solid rgba(255,107,107,0.3);
-                            color: #ff6b6b;
-                            cursor: pointer;">
-                            Clear All Filters
-                        </button>
-                    </div>
-                </div>
-                
-                <!-- Simple Filters Row -->
-                <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px; align-items: center;">
-                    <button onclick="toggleAdvancedFilters()" style="
-                        padding: 8px 16px;
-                        border-radius: 10px;
-                        background: rgba(102,126,234,0.2);
-                        border: 1px solid rgba(102,126,234,0.3);
-                        color: #667eea;
-                        cursor: pointer;
-                        font-size: 0.9rem;">
-                        🔍 Advanced Filters
-                    </button>
-                    <label style="color: #888; font-size: 0.9rem;">Company
-                        <select id="companyFilter" onchange="filterTenders(this.value)" style="margin-left: 8px; padding: 8px 10px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); color: #fff;">
-                            <option value="all">All</option>
-                            <option value="TES">TES</option>
-                            <option value="Phakathi">Phakathi</option>
-                        </select>
-                    </label>
-                    <label style="color: #888; font-size: 0.9rem;">Priority
-                        <select id="priorityFilter" onchange="filterTenders(this.value)" style="margin-left: 8px; padding: 8px 10px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); color: #fff;">
-                            <option value="all">All</option>
-                            <option value="HIGH">High</option>
-                            <option value="MEDIUM">Medium</option>
-                            <option value="LOW">Low</option>
-                        </select>
-                    </label>
-                    <label class="scope-toggle">
-                        <input type="checkbox" id="hide-out-of-scope" />
-                        Hide out-of-scope
-                    </label>
-                    <button id="refresh-data-btn" class="refresh-data-btn" type="button">Refresh data</button>
-                </div>
-                <div style="overflow-x: auto;">
-                    <table class="tenders-table" style="width: 100%; border-collapse: collapse;">
-                        <thead>
-                            <tr style="text-align: left; color: #888;">
-                                <th style="padding: 10px;">Title</th>
-                                <th style="padding: 10px;">Source</th>
+	            <section class="section active-tenders-section">
+	                <h2>📋 Active Tenders</h2>
+	                
+		                <!-- Simple Filters Row -->
+		                <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px; align-items: center;">
+		                    <label class="scope-toggle">
+		                        <input type="checkbox" id="hide-out-of-scope" />
+		                        Hide out-of-scope
+		                    </label>
+		                    <button id="refresh-data-btn" class="refresh-data-btn" type="button">Refresh data</button>
+		                    <div class="view-toggle" aria-label="View density">
+		                        <button class="view-btn active" type="button" data-view="detailed">📋 Detailed</button>
+		                        <button class="view-btn" type="button" data-view="compact">📑 Compact</button>
+		                        <button class="view-btn" type="button" data-view="card">🎴 Cards</button>
+		                    </div>
+		                    <span id="tenderResultsCount" style="color: #888; font-size: 0.9rem; margin-left: 12px;">Showing –</span>
+		                </div>
+	                <div class="filter-tabs" aria-label="Tender filters">
+	                    <button class="filter-tab active" type="button" onclick="filterTenders('all')">All</button>
+	                    <button class="filter-tab high" type="button" onclick="filterTenders('HIGH')">🔴 Urgent</button>
+	                    <button class="filter-tab" type="button" onclick="filterTenders('WATCHLIST')">
+	                        ⭐ Watchlist <span id="watchlistFilterBadge" class="watchlist-badge hidden" aria-label="Watchlist count">0</span>
+	                    </button>
+	                    <button class="filter-tab" type="button" onclick="filterTenders('ACTIVE_BIDS')">🛠️ Active Bids</button>
+	                    <button class="filter-tab" type="button" onclick="filterTenders('COMPLETED')">🏁 Completed</button>
+	                    <button class="filter-tab" type="button" onclick="filterTenders('TES')">TES</button>
+	                    <button class="filter-tab" type="button" onclick="filterTenders('Phakathi')">Phakathi</button>
+	                    <button class="filter-tab" type="button" onclick="filterTenders('Both')">Both</button>
+	                    <button class="filter-tab" type="button" onclick="filterTenders('ASSIGNED_TO_ME')">Assigned to Me</button>
+	                    <button class="filter-tab" type="button" onclick="filterTenders('UNASSIGNED')">Unassigned</button>
+	                </div>
+	                <div class="watchlist-toolbar" aria-label="Watchlist actions">
+	                    <button id="watchlistAddHighBtn" type="button" class="quick-filter-btn">Add all HIGH priority to watchlist</button>
+	                    <button id="watchlistExportBtn" type="button" class="quick-filter-btn">Export watchlist CSV</button>
+	                    <select id="watchlistUserFilter" class="advanced-select watchlist-user-filter" aria-label="Filter watchlist by user">
+	                        <option value="">All users</option>
+	                    </select>
+	                </div>
+	                <div id="tenderTableScroll" class="tender-table-scroll">
+	                    <table id="tendersTable" class="tenders-table" style="width: 100%; border-collapse: collapse;">
+	                        <thead>
+	                            <tr style="text-align: left; color: #888;">
+	                                <th style="padding: 10px;">Title</th>
+	                                <th style="padding: 10px;">Source</th>
                                 <th style="padding: 10px;">Company</th>
                                 <th style="padding: 10px;">Priority</th>
                                 <th style="padding: 10px;">Close date</th>
@@ -335,9 +303,16 @@
                                 <th style="padding: 10px;">Decision</th>
                                 <th style="padding: 10px;">Link</th>
                             </tr>
-                        </thead>
-                        <tbody id="tenderList" class="tender-list"></tbody>
-                    </table>
+	                        </thead>
+	                        <tbody id="tenderList" class="tender-list"></tbody>
+	                    </table>
+	                    <div id="tenderCardGrid" class="tender-grid hidden" aria-label="Tender cards"></div>
+	                </div>
+                <div id="tenderLoadProgress" class="tender-load-progress hidden" role="status" aria-live="polite">
+                    <div class="tender-load-progress-text" id="tenderLoadProgressText">Loading…</div>
+                    <div class="tender-load-progress-bar">
+                        <div id="tenderLoadProgressFill" class="tender-load-progress-fill"></div>
+                    </div>
                 </div>
             </section>
 
@@ -437,70 +412,53 @@
             </div>
         </div>
 
-        <!-- ANALYTICS TAB -->
-        <div id="analytics" class="tab-content">
-            <section class="section">
-                <h2>📊 Tender Analytics & Insights</h2>
-                
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px;">
-                    <div class="stat-card">
-                        <div class="stat-value total" id="analytics-total-tenders">0</div>
-                        <div class="stat-label">Total Tenders</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value" id="analytics-avg-per-week" style="color: #667eea;">0</div>
-                        <div class="stat-label">Avg Per Week</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value" id="analytics-top-source" style="color: #48dbfb; font-size: 1.5rem;">–</div>
-                        <div class="stat-label">Top Source</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value" id="analytics-top-company" style="color: #feca57; font-size: 1.5rem;">–</div>
-                        <div class="stat-label">Top Company</div>
-                    </div>
-                </div>
+	        <!-- ANALYTICS TAB -->
+	        <div id="analytics" class="tab-content">
+	            <section class="section">
+	                <h2>📊 Tender Analytics</h2>
 
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px;">
-                    <!-- Priority Distribution -->
-                    <div style="background: rgba(255,255,255,0.02); padding: 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08);">
-                        <h3 style="margin-bottom: 15px; color: #fff;">Priority Distribution</h3>
-                        <div id="analytics-priority-chart"></div>
-                    </div>
+	                <div class="stats" style="margin-top: 20px;">
+	                    <div class="stat-card">
+	                        <div class="stat-value total" id="analytics-total-month">0</div>
+	                        <div class="stat-label">Total Tenders This Month</div>
+	                    </div>
+	                    <div class="stat-card">
+	                        <div class="stat-value" id="analytics-avg-per-week" style="color: #667eea;">0</div>
+	                        <div class="stat-label">Avg Tenders Per Week</div>
+	                    </div>
+	                    <div class="stat-card">
+	                        <div class="stat-value" id="analytics-top-source" style="color: #48dbfb; font-size: 1.5rem;">–</div>
+	                        <div class="stat-label">Top Performing Source</div>
+	                    </div>
+	                    <div class="stat-card">
+	                        <div class="stat-value" id="analytics-most-active-day" style="color: #feca57; font-size: 1.5rem;">–</div>
+	                        <div class="stat-label">Most Active Day</div>
+	                    </div>
+	                </div>
 
-                    <!-- Source Breakdown -->
-                    <div style="background: rgba(255,255,255,0.02); padding: 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08);">
-                        <h3 style="margin-bottom: 15px; color: #fff;">Top Sources</h3>
-                        <div id="analytics-source-chart"></div>
-                    </div>
-                </div>
+	                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 20px; margin-top: 30px;">
+	                    <div class="chart-container">
+	                        <h3 style="margin-bottom: 15px; color: #fff;">Trend (This Month)</h3>
+	                        <canvas id="trendChart"></canvas>
+	                    </div>
+	                    <div class="chart-container">
+	                        <h3 style="margin-bottom: 15px; color: #fff;">Source Breakdown</h3>
+	                        <canvas id="sourceChart"></canvas>
+	                    </div>
+	                </div>
 
-                <!-- Keyword Cloud -->
-                <div style="margin-top: 30px; background: rgba(255,255,255,0.02); padding: 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08);">
-                    <h3 style="margin-bottom: 15px; color: #fff;">🏷️ Most Common Keywords</h3>
-                    <div id="analytics-keyword-cloud" style="
-                        display: flex;
-                        flex-wrap: wrap;
-                        align-items: center;
-                        justify-content: center;
-                        gap: 10px;
-                        min-height: 150px;
-                        align-content: center;
-                        "></div>
-                </div>
-
-                <!-- Data Insights -->
-                <div style="margin-top: 30px; background: rgba(102,126,234,0.05); padding: 20px; border-radius: 12px; border: 1px solid rgba(102,126,234,0.2);">
-                    <h3 style="margin-bottom: 15px; color: #667eea;">💡 Key Insights</h3>
-                    <ul style="list-style: none; color: #ccc; line-height: 2;">
-                        <li id="insight-1">✓ Loading analytics...</li>
-                        <li id="insight-2"></li>
-                        <li id="insight-3"></li>
-                        <li id="insight-4"></li>
-                    </ul>
-                </div>
-            </section>
-        </div>
+	                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 20px; margin-top: 20px;">
+	                    <div class="chart-container">
+	                        <h3 style="margin-bottom: 15px; color: #fff;">Priority Distribution</h3>
+	                        <canvas id="priorityChart"></canvas>
+	                    </div>
+	                    <div class="chart-container">
+	                        <h3 style="margin-bottom: 15px; color: #fff;">🏷️ Keyword Cloud</h3>
+	                        <div id="analytics-keyword-cloud" class="keyword-cloud"></div>
+	                    </div>
+	                </div>
+	            </section>
+	        </div>
 
         <!-- SOURCES TAB -->
         <div id="sources" class="tab-content">
@@ -587,59 +545,402 @@
         </footer>
     </div>
 
-    <div id="tender-modal-backdrop" class="tender-modal-backdrop hidden">
-        <div class="tender-modal">
-            <div class="tender-modal-header">
-                <h2 id="modal-tender-title"></h2>
-                <button id="modal-close-btn" class="modal-close-btn">×</button>
-            </div>
-            <div class="tender-modal-meta">
-                <div><span id="modal-tender-source"></span> · <span id="modal-tender-company"></span> · <span id="modal-tender-priority"></span></div>
-                <div>Close date: <span id="modal-tender-close-date"></span> · <span id="modal-tender-days-remaining"></span></div>
-            </div>
-            <div class="tender-modal-scores">
-                <div>Fit score: <span id="modal-fit-score"></span></div>
-                <div>Revenue score: <span id="modal-revenue-score"></span></div>
-                <div>Suitability score: <span id="modal-suitability-score"></span></div>
-                <div>Risk score (lower is better): <span id="modal-risk-score"></span></div>
-            </div>
-            <div class="tender-modal-body">
-                <h3>Description</h3>
-                <p id="modal-tender-description"></p>
-                <h3>Notes</h3>
-                <p id="modal-tender-notes"></p>
-                <div class="tender-modal-ai">
-                    <h3>AI Insight</h3>
-                    <p id="modal-tender-ai-insight">Analyzing...</p>
-                    <div class="tender-modal-ai-reco">
-                        <h3>AI Recommendation</h3>
-                        <p id="modal-tender-ai-reco"></p>
-                    </div>
-                </div>
-            </div>
-            <div class="tender-modal-footer">
-                <button id="modal-open-link" class="modal-open-link-btn">Open tender on source site ↗</button>
-            </div>
-        </div>
-    </div>
+	    <div id="tenderDetailOverlay" class="tender-detail-overlay" role="dialog" aria-modal="true" aria-label="Tender details">
+	        <div class="tender-detail-modal" role="document">
+	            <div class="tender-detail-header">
+	                <div>
+	                    <div id="tenderDetailRef" class="tender-detail-ref">–</div>
+	                    <div id="tenderDetailTitle" class="tender-detail-title">Tender details</div>
+	                </div>
+	                <button id="tenderDetailCloseBtn" class="tender-detail-close" type="button" aria-label="Close">×</button>
+	            </div>
+
+	            <div class="tender-detail-tabs" role="tablist" aria-label="Tender detail tabs">
+	                <button class="tender-detail-tab active" type="button" data-tab="overview" role="tab" aria-selected="true">Overview</button>
+	                <button class="tender-detail-tab" type="button" data-tab="details" role="tab" aria-selected="false">Details</button>
+	                <button class="tender-detail-tab" type="button" data-tab="attachments" role="tab" aria-selected="false">Attachments</button>
+	                <button class="tender-detail-tab" type="button" data-tab="similar" role="tab" aria-selected="false">Similar</button>
+	                <button class="tender-detail-tab" type="button" data-tab="discussion" role="tab" aria-selected="false">
+	                    Discussion <span id="discussionMentionBadge" class="mention-badge hidden" aria-label="Unread mentions">0</span>
+	                </button>
+	            </div>
+
+	            <div class="tender-detail-content">
+	                <div id="tenderTabOverview" class="tender-detail-panel active" role="tabpanel">
+	                    <div id="tenderDetailOverview"></div>
+	                </div>
+	                <div id="tenderTabDetails" class="tender-detail-panel" role="tabpanel">
+	                    <div id="tenderDetailDetails"></div>
+	                </div>
+	                <div id="tenderTabAttachments" class="tender-detail-panel" role="tabpanel">
+	                    <div id="tenderDetailAttachments"></div>
+	                </div>
+	                <div id="tenderTabSimilar" class="tender-detail-panel" role="tabpanel">
+	                    <div id="tenderDetailSimilar"></div>
+	                </div>
+	                <div id="tenderTabDiscussion" class="tender-detail-panel" role="tabpanel">
+	                    <div id="tenderDetailDiscussion"></div>
+	                </div>
+	            </div>
+
+	            <div class="tender-detail-footer">
+	                <button id="tenderDetailViewSource" class="modal-open-link-btn" type="button">View Source ↗</button>
+	                <button id="tenderDetailAddNote" class="quick-filter-btn" type="button">Add Note</button>
+	                <button id="tenderDetailAssign" class="quick-filter-btn" type="button">Assign</button>
+	            </div>
+	        </div>
+	    </div>
     
-    <script src="js/notifications.js"></script>
-    <script src="js/advanced-filters.js"></script>
-    <script src="js/analytics.js"></script>
-    <script src="script.js"></script>
-    <script>
-        // Initialize Advanced Filters
-        let advancedFilters = null;
+	    <script>
+	        class NotificationManager {
+	            constructor() {
+	                this.supported = 'Notification' in window;
+	                this.permission = this.supported ? Notification.permission : 'denied';
+	                this.notifiedTenderRefs = new Set();
+	                this._lastTenders = [];
+	                this._intervalId = null;
+
+	                // 1) Request permission on page load
+	                window.addEventListener(
+	                    'load',
+	                    () => {
+	                        void this.requestPermission();
+	                    },
+	                    { once: true }
+	                );
+	            }
+
+	            // 2) Stores permission state
+	            async requestPermission() {
+	                if (!this.supported || !window.isSecureContext) {
+	                    this.permission = 'denied';
+	                    return false;
+	                }
+
+	                if (this.permission === 'granted') return true;
+	                if (this.permission === 'denied') return false;
+
+	                try {
+	                    const result = await Notification.requestPermission();
+	                    this.permission = result;
+	                    window.dispatchEvent(
+	                        new CustomEvent('notificationPermissionChanged', {
+	                            detail: { permission: result }
+	                        })
+	                    );
+	                    return result === 'granted';
+	                } catch (err) {
+	                    console.warn('Notification permission request failed:', err);
+	                    this.permission = this.supported ? Notification.permission : 'denied';
+	                    return false;
+	                }
+	            }
+
+	            _daysUntil(dateStr) {
+	                if (!dateStr) return null;
+	                const closing = new Date(dateStr);
+	                if (Number.isNaN(closing.getTime())) return null;
+
+	                const today = new Date();
+	                today.setHours(0, 0, 0, 0);
+	                closing.setHours(0, 0, 0, 0);
+
+	                return Math.ceil((closing.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+	            }
+
+	            // 3) Checks for tenders closing in ≤3 days
+	            // 4) Shows desktop notifications: "🔴 Urgent Tender Alert! [REF]: [TITLE] closes in X days"
+	            // 5) Prevents duplicates using a Set of refs
+	            checkUrgentTenders(tenders) {
+	                if (!Array.isArray(tenders)) return;
+
+	                this._lastTenders = tenders;
+
+	                if (!this.supported || this.permission !== 'granted') return;
+
+	                for (const tender of tenders) {
+	                    if (!tender || typeof tender !== 'object') continue;
+	                    const ref = tender.ref;
+	                    if (!ref || this.notifiedTenderRefs.has(ref)) continue;
+
+	                    const daysLeft = this._daysUntil(tender.closing_date);
+	                    if (daysLeft === null || daysLeft < 0 || daysLeft > 3) continue;
+
+	                    const dayLabel = daysLeft === 1 ? '1 day' : `${daysLeft} days`;
+	                    const message = `🔴 Urgent Tender Alert! ${ref}: ${tender.title || ''} closes in ${dayLabel}`;
+
+	                    const notification = new Notification(message, {
+	                        tag: ref,
+	                        data: { url: tender.url }
+	                    });
+
+	                    // Make notifications clickable to open the tender URL
+	                    notification.onclick = (event) => {
+	                        event.preventDefault();
+	                        if (tender.url) window.open(tender.url, '_blank', 'noopener');
+	                        notification.close();
+	                    };
+
+	                    this.notifiedTenderRefs.add(ref);
+	                }
+	            }
+
+	            // 6) Checks every 30 minutes
+	            setupAutoCheck() {
+	                if (!this.supported || this.permission !== 'granted') return;
+	                if (this._intervalId) return;
+	                this._intervalId = window.setInterval(() => {
+	                    this.checkUrgentTenders(this._lastTenders);
+	                }, 30 * 60 * 1000);
+	            }
+	        }
+
+	        window.NotificationManager = NotificationManager;
+	        window.notificationMgr = new NotificationManager();
+	    </script>
+		    <script>
+		        class AdvancedFilters {
+		            constructor() {
+		                this.activeFilters = {
+		                    sources: new Set(),
+		                    priorities: new Set(),
+		                    companies: new Set(),
+		                    dateRange: { start: null, end: null }
+		                };
+
+		                this.savedSearches = [];
+		                this.loadSavedSearches();
+
+		                // Backwards-compatible alias for existing UI code
+		                this.activeFilters.savedSearches = this.savedSearches;
+
+		                this.allTenders = [];
+		                this.onFilterChange = null;
+		            }
+
+		            _toDateOnlyValue(value) {
+		                if (!value) return null;
+		                if (value instanceof Date && !Number.isNaN(value.getTime())) {
+		                    return value.toISOString().split('T')[0];
+		                }
+		                if (typeof value === 'string') return value;
+		                return null;
+		            }
+
+		            _notify() {
+		                if (typeof this.onFilterChange === 'function') {
+		                    this.onFilterChange(this.getFilteredTenders());
+		                }
+		            }
+
+		            // 1) applyFilters(tenders) - intersection of all active filters
+		            applyFilters(tenders) {
+		                if (!Array.isArray(tenders)) return [];
+
+		                const { sources, priorities, companies, dateRange } = this.activeFilters;
+		                const startVal = this._toDateOnlyValue(dateRange?.start);
+		                const endVal = this._toDateOnlyValue(dateRange?.end);
+		                const hasDateRange = Boolean(startVal || endVal);
+
+		                const startDate = startVal ? new Date(startVal) : null;
+		                const endDate = endVal ? new Date(endVal) : null;
+		                if (startDate) startDate.setHours(0, 0, 0, 0);
+		                if (endDate) endDate.setHours(23, 59, 59, 999);
+
+		                return tenders.filter((tenderItem) => {
+		                    const tender = tenderItem?.tender || tenderItem;
+		                    if (!tender || typeof tender !== 'object') return false;
+
+		                    const normalizeCompany = (value) => {
+		                        const raw = (value || '').toString().trim();
+		                        const lower = raw.toLowerCase();
+		                        if (lower === 'tes') return 'TES';
+		                        if (lower === 'phakathi') return 'Phakathi';
+		                        if (lower === 'both') return 'Both';
+		                        return raw;
+		                    };
+
+		                    if (sources.size > 0) {
+		                        const source = (tender.source || '').trim();
+		                        if (!sources.has(source)) return false;
+		                    }
+
+		                    if (priorities.size > 0) {
+		                        const priority = (tender.priority || tender.scores?.priority || '').toUpperCase();
+		                        if (!priorities.has(priority)) return false;
+		                    }
+
+		                    if (companies.size > 0) {
+		                        const company = normalizeCompany(tender.company || tender.category || '');
+		                        if (!companies.has(company)) return false;
+		                    }
+
+		                    if (hasDateRange) {
+		                        if (!tender.closing_date) return false;
+		                        const closing = new Date(tender.closing_date);
+		                        if (Number.isNaN(closing.getTime())) return false;
+
+		                        if (startDate && closing < startDate) return false;
+		                        if (endDate && closing > endDate) return false;
+		                    }
+
+		                    return true;
+		                });
+		            }
+
+		            // 2) saveSearch(name, filters) - saves to localStorage
+		            saveSearch(name, filters = null) {
+		                if (!name) return false;
+		                const src = filters?.sources || this.activeFilters.sources;
+		                const pri = filters?.priorities || this.activeFilters.priorities;
+		                const cmp = filters?.companies || this.activeFilters.companies;
+		                const dr = filters?.dateRange || this.activeFilters.dateRange;
+
+		                const serializable = {
+		                    sources: Array.from(src || []),
+		                    priorities: Array.from(pri || []),
+		                    companies: Array.from(cmp || []),
+		                    dateRange: {
+		                        start: this._toDateOnlyValue(dr?.start),
+		                        end: this._toDateOnlyValue(dr?.end)
+		                    }
+		                };
+
+		                this.savedSearches.push({
+		                    name,
+		                    filters: serializable,
+		                    date: new Date().toISOString()
+		                });
+		                this.activeFilters.savedSearches = this.savedSearches;
+
+		                try {
+		                    localStorage.setItem('ti_saved_searches', JSON.stringify(this.savedSearches));
+		                    return true;
+		                } catch (e) {
+		                    console.warn('Failed to save search:', e);
+		                    return false;
+		                }
+		            }
+
+		            // 3) loadSavedSearches() - loads from localStorage
+		            loadSavedSearches() {
+		                try {
+		                    const saved = localStorage.getItem('ti_saved_searches');
+		                    this.savedSearches = saved ? JSON.parse(saved) : [];
+		                } catch (e) {
+		                    console.warn('Failed to load saved searches:', e);
+		                    this.savedSearches = [];
+		                }
+		                this.activeFilters.savedSearches = this.savedSearches;
+		                return this.savedSearches;
+		            }
+
+		            // 4) clearAll() - resets all filters
+		            clearAll() {
+		                this.activeFilters.sources.clear();
+		                this.activeFilters.priorities.clear();
+		                this.activeFilters.companies.clear();
+		                this.activeFilters.dateRange = { start: null, end: null };
+		                this._notify();
+		            }
+
+		            // Compatibility helpers for existing dashboard code
+		            clearAllFilters() {
+		                this.clearAll();
+		            }
+
+		            setTenders(tenders) {
+		                this.allTenders = Array.isArray(tenders) ? tenders : [];
+		            }
+
+		            getFilteredTenders() {
+		                return this.applyFilters(this.allTenders);
+		            }
+
+		            toggleFilter(type, value) {
+		                const bucket = this.activeFilters[type];
+		                if (!(bucket instanceof Set)) return;
+		                if (bucket.has(value)) bucket.delete(value);
+		                else bucket.add(value);
+		                this._notify();
+		            }
+
+		            setDateRange(start, end) {
+		                this.activeFilters.dateRange = {
+		                    start: this._toDateOnlyValue(start),
+		                    end: this._toDateOnlyValue(end)
+		                };
+		                this._notify();
+		            }
+
+		            loadSearch(searchName) {
+		                const saved = this.savedSearches.find((s) => s.name === searchName);
+		                if (!saved) return false;
+
+		                const f = saved.filters || {};
+		                this.activeFilters.sources.clear();
+		                (f.sources || []).forEach((v) => this.activeFilters.sources.add(v));
+		                this.activeFilters.priorities.clear();
+		                (f.priorities || []).forEach((v) => this.activeFilters.priorities.add(v));
+		                this.activeFilters.companies.clear();
+		                (f.companies || []).forEach((v) => this.activeFilters.companies.add(v));
+		                this.activeFilters.dateRange = f.dateRange || { start: null, end: null };
+
+		                // Keep alias in sync after replacing Sets
+		                this.activeFilters.savedSearches = this.savedSearches;
+
+		                this._notify();
+		                return true;
+		            }
+
+		            deleteSavedSearch(searchName) {
+		                this.savedSearches = this.savedSearches.filter((s) => s.name !== searchName);
+		                this.activeFilters.savedSearches = this.savedSearches;
+		                try {
+		                    localStorage.setItem('ti_saved_searches', JSON.stringify(this.savedSearches));
+		                } catch (e) {
+		                    console.warn('Failed to delete search:', e);
+		                }
+		            }
+
+		            getActiveFilterCount() {
+		                let count = 0;
+		                count += this.activeFilters.sources.size;
+		                count += this.activeFilters.priorities.size;
+		                count += this.activeFilters.companies.size;
+		                if (this.activeFilters.dateRange.start || this.activeFilters.dateRange.end) count++;
+		                return count;
+		            }
+		        }
+
+		        window.AdvancedFilters = AdvancedFilters;
+			    </script>
+				    <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
+				    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+				    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+				    <script src="js/pwa-diagnostics.js"></script>
+				    <script src="script.js"></script>
+				    <script>
+	        // Initialize Advanced Filters
+	        let advancedFilters = null;
         
-        function toggleAdvancedFilters() {
-            const panel = document.getElementById('advancedFiltersPanel');
-            panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
-        }
+	        function toggleAdvancedFilters() {
+	            const body = document.getElementById('advancedFiltersBody');
+	            const toggleBtn = document.getElementById('advancedFiltersToggle');
+	            if (!body) return;
+	            const nextOpen = body.style.display === 'none' || body.style.display === '';
+	            body.style.display = nextOpen ? 'block' : 'none';
+	            if (toggleBtn) {
+	                toggleBtn.textContent = nextOpen ? '▲ Collapse' : '▼ Expand';
+	                toggleBtn.setAttribute('aria-expanded', nextOpen ? 'true' : 'false');
+	            }
+	        }
         
-        function setQuickDateFilter(period) {
-            const today = new Date();
-            const startInput = document.getElementById('dateStart');
-            const endInput = document.getElementById('dateEnd');
+	        function setQuickDateFilter(period) {
+	            const today = new Date();
+	            const startInput = document.getElementById('dateStart');
+	            const endInput = document.getElementById('dateEnd');
+	            if (!startInput || !endInput) return;
             
             let startDate, endDate;
             
@@ -661,13 +962,14 @@
                     break;
             }
             
-            startInput.value = startDate.toISOString().split('T')[0];
-            endInput.value = endDate.toISOString().split('T')[0];
-            
-            if (advancedFilters) {
-                advancedFilters.setDateRange(startDate, endDate);
-            }
-        }
+	            startInput.value = startDate.toISOString().split('T')[0];
+	            endInput.value = endDate.toISOString().split('T')[0];
+	            
+		            if (advancedFilters) {
+		                advancedFilters.setDateRange(startDate, endDate);
+		                updateActiveFilterCount();
+		            }
+		        }
         
         function saveCurrentSearch() {
             const name = prompt('Enter a name for this search:');
@@ -688,131 +990,476 @@
             }
         }
         
-        function updateSavedSearchesDropdown() {
-            const select = document.getElementById('savedSearchSelect');
-            const searches = advancedFilters.activeFilters.savedSearches;
-            
-            select.innerHTML = '<option value="">-- Select Saved Search --</option>';
-            searches.forEach(search => {
-                const option = document.createElement('option');
+	        function updateSavedSearchesDropdown() {
+	            const select = document.getElementById('savedSearchSelect');
+	            if (!select || !advancedFilters) return;
+	            const searches = advancedFilters.savedSearches || advancedFilters.activeFilters.savedSearches || [];
+	            
+	            select.innerHTML = '<option value="">-- Select Saved Search --</option>';
+	            searches.forEach(search => {
+	                const option = document.createElement('option');
                 option.value = search.name;
                 option.textContent = search.name;
                 select.appendChild(option);
             });
         }
         
-        function clearAllAdvancedFilters() {
-            if (advancedFilters) {
-                advancedFilters.clearAllFilters();
-                document.getElementById('advancedSearchBox').value = '';
-                document.getElementById('dateStart').value = '';
-                document.getElementById('dateEnd').value = '';
-                updateActiveFilterCount();
-            }
-        }
+	        function clearAllAdvancedFilters() {
+	            if (advancedFilters) {
+	                advancedFilters.clearAll();
+	                const start = document.getElementById('dateStart');
+	                const end = document.getElementById('dateEnd');
+	                const saved = document.getElementById('savedSearchSelect');
+	                const search = document.getElementById('tenderSearchBox');
+	                if (start) start.value = '';
+	                if (end) end.value = '';
+	                if (saved) saved.value = '';
+	                if (search) search.value = '';
+	                if (typeof smartSearchTenders === 'function') smartSearchTenders('');
+	                if (window.__advancedMultiSelects) {
+	                    window.__advancedMultiSelects.sources?.sync?.();
+	                    window.__advancedMultiSelects.priorities?.sync?.();
+	                    window.__advancedMultiSelects.companies?.sync?.();
+	                }
+	                updateActiveFilterCount();
+	            }
+	        }
         
-        function updateActiveFilterCount() {
-            if (!advancedFilters) return;
-            
-            const count = advancedFilters.getActiveFilterCount();
-            const countEl = document.getElementById('activeFilterCount');
-            
-            if (count === 0) {
-                countEl.textContent = 'No filters active';
-                countEl.style.color = '#888';
-            } else {
-                countEl.textContent = `${count} filter${count > 1 ? 's' : ''} active`;
-                countEl.style.color = '#667eea';
-            }
-        }
+	        function updateActiveFilterCount() {
+	            if (!advancedFilters) return;
+	            const count = advancedFilters.getActiveFilterCount();
+	            const countEl = document.getElementById('activeFilterCount');
+	            if (!countEl) return;
+
+	            if (count === 0) {
+	                countEl.textContent = 'No filters active';
+	                countEl.style.color = '#888';
+	            } else {
+	                countEl.textContent = `${count} filter${count > 1 ? 's' : ''} active`;
+	                countEl.style.color = '#667eea';
+	            }
+	        }
+
+	        function escapeHtml(value) {
+	            return String(value)
+	                .replaceAll('&', '&amp;')
+	                .replaceAll('<', '&lt;')
+	                .replaceAll('>', '&gt;')
+	                .replaceAll('"', '&quot;')
+	                .replaceAll("'", '&#39;');
+	        }
+
+	        function ensureMultiSelectRegistry() {
+	            if (window.__multiSelectRegistry) return window.__multiSelectRegistry;
+	            window.__multiSelectRegistry = { instances: [] };
+
+	            document.addEventListener('click', (event) => {
+	                const target = event.target;
+	                window.__multiSelectRegistry.instances = window.__multiSelectRegistry.instances.filter((inst) => document.contains(inst.root));
+	                window.__multiSelectRegistry.instances.forEach((inst) => {
+	                    if (!inst.isOpen()) return;
+	                    if (inst.root.contains(target)) return;
+	                    inst.close();
+	                });
+	            });
+
+	            return window.__multiSelectRegistry;
+	        }
+
+	        function createMultiSelect(id, options, activeSet, onChange) {
+	            ensureMultiSelectRegistry();
+
+	            const opts = Array.isArray(options) ? options.slice() : [];
+	            const root = document.createElement('div');
+	            root.className = 'multi-select';
+	            root.id = id;
+
+	            const button = document.createElement('button');
+	            button.type = 'button';
+	            button.className = 'filter-tab multi-select-button';
+
+	            const labelSpan = document.createElement('span');
+	            const caret = document.createElement('span');
+	            caret.className = 'caret';
+	            caret.textContent = '▾';
+
+	            const panel = document.createElement('div');
+	            panel.className = 'multi-select-panel';
+	            panel.style.display = 'none';
+
+	            const actions = document.createElement('div');
+	            actions.className = 'multi-select-actions';
+
+	            const selectAllBtn = document.createElement('button');
+	            selectAllBtn.type = 'button';
+	            selectAllBtn.className = 'quick-filter-btn multi-select-action';
+	            selectAllBtn.textContent = 'Select All';
+
+	            const clearAllBtn = document.createElement('button');
+	            clearAllBtn.type = 'button';
+	            clearAllBtn.className = 'quick-filter-btn multi-select-action advanced-clear-btn';
+	            clearAllBtn.textContent = 'Clear All';
+
+	            actions.appendChild(selectAllBtn);
+	            actions.appendChild(clearAllBtn);
+
+	            const optionsEl = document.createElement('div');
+	            optionsEl.className = 'multi-select-options';
+
+	            function updateButtonLabel() {
+	                if (!activeSet || !(activeSet instanceof Set)) {
+	                    labelSpan.textContent = 'All';
+	                    return;
+	                }
+	                if (activeSet.size === 0) labelSpan.textContent = 'All';
+	                else labelSpan.textContent = `${activeSet.size} selected`;
+	            }
+
+	            function renderOptions(nextOptions) {
+	                optionsEl.innerHTML = '';
+	                const safeOptions = Array.isArray(nextOptions) ? nextOptions : [];
+	                if (safeOptions.length === 0) {
+	                    const empty = document.createElement('div');
+	                    empty.className = 'advanced-filter-hint';
+	                    empty.textContent = 'No options available.';
+	                    optionsEl.appendChild(empty);
+	                    updateButtonLabel();
+	                    return;
+	                }
+
+	                safeOptions.forEach((opt) => {
+	                    const value = opt?.value ?? '';
+	                    const label = opt?.label ?? String(value);
+	                    const count = Number.isFinite(opt?.count) ? opt.count : null;
+
+	                    const row = document.createElement('label');
+	                    row.className = 'multi-select-option';
+
+	                    const cb = document.createElement('input');
+	                    cb.type = 'checkbox';
+	                    cb.value = String(value);
+	                    cb.checked = activeSet instanceof Set ? activeSet.has(String(value)) : false;
+
+	                    const text = document.createElement('span');
+	                    text.className = 'label';
+	                    text.textContent = `${label}${count === null ? '' : ` (${count})`}`;
+
+	                    cb.addEventListener('change', () => {
+	                        if (!(activeSet instanceof Set)) return;
+	                        if (cb.checked) activeSet.add(cb.value);
+	                        else activeSet.delete(cb.value);
+	                        updateButtonLabel();
+	                        if (typeof onChange === 'function') onChange(activeSet);
+	                    });
+
+	                    row.appendChild(cb);
+	                    row.appendChild(text);
+	                    optionsEl.appendChild(row);
+	                });
+
+	                updateButtonLabel();
+	            }
+
+	            function isOpen() {
+	                return panel.style.display !== 'none';
+	            }
+
+	            function open() {
+	                panel.style.display = 'block';
+	            }
+
+	            function close() {
+	                panel.style.display = 'none';
+	            }
+
+	            button.addEventListener('click', (e) => {
+	                e.preventDefault();
+	                if (isOpen()) close();
+	                else open();
+	            });
+
+	            selectAllBtn.addEventListener('click', (e) => {
+	                e.preventDefault();
+	                if (!(activeSet instanceof Set)) return;
+	                activeSet.clear();
+	                (opts || []).forEach((opt) => activeSet.add(String(opt.value)));
+	                renderOptions(opts);
+	                if (typeof onChange === 'function') onChange(activeSet);
+	            });
+
+	            clearAllBtn.addEventListener('click', (e) => {
+	                e.preventDefault();
+	                if (!(activeSet instanceof Set)) return;
+	                activeSet.clear();
+	                renderOptions(opts);
+	                if (typeof onChange === 'function') onChange(activeSet);
+	            });
+
+	            panel.appendChild(actions);
+	            panel.appendChild(optionsEl);
+
+	            button.appendChild(labelSpan);
+	            button.appendChild(caret);
+
+	            root.appendChild(button);
+	            root.appendChild(panel);
+
+	            const instance = {
+	                root,
+	                close,
+	                isOpen,
+	                setOptions(nextOptions) {
+	                    opts.splice(0, opts.length, ...(Array.isArray(nextOptions) ? nextOptions : []));
+	                    renderOptions(opts);
+	                },
+	                sync() {
+	                    renderOptions(opts);
+	                }
+	            };
+
+	            window.__multiSelectRegistry.instances.push(instance);
+
+	            renderOptions(opts);
+	            return instance;
+	        }
+
+	        function unregisterMultiSelect(id) {
+	            const reg = ensureMultiSelectRegistry();
+	            reg.instances = reg.instances.filter((inst) => inst.root.id !== id);
+	        }
+
+	        function buildOptionsWithCounts(values) {
+	            const counts = new Map();
+	            values.forEach((v) => {
+	                const key = String(v);
+	                counts.set(key, (counts.get(key) || 0) + 1);
+	            });
+	            return Array.from(counts.entries())
+	                .map(([value, count]) => ({ value, label: value, count }))
+	                .sort((a, b) => a.label.localeCompare(b.label));
+	        }
+
+	        function mountAdvancedMultiSelects(tenders) {
+	            if (!advancedFilters) return;
+	            const list = Array.isArray(tenders) ? tenders : [];
+
+	            const sources = list.map((t) => (t?.source || '').trim()).filter(Boolean);
+	            const sourceOptions = buildOptionsWithCounts(sources);
+
+	            const priorities = list.map((t) => (t?.priority || t?.scores?.priority || '').toUpperCase()).filter(Boolean);
+	            const priorityCounts = new Map([['HIGH', 0], ['MEDIUM', 0], ['LOW', 0]]);
+	            priorities.forEach((p) => {
+	                if (priorityCounts.has(p)) priorityCounts.set(p, priorityCounts.get(p) + 1);
+	            });
+	            const priorityOptions = Array.from(priorityCounts.entries()).map(([value, count]) => ({ value, label: value, count }));
+
+		            const normalizeCompany = (value) => {
+		                const raw = (value || '').toString().trim();
+		                const lower = raw.toLowerCase();
+		                if (lower === 'tes') return 'TES';
+		                if (lower === 'phakathi') return 'Phakathi';
+		                if (lower === 'both') return 'Both';
+		                return raw;
+		            };
+
+		            const companies = list.map((t) => normalizeCompany(t?.company || t?.category || '')).filter(Boolean);
+		            const companyCounts = new Map([['TES', 0], ['Phakathi', 0], ['Both', 0]]);
+		            companies.forEach((c) => {
+		                if (companyCounts.has(c)) companyCounts.set(c, companyCounts.get(c) + 1);
+		            });
+		            const companyOptions = Array.from(companyCounts.entries()).map(([value, count]) => ({ value, label: value, count }));
+
+	            window.__advancedMultiSelects = window.__advancedMultiSelects || {};
+
+	            const sourcesMount = document.getElementById('sourcesMultiSelectMount');
+	            if (sourcesMount) {
+	                unregisterMultiSelect('sourcesMultiSelect');
+	                sourcesMount.innerHTML = '';
+	                window.__advancedMultiSelects.sources = createMultiSelect(
+	                    'sourcesMultiSelect',
+	                    sourceOptions,
+		                    advancedFilters.activeFilters.sources,
+		                    () => {
+		                        updateActiveFilterCount();
+		                        if (typeof window.requestRenderTenders === 'function') window.requestRenderTenders();
+		                    }
+		                );
+	                sourcesMount.appendChild(window.__advancedMultiSelects.sources.root);
+	            }
+
+	            const prioritiesMount = document.getElementById('prioritiesMultiSelectMount');
+	            if (prioritiesMount) {
+	                unregisterMultiSelect('prioritiesMultiSelect');
+	                prioritiesMount.innerHTML = '';
+	                window.__advancedMultiSelects.priorities = createMultiSelect(
+	                    'prioritiesMultiSelect',
+	                    priorityOptions,
+		                    advancedFilters.activeFilters.priorities,
+		                    () => {
+		                        updateActiveFilterCount();
+		                        if (typeof window.requestRenderTenders === 'function') window.requestRenderTenders();
+		                    }
+		                );
+	                prioritiesMount.appendChild(window.__advancedMultiSelects.priorities.root);
+	            }
+
+	            const companiesMount = document.getElementById('companiesMultiSelectMount');
+	            if (companiesMount) {
+	                unregisterMultiSelect('companiesMultiSelect');
+	                companiesMount.innerHTML = '';
+	                window.__advancedMultiSelects.companies = createMultiSelect(
+	                    'companiesMultiSelect',
+	                    companyOptions,
+		                    advancedFilters.activeFilters.companies,
+		                    () => {
+		                        updateActiveFilterCount();
+		                        if (typeof window.requestRenderTenders === 'function') window.requestRenderTenders();
+		                    }
+		                );
+	                companiesMount.appendChild(window.__advancedMultiSelects.companies.root);
+	            }
+	        }
         
-        // Initialize Notification Manager
-        let notificationMgr = null;
+	        // Initialize Notification Manager
+	        let notificationMgr = null;
         
-        document.addEventListener('DOMContentLoaded', () => {
-            // Initialize Advanced Filters
-            advancedFilters = new AdvancedFilters();
-            
-            // Setup event listeners for advanced search
-            const searchBox = document.getElementById('advancedSearchBox');
-            if (searchBox) {
-                let searchTimeout;
-                searchBox.addEventListener('input', (e) => {
-                    clearTimeout(searchTimeout);
-                    searchTimeout = setTimeout(() => {
-                        advancedFilters.setSearchTerm(e.target.value);
-                        updateActiveFilterCount();
-                    }, 300); // Debounce search
-                });
-            }
-            
-            // Date range listeners
-            const dateStart = document.getElementById('dateStart');
-            const dateEnd = document.getElementById('dateEnd');
-            if (dateStart && dateEnd) {
-                const updateDates = () => {
-                    const start = dateStart.value ? new Date(dateStart.value) : null;
-                    const end = dateEnd.value ? new Date(dateEnd.value) : null;
-                    advancedFilters.setDateRange(start, end);
-                    updateActiveFilterCount();
-                };
-                dateStart.addEventListener('change', updateDates);
-                dateEnd.addEventListener('change', updateDates);
-            }
-            
-            // Saved searches dropdown
-            const savedSearchSelect = document.getElementById('savedSearchSelect');
-            if (savedSearchSelect) {
-                savedSearchSelect.addEventListener('change', (e) => {
-                    if (e.target.value) {
-                        advancedFilters.loadSearch(e.target.value);
-                        updateActiveFilterCount();
-                        // TODO: Trigger re-render of tenders
-                    }
-                });
-                updateSavedSearchesDropdown();
-            }
-            
-            // Setup callback for filter changes
-            advancedFilters.onFilterChange = (filteredTenders) => {
-                // TODO: Integrate with existing render function
-                console.log('Filters changed, filtered tenders:', filteredTenders.length);
-                updateActiveFilterCount();
-            };
-            
-            const enableBtn = document.getElementById('enableNotifications');
-            const statusSpan = document.getElementById('notificationStatus');
-            
-            if ('Notification' in window) {
-                notificationMgr = new NotificationManager();
-                notificationMgr.loadNotifiedTenders();
-                
-                if (Notification.permission === 'granted') {
-                    statusSpan.style.display = 'inline-block';
-                } else if (Notification.permission === 'default') {
-                    enableBtn.style.display = 'inline-block';
-                    enableBtn.addEventListener('click', async () => {
-                        const granted = await notificationMgr.requestPermission();
-                        if (granted) {
-                            enableBtn.style.display = 'none';
-                            statusSpan.style.display = 'inline-block';
-                            // Setup auto-check when tenders are loaded
-                            if (window.allTenders && window.allTenders.length > 0) {
-                                notificationMgr.setupAutoCheck(window.allTenders, 30);
-                            }
-                        }
-                    });
-                }
-                
-                // Setup notifications when tenders are loaded
-                window.addEventListener('tendersLoaded', (event) => {
-                    if (notificationMgr && notificationMgr.permission === 'granted') {
-                        notificationMgr.setupAutoCheck(event.detail.tenders, 30);
-                    }
-                });
-            }
-        });
-    </script>
+	        document.addEventListener('DOMContentLoaded', () => {
+	            // Initialize Advanced Filters
+	            advancedFilters = window.advancedFilters || new AdvancedFilters();
+	            window.advancedFilters = advancedFilters;
+
+		            const tenderSearchBox = document.getElementById('tenderSearchBox');
+		            if (tenderSearchBox) {
+		                const handler =
+		                    typeof window.debounce === 'function'
+		                        ? window.debounce(() => {
+		                              if (typeof smartSearchTenders === 'function') smartSearchTenders(tenderSearchBox.value);
+		                          }, 300)
+		                        : () => {
+		                              if (typeof smartSearchTenders === 'function') smartSearchTenders(tenderSearchBox.value);
+		                          };
+		                tenderSearchBox.addEventListener('input', handler);
+		            }
+
+		            const dateStart = document.getElementById('dateStart');
+		            const dateEnd = document.getElementById('dateEnd');
+			            const updateDates = () => {
+			                if (!advancedFilters) return;
+			                advancedFilters.setDateRange(dateStart?.value || null, dateEnd?.value || null);
+			                updateActiveFilterCount();
+			            };
+	            if (dateStart) dateStart.addEventListener('change', updateDates);
+	            if (dateEnd) dateEnd.addEventListener('change', updateDates);
+
+		            const savedSearchSelect = document.getElementById('savedSearchSelect');
+		            if (savedSearchSelect) {
+		                savedSearchSelect.addEventListener('change', (e) => {
+		                    if (e.target.value) {
+		                        advancedFilters.loadSearch(e.target.value);
+		                        if (dateStart) dateStart.value = advancedFilters.activeFilters.dateRange.start || '';
+		                        if (dateEnd) dateEnd.value = advancedFilters.activeFilters.dateRange.end || '';
+		                        window.__advancedMultiSelects?.sources?.sync?.();
+		                        window.__advancedMultiSelects?.priorities?.sync?.();
+			                        window.__advancedMultiSelects?.companies?.sync?.();
+			                        updateActiveFilterCount();
+			                        if (typeof window.requestRenderTenders === 'function') window.requestRenderTenders();
+			                    }
+			                });
+			            }
+
+		            advancedFilters.onFilterChange = () => {
+		                updateActiveFilterCount();
+		                if (typeof window.requestRenderTenders === 'function') window.requestRenderTenders();
+		            };
+
+	            updateSavedSearchesDropdown();
+	            updateActiveFilterCount();
+	            
+	            const enableBtn = document.getElementById('enableNotifications');
+	            const statusSpan = document.getElementById('notificationStatus');
+
+		            // Populate multi-select options once tenders are available
+		            window.addEventListener('tendersLoaded', (event) => {
+		                const tenders = event?.detail?.tenders || [];
+		                advancedFilters.setTenders(tenders);
+		                mountAdvancedMultiSelects(tenders);
+		                if (dateStart) dateStart.value = advancedFilters.activeFilters.dateRange.start || '';
+			                if (dateEnd) dateEnd.value = advancedFilters.activeFilters.dateRange.end || '';
+			                updateSavedSearchesDropdown();
+			                updateActiveFilterCount();
+			                if (typeof window.requestRenderTenders === 'function') window.requestRenderTenders();
+		            });
+	            
+			            if ('Notification' in window) {
+			                notificationMgr = window.notificationMgr || new NotificationManager();
+			                let allTendersLoaded = false;
+
+		                const refreshUi = () => {
+		                    if (!enableBtn || !statusSpan) return;
+		                    if (notificationMgr.permission === 'granted') {
+		                        enableBtn.style.display = 'none';
+	                        statusSpan.style.display = 'inline-block';
+	                    } else if (notificationMgr.permission === 'default') {
+	                        enableBtn.style.display = 'inline-block';
+	                        statusSpan.style.display = 'none';
+	                    } else {
+	                        enableBtn.style.display = 'none';
+	                        statusSpan.style.display = 'none';
+	                    }
+	                };
+
+		                refreshUi();
+
+		                window.addEventListener('notificationPermissionChanged', () => {
+		                    refreshUi();
+		                    if (notificationMgr.permission === 'granted' && allTendersLoaded) {
+		                        notificationMgr.checkUrgentTenders(window.allTenders || []);
+		                        notificationMgr.setupAutoCheck();
+		                    }
+		                });
+
+		                if (enableBtn) {
+		                    enableBtn.addEventListener('click', async () => {
+		                        const granted = await notificationMgr.requestPermission();
+		                        if (granted && allTendersLoaded) {
+		                            notificationMgr.checkUrgentTenders(window.allTenders || []);
+		                            notificationMgr.setupAutoCheck();
+		                        }
+		                        refreshUi();
+		                    });
+		                }
+
+			                // Setup notifications when tenders are loaded
+			                window.addEventListener('tendersLoaded', (event) => {
+			                    allTendersLoaded = true;
+			                    const tenders = event?.detail?.tenders;
+			                    notificationMgr.checkUrgentTenders(tenders);
+		                    if (notificationMgr.permission === 'granted') {
+		                        notificationMgr.setupAutoCheck();
+		                    }
+		                    refreshUi();
+		                });
+		            }
+		        });
+	    </script>
+	    <script>
+	        if ('serviceWorker' in navigator) {
+	            navigator.serviceWorker
+	                .register('/service-worker.js')
+	                .catch(() => navigator.serviceWorker.register('service-worker.js').catch(() => {}));
+	        }
+	    </script>
+	    <script>
+	        window.debounce =
+	            window.debounce ||
+	            function debounce(func, delay) {
+	                let timeout;
+	                return function (...args) {
+	                    clearTimeout(timeout);
+	                    timeout = setTimeout(() => func.apply(this, args), delay);
+	                };
+	            };
+	    </script>
     <div style="opacity:.6;font-size:12px;margin-top:12px">
       Build marker: V3 UI present · commit 377e345+ · Notifications v1
     </div>

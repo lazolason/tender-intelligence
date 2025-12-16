@@ -16,10 +16,23 @@ import traceback
 import sys
 import re
 import os
+import logging
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from classify_engine import classify_tender
+from utils.retry_tools import safe_driver_get, build_selenium_get_with_retry
+
+logger = logging.getLogger(__name__)
+try:
+    from selenium.common.exceptions import TimeoutException, WebDriverException
+except Exception:  # pragma: no cover
+    TimeoutException = Exception
+    WebDriverException = Exception
+
+driver_get_with_retry = build_selenium_get_with_retry(
+    (WebDriverException, TimeoutException, ConnectionError)
+)
 
 
 def scrape_eskom_tenders(max_tenders=50):
@@ -53,7 +66,8 @@ def scrape_eskom_tenders(max_tenders=50):
         # Navigate to Eskom tender bulletin - use search page which has all opportunities
         # Use large page size to get all tenders at once (they have ~60-80 active tenders)
         url = "https://tenderbulletin.eskom.co.za/search?pageSize=100&page=1"
-        driver.get(url)
+        if not safe_driver_get(driver, url, driver_get_with_retry=driver_get_with_retry, log=logger):
+            raise RuntimeError("Eskom Tender Bulletin: failed to load initial page")
         
         # Wait for page to load
         wait = WebDriverWait(driver, 20)
@@ -189,7 +203,9 @@ def scrape_eskom_tenders(max_tenders=50):
                     page_num += 1
                     next_url = f"https://tenderbulletin.eskom.co.za/search?pageSize=20&page={page_num}"
                     print(f"   Loading page {page_num}...")
-                    driver.get(next_url)
+                    if not safe_driver_get(driver, next_url, driver_get_with_retry=driver_get_with_retry, log=logger):
+                        print(f"   ⚠️ Failed to load page {page_num}; stopping pagination")
+                        break
                     time.sleep(5)  # Wait for page to load
                     
                     # Check if we got new content (page exists)

@@ -262,6 +262,79 @@ def generate_weekly_html(stats: dict) -> str:
     else:
         html += "<p>No high priority open tenders.</p>"
     
+    # ----------------------------------------------------------
+    # Scraper Health (reliability tracking)
+    # ----------------------------------------------------------
+    html += """
+        <h2>🩺 Scraper Health</h2>
+    """
+
+    health = None
+    health_paths = []
+    try:
+        cfg_out = (CONFIG.get("paths", {}) or {}).get("output_dir", "")
+        if cfg_out:
+            health_paths.append(os.path.join(cfg_out, "scraper_health.json"))
+    except Exception:
+        pass
+    health_paths.append(os.path.join(OUTPUT_DIR, "scraper_health.json"))
+
+    for hp in health_paths:
+        if hp and os.path.exists(hp):
+            try:
+                with open(hp, "r", encoding="utf-8") as f:
+                    health = json.load(f)
+                break
+            except Exception:
+                health = None
+
+    if isinstance(health, dict) and health:
+        html += """
+        <table>
+            <tr>
+                <th>Source</th>
+                <th>Status</th>
+                <th>Success Rate</th>
+                <th>Avg Tenders</th>
+                <th>Avg Duration</th>
+                <th>Consecutive Failures</th>
+            </tr>
+        """
+
+        def _key(item):
+            src, data = item
+            data = data or {}
+            cf = int(data.get("consecutive_failures") or 0)
+            sr = float(data.get("success_rate") or 0.0)
+            return (-cf, sr, src)
+
+        for source, data in sorted(health.items(), key=_key):
+            data = data or {}
+            status = data.get("status", "unknown")
+            sr = float(data.get("success_rate") or 0.0)
+            avg_tenders = data.get("avg_tenders", 0.0)
+            avg_dur = data.get("avg_duration", 0.0)
+            cf = int(data.get("consecutive_failures") or 0)
+            row_style = " style=\"background: #FFEBEE;\"" if cf >= 3 else ""
+            html += f"""
+            <tr{row_style}>
+                <td>{source}</td>
+                <td>{status}</td>
+                <td>{sr:.0%}</td>
+                <td>{avg_tenders}</td>
+                <td>{avg_dur}s</td>
+                <td><strong>{cf}</strong></td>
+            </tr>
+            """
+
+        html += "</table>"
+
+        problem_sources = [s for s, d in health.items() if int((d or {}).get("consecutive_failures") or 0) >= 3]
+        if problem_sources:
+            html += "<p><strong>Recommendation:</strong> Consider disabling or investigating: " + ", ".join(problem_sources) + "</p>"
+    else:
+        html += "<p>No scraper health data found.</p>"
+
     html += """
         <h2>🏭 Top Industries</h2>
         <div class="chart-container">

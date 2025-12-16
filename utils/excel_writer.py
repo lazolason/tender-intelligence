@@ -8,12 +8,16 @@ import sys
 from openpyxl import Workbook, load_workbook
 from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
 from datetime import datetime
+import logging
+import re
 
 # Assuming these are in the parent directory, adjust if necessary
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from classify_engine import classify_tender
 from scoring_engine import score_tender
+from utils.duplicate_detector import find_duplicate, find_best_title_match
 
+logger = logging.getLogger(__name__)
 
 # Column headers (with new scoring columns)
 HEADERS = [
@@ -48,10 +52,34 @@ PRIORITY_COLORS = {
 class ExcelWriter:
     """Writes tender data to Excel spreadsheet with scoring"""
     
-    def __init__(self, file_path: str, sheet_name: str = "Tender_Log"):
+    def __init__(
+        self,
+        file_path: str,
+        sheet_name: str = "Tender_Log",
+        *,
+        log_file_path: str = None,
+        fuzzy_duplicate_threshold: int = 85,
+        fuzzy_date_window_days: int = 7,
+    ):
         self.file_path = file_path
         self.sheet_name = sheet_name
+        self.log_file_path = log_file_path
+        self.fuzzy_duplicate_threshold = int(fuzzy_duplicate_threshold)
+        self.fuzzy_date_window_days = int(fuzzy_date_window_days)
+        self._existing_refs_cache = None
+        self._existing_tenders_cache = None
         self._ensure_workbook()
+
+    def _log(self, message: str, level: str = "INFO"):
+        if self.log_file_path:
+            try:
+                from utils.logging_tools import write_log
+
+                write_log(self.log_file_path, message, level)
+                return
+            except Exception:
+                pass
+        print(message)
     
     def _ensure_workbook(self):
         """Create workbook if it doesn't exist"""
@@ -104,6 +132,9 @@ class ExcelWriter:
     
     def _get_existing_references(self):
         """Get set of existing tender reference numbers"""
+        if self._existing_refs_cache is not None:
+            return self._existing_refs_cache
+
         ws = self.wb.active
         existing = set()
         
@@ -112,7 +143,57 @@ class ExcelWriter:
             if ref:
                 existing.add(str(ref).strip().upper())
         
+        self._existing_refs_cache = existing
         return existing
+
+    def _extract_title_from_tender_name(self, tender_name: str) -> str:
+        if not tender_name:
+            return ""
+        # Common format: "REF - Title"
+        parts = str(tender_name).split(" - ", 1)
+        if len(parts) == 2 and len(parts[0]) <= 60:
+            return parts[1].strip()
+        return str(tender_name).strip()
+
+    def _extract_source_from_industry_cell(self, industry_value: str) -> str:
+        if not industry_value:
+            return "Unknown"
+        value = str(industry_value).strip()
+        # Stored as: "{source} ({industry_matched})"
+        match = re.match(r"^(.*?)\s*\(", value)
+        return (match.group(1) if match else value).strip() or "Unknown"
+
+    def _get_existing_tenders_metadata(self):
+        if self._existing_tenders_cache is not None:
+            return self._existing_tenders_cache
+
+        ws = self.wb.active
+        tenders = []
+
+        for row in range(2, ws.max_row + 1):
+            tender_name = ws.cell(row=row, column=1).value
+            industry = ws.cell(row=row, column=4).value
+            closing_date = ws.cell(row=row, column=13).value
+            ref = ws.cell(row=row, column=17).value
+
+            ref_norm = str(ref).strip().upper() if ref else ""
+            title = self._extract_title_from_tender_name(tender_name)
+            source = self._extract_source_from_industry_cell(industry)
+
+            if not title and not ref_norm:
+                continue
+
+            tenders.append(
+                {
+                    "ref": ref_norm,
+                    "title": title,
+                    "source": source,
+                    "closing_date": str(closing_date).strip() if closing_date else "",
+                }
+            )
+
+        self._existing_tenders_cache = tenders
+        return tenders
     
     def write_tender(self, tender_name: str, client: str, tender_type: str,
                     industry: str, fit_score: int, stage: str, closing_date: str,
@@ -176,12 +257,73 @@ class ExcelWriter:
         
         # Save workbook
         self.wb.save(self.file_path)
+
+        # Update caches (fast path)
+        if self._existing_refs_cache is not None and ref_normalized:
+            self._existing_refs_cache.add(ref_normalized)
+        if self._existing_tenders_cache is not None:
+            self._existing_tenders_cache.append(
+                {
+                    "ref": ref_normalized,
+                    "title": self._extract_title_from_tender_name(tender_name),
+                    "source": self._extract_source_from_industry_cell(industry),
+                    "closing_date": str(closing_date).strip() if closing_date else "",
+                }
+            )
         return True
 
     def add_tender_with_scoring(self, tender_data: dict):
         """
         Scores a tender and writes it to the Excel file.
         """
+        # Fuzzy duplicate check (skip scoring if likely duplicate)
+        try:
+            existing_refs = self._get_existing_references()
+            ref_normalized = str(tender_data.get("ref", "")).strip().upper()
+            if ref_normalized and ref_normalized != "NA" and ref_normalized in existing_refs:
+                self._log(f"[DUPLICATE] Exact ref match: {ref_normalized}", "INFO")
+                return False, {}, {"category": "Unknown", "reason": "", "short_title": "Tender"}
+
+            existing_meta = self._get_existing_tenders_metadata()
+            match = find_duplicate(
+                {
+                    "ref": tender_data.get("ref", ""),
+                    "title": tender_data.get("title", ""),
+                    "source": tender_data.get("source", "Unknown"),
+                    "closing_date": tender_data.get("closing_date", ""),
+                },
+                existing_meta,
+                threshold=self.fuzzy_duplicate_threshold,
+                date_window_days=self.fuzzy_date_window_days,
+                require_same_source=True,
+            )
+
+            if match and match.is_duplicate:
+                new_ref = tender_data.get("ref") or "NA"
+                self._log(
+                    f"[DUPLICATE] {new_ref}: {match.reason} ({match.similarity}%) vs {match.existing_ref} [{match.existing_source}]",
+                    "WARNING",
+                )
+                return False, {}, {"category": "Unknown", "reason": "", "short_title": "Tender"}
+
+            # Log near-duplicates for review (don’t block add unless it meets duplicate criteria)
+            best = find_best_title_match(
+                {"title": tender_data.get("title", "")},
+                existing_meta,
+            )
+            if best:
+                best_similarity, best_existing = best
+                if best_similarity >= self.fuzzy_duplicate_threshold:
+                    new_source = (tender_data.get("source") or "Unknown").strip()
+                    ex_source = (best_existing.get("source") or "Unknown").strip()
+                    if new_source == ex_source:
+                        self._log(
+                            f"[NEAR-DUPLICATE] {tender_data.get('ref','NA')}: title similarity {best_similarity}% with existing {best_existing.get('ref','NA')} (same source)",
+                            "WARNING",
+                        )
+        except Exception as exc:
+            logger.warning("Fuzzy duplicate check failed; continuing: %s", exc)
+
         # Classify tender (returns dict)
         classification = classify_tender(tender_data["title"], tender_data["description"])
         category = classification["category"]
