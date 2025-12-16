@@ -30,3 +30,6 @@ tenacity==8.2.3
 # Fuzzy duplicate detection
 fuzzywuzzy==0.18.0
 python-Levenshtein==0.25.1
+
+window.installApp()      // Actually installs the PWA
+window.deferredPrompt    // The install prompt object (if available)

@@ -88,7 +88,11 @@ function initPwaInstallPrompt() {
     const installBtn = document.getElementById('installBtn');
     if (!installBtn) return;
 
-    let deferredPrompt = null;
+    window.__pwaInstall = window.__pwaInstall || {
+        deferredPrompt: null,
+        lastBeforeInstallPromptAt: null,
+        lastOutcome: null,
+    };
 
     const hideBtn = () => {
         installBtn.style.display = 'none';
@@ -102,28 +106,124 @@ function initPwaInstallPrompt() {
 
     window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault();
-        deferredPrompt = e;
+        window.__pwaInstall.deferredPrompt = e;
+        window.__pwaInstall.lastBeforeInstallPromptAt = new Date().toISOString();
         showBtn();
     });
 
     window.addEventListener('appinstalled', () => {
-        deferredPrompt = null;
+        window.__pwaInstall.deferredPrompt = null;
         hideBtn();
     });
 
     installBtn.addEventListener('click', async () => {
+        const deferredPrompt = window.__pwaInstall?.deferredPrompt;
         if (!deferredPrompt) return;
         try {
             deferredPrompt.prompt();
-            await deferredPrompt.userChoice;
+            const choice = await deferredPrompt.userChoice;
+            window.__pwaInstall.lastOutcome = choice?.outcome || null;
         } catch (err) {
             console.warn('Install prompt failed:', err);
         } finally {
-            deferredPrompt = null;
+            window.__pwaInstall.deferredPrompt = null;
             hideBtn();
         }
     });
 }
+
+async function canInstallApp() {
+    const details = {};
+    const reasons = [];
+
+    const ua = (navigator.userAgent || '').toLowerCase();
+    const isIOS = /iphone|ipad|ipod/.test(ua);
+    const isStandalone =
+        (typeof window.matchMedia === 'function' && window.matchMedia('(display-mode: standalone)').matches) ||
+        window.navigator.standalone === true;
+
+    details.isSecureContext = Boolean(window.isSecureContext);
+    details.isStandalone = Boolean(isStandalone);
+    details.isIOS = Boolean(isIOS);
+    details.hasServiceWorker = 'serviceWorker' in navigator;
+    details.hasManifestLink = Boolean(document.querySelector('link[rel="manifest"]'));
+    details.manifestHref = document.querySelector('link[rel="manifest"]')?.href || null;
+    details.hasDeferredPrompt = Boolean(window.__pwaInstall?.deferredPrompt);
+    details.lastBeforeInstallPromptAt = window.__pwaInstall?.lastBeforeInstallPromptAt || null;
+    details.lastInstallOutcome = window.__pwaInstall?.lastOutcome || null;
+
+    if (!details.isSecureContext) reasons.push('not-secure-context');
+    if (!details.hasManifestLink) reasons.push('no-manifest-link');
+    if (!details.hasServiceWorker) reasons.push('no-service-worker-support');
+    if (details.isStandalone) reasons.push('already-installed');
+
+    // Check SW registration/controller (best-effort)
+    if (details.hasServiceWorker) {
+        try {
+            const regs = await navigator.serviceWorker.getRegistrations();
+            details.serviceWorkerRegistrations = regs.map((r) => ({ scope: r.scope, active: Boolean(r.active) }));
+            details.serviceWorkerController = Boolean(navigator.serviceWorker.controller);
+            if (regs.length === 0) reasons.push('no-service-worker-registered');
+        } catch (e) {
+            details.serviceWorkerError = String(e);
+        }
+    }
+
+    // Check manifest fetch (best-effort)
+    if (details.manifestHref) {
+        try {
+            const res = await fetch(details.manifestHref, { cache: 'no-store' });
+            details.manifestStatus = res.status;
+            if (!res.ok) {
+                reasons.push('manifest-not-reachable');
+            } else {
+                const manifest = await res.json();
+                details.manifest = {
+                    name: manifest?.name || null,
+                    short_name: manifest?.short_name || null,
+                    start_url: manifest?.start_url || null,
+                    display: manifest?.display || null,
+                    iconsCount: Array.isArray(manifest?.icons) ? manifest.icons.length : 0,
+                };
+                if (!Array.isArray(manifest?.icons) || manifest.icons.length === 0) {
+                    reasons.push('manifest-missing-icons');
+                }
+            }
+        } catch (e) {
+            details.manifestError = String(e);
+            reasons.push('manifest-fetch-failed');
+        }
+    }
+
+    // Installability differs by platform:
+    // - Chrome/Edge/etc: requires `beforeinstallprompt` (captured as deferredPrompt)
+    // - iOS Safari: no prompt event; user installs via Share → Add to Home Screen
+    let canInstall = false;
+    let how = null;
+
+    if (isStandalone) {
+        canInstall = false;
+        how = 'already-installed';
+    } else if (isIOS) {
+        canInstall = true;
+        how = 'ios-add-to-home-screen';
+    } else if (details.hasDeferredPrompt) {
+        canInstall = true;
+        how = 'beforeinstallprompt';
+    } else {
+        canInstall = false;
+        reasons.push('beforeinstallprompt-not-fired-yet');
+        how = 'wait-for-beforeinstallprompt';
+    }
+
+    return { canInstall, how, reasons: Array.from(new Set(reasons)), details };
+}
+
+// Avoid clobbering browser extensions that inject their own `canInstallApp()`.
+window.tiCanInstallApp = canInstallApp;
+try {
+    if (typeof window.canInstallApp === 'undefined') window.canInstallApp = canInstallApp;
+} catch (e) {}
 
 const VIEW_MODES = ['detailed', 'compact', 'card'];
 
@@ -3620,10 +3720,11 @@ function changeMonth(delta) {
     renderCalendar();
 }
 
-function applyTenderPayload({ loadedTenders, meta, source, storedAt, error }) {
+function applyTenderPayload({ tenders, loadedTenders, meta, source, storedAt, error }) {
     const effectiveMeta = meta || {};
 
-    state.tenders = loadedTenders.map(normalizeTender);
+    const list = Array.isArray(loadedTenders) ? loadedTenders : (Array.isArray(tenders) ? tenders : []);
+    state.tenders = list.map(normalizeTender);
     resetTenderInfiniteList();
     window.tendersData = state.tenders;
     window.dashboardMeta = effectiveMeta;
@@ -3647,7 +3748,7 @@ function applyTenderPayload({ loadedTenders, meta, source, storedAt, error }) {
     setDataStatus({
         level,
         source: source || "unknown",
-        count: loadedTenders.length,
+        count: state.tenders.length,
         updated,
         error: error || (level === "warn" && source === "seed" ? "No live data available yet (showing seed)." : "")
     });
