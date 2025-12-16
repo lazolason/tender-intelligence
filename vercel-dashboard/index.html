@@ -76,25 +76,25 @@
                 </div>
                 <button id="export-email-btn" class="export-btn secondary" type="button">Email summary</button>
             </div>
-            <section>
-                <div class="stats">
-                    <div class="stat-card">
-                        <div class="stat-value total">7</div>
-                        <div class="stat-label">Total tenders today</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value tes-color">1</div>
-                        <div class="stat-label">TES-fit tenders</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value phakathi-color">3</div>
-                        <div class="stat-label">Phakathi-fit tenders</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value high">0</div>
-                        <div class="stat-label">High-priority tenders</div>
-                    </div>
-                </div>
+	            <section>
+	                <div class="stats">
+	                    <div class="stat-card">
+	                        <div class="stat-value total" id="kpiTotalTenders">7</div>
+	                        <div class="stat-label">Total tenders today</div>
+	                    </div>
+	                    <div class="stat-card">
+	                        <div class="stat-value tes-color" id="kpiTesFit">1</div>
+	                        <div class="stat-label">TES-fit tenders</div>
+	                    </div>
+	                    <div class="stat-card">
+	                        <div class="stat-value phakathi-color" id="kpiPhakathiFit">3</div>
+	                        <div class="stat-label">Phakathi-fit tenders</div>
+	                    </div>
+	                    <div class="stat-card">
+	                        <div class="stat-value high" id="kpiHighPriority">0</div>
+	                        <div class="stat-label">High-priority tenders</div>
+	                    </div>
+	                </div>
 	                <div class="last-sync">
 	                    <span>🔄 Last sync:</span>
 	                    <span id="last-sync-text">10 Dec 2025, 13:50</span>
@@ -133,24 +133,24 @@
                 <h2>🚀 Opportunity Pipeline</h2>
                 <div class="stats">
                     <div class="stat-card">
-                        <div class="stat-value total">7</div>
+                        <div class="stat-value total" id="pipelineTotalActive">7</div>
                         <div class="stat-label">Total active</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-value tes-color">1</div>
+                        <div class="stat-value tes-color" id="pipelineTesActive">1</div>
                         <div class="stat-label">TES</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-value phakathi-color">3</div>
+                        <div class="stat-value phakathi-color" id="pipelinePhakathiActive">3</div>
                         <div class="stat-label">Phakathi</div>
                     </div>
                 </div>
                 <div style="margin-top: 20px;">
                     <p style="color: #888; margin-bottom: 8px;">Priority mix</p>
                     <div style="background: rgba(255,255,255,0.05); border-radius: 12px; overflow: hidden; height: 18px; display: flex;">
-                        <span style="width: 10%; background: rgba(255,107,107,0.4);" title="High"></span>
-                        <span style="width: 70%; background: rgba(254,202,87,0.4);" title="Medium"></span>
-                        <span style="width: 20%; background: rgba(72,219,251,0.4);" title="Low"></span>
+                        <span id="priorityMixHigh" style="width: 10%; background: rgba(255,107,107,0.4);" title="High"></span>
+                        <span id="priorityMixMedium" style="width: 70%; background: rgba(254,202,87,0.4);" title="Medium"></span>
+                        <span id="priorityMixLow" style="width: 20%; background: rgba(72,219,251,0.4);" title="Low"></span>
                     </div>
                     <div style="display: flex; justify-content: space-between; color: #888; font-size: 0.85rem; margin-top: 6px;">
                         <span>High</span>
@@ -318,74 +318,12 @@
 
             <section class="section">
                 <h2>🛰️ Scraper & Source Health</h2>
-                <div class="companies">
-                    <div class="company-card" style="border-color: rgba(72,219,251,0.3);">
-                        <div class="company-name" style="color: #48dbfb;">Rand Water</div>
-                        <div class="company-focus">Status: <span style="color: #48dbfb;">OK</span></div>
-                        <div class="company-keywords">
-                            <span class="keyword">Last run: 06:00</span>
-                            <span class="keyword">Tenders found: 4</span>
-                            <span class="keyword">Failures (7d): 0</span>
-                        </div>
-                    </div>
-                    <div class="company-card" style="border-color: rgba(254,202,87,0.3);">
-                        <div class="company-name" style="color: #feca57;">Johannesburg Water</div>
-                        <div class="company-focus">Status: <span style="color: #feca57;">Warning</span></div>
-                        <div class="company-keywords">
-                            <span class="keyword">Last run: 05:45</span>
-                            <span class="keyword">Tenders found: 3</span>
-                            <span class="keyword">Failures (7d): 1</span>
-                        </div>
-                    </div>
-                    <div class="company-card" style="border-color: rgba(255,107,107,0.3);">
-                        <div class="company-name" style="color: #ff6b6b;">National Treasury</div>
-                        <div class="company-focus">Status: <span style="color: #ff6b6b;">Error</span></div>
-                        <div class="company-keywords">
-                            <span class="keyword">Last run: 04:30</span>
-                            <span class="keyword">Tenders found: 0</span>
-                            <span class="keyword">Failures (7d): 3</span>
-                        </div>
-                    </div>
-                </div>
+                <div id="dashboardSourceHealth" class="companies"></div>
             </section>
 
             <section class="section">
                 <h2>⚙️ Automation & Logs</h2>
-                <ul class="tender-list">
-                    <li class="tender-item">
-                        <div class="tender-content">
-                            <div class="tender-info">
-                                <div class="tender-title">2025-12-10 06:00 • Daily scan • Tenders found: 7</div>
-                                <div class="tender-meta">
-                                    <span>Status: Success</span>
-                                    <span>Notes: Fresh scrape, no errors</span>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="tender-item">
-                        <div class="tender-content">
-                            <div class="tender-info">
-                                <div class="tender-title">2025-12-09 18:00 • Manual CSV • Tenders found: 2</div>
-                                <div class="tender-meta">
-                                    <span>Status: Partial</span>
-                                    <span>Notes: Rand Water PDF timed out</span>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="tender-item">
-                        <div class="tender-content">
-                            <div class="tender-info">
-                                <div class="tender-title">2025-12-09 07:00 • Weekly report • Tenders found: 9</div>
-                                <div class="tender-meta">
-                                    <span>Status: Success</span>
-                                    <span>Notes: Report emailed to TES & Phakathi</span>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
+                <ul id="automationLogList" class="tender-list"></ul>
             </section>
         </div>
 
@@ -539,9 +477,10 @@
             </div>
         </div>
         
-        <footer>
-            <p>Tender Intelligence System v3.0 | TES & Phakathi</p>
-            <p>Automated scans: Daily 6AM | Weekly Reports: Monday 7AM</p>
+        <footer class="footer">
+            <p id="footerLine1">Tender Intelligence Dashboard | TES &amp; Phakathi</p>
+            <p id="footerLine2">Last sync: – | Next run: –</p>
+            <p id="footerLine3" style="opacity: 0.75; font-size: 0.85rem;">Build: –</p>
         </footer>
     </div>
 
@@ -638,7 +577,21 @@
 
 	            _daysUntil(dateStr) {
 	                if (!dateStr) return null;
-	                const closing = new Date(dateStr);
+	                const raw = (dateStr || '').toString().trim();
+	                let closing = null;
+
+	                // Support DD/MM/YYYY (common in ZA feeds)
+	                const dmY = raw.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})(?:\s+(\d{1,2}):(\d{2}))?$/);
+	                if (dmY) {
+	                    const day = Number(dmY[1]);
+	                    const month = Number(dmY[2]);
+	                    const year = Number(dmY[3]);
+	                    const hour = dmY[4] ? Number(dmY[4]) : 0;
+	                    const minute = dmY[5] ? Number(dmY[5]) : 0;
+	                    closing = new Date(year, month - 1, day, hour, minute, 0, 0);
+	                } else {
+	                    closing = new Date(raw);
+	                }
 	                if (Number.isNaN(closing.getTime())) return null;
 
 	                const today = new Date();
@@ -727,6 +680,32 @@
 		                return null;
 		            }
 
+		            _parseFlexibleDate(value) {
+		                if (!value) return null;
+		                const raw = (value || '').toString().trim();
+
+		                // ISO-ish / YYYY-MM-DD / YYYY-MM-DDTHH:mm
+		                if (/^\d{4}-\d{2}-\d{2}/.test(raw)) {
+		                    const d = new Date(raw);
+		                    return Number.isNaN(d.getTime()) ? null : d;
+		                }
+
+		                // DD/MM/YYYY (common in ZA feeds)
+		                const dmY = raw.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})(?:\s+(\d{1,2}):(\d{2}))?$/);
+		                if (dmY) {
+		                    const day = Number(dmY[1]);
+		                    const month = Number(dmY[2]);
+		                    const year = Number(dmY[3]);
+		                    const hour = dmY[4] ? Number(dmY[4]) : 0;
+		                    const minute = dmY[5] ? Number(dmY[5]) : 0;
+		                    const d = new Date(year, month - 1, day, hour, minute, 0, 0);
+		                    return Number.isNaN(d.getTime()) ? null : d;
+		                }
+
+		                const d = new Date(raw);
+		                return Number.isNaN(d.getTime()) ? null : d;
+		            }
+
 		            _notify() {
 		                if (typeof this.onFilterChange === 'function') {
 		                    this.onFilterChange(this.getFilteredTenders());
@@ -777,8 +756,8 @@
 
 		                    if (hasDateRange) {
 		                        if (!tender.closing_date) return false;
-		                        const closing = new Date(tender.closing_date);
-		                        if (Number.isNaN(closing.getTime())) return false;
+		                        const closing = this._parseFlexibleDate(tender.closing_date);
+		                        if (!closing) return false;
 
 		                        if (startDate && closing < startDate) return false;
 		                        if (endDate && closing > endDate) return false;
@@ -1462,8 +1441,5 @@
 	                };
 	            };
 	    </script>
-    <div style="opacity:.6;font-size:12px;margin-top:12px">
-      Build marker: V3 UI present · commit 377e345+ · Notifications v1
-    </div>
 </body>
 </html>
