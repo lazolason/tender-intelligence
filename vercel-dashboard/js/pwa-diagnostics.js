@@ -3,77 +3,119 @@
     'use strict';
     
     window.diagnosePWA = async function() {
-        console.log('%c🔍 PWA DIAGNOSTICS REPORT', 'color: #667eea; font-weight: bold; font-size: 14px;');
-        console.log('='.repeat(50));
+        const results = {
+            timestamp: new Date().toISOString(),
+            tests: {}
+        };
         
         // Test 1: Service Worker
         if ('serviceWorker' in navigator) {
-            console.log('✅ Service Workers SUPPORTED');
             try {
                 const regs = await navigator.serviceWorker.getRegistrations();
-                console.log(`   Found ${regs.length} registration(s)`);
+                results.tests.serviceWorker = { 
+                    supported: true, 
+                    registrations: regs.length,
+                    status: '✅ SUPPORTED'
+                };
             } catch(e) {
-                console.log('   Error: ' + e.message);
+                results.tests.serviceWorker = { 
+                    supported: true, 
+                    error: e.message,
+                    status: '⚠️ SUPPORTED but error getting registrations'
+                };
             }
         } else {
-            console.log('❌ Service Workers NOT SUPPORTED');
+            results.tests.serviceWorker = { 
+                supported: false,
+                status: '❌ NOT SUPPORTED'
+            };
         }
         
         // Test 2: Manifest
         const manifest = document.querySelector('link[rel="manifest"]');
-        if (manifest) {
-            console.log('✅ Web App Manifest FOUND');
-            console.log('   ' + manifest.getAttribute('href'));
-        } else {
-            console.log('⚠️  No manifest file');
-        }
+        results.tests.manifest = manifest ? {
+            found: true,
+            href: manifest.getAttribute('href'),
+            status: '✅ FOUND'
+        } : {
+            found: false,
+            status: '⚠️ NOT FOUND'
+        };
         
         // Test 3: Secure Context
-        if (location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
-            console.log('✅ Secure context (HTTPS/Localhost)');
-        } else {
-            console.log('❌ NOT secure - URL: ' + location.href);
-        }
+        const isSecure = location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+        results.tests.secureContext = {
+            secure: isSecure,
+            protocol: location.protocol,
+            hostname: location.hostname,
+            status: isSecure ? '✅ SECURE' : '❌ NOT SECURE'
+        };
         
         // Test 4: Notifications
         if ('Notification' in window) {
-            console.log('✅ Notifications API SUPPORTED');
-            console.log('   Permission: ' + Notification.permission);
+            results.tests.notifications = {
+                supported: true,
+                permission: Notification.permission,
+                status: `✅ SUPPORTED (${Notification.permission})`
+            };
         } else {
-            console.log('❌ Notifications NOT supported');
+            results.tests.notifications = {
+                supported: false,
+                status: '❌ NOT SUPPORTED'
+            };
         }
         
         // Test 5: Cache API
         if ('caches' in window) {
-            console.log('✅ Cache API SUPPORTED');
             try {
                 const names = await caches.keys();
-                console.log(`   ${names.length} cache(s)`);
+                results.tests.cacheAPI = {
+                    supported: true,
+                    caches: names.length,
+                    cacheNames: names,
+                    status: `✅ SUPPORTED (${names.length} cache(s))`
+                };
             } catch(e) {
-                console.log('   Error: ' + e.message);
+                results.tests.cacheAPI = {
+                    supported: true,
+                    error: e.message,
+                    status: '⚠️ SUPPORTED but error accessing caches'
+                };
             }
         } else {
-            console.log('❌ Cache API NOT supported');
+            results.tests.cacheAPI = {
+                supported: false,
+                status: '❌ NOT SUPPORTED'
+            };
         }
         
         // Test 6: LocalStorage
         try {
             localStorage.setItem('__test__', '1');
             localStorage.removeItem('__test__');
-            console.log('✅ LocalStorage WORKING');
+            results.tests.localStorage = {
+                working: true,
+                status: '✅ WORKING'
+            };
         } catch(e) {
-            console.log('❌ LocalStorage ERROR: ' + e.message);
+            results.tests.localStorage = {
+                working: false,
+                error: e.message,
+                status: '❌ ERROR'
+            };
         }
         
         // Test 7: IndexedDB
-        if ('indexedDB' in window) {
-            console.log('✅ IndexedDB SUPPORTED');
-        } else {
-            console.log('⚠️  IndexedDB NOT supported');
-        }
+        results.tests.indexedDB = {
+            supported: 'indexedDB' in window,
+            status: ('indexedDB' in window) ? '✅ SUPPORTED' : '❌ NOT SUPPORTED'
+        };
         
-        console.log('='.repeat(50));
-        console.log('%c✨ Diagnostics complete!', 'color: #00ff88; font-weight: bold;');
+        // Print pretty summary
+        console.table(results.tests);
+        console.log('📊 Full Results:', results);
+        
+        return results;
     };
     
     // Helper: Request notification permission

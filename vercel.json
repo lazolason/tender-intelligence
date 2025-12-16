@@ -1,5 +1,12 @@
 {
   "rewrites": [
+    { "source": "/index.html", "destination": "/vercel-dashboard/index.html" },
+    { "source": "/style.css", "destination": "/vercel-dashboard/style.css" },
+    { "source": "/script.js", "destination": "/vercel-dashboard/script.js" },
+    { "source": "/service-worker.js", "destination": "/vercel-dashboard/service-worker.js" },
+    { "source": "/manifest.json", "destination": "/vercel-dashboard/manifest.json" },
+    { "source": "/icons/:path*", "destination": "/vercel-dashboard/icons/:path*" },
+    { "source": "/screenshots/:path*", "destination": "/vercel-dashboard/screenshots/:path*" },
     { "source": "/", "destination": "/vercel-dashboard/index.html" },
     { "source": "/tenders.json", "destination": "/vercel-dashboard/tenders.json" },
     { "source": "/public/:path*", "destination": "/vercel-dashboard/public/:path*" }
