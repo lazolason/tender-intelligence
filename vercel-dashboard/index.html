@@ -921,6 +921,67 @@
 				    <script src="js/pwa-diagnostics.js"></script>
 				    <script src="script.js"></script>
 				    <script>
+	        // Simple PWA Diagnostics - works immediately
+	        window.diagnosePWA = async function() {
+	            console.log('🔍 PWA DIAGNOSTICS REPORT');
+	            console.log('='.repeat(50));
+	            
+	            // Test 1: Service Worker
+	            if ('serviceWorker' in navigator) {
+	                console.log('✅ Service Workers SUPPORTED');
+	                const regs = await navigator.serviceWorker.getRegistrations();
+	                console.log(`   Found ${regs.length} registration(s)`);
+	            } else {
+	                console.log('❌ Service Workers NOT SUPPORTED');
+	            }
+	            
+	            // Test 2: Manifest
+	            const manifest = document.querySelector('link[rel="manifest"]');
+	            if (manifest) {
+	                console.log('✅ Web App Manifest FOUND: ' + manifest.getAttribute('href'));
+	            } else {
+	                console.log('⚠️  No manifest file');
+	            }
+	            
+	            // Test 3: Secure Context
+	            if (location.protocol === 'https:' || location.hostname === 'localhost') {
+	                console.log('✅ Secure context (HTTPS/Localhost)');
+	            } else {
+	                console.log('❌ NOT secure context');
+	            }
+	            
+	            // Test 4: Notifications
+	            if ('Notification' in window) {
+	                console.log('✅ Notifications API SUPPORTED - Permission: ' + Notification.permission);
+	            } else {
+	                console.log('❌ Notifications NOT supported');
+	            }
+	            
+	            // Test 5: Cache API
+	            if ('caches' in window) {
+	                console.log('✅ Cache API SUPPORTED');
+	                const names = await caches.keys();
+	                console.log(`   ${names.length} caches found`);
+	            } else {
+	                console.log('❌ Cache API NOT supported');
+	            }
+	            
+	            // Test 6: LocalStorage
+	            try {
+	                localStorage.setItem('__test__', 'test');
+	                localStorage.removeItem('__test__');
+	                console.log('✅ LocalStorage WORKING');
+	            } catch(e) {
+	                console.log('❌ LocalStorage ERROR: ' + e.message);
+	            }
+	            
+	            console.log('='.repeat(50));
+	            console.log('Diagnostics complete! ✨');
+	        };
+	        
+	        console.log('%c✨ Run diagnosePWA() to test PWA features', 'color: #667eea; font-size: 14px; font-weight: bold;');
+	    </script>
+	    <script>
 	        // Initialize Advanced Filters
 	        let advancedFilters = null;
         
