@@ -27,6 +27,11 @@ services:
         value: "false"  # Selenium requires paid plan with Docker
       - key: TZ
         value: Africa/Johannesburg
+      # AI Summarization (set in Render Dashboard Environment tab)
+      # - key: ANTHROPIC_API_KEY
+      #   value: "sk-ant-..."  # SET IN RENDER DASHBOARD, NOT IN CODE
+      # - key: ANTHROPIC_MODEL
+      #   value: "claude-sonnet-4-20250514"
     
     # Auto-deploy from GitHub
     autoDeploy: true
