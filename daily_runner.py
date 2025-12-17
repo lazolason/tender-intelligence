@@ -77,12 +77,12 @@ def run_daily():
     # Step 3: Send email alerts for HIGH priority tenders
     print("\n📧 Step 3: Sending email alerts...")
     try:
-        from email_alerts import send_daily_digest, EMAIL_CONFIG
-        
+        from utils.email_alerts import send_daily_digest, EMAIL_CONFIG
+
         # Check if email is configured
         if EMAIL_CONFIG["sender_email"] == "your-email@gmail.com":
             print("   ⚠️ Email not configured - skipping alerts")
-            print("   💡 Edit email_alerts.py to enable email alerts")
+            print("   💡 Edit utils/email_alerts.py to enable email alerts")
             results["email"] = {"status": "not_configured"}
         else:
             success = send_daily_digest()

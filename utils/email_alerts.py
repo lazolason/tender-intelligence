@@ -6,11 +6,22 @@ Sends urgent tender notifications via email
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-from datetime import datetime
+from datetime import datetime, timedelta
 import logging
+import json
+import os
 from typing import Any, Dict, Iterable, List, Optional
 
 logger = logging.getLogger(__name__)
+
+# Email configuration - UPDATE THESE if not using config.yaml
+EMAIL_CONFIG = {
+    "smtp_server": "smtp.gmail.com",
+    "smtp_port": 587,
+    "sender_email": "your-email@gmail.com",  # Your Gmail address
+    "sender_password": "",  # App password (not regular password)
+    "recipient_emails": []  # List of emails to receive alerts
+}
 
 
 class EmailAlerter:
@@ -308,7 +319,7 @@ class EmailAlerter:
                 border-radius: 12px;
                 box-shadow: 0 2px 8px rgba(0,0,0,0.1);
                 overflow: hidden;">
-                
+
                 <!-- Header -->
                 <div style="
                     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -328,17 +339,17 @@ class EmailAlerter:
                         The following tenders require immediate attention
                     </p>
                 </div>
-                
+
                 <!-- Content -->
                 <div style="padding: 30px 20px;">
                     <p style="
                         color: #333;
                         margin: 0 0 20px 0;
                         font-size: 15px;">
-                        <strong>{len(tenders)}</strong> urgent tender{'' if len(tenders) == 1 else 's'} 
+                        <strong>{len(tenders)}</strong> urgent tender{'' if len(tenders) == 1 else 's'}
                         {'is' if len(tenders) == 1 else 'are'} closing soon and require immediate review:
                     </p>
-                    
+
                     <!-- Tenders Table -->
                     <table style="
                         width: 100%;
@@ -401,7 +412,7 @@ class EmailAlerter:
                         </tbody>
                     </table>
                 </div>
-                
+
                 <!-- Footer -->
                 <div style="
                     padding: 20px;
@@ -436,3 +447,210 @@ class EmailAlerter:
         </body>
         </html>
         """
+
+
+# ============================================================
+# DAILY DIGEST FUNCTIONS (for daily_runner.py)
+# ============================================================
+
+def load_tender_payload():
+    """Load the canonical tenders payload used by the deployed dashboard."""
+    automation_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    dashboard_tenders_json = os.path.join(automation_dir, "vercel-dashboard", "tenders.json")
+    legacy_tenders_json = os.path.join(automation_dir, "output", "new_tenders.json")
+
+    for path in (dashboard_tenders_json, legacy_tenders_json):
+        if not os.path.exists(path):
+            continue
+        try:
+            with open(path, "r", encoding="utf-8") as f:
+                payload = json.load(f)
+        except Exception:
+            continue
+
+        if isinstance(payload, list):
+            return {"tenders": payload, "meta": {}, "source_path": path}
+        if isinstance(payload, dict):
+            tenders = payload.get("tenders") or payload.get("data") or []
+            meta = payload.get("meta") or {}
+            if isinstance(tenders, list) and isinstance(meta, dict):
+                return {"tenders": tenders, "meta": meta, "source_path": path}
+
+    return {"tenders": [], "meta": {}, "source_path": None}
+
+
+def get_days_until_closing(closing_date):
+    """Calculate days until closing"""
+    if not closing_date:
+        return None
+    try:
+        close = datetime.strptime(closing_date, "%Y-%m-%d")
+        delta = (close - datetime.now()).days
+        return delta
+    except (ValueError, TypeError):
+        return None
+
+
+def get_urgency_text(days):
+    """Get urgency label"""
+    if days is None:
+        return "📅 Date TBC"
+    if days < 0:
+        return "❌ CLOSED"
+    if days == 0:
+        return "🔴 CLOSES TODAY!"
+    if days == 1:
+        return "🔴 CLOSES TOMORROW!"
+    if days <= 3:
+        return f"🟠 {days} DAYS LEFT"
+    if days <= 7:
+        return f"🟡 {days} days left"
+    return f"🟢 {days} days left"
+
+
+def generate_email_html(tenders, meta=None):
+    """Generate HTML email content"""
+    meta = meta or {}
+    build_id = meta.get("build_id") or meta.get("last_sync") or datetime.now().strftime("%Y-%m-%d %H:%M")
+
+    high_priority = [t for t in tenders if t.get("scores", {}).get("priority") == "HIGH"]
+    medium_priority = [t for t in tenders if t.get("scores", {}).get("priority") == "MEDIUM"]
+
+    # Sort by closing date
+    for lst in [high_priority, medium_priority]:
+        lst.sort(key=lambda x: x.get("closing_date", "9999-99-99"))
+
+    html = f"""
+    <html>
+    <head>
+        <style>
+            body {{ font-family: Arial, sans-serif; background: #f5f5f5; padding: 20px; }}
+            .container {{ max-width: 600px; margin: 0 auto; background: white; border-radius: 10px; padding: 20px; }}
+            h1 {{ color: #667eea; }}
+            .tender {{ border-left: 4px solid #667eea; padding: 15px; margin: 15px 0; background: #f9f9f9; border-radius: 5px; }}
+            .tender.high {{ border-left-color: #ff6b6b; }}
+            .tender.medium {{ border-left-color: #feca57; }}
+            .ref {{ font-weight: bold; color: #667eea; }}
+            .title {{ color: #333; margin: 5px 0; }}
+            .meta {{ color: #888; font-size: 12px; }}
+            .urgency {{ display: inline-block; padding: 3px 10px; border-radius: 15px; font-size: 11px; font-weight: bold; }}
+            .urgency.red {{ background: #ffe0e0; color: #ff6b6b; }}
+            .urgency.orange {{ background: #fff3e0; color: #ff9800; }}
+            .urgency.yellow {{ background: #fff9e6; color: #f9a825; }}
+            .urgency.green {{ background: #e8f5e9; color: #4caf50; }}
+            .company {{ display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 10px; margin-left: 10px; }}
+            .company.tes {{ background: #e3f2fd; color: #2196f3; }}
+            .company.phakathi {{ background: #fff3e0; color: #ff9800; }}
+            .footer {{ text-align: center; color: #888; font-size: 11px; margin-top: 20px; }}
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>🎯 Tender Intelligence Daily Digest</h1>
+            <p style="color: #888;">{datetime.now().strftime("%A, %d %B %Y")}</p>
+            <p style="color: #888; font-size: 11px; margin-top: 0;">Build stamp: <strong>{build_id}</strong></p>
+    """
+
+    if high_priority:
+        html += f"<h2 style='color: #ff6b6b;'>🔥 High Priority ({len(high_priority)})</h2>"
+        for t in high_priority:
+            days = get_days_until_closing(t.get("closing_date"))
+            urgency = get_urgency_text(days)
+            urgency_class = "red" if days is not None and days <= 3 else "orange" if days is not None and days <= 7 else "green"
+
+            scores = t.get("scores", {})
+            company = "TES" if scores.get("tes", 0) > scores.get("phakathi", 0) else "Phakathi" if scores.get("phakathi", 0) > scores.get("tes", 0) else "Both"
+            company_class = "tes" if company == "TES" else "phakathi"
+
+            html += f"""
+            <div class="tender high">
+                <span class="ref">{t.get('ref', 'N/A')}</span>
+                <span class="company {company_class}">{company}</span>
+                <span class="urgency {urgency_class}">{urgency}</span>
+                <div class="title">{t.get('title', 'Unknown')[:100]}</div>
+                <div class="meta">📍 {t.get('client', 'Unknown')} | 📁 {t.get('category', 'Unknown')} | Score: {scores.get('composite', 0)}</div>
+            </div>
+            """
+
+    if medium_priority:
+        html += f"<h2 style='color: #feca57;'>✅ Medium Priority ({len(medium_priority)})</h2>"
+        for t in medium_priority[:5]:  # Limit to 5
+            days = get_days_until_closing(t.get("closing_date"))
+            urgency = get_urgency_text(days)
+
+            scores = t.get("scores", {})
+            company = "TES" if scores.get("tes", 0) > scores.get("phakathi", 0) else "Phakathi" if scores.get("phakathi", 0) > scores.get("tes", 0) else "Both"
+
+            html += f"""
+            <div class="tender medium">
+                <span class="ref">{t.get('ref', 'N/A')}</span>
+                <span class="company">{company}</span>
+                <div class="title">{t.get('title', 'Unknown')[:80]}</div>
+                <div class="meta">📍 {t.get('client', 'Unknown')} | {urgency}</div>
+            </div>
+            """
+
+    if not high_priority and not medium_priority:
+        html += "<p style='text-align: center; color: #888; padding: 40px;'>No high or medium priority tenders today. 📭</p>"
+
+    html += f"""
+            <div class="footer">
+                <p>View full dashboard: <a href="https://tender-intelligence-dashboard.vercel.app/">https://tender-intelligence-dashboard.vercel.app/</a></p>
+                <p>Tender Intelligence System | TES & Phakathi</p>
+            </div>
+        </div>
+    </body>
+    </html>
+    """
+
+    return html
+
+
+def send_email(subject, html_content):
+    """Send email via SMTP"""
+    if not EMAIL_CONFIG["sender_email"] or not EMAIL_CONFIG["recipient_emails"]:
+        logger.warning("⚠️ Email not configured. Update EMAIL_CONFIG in utils/email_alerts.py")
+        return False
+
+    try:
+        msg = MIMEMultipart("alternative")
+        msg["Subject"] = subject
+        msg["From"] = EMAIL_CONFIG["sender_email"]
+        msg["To"] = ", ".join(EMAIL_CONFIG["recipient_emails"])
+
+        msg.attach(MIMEText(html_content, "html"))
+
+        with smtplib.SMTP(EMAIL_CONFIG["smtp_server"], EMAIL_CONFIG["smtp_port"]) as server:
+            server.starttls()
+            server.login(EMAIL_CONFIG["sender_email"], EMAIL_CONFIG["sender_password"])
+            server.sendmail(
+                EMAIL_CONFIG["sender_email"],
+                EMAIL_CONFIG["recipient_emails"],
+                msg.as_string()
+            )
+
+        logger.info("✅ Email sent successfully!")
+        return True
+    except Exception as e:
+        logger.error(f"❌ Email failed: {e}")
+        return False
+
+
+def send_daily_digest():
+    """Main function to send daily digest"""
+    logger.info("📧 Preparing daily tender digest...")
+
+    payload = load_tender_payload()
+    tenders = payload.get("tenders") or []
+    meta = payload.get("meta") or {}
+    high_count = sum(1 for t in tenders if t.get("scores", {}).get("priority") == "HIGH")
+
+    if high_count == 0:
+        logger.info("   No high priority tenders - skipping email")
+        return False
+
+    stamp = meta.get("build_id") or meta.get("last_sync") or datetime.now().strftime("%Y-%m-%d")
+    subject = f"🎯 {high_count} High Priority Tender{'s' if high_count != 1 else ''} - {stamp}"
+    html = generate_email_html(tenders, meta=meta)
+
+    return send_email(subject, html)
