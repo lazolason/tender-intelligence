@@ -379,7 +379,8 @@ def api_summarize():
             resp.headers["Access-Control-Allow-Origin"] = cors_origin
             return resp
 
-        model = (os.environ.get("ANTHROPIC_MODEL") or "claude-sonnet-4-20250514").strip()
+        # Priority: request payload > env var > default
+        model = (payload.get("model") or os.environ.get("ANTHROPIC_MODEL") or "claude-sonnet-4-20250514").strip()
 
         prompt = (
             "Summarize this tender in 3 bullet points.\n"
