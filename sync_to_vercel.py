@@ -45,7 +45,13 @@ def load_tenders():
     """Load tenders from JSON output"""
     if os.path.exists(TENDERS_JSON):
         with open(TENDERS_JSON, "r") as f:
-            return json.load(f)
+            data = json.load(f)
+            # Extract tenders array from {"meta": {...}, "tenders": [...]} structure
+            if isinstance(data, dict) and "tenders" in data:
+                return data.get("tenders", [])
+            # Fallback for direct array structure
+            elif isinstance(data, list):
+                return data
     return []
 
 def get_search_url(tender):
@@ -141,9 +147,18 @@ def generate_dashboard_html(tenders):
             "contact": t.get("contact", "")
         })
     
-    # Save full dataset as separate JSON for client-side loading
+    # Save full dataset with metadata for client-side loading
+    metadata = {
+        "meta": {
+            "last_sync": datetime.now().strftime("%Y-%m-%d %H:%M"),
+            "next_run": "Daily 08:00",
+            "tender_count": len(js_tenders),
+            "last_update": datetime.now().isoformat()
+        },
+        "tenders": js_tenders
+    }
     with open(TENDERS_DATA_JSON, 'w') as f:
-        json.dump(js_tenders, f, indent=2)
+        json.dump(metadata, f, indent=2)
     print(f"   💾 Saved {len(js_tenders)} tenders to tenders.json for client-side access")
     
     tenders_json = json.dumps(js_tenders, indent=8)
@@ -748,7 +763,12 @@ def sync():
     # QA Check: Verify tenders.json was created
     if os.path.exists(TENDERS_DATA_JSON):
         with open(TENDERS_DATA_JSON, 'r') as f:
-            displayed_tenders = json.load(f)
+            displayed_data = json.load(f)
+            # Extract tenders array from {"meta": {...}, "tenders": [...]} structure
+            if isinstance(displayed_data, dict) and "tenders" in displayed_data:
+                displayed_tenders = displayed_data.get("tenders", [])
+            else:
+                displayed_tenders = displayed_data if isinstance(displayed_data, list) else []
             displayed_count = len(displayed_tenders)
             if displayed_count != scraped_count:
                 print(f"   ⚠️ WARNING: Count mismatch - scraped {scraped_count} but displaying {displayed_count}")
