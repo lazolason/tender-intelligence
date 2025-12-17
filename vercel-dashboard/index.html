@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
+	    <div class="container">
 	        <header class="main-header">
 	            <h1>Tender Intelligence</h1>
 	            <p class="subtitle"><span class="status"></span>TES & Phakathi decision layer</p>
@@ -31,6 +31,13 @@
 	                <span class="theme-icon">🌙</span>
 	            </button>
 	        </header>
+	        <div id="offlineIndicator" class="offline-banner" style="display: none;">
+	            📡 You're offline - showing cached data
+	        </div>
+	        <div id="refreshIndicator" class="refresh-indicator" style="transform: translateY(-100px); opacity: 0;">
+	            <span class="refresh-spinner" aria-hidden="true"></span>
+	            <span id="refreshIndicatorText">Pull to refresh</span>
+	        </div>
 
         <div id="print-report-header" class="print-header">
             <h1>Tender Intelligence – Daily Report</h1>
@@ -524,6 +531,7 @@
 
 	            <div class="tender-detail-footer">
 	                <button id="tenderDetailViewSource" class="modal-open-link-btn" type="button">View Source ↗</button>
+	                <button id="tenderDetailAiSummary" class="ai-btn" type="button" onclick="summarizeTender(window.__currentTenderDetail)">✨ AI Summary</button>
 	                <button id="tenderDetailAddNote" class="quick-filter-btn" type="button">Add Note</button>
 	                <button id="tenderDetailAssign" class="quick-filter-btn" type="button">Assign</button>
 	            </div>
@@ -897,8 +905,7 @@
 				    <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
 				    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 				    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-				    <script src="js/pwa-diagnostics.js"></script>
-				    <script src="script.js"></script>
+				    <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
 				    <script src="js/pwa-diagnostics.js"></script>
 				    <script src="script.js"></script>
 				    <script>

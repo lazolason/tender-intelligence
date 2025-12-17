@@ -1,6 +1,7 @@
 const config = {
     cacheKey: "ti_dashboard_payload_v1",
     cacheTtlMs: 60 * 60 * 1000, // 1 hour
+    aiSummaryEndpoint: (window.AI_SUMMARY_ENDPOINT || "").toString().trim() || "/api/summarize",
     tenderJsonUrls: [
         "/public/tenders-latest.json",
         "/public/build/tenders.json",
@@ -130,6 +131,145 @@ function initPwaInstallPrompt() {
             hideBtn();
         }
     });
+}
+
+function initMobileGestures() {
+    if (typeof Hammer === 'undefined') return;
+    const container = document.querySelector('.container');
+    if (!container) return;
+
+    const hammer = new Hammer(container);
+    hammer.get('swipe').set({ direction: Hammer.DIRECTION_HORIZONTAL, threshold: 12, velocity: 0.2 });
+
+    const tabs = ['dashboard', 'calendar', 'analytics', 'sources'];
+
+    const isSwipeNavAllowed = (target) => {
+        const el = target;
+        if (!el || !(el instanceof Element)) return true;
+        if (document.getElementById('tenderDetailOverlay')?.classList.contains('active')) return false;
+        if (el.closest('.multi-select-panel')) return false;
+        if (el.closest('.tender-detail-modal')) return false;
+        if (el.closest('input, textarea, select, button')) return false;
+        if (el.closest('#tenderTableScroll')) return false;
+        return true;
+    };
+
+    const handleTabSwipe = (direction, e) => {
+        if (!isSwipeNavAllowed(e?.target)) return false;
+        const current = getCurrentTab();
+        const idx = tabs.indexOf(current);
+        if (idx < 0) return false;
+        if (direction === 'left' && idx < tabs.length - 1) {
+            showTab(tabs[idx + 1]);
+            return true;
+        }
+        if (direction === 'right' && idx > 0) {
+            showTab(tabs[idx - 1]);
+            return true;
+        }
+        return false;
+    };
+
+    hammer.on('swipeleft', (e) => {
+        if (typeof handleTenderSwipeLeft === 'function' && handleTenderSwipeLeft(e?.target)) return;
+        handleTabSwipe('left', e);
+    });
+    hammer.on('swiperight', (e) => {
+        if (typeof handleTenderSwipeRight === 'function' && handleTenderSwipeRight(e?.target)) return;
+        handleTabSwipe('right', e);
+    });
+
+    // Pull-to-refresh (mobile)
+    let startY = 0;
+    let pullDistance = 0;
+    let pulling = false;
+    let refreshing = false;
+
+    const indicator = document.getElementById('refreshIndicator');
+    const indicatorText = document.getElementById('refreshIndicatorText');
+    const threshold = 80;
+
+    const getTopScroll = (target) => {
+        const table = document.getElementById('tenderTableScroll');
+        if (table && (target?.closest?.('#tenderTableScroll') || getCurrentTab() === 'dashboard')) {
+            return table.scrollTop || 0;
+        }
+        return window.scrollY || 0;
+    };
+
+    const canStart = (target) => {
+        if (refreshing) return false;
+        if (document.getElementById('tenderDetailOverlay')?.classList.contains('active')) return false;
+        if (target?.closest?.('input, textarea, select')) return false;
+        return getTopScroll(target) === 0;
+    };
+
+    const setIndicator = (y, text) => {
+        if (!indicator) return;
+        const clamped = Math.max(0, Math.min(80, y));
+        indicator.style.transform = `translateX(-50%) translateY(${clamped - 100}px)`;
+        indicator.style.opacity = clamped > 2 ? '1' : '0';
+        if (indicatorText && text) indicatorText.textContent = text;
+    };
+
+    document.addEventListener(
+        'touchstart',
+        (e) => {
+            const t = e.touches?.[0];
+            if (!t) return;
+            if (!canStart(e.target)) return;
+            pulling = true;
+            startY = t.clientY;
+            pullDistance = 0;
+        },
+        { passive: true }
+    );
+
+    document.addEventListener(
+        'touchmove',
+        (e) => {
+            if (!pulling || refreshing) return;
+            const t = e.touches?.[0];
+            if (!t) return;
+            pullDistance = t.clientY - startY;
+            if (pullDistance <= 0) {
+                setIndicator(0, 'Pull to refresh');
+                return;
+            }
+            e.preventDefault();
+            const label = pullDistance > threshold ? 'Release to refresh' : 'Pull to refresh';
+            setIndicator(pullDistance, label);
+        },
+        { passive: false }
+    );
+
+    document.addEventListener(
+        'touchend',
+        async () => {
+            if (!pulling) return;
+            pulling = false;
+
+            if (pullDistance > threshold && !refreshing) {
+                refreshing = true;
+                setIndicator(80, 'Refreshing…');
+                try {
+                    if (typeof refreshDashboardData === 'function') await refreshDashboardData();
+                    else location.reload();
+                } catch (e) {
+                    // ignore
+                } finally {
+                    refreshing = false;
+                    pullDistance = 0;
+                    setIndicator(0, 'Pull to refresh');
+                }
+                return;
+            }
+
+            pullDistance = 0;
+            setIndicator(0, 'Pull to refresh');
+        },
+        { passive: true }
+    );
 }
 
 async function canInstallApp() {
@@ -271,7 +411,9 @@ function initViewToggle() {
 
 function getFilteredTendersForExport() {
     const filter = state.currentFilter;
-    let filtered = state.tenders.filter((t) => getDaysUntil(t?.closing_date) === null || getDaysUntil(t?.closing_date) >= 0);
+    let filtered = state.tenders
+        .filter((t) => !isTenderHidden(t?.ref))
+        .filter((t) => getDaysUntil(t?.closing_date) === null || getDaysUntil(t?.closing_date) >= 0);
 
     if (filter === 'TES' || filter === 'Phakathi' || filter === 'Both') {
         filtered = filtered.filter((t) => getCompany(t) === filter);
@@ -776,6 +918,167 @@ function setTenderLifecycleStatus(tenderRef, status, { notes, changedBy } = {}) 
     return ok;
 }
 
+// ====================================
+// Swipe actions (mobile)
+// ====================================
+let swipeMenuEl = null;
+let swipeMenuTargetEl = null;
+let swipeMenuRef = null;
+let undoToastEl = null;
+let undoTimer = null;
+let lastHiddenRef = null;
+
+function ensureSwipeMenu() {
+    if (swipeMenuEl) return swipeMenuEl;
+    swipeMenuEl = document.createElement('div');
+    swipeMenuEl.id = 'swipeActionMenu';
+    swipeMenuEl.className = 'swipe-action-menu';
+    swipeMenuEl.innerHTML = `
+        <div class="swipe-action-title">Tender actions</div>
+        <div class="swipe-action-buttons">
+            <button type="button" class="swipe-action-btn archive">Archive</button>
+            <button type="button" class="swipe-action-btn delete">Delete</button>
+        </div>
+    `;
+    document.body.appendChild(swipeMenuEl);
+
+    // Outside click closes
+    document.addEventListener('click', (e) => {
+        if (!swipeMenuEl?.classList.contains('active')) return;
+        if (e.target === swipeMenuEl || swipeMenuEl.contains(e.target)) return;
+        closeSwipeMenu();
+    });
+
+    swipeMenuEl.querySelector('.swipe-action-btn.archive')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (!swipeMenuRef) return;
+        setTenderLifecycleStatus(swipeMenuRef, 'Withdrawn', {
+            notes: 'Archived (swipe)',
+            changedBy: getCurrentUsername() || 'Unknown',
+        });
+        closeSwipeMenu();
+        requestRenderTenders();
+    });
+
+    swipeMenuEl.querySelector('.swipe-action-btn.delete')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (!swipeMenuRef) return;
+        hideTender(swipeMenuRef);
+        lastHiddenRef = swipeMenuRef;
+        closeSwipeMenu();
+        requestRenderTenders();
+        showUndoToast(lastHiddenRef);
+    });
+
+    return swipeMenuEl;
+}
+
+function closeSwipeMenu() {
+    if (swipeMenuTargetEl) swipeMenuTargetEl.classList.remove('swiped-left');
+    swipeMenuTargetEl = null;
+    swipeMenuRef = null;
+    if (swipeMenuEl) swipeMenuEl.classList.remove('active');
+}
+
+function showSwipeMenuForElement(el, ref) {
+    const menu = ensureSwipeMenu();
+    swipeMenuTargetEl = el;
+    swipeMenuRef = (ref || '').toString().trim() || null;
+    if (!swipeMenuRef) return false;
+
+    // Highlight
+    el.classList.add('swiped-left');
+
+    const rect = el.getBoundingClientRect();
+    const menuRect = { w: 240, h: 88 };
+    const margin = 10;
+    const left = Math.max(margin, Math.min(window.innerWidth - menuRect.w - margin, rect.right - menuRect.w));
+    const top = Math.max(margin, Math.min(window.innerHeight - menuRect.h - margin, rect.top + rect.height / 2 - menuRect.h / 2));
+
+    menu.style.left = `${left}px`;
+    menu.style.top = `${top}px`;
+    menu.classList.add('active');
+    return true;
+}
+
+function ensureUndoToast() {
+    if (undoToastEl) return undoToastEl;
+    undoToastEl = document.createElement('div');
+    undoToastEl.id = 'undoToast';
+    undoToastEl.className = 'undo-toast';
+    undoToastEl.innerHTML = `
+        <span id="undoToastText">Tender hidden</span>
+        <button type="button" id="undoToastBtn">Undo</button>
+    `;
+    document.body.appendChild(undoToastEl);
+    undoToastEl.querySelector('#undoToastBtn')?.addEventListener('click', () => {
+        if (!lastHiddenRef) return;
+        unhideTender(lastHiddenRef);
+        lastHiddenRef = null;
+        hideUndoToast();
+        requestRenderTenders();
+    });
+    return undoToastEl;
+}
+
+function hideUndoToast() {
+    if (undoTimer) {
+        clearTimeout(undoTimer);
+        undoTimer = null;
+    }
+    if (undoToastEl) undoToastEl.classList.remove('active');
+}
+
+function showUndoToast(ref) {
+    const toast = ensureUndoToast();
+    const text = toast.querySelector('#undoToastText');
+    if (text) text.textContent = `Tender hidden: ${ref}`;
+    toast.classList.add('active');
+    if (undoTimer) clearTimeout(undoTimer);
+    undoTimer = setTimeout(() => hideUndoToast(), 6000);
+}
+
+function getSwipeableTenderElement(target) {
+    const el = target instanceof Element ? target : null;
+    if (!el) return null;
+    return el.closest('.tender-row, .tender-card');
+}
+
+function getRefFromSwipeableElement(el) {
+    if (!el) return null;
+    const ref = (el.dataset?.ref || '').toString().trim();
+    if (ref) return ref;
+    const fromStar = el.querySelector?.('.watchlist-star')?.getAttribute?.('data-ref');
+    if (fromStar) return fromStar;
+    const fromAssign = el.querySelector?.('.assignment-select')?.getAttribute?.('data-ref');
+    if (fromAssign) return fromAssign;
+    return null;
+}
+
+function handleTenderSwipeLeft(target) {
+    const el = getSwipeableTenderElement(target);
+    if (!el) return false;
+    const ref = getRefFromSwipeableElement(el);
+    if (!ref) return false;
+    // Toggle: if open for same element, close.
+    if (swipeMenuTargetEl === el && swipeMenuEl?.classList.contains('active')) {
+        closeSwipeMenu();
+        return true;
+    }
+    showSwipeMenuForElement(el, ref);
+    return true;
+}
+
+function handleTenderSwipeRight(target) {
+    const el = getSwipeableTenderElement(target);
+    if (!el) return false;
+    if (swipeMenuEl?.classList.contains('active')) {
+        closeSwipeMenu();
+        return true;
+    }
+    return false;
+}
+
 function getCommentsKey(tenderRef) {
     const ref = (tenderRef || '').toString().trim();
     return ref ? `comments:${ref}` : null;
@@ -1035,6 +1338,49 @@ function setActiveWatchlist(entries) {
         return user ? setPersonalWatchlist(user, entries) : false;
     }
     return setSharedWatchlist(entries);
+}
+
+// Hidden tenders (local-only "delete" for UI)
+function getHiddenTenderRefs() {
+    try {
+        const raw = localStorage.getItem('ti_hidden_tenders');
+        const arr = raw ? JSON.parse(raw) : [];
+        return new Set(Array.isArray(arr) ? arr.map((x) => String(x)) : []);
+    } catch {
+        return new Set();
+    }
+}
+
+function setHiddenTenderRefs(refSet) {
+    try {
+        const arr = Array.from(refSet || []);
+        localStorage.setItem('ti_hidden_tenders', JSON.stringify(arr));
+        return true;
+    } catch {
+        return false;
+    }
+}
+
+function isTenderHidden(ref) {
+    const r = (ref || '').toString().trim();
+    if (!r) return false;
+    return getHiddenTenderRefs().has(r);
+}
+
+function hideTender(ref) {
+    const r = (ref || '').toString().trim();
+    if (!r) return false;
+    const set = getHiddenTenderRefs();
+    set.add(r);
+    return setHiddenTenderRefs(set);
+}
+
+function unhideTender(ref) {
+    const r = (ref || '').toString().trim();
+    if (!r) return false;
+    const set = getHiddenTenderRefs();
+    set.delete(r);
+    return setHiddenTenderRefs(set);
 }
 
 function isTenderWatchlisted(ref) {
@@ -1510,6 +1856,7 @@ function createTenderRow(item, idx) {
     const row = document.createElement('tr');
     row.classList.add('tender-row');
     if (['HIGH', 'MEDIUM', 'LOW'].includes(priorityRaw)) row.classList.add(`priority-row-${priorityRaw}`);
+    row.dataset.ref = (t.ref || '').toString();
     row.style = "border-bottom: 1px solid rgba(255,255,255,0.05); transition: background 0.2s; cursor: pointer;";
     row.onclick = () => openTenderModal(t);
     row.title = "Click to view tender details";
@@ -1591,6 +1938,7 @@ function createTenderCard(item, idx) {
 
     const card = document.createElement('div');
     card.className = 'tender-card';
+    card.dataset.ref = (t.ref || '').toString();
     card.addEventListener('click', () => openTenderModal(t));
 
     const priorityBadge = `<span class="priority priority-${priority}">${priority}</span>`;
@@ -1659,7 +2007,9 @@ function renderTenders() {
     if (!list) return;
     
     const filter = state.currentFilter;
-    let filtered = state.tenders.filter(t => getDaysUntil(t.closing_date) === null || getDaysUntil(t.closing_date) >= 0);
+    let filtered = state.tenders
+        .filter((t) => !isTenderHidden(t?.ref))
+        .filter((t) => getDaysUntil(t.closing_date) === null || getDaysUntil(t.closing_date) >= 0);
 
 		    if (filter === 'TES' || filter === 'Phakathi' || filter === 'Both') {
 		        filtered = filtered.filter(t => getCompany(t) === filter);
@@ -2129,9 +2479,71 @@ function setDataStatus({ level, source, count, updated, error }) {
 
 function updateOfflineIndicator() {
     const pill = document.getElementById('offlinePill');
-    if (!pill) return;
     const offline = typeof navigator !== 'undefined' && navigator.onLine === false;
-    pill.classList.toggle('hidden', !offline);
+    if (pill) pill.classList.toggle('hidden', !offline);
+
+    const banner = document.getElementById('offlineIndicator');
+    if (banner) banner.style.display = offline ? 'block' : 'none';
+}
+
+// Queue actions for offline and replay when online (simple localStorage-backed queue)
+let pendingQueue = [];
+try {
+    const raw = localStorage.getItem('pendingQueue');
+    pendingQueue = raw ? JSON.parse(raw) : [];
+    if (!Array.isArray(pendingQueue)) pendingQueue = [];
+} catch {
+    pendingQueue = [];
+}
+
+function addToQueue(action) {
+    try {
+        pendingQueue.push(action);
+        localStorage.setItem('pendingQueue', JSON.stringify(pendingQueue));
+    } catch {
+        // ignore
+    }
+}
+
+async function executeAction(action) {
+    const type = (action?.type || action?.action || '').toString();
+    if (type === 'refresh') {
+        await refreshDashboardData();
+        return;
+    }
+}
+
+async function syncPendingChanges() {
+    // Backwards compatible: also replay the older queue format.
+    try {
+        await flushOfflineQueue();
+    } catch {
+        // ignore
+    }
+
+    let queue = [];
+    try {
+        queue = JSON.parse(localStorage.getItem('pendingQueue') || '[]');
+    } catch {
+        queue = [];
+    }
+    if (!Array.isArray(queue) || queue.length === 0) return;
+
+    for (const action of queue) {
+        try {
+            // eslint-disable-next-line no-await-in-loop
+            await executeAction(action);
+        } catch (e) {
+            console.warn('Failed to replay queued action:', action, e);
+        }
+    }
+
+    try {
+        localStorage.removeItem('pendingQueue');
+        pendingQueue = [];
+    } catch {
+        pendingQueue = [];
+    }
 }
 
 function enqueueOfflineAction(action) {
@@ -2346,6 +2758,227 @@ function escapeHtml(value) {
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#039;');
 }
+
+// ====================================
+// Claude AI Summary (server-side proxy)
+// ====================================
+function getAiSummaryCacheKey(ref) {
+    const r = (ref || '').toString().trim();
+    return r ? `ti_ai_summary:${r}` : null;
+}
+
+function getLegacyAiSummaryCacheKey(ref) {
+    const r = (ref || '').toString().trim();
+    return r ? `summary_${r}` : null;
+}
+
+function readCachedAiSummary(ref) {
+    const key = getAiSummaryCacheKey(ref);
+    if (!key) return null;
+    try {
+        const raw = localStorage.getItem(key);
+        if (!raw) return null;
+        const parsed = JSON.parse(raw);
+        if (!parsed || typeof parsed !== 'object') return null;
+        const summary = (parsed.summary || '').toString();
+        const ts = (parsed.ts || '').toString();
+        return summary ? { summary, ts } : null;
+    } catch {
+        // Fall through to legacy cache below.
+    }
+
+    // Legacy support: string-only cache.
+    try {
+        const legacyKey = getLegacyAiSummaryCacheKey(ref);
+        if (!legacyKey) return null;
+        const legacy = localStorage.getItem(legacyKey);
+        if (!legacy) return null;
+        return { summary: legacy.toString(), ts: '' };
+    } catch {
+        return null;
+    }
+}
+
+function writeCachedAiSummary(ref, summary, ts) {
+    const key = getAiSummaryCacheKey(ref);
+    if (!key) return false;
+    try {
+        // Legacy cache (string-only) for backwards compatibility.
+        try {
+            const legacyKey = getLegacyAiSummaryCacheKey(ref);
+            if (legacyKey) localStorage.setItem(legacyKey, (summary || '').toString());
+        } catch {
+            // ignore
+        }
+
+        localStorage.setItem(
+            key,
+            JSON.stringify({
+                summary: (summary || '').toString(),
+                ts: ts || new Date().toISOString(),
+            })
+        );
+        return true;
+    } catch {
+        return false;
+    }
+}
+
+function renderAiSummaryHtml(text) {
+    const raw = (text || '').toString().trim();
+    if (!raw) return `<div class="ai-summary-muted">No summary available.</div>`;
+
+    // Try to render simple bullets.
+    const lines = raw.split('\n').map((l) => l.trim()).filter(Boolean);
+    const bullets = lines.filter((l) => /^[-•]\s+/.test(l)).map((l) => l.replace(/^[-•]\s+/, ''));
+    if (bullets.length >= 2) {
+        return `<ul style="margin: 0; padding-left: 18px;">${bullets
+            .slice(0, 6)
+            .map((b) => `<li>${escapeHtml(b)}</li>`)
+            .join('')}</ul>`;
+    }
+
+    return `<div style="white-space: pre-wrap;">${escapeHtml(raw)}</div>`;
+}
+
+function ensureAiSummarySection(tender) {
+    const overviewEl = document.getElementById('tenderDetailOverview');
+    if (!overviewEl) return null;
+
+    // If overview template already includes it, just return.
+    let box = document.getElementById('aiSummaryBox');
+    if (box) return box;
+
+    // Fallback: append to end of overview.
+    box = document.createElement('div');
+    box.id = 'aiSummaryBox';
+    box.className = 'ai-summary-box';
+    box.innerHTML = `
+        <div class="ai-summary-head">
+            <div class="ai-summary-title">✨ AI Summary</div>
+            <div class="ai-summary-actions">
+                <button type="button" id="aiSummaryRefresh" class="quick-filter-btn">↻ Regenerate</button>
+            </div>
+        </div>
+        <div id="aiSummary" class="ai-summary-content"><div class="ai-summary-muted">Generate a short summary for this tender.</div></div>
+        <div id="aiSummaryMeta" class="ai-summary-muted" style="margin-top: 8px;"></div>
+    `;
+    overviewEl.appendChild(box);
+    return box;
+}
+
+function updateAiSummaryMeta(ref) {
+    const metaEl = document.getElementById('aiSummaryMeta');
+    if (!metaEl) return;
+    const cached = readCachedAiSummary(ref);
+    if (!cached) {
+        metaEl.textContent = '';
+        return;
+    }
+    metaEl.textContent = `Cached: ${cached.ts}`;
+}
+
+async function summarizeTender(tender, { force = false } = {}) {
+    const t = tender || window.__currentTenderDetail;
+    if (!t || !t.ref) {
+        console.warn('summarizeTender: No tender data available');
+        return;
+    }
+    const ref = (t.ref || '').toString().trim();
+    if (!ref) return;
+    
+    const box = ensureAiSummarySection(t);
+    const out = document.getElementById('aiSummary');
+    const btn = document.getElementById('tenderDetailAiSummary');
+    const regen = document.getElementById('aiSummaryRefresh');
+    
+    // Prevent double-clicks/rapid regeneration
+    if (btn && btn.disabled) return;
+
+    if (regen) {
+        regen.onclick = () => summarizeTender(t, { force: true });
+    }
+
+    if (!force) {
+        const cached = readCachedAiSummary(ref);
+        if (cached && out) {
+            out.innerHTML = renderAiSummaryHtml(cached.summary);
+            updateAiSummaryMeta(ref);
+            return;
+        }
+    }
+
+    // No endpoint available on static hosting; require a backend proxy.
+    const endpoint = (config.aiSummaryEndpoint || '').toString().trim();
+    if (!endpoint || endpoint.startsWith('https://api.anthropic.com')) {
+        if (out) out.innerHTML = `<div class="ai-summary-error">AI summary requires a server-side proxy (don’t call Anthropic directly from the browser).</div>`;
+        return;
+    }
+
+    const setBusy = (busy) => {
+        if (btn) btn.disabled = busy;
+        if (regen) regen.disabled = busy;
+        if (btn) btn.textContent = busy ? '✨ Generating…' : '✨ AI Summary';
+    };
+
+    try {
+        setBusy(true);
+        if (out) out.innerHTML = `<div class="ai-summary-muted"><span class="ai-spinner"></span>Generating summary…</div>`;
+
+        const payload = {
+            ref,
+            title: t.title || '',
+            description: t.description || t.long_description || '',
+            category: t.category || t.company || '',
+            client: t.client || '',
+            source: t.source || '',
+            closing_date: t.closing_date || '',
+        };
+
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 90000); // 90s timeout
+        
+        const res = await fetch(endpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ tender: payload }),
+            signal: controller.signal,
+        });
+        
+        clearTimeout(timeoutId);
+
+        if (!res.ok) {
+            const txt = await res.text().catch(() => '');
+            throw new Error(`${res.status} ${res.statusText}${txt ? `: ${txt}` : ''}`);
+        }
+
+        const data = await res.json();
+        const summary = (data.summary || data.text || '').toString();
+        if (!summary) throw new Error('Empty summary response');
+
+        const cacheSuccess = writeCachedAiSummary(ref, summary, data.ts || new Date().toISOString());
+        if (!cacheSuccess) {
+            console.warn('Failed to cache AI summary (localStorage may be full)');
+        }
+        if (out) out.innerHTML = renderAiSummaryHtml(summary);
+        updateAiSummaryMeta(ref);
+    } catch (err) {
+        console.error('AI summary failed:', err);
+        let errorMsg = 'Failed to generate summary';
+        if (err?.name === 'AbortError') {
+            errorMsg = 'Request timed out (90s limit exceeded). Please try again.';
+        } else if (!t.title && !t.description) {
+            errorMsg = 'This tender is missing title and description data.';
+        } else {
+            errorMsg += ': ' + escapeHtml(err?.message || String(err));
+        }
+        if (out) out.innerHTML = `<div class="ai-summary-error">${errorMsg}</div>`;
+    } finally {
+        setBusy(false);
+    }
+}
+
+window.summarizeTender = summarizeTender;
 
 function formatBytes(bytes) {
     const n = typeof bytes === 'number' ? bytes : Number(bytes);
@@ -3221,6 +3854,14 @@ function openTenderModal(tender) {
             }
         };
     }
+
+    const aiBtn = document.getElementById('tenderDetailAiSummary');
+    if (aiBtn) {
+        aiBtn.onclick = () => {
+            ensureAiSummarySection(tender);
+            summarizeTender(tender);
+        };
+    }
     const noteBtn = document.getElementById('tenderDetailAddNote');
     if (noteBtn) {
         noteBtn.onclick = () => {
@@ -3247,6 +3888,19 @@ function openTenderModal(tender) {
 
     // Reset to overview tab on open
     setTenderDetailTab('overview');
+
+    // Render cached summary immediately if present
+    try {
+        ensureAiSummarySection(tender);
+        const cached = readCachedAiSummary(ref);
+        const out = document.getElementById('aiSummary');
+        if (cached && out) {
+            out.innerHTML = renderAiSummaryHtml(cached.summary);
+            updateAiSummaryMeta(ref);
+        } else {
+            updateAiSummaryMeta(ref);
+        }
+    } catch (e) {}
 
     overlay.classList.add('active');
     document.body.classList.add('modal-open');
@@ -3815,11 +4469,28 @@ function renderPriorityBarChart(byPriority) {
     });
 }
 
-function showTab(tabId) {
-    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    document.getElementById(tabId).classList.add('active');
-    event.target.classList.add('active');
+function getCurrentTab() {
+    const active = document.querySelector('.tab-content.active');
+    return active ? active.id : 'dashboard';
+}
+
+function showTab(tabId, evt) {
+    document.querySelectorAll('.tab-content').forEach((t) => t.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach((b) => b.classList.remove('active'));
+    const tabEl = document.getElementById(tabId);
+    if (tabEl) tabEl.classList.add('active');
+
+    let btn = null;
+    const eventTarget = evt?.target || (typeof event !== 'undefined' ? event?.target : null);
+    if (eventTarget && eventTarget.classList && eventTarget.classList.contains('tab-btn')) {
+        btn = eventTarget;
+    }
+    if (!btn) {
+        btn = Array.from(document.querySelectorAll('.tab-btn')).find((b) =>
+            (b.getAttribute('onclick') || '').includes(`showTab('${tabId}'`)
+        );
+    }
+    if (btn) btn.classList.add('active');
 
     if (tabId === 'calendar') renderCalendar();
     if (tabId === 'analytics') {
@@ -4027,6 +4698,7 @@ function refreshDashboardData() {
 
     if (typeof navigator !== 'undefined' && navigator.onLine === false) {
         enqueueOfflineAction({ type: 'refresh' });
+        addToQueue({ type: 'refresh' });
     }
 
     return loadTenderPayload({ forceRefresh: true })
@@ -4224,9 +4896,11 @@ function renderFilteredTenders(filteredTenders) {
 
     const raw = Array.isArray(filteredTenders) ? filteredTenders : [];
     const all = raw.map((t) => (t && typeof t === 'object' && 'tender' in t) ? t : ({ tender: t, classification: classifyTender(t) }));
-    state.totalMatchingCount = all.length;
-    const visibleCount = Math.min(state.visibleTenderCount || CHUNK_SIZE, all.length);
-    window.__virtualListItems = all.slice(0, visibleCount);
+    const notHidden = all.filter((item) => !isTenderHidden(item?.tender?.ref));
+    const allItems = notHidden;
+    state.totalMatchingCount = allItems.length;
+    const visibleCount = Math.min(state.visibleTenderCount || CHUNK_SIZE, allItems.length);
+    window.__virtualListItems = allItems.slice(0, visibleCount);
     virtualScrollContainer = virtualScrollContainer || document.getElementById('tenderTableScroll');
     virtualScrollTbody = list;
     virtualLastKey = '';
@@ -4235,8 +4909,8 @@ function renderFilteredTenders(filteredTenders) {
     const countEl = document.getElementById('tenderResultsCount');
     if (countEl) {
         const totalSnapshot = state.tenders.length;
-        const totalSuffix = totalSnapshot !== all.length ? ` (of ${totalSnapshot} total)` : '';
-        countEl.textContent = `Showing ${window.__virtualListItems.length} of ${all.length}${totalSuffix}`;
+        const totalSuffix = totalSnapshot !== allItems.length ? ` (of ${totalSnapshot} total)` : '';
+        countEl.textContent = `Showing ${window.__virtualListItems.length} of ${allItems.length}${totalSuffix}`;
     }
 
     if (state.viewMode === 'card' && !state.forceFullRender) {
@@ -4254,6 +4928,7 @@ function renderFilteredTenders(filteredTenders) {
 function init() {
     initThemeToggle();
     initPwaInstallPrompt();
+    initMobileGestures();
     initViewToggle();
 
     debouncedRenderTenders = debounce(renderTenders, 150);
@@ -4422,7 +5097,7 @@ function init() {
     window.addEventListener('offline', () => updateOfflineIndicator());
     window.addEventListener('online', () => {
         updateOfflineIndicator();
-        void flushOfflineQueue();
+        void syncPendingChanges();
     });
 
     showTenderSkeleton(8);
