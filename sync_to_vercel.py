@@ -464,7 +464,8 @@ def generate_dashboard_html(tenders):
         fetch('tenders.json')
             .then(response => response.json())
             .then(data => {{
-                allTenders = data;
+                // Handle both structured and direct array formats
+                allTenders = data.tenders || data;
                 console.log(`✅ Loaded ${{allTenders.length}} tenders from tenders.json`);
                 document.getElementById('totalCount').textContent = allTenders.length;
                 renderTenders('all');
