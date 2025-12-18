@@ -41,7 +41,7 @@ classification:
 excel:
   tender_log_sheet: "Tender_Log"
 
-# AI Scoring weights
+# Scoring engine weights
 scoring:
   fit_weight: 0.30
   industry_weight: 0.25

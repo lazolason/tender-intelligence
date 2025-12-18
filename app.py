@@ -1,6 +1,6 @@
 # ==========================================================
 # TENDER INTELLIGENCE SYSTEM — FLASK API
-# Cloud-ready with Render deployment
+# Flask API for tender intelligence dashboard
 # ==========================================================
 
 from flask import Flask, jsonify, render_template_string, request
@@ -336,12 +336,12 @@ def api_tenders():
 @app.route("/api/summarize", methods=["POST", "OPTIONS"])
 def api_summarize():
     """
-    Server-side proxy for Anthropic Claude summarization.
-    Keep the API key on the server (do NOT call Anthropic directly from the browser).
+    Server-side proxy for tender summarization service.
+    Keep the API key on the server (do NOT call external APIs directly from the browser).
 
     Env vars:
-      - ANTHROPIC_API_KEY: required
-      - ANTHROPIC_MODEL: optional (default: claude-sonnet-4-20250514)
+      - SUMMARIZATION_API_KEY: required
+      - SUMMARIZATION_MODEL: optional (default: claude-sonnet-4-20250514)
       - CORS_ORIGIN: optional (default: *)
     """
     cors_origin = os.environ.get("CORS_ORIGIN", "*")
@@ -353,9 +353,9 @@ def api_summarize():
         resp.headers["Access-Control-Allow-Headers"] = "Content-Type"
         return resp
 
-    api_key = (os.environ.get("ANTHROPIC_API_KEY") or "").strip()
+    api_key = (os.environ.get("SUMMARIZATION_API_KEY") or "").strip()
     if not api_key:
-        resp = jsonify({"error": "ANTHROPIC_API_KEY not configured on server"})
+        resp = jsonify({"error": "SUMMARIZATION_API_KEY not configured on server"})
         resp.status_code = 501
         resp.headers["Access-Control-Allow-Origin"] = cors_origin
         return resp
@@ -380,7 +380,7 @@ def api_summarize():
             return resp
 
         # Priority: request payload > env var > default
-        model = (payload.get("model") or os.environ.get("ANTHROPIC_MODEL") or "claude-sonnet-4-20250514").strip()
+        model = (payload.get("model") or os.environ.get("SUMMARIZATION_MODEL") or "claude-sonnet-4-20250514").strip()
 
         prompt = (
             "Summarize this tender in 3 bullet points.\n"
@@ -412,7 +412,7 @@ def api_summarize():
                 err_json = res.json()
             except Exception:
                 err_json = {"error": res.text}
-            resp = jsonify({"error": "Anthropic API error", "details": err_json})
+            resp = jsonify({"error": "Summarization API error", "details": err_json})
             resp.status_code = 502
             resp.headers["Access-Control-Allow-Origin"] = cors_origin
             return resp
