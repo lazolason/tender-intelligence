@@ -24,3 +24,6 @@ Thumbs.db
 .idea/
 *.swp
 .vercel
+
+# MCP Server Configuration (contains API keys)
+.mcp.json
