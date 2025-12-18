@@ -11,11 +11,11 @@ from datetime import datetime, timedelta
 from urllib.parse import quote
 
 # Paths
-AUTOMATION_DIR = os.path.dirname(os.path.abspath(__file__))
-# Tenders are written to MASTER folder by tenderscan.py (see config.yaml)
-OUTPUT_DIR = "/Users/lazolasonqishe/Documents/MASTER/TENDERS/00_System/04_Automation/output"
-# Vercel dashboard is in the MASTER folder (separate git repo: lazolason/tender-dashboard)
-VERCEL_DIR = "/Users/lazolasonqishe/Documents/MASTER/TENDERS/00_System/04_Automation/vercel-dashboard"
+PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
+# Tenders are written to output folder in project root
+OUTPUT_DIR = os.path.join(PROJECT_DIR, "output")
+# Vercel dashboard is in project root
+VERCEL_DIR = os.path.join(PROJECT_DIR, "vercel-dashboard")
 TENDERS_JSON = os.path.join(OUTPUT_DIR, "new_tenders.json")
 DASHBOARD_HTML = os.path.join(VERCEL_DIR, "index.html")
 TENDERS_DATA_JSON = os.path.join(VERCEL_DIR, "tenders.json")  # Full dataset for client-side
