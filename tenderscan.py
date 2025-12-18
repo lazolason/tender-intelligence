@@ -151,7 +151,7 @@ def run_all_scrapers(monitor: ScraperMonitor = None):
     return all_tenders
 
 # ----------------------------------------------------------
-# PROCESS TENDERS WITH AI SCORING
+# PROCESS TENDERS WITH SCORING
 # ----------------------------------------------------------
 def process_tenders(tenders):
     total_added = 0
@@ -351,7 +351,7 @@ if __name__ == "__main__":
     rotate_log_if_needed(LOG_FILE)
     
     write_log(LOG_FILE, "=" * 50)
-    write_log(LOG_FILE, "TENDER ENGINE RUN STARTED (WITH AI SCORING)")
+    write_log(LOG_FILE, "TENDER ENGINE RUN STARTED (WITH SCORING)")
     write_log(LOG_FILE, "=" * 50)
     
     # Scrape all sources (with monitoring)
@@ -483,7 +483,7 @@ if __name__ == "__main__":
     print(f"\n🎉 Tender scan complete!")
     print(f"   Total scraped: {len(all_tenders)}")
     print(f"   New tenders added: {added_count}")
-    print(f"\n📊 AI SCORING SUMMARY:")
+    print(f"\n📊 SCORING SUMMARY:")
     print(f"   🔥 HIGH Priority:   {high}")
     print(f"   ✅ MEDIUM Priority: {medium}")
     print(f"   📝 LOW Priority:    {low}")

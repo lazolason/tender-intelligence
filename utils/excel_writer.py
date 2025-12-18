@@ -1,6 +1,6 @@
 # ==========================================================
 # EXCEL WRITER UTILITY
-# Writes tender data to Excel with AI scoring columns
+# Writes tender data to Excel with scoring columns
 # ==========================================================
 
 import os
@@ -348,7 +348,7 @@ class ExcelWriter:
 
         # Build notes with scoring info
         enhanced_notes = f"{reason}\n" if reason else ""
-        enhanced_notes += f"[AI Score: {composite_score}/10 | Priority: {priority}]"
+        enhanced_notes += f"[Score: {composite_score}/10 | Priority: {priority}]"
         enhanced_notes += f"\n{recommendation}"
 
         # Write to Excel

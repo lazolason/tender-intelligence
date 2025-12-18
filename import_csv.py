@@ -1,5 +1,5 @@
 # ==========================================================
-# CSV TENDER IMPORTER WITH AI SCORING
+# CSV TENDER IMPORTER WITH SCORING
 # Import tenders from CSV file with automatic scoring
 # ==========================================================
 

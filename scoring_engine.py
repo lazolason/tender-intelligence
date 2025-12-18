@@ -1,5 +1,5 @@
 # ==========================================================
-# AI SCORING ENGINE
+# SCORING ENGINE
 # Comprehensive tender scoring system
 # Fit, Industry, Risk, Revenue, TES/Phakathi Suitability
 # ==========================================================
