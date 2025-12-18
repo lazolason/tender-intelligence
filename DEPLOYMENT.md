@@ -15,12 +15,12 @@ This guide covers deploying the Tender Intelligence System to production using *
 1. **Vercel Dashboard** - Static PWA hosted on Vercel (https://vercel.com)
    - Advanced UI with PWA offline support, virtual scrolling, caching
    - Reads from static `/tenders.json` file
-   - Calls Flask API for tender summarization via CORS
+   - No external API dependencies
 
-2. **Flask API** - Backend service for automation and summarization (self-hosted or cloud)
-   - API endpoints: `/api/summarize`, `/api/run/*`, `/cron/*`, `/health`
+2. **Flask API** - Backend service for automation (self-hosted or cloud)
+   - API endpoints: `/api/run/*`, `/cron/*`, `/health`
    - No dashboard rendering (removed for consolidation)
-   - CORS-enabled for cross-origin requests from Vercel
+   - Optional component for automation triggers
 
 3. **Local Automation** - Scheduled scans via launchd/cron
 
@@ -28,9 +28,8 @@ This guide covers deploying the Tender Intelligence System to production using *
 
 - [ ] Vercel account created
 - [ ] GitHub repository connected to Vercel
-- [ ] Summarization API key obtained (if using external service)
-- [ ] Dashboard tested locally (`npm start` in `vercel-dashboard/`)
-- [ ] Flask API tested locally (`python app.py`)
+- [ ] Dashboard tested locally (`cd vercel-dashboard && python3 -m http.server 8000`)
+- [ ] Flask API tested locally (optional: `python app.py`)
 
 ## Part 1: Deploy Dashboard to Vercel
 
@@ -76,7 +75,7 @@ Visit your Vercel URL (e.g., `https://your-project.vercel.app`)
 
 ## Part 2: Deploy Flask API (Optional)
 
-The Flask API provides tender summarization via `/api/summarize`. You can deploy it to:
+The Flask API provides automation endpoints for scheduled scans. You can deploy it to:
 
 - **Self-hosted VPS** (DigitalOcean, AWS EC2, etc.)
 - **Platform-as-a-Service** (any Python hosting)
@@ -85,21 +84,11 @@ The Flask API provides tender summarization via `/api/summarize`. You can deploy
 ### Environment Variables
 
 ```bash
-SUMMARIZATION_API_KEY=sk-ant-...     # External summarization service API key
-SUMMARIZATION_MODEL=claude-sonnet-4-20250514  # Model identifier
 PORT=5000                            # Flask server port
 ENABLE_SELENIUM=false                # Disable Selenium scrapers in production
 DEBUG=false                          # Never enable in production
+TENDERSCAN_EMAIL_ENABLED=false       # Email alerts configuration
 ```
-
-### Getting API Key (Anthropic Example)
-
-1. Go to [Anthropic Console](https://console.anthropic.com)
-2. Sign in or create account
-3. Navigate to **API Keys** section
-4. Click **Create Key**
-5. Copy the key (starts with `sk-ant-`)
-6. **IMPORTANT:** Add billing/credits at [Plans & Billing](https://console.anthropic.com/account/billing/overview)
 
 ### Self-Hosted Deployment
 
@@ -115,7 +104,7 @@ pip install -r requirements.txt
 
 # Configure environment
 cp .env.example .env
-nano .env  # Set SUMMARIZATION_API_KEY and other vars
+nano .env  # Configure email and other settings
 
 # Run with Gunicorn
 gunicorn app:app --bind 0.0.0.0:5000 --workers 2 --timeout 120
@@ -150,24 +139,7 @@ sudo systemctl start tender-api
 sudo systemctl status tender-api
 ```
 
-## Part 3: Configure Dashboard to Use API
-
-Update `vercel-dashboard/script.js` if your API is hosted externally:
-
-```javascript
-// Line ~4
-const summaryEndpoint = "https://your-api-domain.com/api/summarize";
-```
-
-Commit and push:
-```bash
-git add vercel-dashboard/script.js
-git commit -m "Update API endpoint"
-git push origin main
-# Vercel auto-deploys
-```
-
-## Part 4: Automate Dashboard Updates
+## Part 3: Automate Dashboard Updates
 
 ### Local Automation (macOS)
 
@@ -235,75 +207,6 @@ git log --all -p | grep -i "sk-ant"
 # Should return nothing if properly secured
 ```
 
-## API Documentation
-
-### Endpoint: `POST /api/summarize`
-
-**Request:**
-```json
-{
-  "tender": {
-    "title": "Tender title",
-    "description": "Tender description",
-    "client": "Optional client name",
-    "category": "Optional category",
-    "ref": "Optional reference"
-  },
-  "model": "claude-sonnet-4-20250514"
-}
-```
-
-**Success Response (200):**
-```json
-{
-  "summary": "• Scope of work...\n• Key requirements...\n• Deadlines...",
-  "ts": "2025-12-18T12:00:00Z"
-}
-```
-
-**Error Responses:**
-
-**501** - API key not configured:
-```json
-{
-  "error": "SUMMARIZATION_API_KEY not configured on server"
-}
-```
-
-**400** - Missing required fields:
-```json
-{
-  "error": "Missing tender title/description"
-}
-```
-
-**502** - External API error:
-```json
-{
-  "error": "Summarization API error",
-  "details": {
-    "error": {
-      "message": "Credit balance too low...",
-      "type": "invalid_request_error"
-    }
-  }
-}
-```
-
-## API Costs (Anthropic Example)
-
-Each summary request costs approximately:
-- **Input:** ~500 tokens × $0.003/1K = $0.0015
-- **Output:** ~100 tokens × $0.015/1K = $0.0015
-- **Total:** ~$0.003 per summary
-
-**Estimated monthly costs:**
-- 100 summaries/month: $0.30
-- 1,000 summaries/month: $3.00
-- 10,000 summaries/month: $30.00
-
-See [Anthropic Pricing](https://www.anthropic.com/pricing) for latest rates.
-
 ## Troubleshooting
 
 ### Dashboard not updating
@@ -314,15 +217,6 @@ See [Anthropic Pricing](https://www.anthropic.com/pricing) for latest rates.
 2. Verify git push succeeded: `git log --oneline -5`
 3. Check Vercel deployment status in dashboard
 4. Hard refresh browser (Cmd+Shift+R)
-
-### 502 Bad Gateway (API)
-
-**Cause:** API key missing or invalid
-**Solutions:**
-1. Verify `SUMMARIZATION_API_KEY` is set correctly
-2. Check key format (should start with `sk-ant-`)
-3. Ensure credits/billing enabled on API provider account
-4. Test API directly: `curl -X POST http://localhost:5000/api/summarize -H "Content-Type: application/json" -d '{"tender":{"title":"Test","description":"Test"}}'`
 
 ### Timeout Errors
 

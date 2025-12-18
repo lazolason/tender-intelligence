@@ -195,8 +195,6 @@ MASTER/TENDERS/
 ```bash
 ENABLE_SELENIUM=false               # Toggle Selenium scrapers
 OUTPUT_DIR=./output                 # JSON output location
-SUMMARIZATION_API_KEY=sk-...        # For tender summarization (optional)
-SUMMARIZATION_MODEL=claude-sonnet-4-20250514  # Summarization algorithm
 TENDERSCAN_EMAIL_ENABLED=false      # Email alerts
 PORT=5000                           # Flask server port
 ```
@@ -358,7 +356,7 @@ launchctl load ~/Library/LaunchAgents/com.tenderscan.weekly.plist
 
 ### Flask API Deployment (Optional)
 
-The Flask API (`app.py`) can be deployed separately for the `/api/summarize` endpoint:
+The Flask API (`app.py`) can be deployed separately for automation endpoints (`/api/run/*`, `/cron/*`, `/health`):
 
 **Options**:
 - Self-hosted VPS (DigitalOcean, AWS EC2, etc.)
@@ -369,7 +367,6 @@ The Flask API (`app.py`) can be deployed separately for the `/api/summarize` end
 ```bash
 # On your server
 pip install -r requirements.txt
-export SUMMARIZATION_API_KEY=sk-ant-...
 gunicorn app:app --bind 0.0.0.0:5000 --workers 2 --timeout 120
 ```
 
