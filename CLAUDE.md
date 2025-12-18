@@ -7,13 +7,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 The Tender Intelligence System is an automated tender aggregation and prioritization platform for two South African companies (TES and Phakathi). It follows a pipeline architecture:
 
 ```
-[Web Scrapers] → [Validation] → [Classification] → [AI Scoring] → [Excel Logger] → [Dashboard] → [Alerts]
+[Web Scrapers] → [Validation] → [Classification] → [Scoring Engine] → [Excel Logger] → [Dashboard] → [Alerts]
 ```
 
 **Key Components:**
 - **11 active scrapers** covering municipalities, SOEs, utilities, and mining companies
 - **Rule-based classification engine** matching tenders to company capabilities
-- **Multi-dimensional AI scoring** (fit, industry, risk, revenue, suitability)
+- **Multi-dimensional scoring engine** (fit, industry, risk, revenue, suitability)
 - **Dual dashboard architecture** (Flask API + Vercel static PWA)
 - **File-based storage** using Excel as primary data store
 
@@ -130,7 +130,7 @@ python keyword_rules.py
 - **BOTH category**: Tenders matching both companies
 - **Short title generation**: For folder naming (30 chars max)
 
-**4. AI Scoring Engine** (`scoring_engine.py`)
+**4. Scoring Engine** (`scoring_engine.py`)
 - **Five-dimensional composite score (1-10)**:
   - **Fit Score (30%)**: Capability alignment with company specialization
   - **Industry Score (20%)**: Client industry value (power=10, mining=9, municipal=7)
@@ -189,12 +189,14 @@ MASTER/TENDERS/
 - Scoring weights and thresholds
 - Email/SMTP configuration
 
-**Environment variables** (for Flask and Render deployment):
+**Environment variables** (for Flask deployment):
 ```bash
-ENABLE_SELENIUM=false          # Toggle Selenium scrapers
-OUTPUT_DIR=./output            # JSON output location
-ANTHROPIC_API_KEY=sk-...       # For AI summarization (optional)
-TENDERSCAN_EMAIL_ENABLED=false # Email alerts
+ENABLE_SELENIUM=false               # Toggle Selenium scrapers
+OUTPUT_DIR=./output                 # JSON output location
+SUMMARIZATION_API_KEY=sk-...        # For tender summarization (optional)
+SUMMARIZATION_MODEL=claude-sonnet-4-20250514  # Summarization algorithm
+TENDERSCAN_EMAIL_ENABLED=false      # Email alerts
+PORT=5000                           # Flask server port
 ```
 
 **Scraper-specific config**:
@@ -336,28 +338,40 @@ cp com.tenderscan.weekly.plist ~/Library/LaunchAgents/
 launchctl load ~/Library/LaunchAgents/com.tenderscan.weekly.plist
 ```
 
-### Cloud Deployment (Render)
-
-**Deployment file**: `render.yaml`
-- Auto-installs Chromedriver on deploy
-- Environment variables configured in Render dashboard
-- Gunicorn serves Flask API
-- Selenium can be disabled with `ENABLE_SELENIUM=false`
-
-**Deploy triggers**:
-- Push to `main` branch (auto-deploy)
-- Manual deploy via Render dashboard
-
-### Vercel Deployment
+### Vercel Deployment (Dashboard)
 
 **Configuration**: `vercel.json`
 - Rewrites route `/` to `index.html`
 - Serves `tenders.json` at root level
 - Static file deployment (no build step)
+- PWA features: Offline support via service worker
 
-**Deploy triggers**:
-- Push to GitHub after `sync_to_vercel.py` runs
-- Manual deploy via Vercel CLI: `vercel --prod`
+**Deploy workflow**:
+1. Run `python3 sync_to_vercel.py` to generate dashboard HTML
+2. Script automatically commits and pushes to GitHub
+3. Vercel auto-deploys (~30 seconds)
+4. Dashboard live at your Vercel URL
+
+**Manual deploy**: `vercel --prod` (from `vercel-dashboard/` directory)
+
+### Flask API Deployment (Optional)
+
+The Flask API (`app.py`) can be deployed separately for the `/api/summarize` endpoint:
+
+**Options**:
+- Self-hosted VPS (DigitalOcean, AWS EC2, etc.)
+- Any Python hosting platform
+- Local machine (development only)
+
+**Setup**:
+```bash
+# On your server
+pip install -r requirements.txt
+export SUMMARIZATION_API_KEY=sk-ant-...
+gunicorn app:app --bind 0.0.0.0:5000 --workers 2 --timeout 120
+```
+
+See [DEPLOYMENT.md](DEPLOYMENT.md) for complete guide.
 
 ## Troubleshooting Common Issues
 
@@ -403,7 +417,7 @@ launchctl load ~/Library/LaunchAgents/com.tenderscan.weekly.plist
 **Classification and scoring**:
 - `classify_engine.py`: Keyword-based classification
 - `keyword_rules.py`: TES/Phakathi/Exclusion keywords
-- `scoring_engine.py`: Five-dimensional AI scoring
+- `scoring_engine.py`: Five-dimensional scoring engine
 
 **Data management**:
 - `utils/excel_writer.py`: Excel read/write with duplicate detection
