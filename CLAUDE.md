@@ -14,7 +14,7 @@ The Tender Intelligence System is an automated tender aggregation and prioritiza
 - **11 active scrapers** covering municipalities, SOEs, utilities, and mining companies
 - **Rule-based classification engine** matching tenders to company capabilities
 - **Multi-dimensional scoring engine** (fit, industry, risk, revenue, suitability)
-- **Dual dashboard architecture** (Flask API + Vercel static PWA)
+- **Unified architecture** (Flask API backend + Vercel static PWA frontend)
 - **File-based storage** using Excel as primary data store
 
 ## Development Commands
@@ -55,14 +55,16 @@ python -c "from scrapers.municipalities import scrape_ekurhuleni; print(scrape_e
 
 ### Dashboard Commands
 
+**Unified Architecture**: Flask API (backend only) + Vercel PWA (frontend only)
+
 ```bash
-# Run Flask API server (http://localhost:5000)
+# Run Flask API server - API endpoints only (http://localhost:5000)
 python app.py
 
-# Run Vercel dashboard locally (http://localhost:3000)
+# Run Vercel dashboard locally - Static PWA (http://localhost:8000)
 cd vercel-dashboard
-npm install  # First time only
-npm start
+python3 -m http.server 8000
+# No npm dependencies required - pure static files
 ```
 
 ### Utility Commands

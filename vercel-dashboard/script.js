@@ -1,7 +1,16 @@
 const config = {
     cacheKey: "ti_dashboard_payload_v1",
     cacheTtlMs: 60 * 60 * 1000, // 1 hour
-    aiSummaryEndpoint: (window.AI_SUMMARY_ENDPOINT || "").toString().trim() || "/api/summarize",
+    aiSummaryEndpoint: (() => {
+        // Auto-detect API endpoint based on environment
+        const hostname = window.location.hostname;
+        if (hostname === 'localhost' || hostname === '127.0.0.1') {
+            return "http://localhost:5000/api/summarize";  // Local development
+        }
+        // Production: User should set FLASK_API_URL environment variable in Vercel
+        // or override with window.AI_SUMMARY_ENDPOINT
+        return (window.AI_SUMMARY_ENDPOINT || "").toString().trim() || "/api/summarize";
+    })(),
     tenderJsonUrls: [
         "/public/tenders-latest.json",
         "/public/build/tenders.json",

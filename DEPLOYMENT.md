@@ -4,12 +4,24 @@
 
 This guide covers deploying the Tender Intelligence System to production using **Vercel** for the dashboard and a separate Flask API backend.
 
+**Architecture Note:** This system uses a unified architecture with clear separation of concerns:
+- **Frontend**: Vercel-hosted static PWA (no server-side rendering)
+- **Backend**: Flask API-only service (no dashboard rendering)
+
 ## Architecture
 
 ### Components
 
 1. **Vercel Dashboard** - Static PWA hosted on Vercel (https://vercel.com)
-2. **Flask API** - Backend service for tender summarization (self-hosted or cloud)
+   - Advanced UI with PWA offline support, virtual scrolling, caching
+   - Reads from static `/tenders.json` file
+   - Calls Flask API for tender summarization via CORS
+
+2. **Flask API** - Backend service for automation and summarization (self-hosted or cloud)
+   - API endpoints: `/api/summarize`, `/api/run/*`, `/cron/*`, `/health`
+   - No dashboard rendering (removed for consolidation)
+   - CORS-enabled for cross-origin requests from Vercel
+
 3. **Local Automation** - Scheduled scans via launchd/cron
 
 ## Pre-Deployment Checklist
