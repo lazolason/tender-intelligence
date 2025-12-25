@@ -1,9 +1,9 @@
 {
   "meta": {
-    "last_sync": "2025-12-25 14:33",
+    "last_sync": "2025-12-25 14:36",
     "next_run": "Daily 08:00",
     "tender_count": 4,
-    "last_update": "2025-12-25T14:33:16.012877"
+    "last_update": "2025-12-25T14:36:40.384918"
   },
   "tenders": [
     {
@@ -12,7 +12,7 @@
       "description": "THE SUPPLY AND DELIVERY OF AMMONIUM HYDROXIDE TO RAND WATER\u2019S ZWARTKOPJES, EIKENHOF, PALMIET, AND MAPLETON BOOSTER PUMPING STATIONS FOR A PERIOD OF TWENTY (20) YEARS",
       "client": "Rand Water",
       "priority": "MEDIUM",
-      "score": 0,
+      "score": 6.3,
       "category": "Phakathi",
       "source": "Rand Water",
       "url": "https://www.randwater.co.za/./media/sc_pdf/RW10397693 25RR.pdf",
@@ -29,7 +29,7 @@
       "description": "SUPPLY AND DELIVERY OF CALCIUM HYPOCHLORITE GRANULES TO RAND WATER SITES FOR A PERIOD OF SIXTY (60) MONTHS.",
       "client": "Rand Water",
       "priority": "MEDIUM",
-      "score": 0,
+      "score": 5.3,
       "category": "Unknown",
       "source": "Rand Water",
       "url": "https://www.randwater.co.za/./media/sc_pdf/RW010413976-25 RW Advert.pdf",

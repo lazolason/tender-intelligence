@@ -135,7 +135,7 @@ def generate_dashboard_html(tenders):
             "description": t.get("description", t.get("title", "")),
             "client": t.get("client", "Unknown"),
             "priority": scores.get("priority", "LOW"),
-            "score": scores.get("composite_score", 0),
+            "score": scores.get("composite_score", scores.get("composite", 0)),
             "category": t.get("category", "Unknown"),
             "source": t.get("source", "Unknown"),
             "url": url,
