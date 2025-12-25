@@ -30,3 +30,21 @@ tenacity==8.2.3
 # Fuzzy duplicate detection
 fuzzywuzzy==0.18.0
 python-Levenshtein==0.25.1
+
+# ==========================================================
+# PHASE 1: INTELLIGENCE ENHANCEMENTS
+# ==========================================================
+
+# PDF Processing
+pdfplumber>=0.9.0
+PyPDF2>=3.0.0
+
+# Machine Learning / Semantic Similarity
+sentence-transformers>=2.2.0
+torch>=2.0.0
+scikit-learn>=1.3.0
+numpy>=1.24.0
+
+# Multi-channel Alerts
+slack-sdk>=3.0.0
+twilio>=8.0.0
