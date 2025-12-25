@@ -28,6 +28,35 @@ from utils.logging_tools import write_log, log_start, log_end, log_error, rotate
 from utils.data_validator import TenderValidator, format_validation_report
 from utils.scraper_monitor import ScraperMonitor
 
+# Phase 1: Intelligence Enhancements
+try:
+    from utils.pdf_analyzer import add_pdf_analysis_to_tender
+    PDF_ANALYZER_AVAILABLE = True
+except ImportError:
+    PDF_ANALYZER_AVAILABLE = False
+    log_error(LOG_FILE, "PDF analyzer not available - install with: pip install pdfplumber PyPDF2")
+
+try:
+    from utils.semantic_duplicate_detector import find_semantic_duplicates, filter_duplicates
+    SEMANTIC_DEDUP_AVAILABLE = True
+except ImportError:
+    SEMANTIC_DEDUP_AVAILABLE = False
+    log_error(LOG_FILE, "Semantic deduplication not available - install with: pip install sentence-transformers torch scikit-learn")
+
+try:
+    from utils.bid_tracker import record_bid_outcome, get_win_rates, get_client_performance
+    BID_TRACKER_AVAILABLE = True
+except ImportError:
+    BID_TRACKER_AVAILABLE = False
+    log_error(LOG_FILE, "Bid tracker not available - install with: pip install")
+
+try:
+    from utils.multi_channel_alerts import send_slack_alert, send_sms_alert, smart_alert
+    MULTI_CHANNEL_ALERTS_AVAILABLE = True
+except ImportError:
+    MULTI_CHANNEL_ALERTS_AVAILABLE = False
+    log_error(LOG_FILE, "Multi-channel alerts not available - install with: pip install slack-sdk twilio")
+
 # Import scoring engine
 from scoring_engine import score_tender
 
@@ -157,7 +186,7 @@ def process_tenders(tenders):
     total_added = 0
     new_items = []
     excluded_count = 0
-
+    
     for t in tenders:
         try:
             ref = t.get("ref", "NA")
@@ -169,6 +198,7 @@ def process_tenders(tenders):
             short_title = t.get("short_title", "Tender")
             reason = t.get("reason", "")
             source = t.get("source", "")
+            url = t.get("url", "")
             
             # SKIP EXCLUDED TENDERS (construction, security, etc.)
             if category == "EXCLUDED":
@@ -179,11 +209,19 @@ def process_tenders(tenders):
             tender_name = f"{ref} - {title}" if ref and ref != "NA" else title
             
             was_added, scores, classification = excel_writer.add_tender_with_scoring(t)
-
+            
             if was_added:
                 total_added += 1
                 t["scores"] = scores
                 new_items.append(t)
+                
+                # Phase 1: Enhanced PDF Analysis
+                if PDF_ANALYZER_AVAILABLE and url and url.lower().endswith('.pdf'):
+                    try:
+                        t = add_pdf_analysis_to_tender(t)
+                        write_log(LOG_FILE, f"[PDF] Analyzed: {ref} - {len(t.get('pdf_analysis', {}).get('requirements', []))} requirements found")
+                    except Exception as e:
+                        log_error(LOG_FILE, f"PDF analysis failed for {ref}: {e}")
     
                 # Create tender folder
                 folder_path = create_tender_folder(
@@ -208,7 +246,7 @@ def process_tenders(tenders):
 # DASHBOARD SNAPSHOT HELPERS
 # ----------------------------------------------------------
 def _load_existing_tenders(json_path):
-    """Load previously saved tenders so the dashboard keeps historical data."""
+    """Load previously saved tenders so that dashboard keeps historical data."""
     if os.path.exists(json_path):
         try:
             with open(json_path, "r") as jf:
@@ -351,7 +389,7 @@ if __name__ == "__main__":
     rotate_log_if_needed(LOG_FILE)
     
     write_log(LOG_FILE, "=" * 50)
-    write_log(LOG_FILE, "TENDER ENGINE RUN STARTED (WITH SCORING)")
+    write_log(LOG_FILE, "TENDER ENGINE RUN STARTED (WITH SCORING & PHASE 1 INTELLIGENCE)")
     write_log(LOG_FILE, "=" * 50)
     
     # Scrape all sources (with monitoring)
@@ -366,17 +404,38 @@ if __name__ == "__main__":
     
     write_log(LOG_FILE, f"Total tenders scraped: {len(all_tenders)}")
 
-    # Alert on repeated failures (3 consecutive failures)
-    if CONFIG.get("email_alerts", {}).get("enabled", False):
+    # Alert on repeated failures (3 consecutive failures) - Phase 1: Multi-channel alerts
+    if MULTI_CHANNEL_ALERTS_AVAILABLE and CONFIG.get("alerts", {}).get("scraper_failures", {}).get("enabled", False):
         try:
             should_alert, failing = monitor.should_alert_on_failures(threshold=3)
             if should_alert:
-                from utils.email_alerts import EmailAlerter
-
-                smtp_config = (CONFIG.get("email_alerts", {}) or {}).get("smtp", {}) or {}
-                alerter = EmailAlerter(smtp_config)
-                sent = alerter.send_scraper_failure_alert(failing)
-                if sent:
+                # Send via configured channels
+                alert_config = CONFIG.get("alerts", {})
+                sent_count = 0
+                
+                # Slack alerts for scraper failures
+                if alert_config.get("slack", {}).get("enabled", False):
+                    webhook_url = alert_config["slack"].get("webhook_url")
+                    if webhook_url:
+                        try:
+                            send_slack_alert({"title": "Scraper Failure Alert", "priority": "HIGH", "description": f"Repeated failures detected: {', '.join(failing)}"}, webhook_url)
+                            sent_count += 1
+                        except Exception as e:
+                            log_error(LOG_FILE, f"Slack scraper failure alert failed: {e}")
+                
+                # SMS alerts for scraper failures
+                if alert_config.get("sms", {}).get("enabled", False):
+                    from_number = alert_config["sms"].get("from_number")
+                    recipients = alert_config["sms"].get("recipients", {}).get("urgent", [])
+                    if from_number and recipients:
+                        try:
+                            send_sms_alert({"title": "Scraper Failure Alert", "priority": "HIGH", "description": f"Repeated failures detected: {', '.join(failing)}"}, recipients)
+                            sent_count += 1
+                        except Exception as e:
+                            log_error(LOG_FILE, f"SMS scraper failure alert failed: {e}")
+                
+                if sent_count > 0:
+                    write_log(LOG_FILE, f"📧 Scraper failure alert sent for {len(failing)} source(s)")
                     monitor.mark_alerted(failing, threshold=3)
         except Exception as exc:
             log_error(LOG_FILE, f"Failed to send scraper failure alert: {exc}")
@@ -417,69 +476,111 @@ if __name__ == "__main__":
     )
 
     write_log(LOG_FILE, f"Validation complete: {valid_count} valid / {invalid_count} invalid")
-    
+
     # Process, classify & SCORE
     added_count, new_items = process_tenders(valid_tenders)
-    
+
+    # Phase 1: Semantic Deduplication
+    if SEMANTIC_DEDUP_AVAILABLE and new_items:
+        try:
+            original_count = len(new_items)
+            new_items = filter_duplicates(new_items)
+            filtered_count = len(new_items)
+            duplicates_found = original_count - filtered_count
+            if duplicates_found > 0:
+                write_log(LOG_FILE, f"[DEDUP] Removed {duplicates_found} semantic duplicate(s)")
+        except Exception as e:
+            log_error(LOG_FILE, f"Semantic deduplication failed: {e}")
+
     # Save results
     save_outputs(new_items)
-    
-    # Send email alerts for urgent tenders (if enabled)
-    if CONFIG.get("email_alerts", {}).get("enabled", False):
+
+    # Phase 1: Multi-Channel Alerts for urgent tenders (if enabled)
+    if MULTI_CHANNEL_ALERTS_AVAILABLE and new_items:
         try:
-            from utils.email_alerts import EmailAlerter
-            
             # Calculate days until closing for each tender
-            urgent_threshold = CONFIG.get("email_alerts", {}).get("urgent_threshold_days", 3)
+            urgent_threshold = CONFIG.get("alerts", {}).get("urgent_threshold_days", 3)
             urgent_tenders = []
-            
+
             for tender in new_items:
                 # Check if HIGH priority
                 priority = (tender.get("scores", {}).get("priority") or tender.get("priority") or "").upper()
                 if priority != "HIGH":
                     continue
-                
+
                 # Check closing date
                 closing_date = tender.get("closing_date")
                 if not closing_date:
                     continue
-                
+
                 try:
                     closing_dt = datetime.fromisoformat(closing_date.replace("Z", "+00:00"))
                     today = datetime.now(closing_dt.tzinfo).replace(hour=0, minute=0, second=0, microsecond=0)
                     closing_day = closing_dt.replace(hour=0, minute=0, second=0, microsecond=0)
                     days_until = int((closing_day - today).days)
-                    
+
                     if 0 <= days_until <= urgent_threshold:
                         urgent_tenders.append(tender)
                 except (ValueError, AttributeError):
                     continue
-            
-            # Send email if there are urgent tenders
+
+            # Send multi-channel alerts if there are urgent tenders
             if urgent_tenders:
-                smtp_config = CONFIG["email_alerts"]["smtp"]
-                alerter = EmailAlerter(smtp_config)
-                sent = alerter.send_urgent_alert(urgent_tenders)
-                if sent:
-                    write_log(LOG_FILE, f"📧 Email alert sent for {len(urgent_tenders)} urgent tender(s)")
+                alert_config = CONFIG.get("alerts", {})
+                sent_count = 0
+
+                # Slack alerts
+                if alert_config.get("slack", {}).get("enabled", False):
+                    webhook_url = alert_config["slack"].get("webhook_url")
+                    if webhook_url:
+                        for tender in urgent_tenders:
+                            try:
+                                send_slack_alert(tender, webhook_url)
+                                sent_count += 1
+                            except Exception as e:
+                                log_error(LOG_FILE, f"Slack alert failed for {tender.get('ref')}: {e}")
+
+                # SMS alerts
+                if alert_config.get("sms", {}).get("enabled", False):
+                    from_number = alert_config["sms"].get("from_number")
+                    recipients = alert_config["sms"].get("recipients", {}).get("urgent", [])
+                    if from_number and recipients:
+                        for tender in urgent_tenders:
+                            try:
+                                send_sms_alert(tender, recipients)
+                                sent_count += 1
+                            except Exception as e:
+                                log_error(LOG_FILE, f"SMS alert failed for {tender.get('ref')}: {e}")
+
+                # Smart alerts (auto-select best channel)
+                if alert_config.get("smart_alerts", {}).get("enabled", False):
+                    for tender in urgent_tenders:
+                        try:
+                                smart_alert(tender, alert_config)
+                                sent_count += 1
+                            except Exception as e:
+                                log_error(LOG_FILE, f"Smart alert failed for {tender.get('ref')}: {e}")
+
+                if sent_count > 0:
+                    write_log(LOG_FILE, f"📧 Multi-channel alert sent for {sent_count} urgent tender(s)")
                 else:
-                    write_log(LOG_FILE, "⚠️ Email alert was not sent (check SMTP config / logs).")
+                    write_log(LOG_FILE, "📧 No urgent tenders requiring alerts or alerts not configured")
             else:
-                write_log(LOG_FILE, "📧 No urgent tenders requiring email alerts")
-                
+                write_log(LOG_FILE, "📧 No urgent tenders requiring alerts")
+
         except Exception as e:
-            write_log(LOG_FILE, f"⚠️ Email alert failed: {e}")
-            print(f"⚠️ Email alert failed: {e}")
-    
+            write_log(LOG_FILE, f"⚠️ Multi-channel alert failed: {e}")
+            print(f"⚠️ Multi-channel alert failed: {e}")
+
     write_log(LOG_FILE, "=" * 50)
     write_log(LOG_FILE, f"TENDER ENGINE COMPLETE - Added: {added_count}")
     write_log(LOG_FILE, "=" * 50)
-    
+
     # Print summary by priority
     high = sum(1 for t in new_items if t.get("scores", {}).get("priority") == "HIGH")
     medium = sum(1 for t in new_items if t.get("scores", {}).get("priority") == "MEDIUM")
     low = sum(1 for t in new_items if t.get("scores", {}).get("priority") == "LOW")
-    
+
     print(f"\n🎉 Tender scan complete!")
     print(f"   Total scraped: {len(all_tenders)}")
     print(f"   New tenders added: {added_count}")

@@ -781,7 +781,7 @@ def sync():
     
     if success:
         print(f"   ✅ Pushed! Vercel will auto-deploy in ~30 seconds")
-        print(f"   🌐 https://vercel-dashboard-delta.vercel.app")
+        print(f"   🌐 https://tender-intelligence-dashboard-d6ku8xn58.vercel.app")
         return True
     else:
         print(f"   ⚠️ Git push issue: {output[:100]}")
