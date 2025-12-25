@@ -80,3 +80,26 @@ logging:
 
 # Version
 engine_version: "v2.0"
+
+# Phase 1: Multi-channel Alerts (Slack, SMS, Push)
+alerts:
+slack:
+   enabled: false
+   webhook_url: ""  # Add your Slack webhook URL
+   channels:
+      high_priority: "#tenders-high"
+      medium_priority: "#tenders-medium"
+
+sms:
+   enabled: false
+   twilio_account_sid: ""  # Add your Twilio Account SID
+   twilio_auth_token: ""  # Add your Twilio Auth Token
+   from_number: ""  # Add your Twilio phone number
+   recipients:
+      urgent: []  # Add phone numbers for urgent alerts
+
+smart_alerts:
+   enabled: false  # Auto-selects best channel based on tender priority
+
+scraper_failures:
+   enabled: false  # Alert when 3 consecutive scraper failures

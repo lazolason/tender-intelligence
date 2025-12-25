@@ -28,35 +28,6 @@ from utils.logging_tools import write_log, log_start, log_end, log_error, rotate
 from utils.data_validator import TenderValidator, format_validation_report
 from utils.scraper_monitor import ScraperMonitor
 
-# Phase 1: Intelligence Enhancements
-try:
-    from utils.pdf_analyzer import add_pdf_analysis_to_tender
-    PDF_ANALYZER_AVAILABLE = True
-except ImportError:
-    PDF_ANALYZER_AVAILABLE = False
-    log_error(LOG_FILE, "PDF analyzer not available - install with: pip install pdfplumber PyPDF2")
-
-try:
-    from utils.semantic_duplicate_detector import find_semantic_duplicates, filter_duplicates
-    SEMANTIC_DEDUP_AVAILABLE = True
-except ImportError:
-    SEMANTIC_DEDUP_AVAILABLE = False
-    log_error(LOG_FILE, "Semantic deduplication not available - install with: pip install sentence-transformers torch scikit-learn")
-
-try:
-    from utils.bid_tracker import record_bid_outcome, get_win_rates, get_client_performance
-    BID_TRACKER_AVAILABLE = True
-except ImportError:
-    BID_TRACKER_AVAILABLE = False
-    log_error(LOG_FILE, "Bid tracker not available - install with: pip install")
-
-try:
-    from utils.multi_channel_alerts import send_slack_alert, send_sms_alert, smart_alert
-    MULTI_CHANNEL_ALERTS_AVAILABLE = True
-except ImportError:
-    MULTI_CHANNEL_ALERTS_AVAILABLE = False
-    log_error(LOG_FILE, "Multi-channel alerts not available - install with: pip install slack-sdk twilio")
-
 # Import scoring engine
 from scoring_engine import score_tender
 
@@ -84,6 +55,37 @@ MAX_DASHBOARD_TENDERS = 200
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 os.makedirs(ACTIVE_TENDERS_DIR, exist_ok=True)
 os.makedirs(os.path.dirname(LOG_FILE), exist_ok=True)
+
+# ----------------------------------------------------------
+# PHASE 1: INTELLIGENCE ENHANCEMENTS (OPTIONAL)
+# ----------------------------------------------------------
+try:
+    from utils.pdf_analyzer import add_pdf_analysis_to_tender
+    PDF_ANALYZER_AVAILABLE = True
+except ImportError:
+    PDF_ANALYZER_AVAILABLE = False
+    log_error(LOG_FILE, "PDF analyzer not available - install with: pip install pdfplumber PyPDF2")
+
+try:
+    from utils.semantic_duplicate_detector import filter_duplicates
+    SEMANTIC_DEDUP_AVAILABLE = True
+except ImportError:
+    SEMANTIC_DEDUP_AVAILABLE = False
+    log_error(LOG_FILE, "Semantic deduplication not available - install with: pip install sentence-transformers torch scikit-learn")
+
+try:
+    from utils.bid_tracker import record_bid_outcome, get_win_rates, get_client_performance
+    BID_TRACKER_AVAILABLE = True
+except ImportError:
+    BID_TRACKER_AVAILABLE = False
+    log_error(LOG_FILE, "Bid tracker not available - install with: pip install")
+
+try:
+    from utils.multi_channel_alerts import send_slack_alert, send_sms_alert, smart_alert
+    MULTI_CHANNEL_ALERTS_AVAILABLE = True
+except ImportError:
+    MULTI_CHANNEL_ALERTS_AVAILABLE = False
+    log_error(LOG_FILE, "Multi-channel alerts not available - install with: pip install slack-sdk twilio")
 
 # ----------------------------------------------------------
 # INITIALISE EXCEL WRITER
@@ -556,10 +558,10 @@ if __name__ == "__main__":
                 if alert_config.get("smart_alerts", {}).get("enabled", False):
                     for tender in urgent_tenders:
                         try:
-                                smart_alert(tender, alert_config)
-                                sent_count += 1
-                            except Exception as e:
-                                log_error(LOG_FILE, f"Smart alert failed for {tender.get('ref')}: {e}")
+                            smart_alert(tender, alert_config)
+                            sent_count += 1
+                        except Exception as e:
+                            log_error(LOG_FILE, f"Smart alert failed for {tender.get('ref')}: {e}")
 
                 if sent_count > 0:
                     write_log(LOG_FILE, f"📧 Multi-channel alert sent for {sent_count} urgent tender(s)")

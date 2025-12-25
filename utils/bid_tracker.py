@@ -98,8 +98,8 @@ def record_bid_outcome(
     tender_ref: str,
     company: str,
     bid_submitted: bool,
-    bid_amount: Optional[float] = None,
     outcome: str,
+    bid_amount: Optional[float] = None,
     winner_name: Optional[str] = None,
     winning_amount: Optional[float] = None,
     bid_date: Optional[str] = None
