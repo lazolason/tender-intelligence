@@ -11,73 +11,40 @@ import logging
 import json
 import os
 from typing import Any, Dict, Iterable, List, Optional
-import yaml
-from pathlib import Path
 
 logger = logging.getLogger(__name__)
 
-
-def load_email_config():
-    """
-    Load email configuration from config.yaml and environment variables.
-    
-    Returns:
-        Dictionary with email configuration
-    """
-    # Load config from YAML
-    config_file = Path(__file__).parent.parent / "config.yaml"
-    
-    try:
-        with open(config_file, 'r') as f:
-            config = yaml.safe_load(f)
-    except Exception as e:
-        logger.warning(f"Could not load config.yaml: {e}")
-        config = {}
-    
-    # Get email config section
-    email_config = config.get('email', {})
-    
-    # Build configuration dict
-    result = {
-        "smtp_server": os.getenv('SMTP_SERVER', email_config.get('smtp_server', 'smtp.gmail.com')),
-        "smtp_port": int(os.getenv('SMTP_PORT', str(email_config.get('smtp_port', 587)))),
-        "sender_email": os.getenv('SMTP_USER', os.getenv('EMAIL_FROM', email_config.get('from_address', ''))),
-        "sender_password": os.getenv('SMTP_PASSWORD', ''),
-        "recipient_emails": [],
-    }
-    
-    # Parse recipients from env var if provided
-    email_to = os.getenv('EMAIL_TO', '')
-    if email_to:
-        result["recipient_emails"] = [addr.strip() for addr in email_to.split(',')]
-    elif email_config.get('to_addresses'):
-        result["recipient_emails"] = email_config['to_addresses']
-    
-    return result
-
-
-# Load configuration on module import
-EMAIL_CONFIG = load_email_config()
+# Email configuration - UPDATE THESE if not using config.yaml
+EMAIL_CONFIG = {
+    "smtp_server": "smtp.gmail.com",
+    "smtp_port": 587,
+    "sender_email": "your-email@gmail.com",  # Your Gmail address
+    "sender_password": "",  # App password (not regular password)
+    "recipient_emails": []  # List of emails to receive alerts
+}
 
 
 class EmailAlerter:
     """Handles email alerts for urgent tenders"""
     
-    def __init__(self, smtp_config=None):
+    def __init__(self, smtp_config):
         """
         Initialize email alerter with SMTP configuration
         
         Args:
-            smtp_config: Optional dictionary (uses EMAIL_CONFIG if not provided)
+            smtp_config: Dictionary with keys:
+                - server: SMTP server address
+                - port: SMTP port (usually 587)
+                - sender_email: Email address to send from
+                - sender_password: App-specific password
+                - recipients: List of recipient email addresses
         """
-        # Use provided config or load from config.yaml + env vars
-        smtp_config = smtp_config or EMAIL_CONFIG
-        
-        self.smtp_server = smtp_config.get("smtp_server", "smtp.gmail.com")
-        self.smtp_port = smtp_config.get("smtp_port", 587)
+        smtp_config = smtp_config or {}
+        self.smtp_server = smtp_config.get("server", "smtp.gmail.com")
+        self.smtp_port = smtp_config.get("port", 587)
         self.sender_email = smtp_config.get("sender_email", "")
         self.sender_password = smtp_config.get("sender_password", "")
-        self.recipients = smtp_config.get("recipient_emails", []) or []
+        self.recipients = smtp_config.get("recipients", []) or []
     
     def send_urgent_alert(self, urgent_tenders):
         """

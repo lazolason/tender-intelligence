@@ -53,25 +53,21 @@ scoring:
   medium_threshold: 4.5
 
 # Email settings (for daily reports)
-# Secrets loaded from environment variables: SMTP_USER, SMTP_PASSWORD
 email:
   enabled: false
   smtp_server: "smtp.gmail.com"
   smtp_port: 587
-  smtp_use_tls: true
-  from_address: ""  # Override with EMAIL_FROM env var
-  to_addresses: []  # Override with EMAIL_TO env var (comma-separated)
+  from_address: ""
+  to_addresses: []
 
 # Email alerts for urgent tenders
-# Secrets loaded from environment variables: SMTP_USER, SMTP_PASSWORD
 email_alerts:
   enabled: false  # Set to true to enable urgent tender notifications
   smtp:
     server: "smtp.gmail.com"
     port: 587
-    use_tls: true
-    sender_email: ""  # Loaded from SMTP_USER env var
-    sender_password: ""  # Loaded from SMTP_PASSWORD env var (app-specific password)
+    sender_email: ""  # Your email address
+    sender_password: ""  # Your app-specific password (not regular password)
     recipients:
       # - "team@tes.co.za"
       # - "team@phakathi.co.za"
@@ -87,23 +83,23 @@ engine_version: "v2.0"
 
 # Phase 1: Multi-channel Alerts (Slack, SMS, Push)
 alerts:
-  slack:
-    enabled: false
-    webhook_url: ""  # Add your Slack webhook URL
-    channels:
+slack:
+   enabled: false
+   webhook_url: ""  # Add your Slack webhook URL
+   channels:
       high_priority: "#tenders-high"
       medium_priority: "#tenders-medium"
 
-  sms:
-    enabled: false
-    twilio_account_sid: ""  # Add your Twilio Account SID
-    twilio_auth_token: ""  # Add your Twilio Auth Token
-    from_number: ""  # Add your Twilio phone number
-    recipients:
+sms:
+   enabled: false
+   twilio_account_sid: ""  # Add your Twilio Account SID
+   twilio_auth_token: ""  # Add your Twilio Auth Token
+   from_number: ""  # Add your Twilio phone number
+   recipients:
       urgent: []  # Add phone numbers for urgent alerts
 
-  smart_alerts:
-    enabled: false  # Auto-selects best channel based on tender priority
+smart_alerts:
+   enabled: false  # Auto-selects best channel based on tender priority
 
-  scraper_failures:
-    enabled: false  # Alert when 3 consecutive scraper failures
+scraper_failures:
+   enabled: false  # Alert when 3 consecutive scraper failures

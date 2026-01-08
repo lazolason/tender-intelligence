@@ -1,8 +1,34 @@
 {
   "name": "tender-intelligence-dashboard",
+  "version": "3.0.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "build": "echo \"Static dashboard: no build step\"",
-    "start": "python3 -m http.server 8000"
+    "start": "python3 -m http.server 8000",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest --coverage",
+    "test:run": "vitest run",
+    "lint": "eslint js/**/*.js",
+    "lint:fix": "eslint js/**/*.js --fix",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/user-event": "^14.5.2",
+    "@vitest/ui": "^2.1.8",
+    "@vitest/coverage-v8": "^2.1.8",
+    "eslint": "^9.17.0",
+    "jsdom": "^25.0.1",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  },
+  "dependencies": {
+    "chart.js": "^4.4.0",
+    "hammerjs": "^2.0.8",
+    "jspdf": "^2.5.1",
+    "xlsx": "^0.20.0"
   }
 }

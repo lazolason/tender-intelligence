@@ -4,11 +4,10 @@
 # ==========================================================
 
 import logging
+import re
 from dataclasses import dataclass
 from typing import Dict, Iterable, Optional, Tuple, List
 from datetime import date
-
-from utils.text_utils import normalize_text, parse_date, within_days
 
 logger = logging.getLogger(__name__)
 
@@ -53,6 +52,14 @@ def _get_embedding_model():
     
     return _embedding_model
 
+
+def _normalize_text(value: str) -> str:
+    """Normalize text for comparison"""
+    value = (value or "").strip().lower()
+    value = re.sub(r"\s+", " ", value)
+    value = re.sub(r"[^\w\s/.-]", " ", value)
+    value = re.sub(r"\s+", " ", value).strip()
+    return value
 
 
 def _compute_embeddings(texts: List[str]) -> Optional[List]:
@@ -146,6 +153,23 @@ def _create_search_text(tender: Dict) -> str:
     return " ".join(parts)
 
 
+def _parse_date(value: str) -> Optional[date]:
+    """Parse date string to date object"""
+    value = (value or "").strip()
+    if not value:
+        return None
+    try:
+        from dateutil import parser as date_parser
+        return date_parser.parse(value, dayfirst=True, fuzzy=True).date()
+    except Exception:
+        return None
+
+
+def _within_days(a: Optional[date], b: Optional[date], *, days: int) -> bool:
+    """Check if two dates are within specified days of each other"""
+    if a is None or b is None:
+        return False
+    return abs((a - b).days) <= int(days)
 
 
 def find_semantic_duplicate(
@@ -174,7 +198,7 @@ def find_semantic_duplicate(
     new_ref = (new_tender.get("ref") or "").strip().upper()
     new_title = (new_tender.get("title") or "").strip()
     new_source = (new_tender.get("source") or "Unknown").strip()
-    new_closing = parse_date(new_tender.get("closing_date") or "")
+    new_closing = _parse_date(new_tender.get("closing_date") or "")
     
     if not new_title:
         return None
@@ -207,18 +231,18 @@ def find_semantic_duplicate(
         for i, existing in enumerate(existing_tenders):
             ex_title = (existing.get("title") or "").strip()
             ex_source = (existing.get("source") or "Unknown").strip()
-            ex_closing = parse_date(existing.get("closing_date") or "")
+            ex_closing = _parse_date(existing.get("closing_date") or "")
             
             # Check source requirement
             if require_same_source:
-                new_source_norm = normalize_text(new_source)
-                ex_source_norm = normalize_text(ex_source)
+                new_source_norm = _normalize_text(new_source)
+                ex_source_norm = _normalize_text(ex_source)
                 if new_source_norm != ex_source_norm:
                     continue
             
             # Check date window
-            same_source = normalize_text(new_source) == normalize_text(ex_source)
-            close_date = within_days(new_closing, ex_closing, days=date_window_days)
+            same_source = _normalize_text(new_source) == _normalize_text(ex_source)
+            close_date = _within_days(new_closing, ex_closing, days=date_window_days)
             
             if same_source and not close_date and date_window_days > 0:
                 # If dates don't match, don't consider duplicate
@@ -249,7 +273,7 @@ def find_semantic_duplicate(
             ex_ref = (existing.get("ref") or "").strip().upper()
             ex_title = (existing.get("title") or "").strip()
             ex_source = (existing.get("source") or "Unknown").strip()
-            ex_closing = parse_date(existing.get("closing_date") or "")
+            ex_closing = _parse_date(existing.get("closing_date") or "")
             
             # Skip if exact ref already checked
             if new_ref and ex_ref and new_ref != "NA" and new_ref == ex_ref:
@@ -257,14 +281,14 @@ def find_semantic_duplicate(
             
             # Check source requirement
             if require_same_source:
-                new_source_norm = normalize_text(new_source)
-                ex_source_norm = normalize_text(ex_source)
+                new_source_norm = _normalize_text(new_source)
+                ex_source_norm = _normalize_text(ex_source)
                 if new_source_norm != ex_source_norm:
                     continue
             
             # Check date window
-            same_source = normalize_text(new_source) == normalize_text(ex_source)
-            close_date = within_days(new_closing, ex_closing, days=date_window_days)
+            same_source = _normalize_text(new_source) == _normalize_text(ex_source)
+            close_date = _within_days(new_closing, ex_closing, days=date_window_days)
             
             if same_source and not close_date and date_window_days > 0:
                 continue

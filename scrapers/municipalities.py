@@ -10,6 +10,7 @@ import traceback
 import sys
 import os
 import logging
+from typing import List, Dict, Optional
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -23,16 +24,25 @@ logger = logging.getLogger(__name__)
 class BaseMunicipalityScraper:
     """Base class for municipality scrapers"""
     
-    def __init__(self, name: str, url: str, timeout: int = 15):
+    def __init__(self, name: str, url: str, timeout: int = 15) -> None:
         self.name = name
         self.url = url
         self.timeout = timeout
         self.headers = {
             "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"
         }
-        self.last_error = None
+        self.last_error: Optional[str] = None
     
-    def fetch_page(self):
+    def fetch_page(self) -> str:
+        """Fetch HTML content from scraper URL
+        
+        Returns:
+            HTML content as string
+            
+        Raises:
+            RuntimeError: If no response is returned
+            Exception: If fetching fails
+        """
         try:
             response = safe_get(
                 self.url,
@@ -47,11 +57,26 @@ class BaseMunicipalityScraper:
         except Exception as e:
             raise Exception(f"Error fetching {self.name}: {e}")
     
-    def parse_tenders(self, html: str):
-        """Override in subclass"""
+    def parse_tenders(self, html: str) -> List[Dict[str, any]]:
+        """Parse HTML content to extract tender information
+        
+        Args:
+            html: HTML content as string
+            
+        Returns:
+            List of tender dictionaries
+            
+        Raises:
+            NotImplementedError: If not overridden in subclass
+        """
         raise NotImplementedError
     
-    def run(self):
+    def run(self) -> List[Dict[str, any]]:
+        """Execute scraper: fetch page and parse tenders
+        
+        Returns:
+            List of tender dictionaries (empty list if error occurs)
+        """
         try:
             self.last_error = None
             html = self.fetch_page()
@@ -287,9 +312,15 @@ class EthekwiniScraper(BaseMunicipalityScraper):
 # ===========================================================
 # AGGREGATOR - RUN ALL MUNICIPALITIES
 # ===========================================================
-def scrape_all_municipalities(timeout: int = 15):
-    """Run all municipality scrapers and aggregate results"""
+def scrape_all_municipalities(timeout: int = 15) -> List[Dict[str, any]]:
+    """Run all municipality scrapers and aggregate results
     
+    Args:
+        timeout: Request timeout in seconds
+        
+    Returns:
+        List of tender dictionaries from all municipalities
+    """
     scrapers = [
         EkurhuleniScraper(timeout),
         TshwaneScraper(timeout),
@@ -297,8 +328,8 @@ def scrape_all_municipalities(timeout: int = 15):
         EthekwiniScraper(timeout),
     ]
     
-    all_tenders = []
-    failed_sources = []
+    all_tenders: List[Dict[str, any]] = []
+    failed_sources: List[str] = []
     
     for scraper in scrapers:
         try:
@@ -312,7 +343,7 @@ def scrape_all_municipalities(timeout: int = 15):
             print(f"  Error: {e}")
             failed_sources.append(scraper.name)
             continue
-
+    
     if failed_sources:
         print(f"  ❌ Failed municipality sources: {', '.join(sorted(set(failed_sources)))}")
     

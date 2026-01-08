@@ -1,8 +1,10 @@
 import logging
+import re
 from dataclasses import dataclass
+from datetime import date
 from typing import Dict, Iterable, Optional, Tuple
 
-from utils.text_utils import normalize_text, parse_date, within_days
+from dateutil import parser as date_parser
 
 logger = logging.getLogger(__name__)
 
@@ -23,9 +25,17 @@ class DuplicateMatch:
     existing_source: str
 
 
+def _normalize_text(value: str) -> str:
+    value = (value or "").strip().lower()
+    value = re.sub(r"\s+", " ", value)
+    value = re.sub(r"[^\w\s/.-]", " ", value)
+    value = re.sub(r"\s+", " ", value).strip()
+    return value
+
+
 def _title_similarity(a: str, b: str) -> int:
-    a = normalize_text(a)
-    b = normalize_text(b)
+    a = _normalize_text(a)
+    b = _normalize_text(b)
     if not a or not b:
         return 0
 
@@ -39,6 +49,20 @@ def _title_similarity(a: str, b: str) -> int:
     return int(round(SequenceMatcher(a=a, b=b).ratio() * 100))
 
 
+def _parse_date(value: str) -> Optional[date]:
+    value = (value or "").strip()
+    if not value:
+        return None
+    try:
+        return date_parser.parse(value, dayfirst=True, fuzzy=True).date()
+    except Exception:
+        return None
+
+
+def _within_days(a: Optional[date], b: Optional[date], *, days: int) -> bool:
+    if a is None or b is None:
+        return False
+    return abs((a - b).days) <= int(days)
 
 
 def find_duplicate(
@@ -52,7 +76,7 @@ def find_duplicate(
     new_ref = (new_tender.get("ref") or "").strip().upper()
     new_title = (new_tender.get("title") or "").strip()
     new_source = (new_tender.get("source") or "Unknown").strip()
-    new_closing = parse_date(new_tender.get("closing_date") or "")
+    new_closing = _parse_date(new_tender.get("closing_date") or "")
 
     if not new_title:
         return None
@@ -61,7 +85,7 @@ def find_duplicate(
         ex_ref = (existing.get("ref") or "").strip().upper()
         ex_title = (existing.get("title") or "").strip()
         ex_source = (existing.get("source") or "Unknown").strip()
-        ex_closing = parse_date(existing.get("closing_date") or "")
+        ex_closing = _parse_date(existing.get("closing_date") or "")
 
         if new_ref and ex_ref and new_ref != "NA" and new_ref == ex_ref:
             return DuplicateMatch(
@@ -77,8 +101,8 @@ def find_duplicate(
         if similarity < int(threshold):
             continue
 
-        same_source = normalize_text(new_source) == normalize_text(ex_source)
-        close_date = within_days(new_closing, ex_closing, days=date_window_days)
+        same_source = _normalize_text(new_source) == _normalize_text(ex_source)
+        close_date = _within_days(new_closing, ex_closing, days=date_window_days)
 
         if require_same_source and not same_source:
             continue

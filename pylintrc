@@ -1,0 +1,99 @@
+[MASTER]
+# Python code style settings
+load-plugins=pylint.extensions.mccabe,
+          pylint.extensions.docparams,
+          pylint.extensions.docstyle
+
+# Use a consistent maximum line length
+max-line-length=120
+
+# Allow slightly longer variable names for clarity
+max-args=10
+
+# Disable specific checks that are too strict for this project
+disable=
+    C0103,  # Invalid class name (we use descriptive names)
+    C0111,  # Missing docstring for already documented method
+    R0913,  # Too many public methods
+    R0914,  # Too many instance attributes
+    W0212,  # Useless-exception (we need broad exception handling)
+    W0611,  # No outer scope (simpler structure preferred)
+
+# Enable specific checks
+enable=
+    C0302,  # Too many public methods (encapsulate)
+    C0330,  # Too many statements (refactor large functions)
+    W0102,  # Dangerous default values (explicit is better)
+
+[FORMAT]
+# Use 4 spaces for indentation
+indent-string='    '
+indent-after-paren=4
+indent-tabs-or-spaces=4
+
+# Maximum line length for code
+max-line-length=120
+
+# Allow multiple statements on one line for simple cases
+single-line-if-stmt=no
+
+[BASIC]
+# Good variable names (at least 3 chars, lowercase with underscores)
+good-names=i,j,k,ex,run,_,rv,temp,a,b,c,fn,fd,_,fp
+
+# Naming convention for constants
+const-rgx=(([A-Z_][A-Z0-9]+|(__.*__))$
+
+# Naming convention for attributes
+attr-rgx=([a-z_][a-z0-9]{2,}|(__.*__))$
+
+# Naming convention for function arguments
+argument-rgx=([a-z_][a-z0-9]{2,}|__.*__)
+
+# Naming convention for class attributes
+class-attribute-rgx=([A-Z_][A-Z0-9]{2,}|(__.*__))$
+
+[DESIGN]
+# Maximum number of arguments for function
+max-args=10
+
+# Maximum number of parents for a class
+max-parents=7
+
+# Maximum number of returns for a function
+max-returns=6
+
+# Maximum number of branches for a function
+max-branches=12
+
+# Maximum number of statements in a function
+max-statements=50
+
+# Maximum number of local variables in a function
+max-locals=15
+
+[LOGGING]
+# Format for log messages
+logging-format-string=%(path)s:%(lineno)d: %(levelname)s: %(message)s
+
+# Disable logging-format for f-strings
+logging-format-style=old
+
+[IMPORTS]
+# Deprecated modules
+deprecated-modules=regsub,
+                      optparse,
+                      telnetlib,
+                      tkinter,
+                      xml.etree.ElementTree
+
+[MESSAGES CONTROL]
+# Disable certain messages
+disable=C0330,
+         C0326,
+         W0142,
+         W0143,
+         W0211,
+         W0212,
+         W0511,
+         W0611

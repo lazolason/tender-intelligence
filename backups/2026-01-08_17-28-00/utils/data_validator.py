@@ -6,7 +6,7 @@ from typing import Dict, List, Optional, Tuple
 from urllib.parse import urlparse
 
 import requests
-from utils.text_utils import parse_date
+from dateutil import parser as date_parser
 
 
 logger = logging.getLogger(__name__)
@@ -130,8 +130,23 @@ class TenderValidator:
         return ValidationResult(valid=(len(errors) == 0), errors=errors, warnings=warnings)
 
     def _parse_date_to_date(self, value: str) -> Optional[date]:
-        # Use shared parse_date function
-        return parse_date(value)
+        value = (value or "").strip()
+        if not value:
+            return None
+
+        try:
+            # Common normalized case from our pipeline
+            dt = datetime.fromisoformat(value.replace("Z", "+00:00"))
+            return dt.date()
+        except Exception:
+            pass
+
+        # Fall back to more flexible parsing (scraped sources vary)
+        try:
+            dt = date_parser.parse(value, dayfirst=True, fuzzy=True)
+            return dt.date()
+        except Exception:
+            return None
 
     def _is_valid_url(self, url: str) -> bool:
         try:

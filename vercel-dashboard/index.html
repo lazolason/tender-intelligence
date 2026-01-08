@@ -138,9 +138,9 @@
         </header>
         
         <nav class="tab-nav">
-            <button class="tab-btn active" onclick="showTab('dashboard')">📊 Dashboard</button>
-            <button class="tab-btn" onclick="showTab('calendar')">📅 Bid Calendar</button>
-            <button class="tab-btn" onclick="showTab('sources')">�� Sources</button>
+            <button class="tab-btn active" data-tab="dashboard">📊 Dashboard</button>
+            <button class="tab-btn" data-tab="calendar">📅 Bid Calendar</button>
+            <button class="tab-btn" data-tab="sources">🏢 Sources</button>
         </nav>
         
         <!-- DASHBOARD TAB -->
@@ -166,16 +166,16 @@
                 </div>
                 
                 <div class="filter-tabs">
-                    <button class="filter-tab active" onclick="filterTenders('all')">All (<span id="countAll">4</span>)</button>
-                    <button class="filter-tab" onclick="filterTenders('TES')">💧 TES (<span id="countTES">1</span>)</button>
-                    <button class="filter-tab" onclick="filterTenders('Phakathi')">⚙️ Phakathi (<span id="countPhakathi">1</span>)</button>
-                    <button class="filter-tab high" onclick="filterTenders('HIGH')">🔥 HIGH (<span id="countHIGH">0</span>)</button>
-                    <button class="filter-tab medium" onclick="filterTenders('MEDIUM')">⚡ MEDIUM (<span id="countMEDIUM">3</span>)</button>
-                    <button class="filter-tab low" onclick="filterTenders('LOW')">📝 LOW (<span id="countLOW">1</span>)</button>
+                    <button class="filter-tab active" data-filter="all">All (<span id="countAll">4</span>)</button>
+                    <button class="filter-tab" data-filter="TES">💧 TES (<span id="countTES">1</span>)</button>
+                    <button class="filter-tab" data-filter="Phakathi">⚙️ Phakathi (<span id="countPhakathi">1</span>)</button>
+                    <button class="filter-tab high" data-filter="HIGH">🔥 HIGH (<span id="countHIGH">0</span>)</button>
+                    <button class="filter-tab medium" data-filter="MEDIUM">⚡ MEDIUM (<span id="countMEDIUM">3</span>)</button>
+                    <button class="filter-tab low" data-filter="LOW">📝 LOW (<span id="countLOW">1</span>)</button>
                 </div>
                 <ul class="tender-list" id="tenderList"></ul>
                 <div id="loadMoreContainer" style="text-align: center; margin-top: 20px; display: none;">
-                    <button onclick="loadMore()" style="padding: 12px 30px; border-radius: 25px; border: 1px solid rgba(102,126,234,0.5); 
+                    <button id="loadMoreBtn" style="padding: 12px 30px; border-radius: 25px; border: 1px solid rgba(102,126,234,0.5);
                                                          background: rgba(102,126,234,0.2); color: #667eea; cursor: pointer; font-size: 1rem; font-weight: 600;">
                         Load More (<span id="remainingCount">0</span> remaining)
                     </button>
@@ -188,9 +188,9 @@
             <div class="section">
                 <h2>📅 Bid Calendar</h2>
                 <div class="calendar-nav">
-                    <button onclick="changeMonth(-1)">← Previous</button>
+                    <button id="prevMonthBtn">← Previous</button>
                     <span class="calendar-month" id="calendarMonth"></span>
-                    <button onclick="changeMonth(1)">Next →</button>
+                    <button id="nextMonthBtn">Next →</button>
                 </div>
                 <div class="calendar">
                     <div class="calendar-header">Sun</div>
@@ -286,348 +286,15 @@
         </footer>
     </div>
     
-    <script>
-        let allTenders = [];
-        let currentFilter = 'all';
-        let currentMonth = new Date();
-        let currentSearchTerm = '';
-        let displayedCount = 0;
-        const itemsPerPage = 20;
-        
-        // Load tenders from external JSON
-        fetch('tenders.json')
-            .then(response => response.json())
-            .then(data => {
-                // Handle both structured and direct array formats
-                allTenders = data.tenders || data;
-                console.log(`✅ Loaded ${allTenders.length} tenders from tenders.json`);
-                document.getElementById('totalCount').textContent = allTenders.length;
-                renderTenders('all');
-                renderCalendar();
-            })
-            .catch(err => {
-                console.error('❌ Error loading tenders:', err);
-                // Fallback to embedded data
-                allTenders = [
-        {
-                "ref": "RW10397693/25RR",
-                "title": "RW10397693/25RR - THE SUPPLY AND DELIVERY OF AMMONIUM HYDROXIDE TO RAND WATER\u2019S ZWARTKOPJES, EIKENHOF, PALMIET, AND MA",
-                "description": "THE SUPPLY AND DELIVERY OF AMMONIUM HYDROXIDE TO RAND WATER\u2019S ZWARTKOPJES, EIKENHOF, PALMIET, AND MAPLETON BOOSTER PUMPING STATIONS FOR A PERIOD OF TWENTY (20) YEARS",
-                "client": "Rand Water",
-                "priority": "MEDIUM",
-                "score": 6.3,
-                "category": "Phakathi",
-                "source": "Rand Water",
-                "url": "https://www.randwater.co.za/./media/sc_pdf/RW10397693 25RR.pdf",
-                "pdf_size": "",
-                "company": "Both",
-                "tes_score": 0,
-                "phakathi_score": 0,
-                "closing_date": "2026-01-19",
-                "contact": "Jabulile Molema - jmolema@randwater.co.za - 011 682 0393"
-        },
-        {
-                "ref": "RW10413976-25",
-                "title": "RW10413976-25 CALCIUM HYPOCHLORITE GRANULES - SUPPLY AND DELIVERY OF CALCIUM HYPOCHLORITE GRANULES TO RAND WATER SITES FOR A PERIOD OF SIXTY (60) ",
-                "description": "SUPPLY AND DELIVERY OF CALCIUM HYPOCHLORITE GRANULES TO RAND WATER SITES FOR A PERIOD OF SIXTY (60) MONTHS.",
-                "client": "Rand Water",
-                "priority": "MEDIUM",
-                "score": 5.3,
-                "category": "Unknown",
-                "source": "Rand Water",
-                "url": "https://www.randwater.co.za/./media/sc_pdf/RW010413976-25 RW Advert.pdf",
-                "pdf_size": "",
-                "company": "Both",
-                "tes_score": 0,
-                "phakathi_score": 0,
-                "closing_date": "2026-01-30",
-                "contact": "Johannes Sebothoma Tel no. (011) 682-0860  E-Mail:jsebotho@randwater.co.za"
-        },
-        {
-                "ref": "JW 14402",
-                "title": "TURFFONTEIN CORRIDORS OF FREEDOM \u2013 WATER UPGRADE (FORESTHILL TOWER AND PUMSTATION).",
-                "description": "Category: Construction. TURFFONTEIN CORRIDORS OF FREEDOM \u2013 WATER UPGRADE (FORESTHILL TOWER AND PUMSTATION).",
-                "client": "Johannesburg Water",
-                "priority": "LOW",
-                "score": 4.7,
-                "category": "Unknown",
-                "source": "Johannesburg Water",
-                "url": "https://www.johannesburgwater.co.za/tenders/",
-                "pdf_size": "",
-                "company": "TES",
-                "tes_score": 1,
-                "phakathi_score": 0,
-                "closing_date": "2026-02-16",
-                "contact": ""
-        },
-        {
-                "ref": "JW OPS 077/24",
-                "title": "REPAIRS AND MAINTENANCE OF LOW AND MEDIUM VOLTAGE ELECTRICAL INFRASTRUCTURE FOR\nBULK WASTEWATER WORKS AS AND WHEN REQUIRED FOR A PERIOD OF 36 MONTHS",
-                "description": "Category: Services: Electrical. REPAIRS AND MAINTENANCE OF LOW AND MEDIUM VOLTAGE ELECTRICAL INFRASTRUCTURE FOR\nBULK WASTEWATER WORKS AS AND WHEN REQUIRED FOR A PERIOD OF 36 MONTHS",
-                "client": "Johannesburg Water",
-                "priority": "MEDIUM",
-                "score": 5.3,
-                "category": "Phakathi",
-                "source": "Johannesburg Water",
-                "url": "https://www.johannesburgwater.co.za/tenders/",
-                "pdf_size": "",
-                "company": "Phakathi",
-                "tes_score": 1,
-                "phakathi_score": 3,
-                "closing_date": "2026-01-25",
-                "contact": ""
-        }
-];
-                renderTenders('all');
-                renderCalendar();
-            });
-        
-        // Calculate days until closing
-        function getDaysUntil(dateStr) {
-            if (!dateStr) return null;
-            const closing = new Date(dateStr);
-            const today = new Date();
-            today.setHours(0,0,0,0);
-            closing.setHours(0,0,0,0);
-            return Math.ceil((closing - today) / (1000 * 60 * 60 * 24));
-        }
-        
-        function getCountdownHtml(dateStr) {
-            const days = getDaysUntil(dateStr);
-            if (days === null) return '<span class="countdown normal">📅 TBC</span>';
-            if (days < 0) return '<span class="countdown closed">CLOSED</span>';
-            if (days === 0) return '<span class="countdown urgent">🔴 TODAY!</span>';
-            if (days === 1) return '<span class="countdown urgent">🔴 TOMORROW!</span>';
-            if (days <= 3) return `<span class="countdown urgent">⚠️ ${days} days</span>`;
-            if (days <= 7) return `<span class="countdown warning">📅 ${days} days</span>`;
-            return `<span class="countdown normal">📅 ${days} days</span>`;
-        }
-        
-        function searchTenders() {
-            currentSearchTerm = document.getElementById('searchBox').value.toLowerCase();
-            displayedCount = 0;
-            renderTenders(currentFilter);
-        }
-        
-        function renderTenders(filter, append = false) {
-            const list = document.getElementById('tenderList');
-            if (!append) {
-                list.innerHTML = '';
-                displayedCount = 0;
-            }
-            
-            // Filter by status (not closed)
-            let filtered = allTenders.filter(t => getDaysUntil(t.closing_date) === null || getDaysUntil(t.closing_date) >= 0);
-            
-            // Apply category/priority filter
-            if (filter === 'TES' || filter === 'Phakathi' || filter === 'Both') {
-                filtered = filtered.filter(t => t.company === filter);
-            } else if (filter === 'HIGH' || filter === 'MEDIUM' || filter === 'LOW') {
-                filtered = filtered.filter(t => t.priority === filter);
-            }
-            
-            // Apply search filter
-            if (currentSearchTerm) {
-                filtered = filtered.filter(t => 
-                    (t.ref || '').toLowerCase().includes(currentSearchTerm) ||
-                    (t.title || '').toLowerCase().includes(currentSearchTerm) ||
-                    (t.description || '').toLowerCase().includes(currentSearchTerm) ||
-                    (t.source || '').toLowerCase().includes(currentSearchTerm) ||
-                    (t.client || '').toLowerCase().includes(currentSearchTerm)
-                );
-            }
-            
-            // Sort by closing date (urgent first)
-            filtered.sort((a, b) => {
-                const daysA = getDaysUntil(a.closing_date) ?? 999;
-                const daysB = getDaysUntil(b.closing_date) ?? 999;
-                return daysA - daysB;
-            });
-            
-            // Update filter counts dynamically
-            const allActive = allTenders.filter(t => getDaysUntil(t.closing_date) === null || getDaysUntil(t.closing_date) >= 0);
-            document.getElementById('countAll').textContent = allActive.length;
-            document.getElementById('countTES').textContent = allActive.filter(t => t.company === 'TES').length;
-            document.getElementById('countPhakathi').textContent = allActive.filter(t => t.company === 'Phakathi').length;
-            document.getElementById('countHIGH').textContent = allActive.filter(t => t.priority === 'HIGH').length;
-            document.getElementById('countMEDIUM').textContent = allActive.filter(t => t.priority === 'MEDIUM').length;
-            document.getElementById('countLOW').textContent = allActive.filter(t => t.priority === 'LOW').length;
-            
-            document.getElementById('displayedCount').textContent = filtered.length;
-            
-            if (filtered.length === 0) {
-                list.innerHTML = '<li class="empty-state"><h3>No tenders found</h3><p>Try adjusting your filters or search term...</p></li>';
-                document.getElementById('loadMoreContainer').style.display = 'none';
-                return;
-            }
-            
-            // Pagination: Show first page or append next page
-            const startIndex = append ? displayedCount : 0;
-            const endIndex = Math.min(startIndex + itemsPerPage, filtered.length);
-            const toDisplay = filtered.slice(startIndex, endIndex);
-            
-            const html = toDisplay.map(t => {
-                const desc = t.description && t.description !== t.title ? t.description : '';
-                const isPdf = t.url && t.url.endsWith('.pdf');
-                const daysLeft = getDaysUntil(t.closing_date);
-                const urgencyClass = daysLeft !== null && daysLeft <= 3 ? 'urgent' : (daysLeft !== null && daysLeft <= 7 ? 'warning' : '');
-                
-                return `<li class="tender-item ${urgencyClass}" onclick="window.open('${t.url}', '_blank')">
-                    <div class="tender-content">
-                        <div class="tender-info">
-                            <div class="tender-header">
-                                <span class="tender-ref">${t.ref}</span>
-                                <span class="company-badge company-${t.company}">${t.company}</span>
-                                ${getCountdownHtml(t.closing_date)}
-                            </div>
-                            <div class="tender-title">${t.title} ${isPdf ? '📄' : ''}</div>
-                            ${desc ? `<div class="tender-description">${desc}</div>` : ''}
-                            <div class="tender-meta">
-                                <span>📍 ${t.client}</span>
-                                <span>📁 ${t.category}</span>
-                                <span>🔗 ${t.source}</span>
-                                ${t.contact ? `<span>📞 ${t.contact}</span>` : ''}
-                                ${t.pdf_size ? `<span>💾 ${t.pdf_size}</span>` : ''}
-                            </div>
-                        </div>
-                        <div class="tender-right">
-                            <span class="priority-badge priority-${t.priority}">${t.priority}</span>
-                            <div class="score">${t.score}</div>
-                            <a href="${t.url}" target="_blank" rel="noopener" class="view-btn" onclick="event.stopPropagation()">
-                                View ↗
-                            </a>
-                        </div>
-                    </div>
-                </li>`;
-            }).join('');
-            
-            if (append) {
-                list.innerHTML += html;
-            } else {
-                list.innerHTML = html;
-            }
-            
-            displayedCount = endIndex;
-            
-            // Show/hide load more button
-            if (endIndex < filtered.length) {
-                document.getElementById('loadMoreContainer').style.display = 'block';
-                document.getElementById('remainingCount').textContent = filtered.length - endIndex;
-            } else {
-                document.getElementById('loadMoreContainer').style.display = 'none';
-            }
-            
-            // Store current filtered set for load more
-            window.currentFiltered = filtered;
-        }
-        
-        function loadMore() {
-            renderTenders(currentFilter, true);
-        }
-        
-        function filterTenders(filter) {
-            currentFilter = filter;
-            document.querySelectorAll('.filter-tab').forEach(tab => {
-                tab.classList.remove('active');
-                if (tab.textContent.toLowerCase().includes(filter.toLowerCase()) || 
-                    (filter === 'all' && tab.textContent.includes('All')) ||
-                    (filter === 'HIGH' && tab.textContent.includes('Urgent'))) {
-                    tab.classList.add('active');
-                }
-            });
-            renderTenders(filter);
-        }
-        
-        function showTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
-            event.target.classList.add('active');
-            
-            if (tabId === 'calendar') renderCalendar();
-        }
-        
-        function renderCalendar() {
-            const grid = document.getElementById('calendarGrid');
-            const monthLabel = document.getElementById('calendarMonth');
-            
-            const year = currentMonth.getFullYear();
-            const month = currentMonth.getMonth();
-            
-            monthLabel.textContent = currentMonth.toLocaleDateString('en-ZA', { month: 'long', year: 'numeric' });
-            
-            const firstDay = new Date(year, month, 1);
-            const lastDay = new Date(year, month + 1, 0);
-            const startDay = firstDay.getDay();
-            const daysInMonth = lastDay.getDate();
-            
-            // Get tenders by date
-            const tendersByDate = {};
-            tenders.forEach(t => {
-                if (t.closing_date) {
-                    const date = t.closing_date;
-                    if (!tendersByDate[date]) tendersByDate[date] = [];
-                    tendersByDate[date].push(t);
-                }
-            });
-            
-            let html = '';
-            const today = new Date();
-            today.setHours(0,0,0,0);
-            
-            // Previous month days
-            for (let i = 0; i < startDay; i++) {
-                const day = new Date(year, month, -(startDay - i - 1));
-                html += `<div class="calendar-day other-month">${day.getDate()}</div>`;
-            }
-            
-            // Current month days
-            for (let day = 1; day <= daysInMonth; day++) {
-                const date = new Date(year, month, day);
-                const dateStr = date.toISOString().split('T')[0];
-                const isToday = date.getTime() === today.getTime();
-                const tendersOnDay = tendersByDate[dateStr] || [];
-                const hasTenders = tendersOnDay.length > 0;
-                
-                html += `<div class="calendar-day ${isToday ? 'today' : ''} ${hasTenders ? 'has-tenders' : ''}" 
-                    onclick="showDayTenders('${dateStr}')" title="${tendersOnDay.length} tender(s)">
-                    ${day}
-                    ${hasTenders ? `<span class="tender-count">${tendersOnDay.length}</span>` : ''}
-                </div>`;
-            }
-            
-            grid.innerHTML = html;
-        }
-        
-        function showDayTenders(dateStr) {
-            const container = document.getElementById('dayTenders');
-            const dayTenders = tenders.filter(t => t.closing_date === dateStr);
-            
-            if (dayTenders.length === 0) {
-                container.innerHTML = `<p style="color: #888; text-align: center;">No tenders closing on ${dateStr}</p>`;
-                return;
-            }
-            
-            container.innerHTML = `
-                <h3 style="margin-bottom: 15px;">📅 Closing on ${new Date(dateStr).toLocaleDateString('en-ZA', { weekday: 'long', day: 'numeric', month: 'long' })}</h3>
-                ${dayTenders.map(t => `
-                    <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; margin: 10px 0; cursor: pointer;" onclick="window.open('${t.url}', '_blank')">
-                        <span style="color: #667eea; font-weight: bold;">${t.ref}</span>
-                        <span class="company-badge company-${t.company}" style="margin-left: 10px;">${t.company}</span>
-                        <div style="color: #ccc; margin-top: 5px;">${t.title}</div>
-                        <div style="color: #888; font-size: 0.8rem; margin-top: 5px;">📍 ${t.client}</div>
-                    </div>
-                `).join('')}
-            `;
-        }
-        
-        function changeMonth(delta) {
-            currentMonth.setMonth(currentMonth.getMonth() + delta);
-            renderCalendar();
-        }
-        
-        // Initial render
-        renderTenders('all');
-    </script>
+    <!-- Load Chart.js for analytics -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <!-- Load Hammer.js for mobile gestures -->
+    <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8/hammer.min.js"></script>
+    <!-- Load SheetJS for Excel export -->
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.0/package/dist/xlsx.full.min.js"></script>
+    <!-- Load jsPDF for PDF export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <!-- Load modular dashboard application -->
+    <script type="module" src="js/index.js"></script>
 </body>
 </html>

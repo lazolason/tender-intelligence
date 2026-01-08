@@ -40,7 +40,7 @@ def load_email_config():
     # Build configuration dict
     result = {
         "smtp_server": os.getenv('SMTP_SERVER', email_config.get('smtp_server', 'smtp.gmail.com')),
-        "smtp_port": int(os.getenv('SMTP_PORT', str(email_config.get('smtp_port', 587)))),
+        "smtp_port": int(os.getenv('SMTP_PORT', str(email_config.get('smtp_port', 587))),
         "sender_email": os.getenv('SMTP_USER', os.getenv('EMAIL_FROM', email_config.get('from_address', ''))),
         "sender_password": os.getenv('SMTP_PASSWORD', ''),
         "recipient_emails": [],
@@ -90,7 +90,7 @@ class EmailAlerter:
         if not tenders:
             logger.info("No urgent tenders to alert on.")
             return False
-
+        
         # Requirements: filter for HIGH priority tenders
         high_priority = []
         for tender in tenders:
@@ -98,7 +98,7 @@ class EmailAlerter:
             priority = (scores.get("priority") or (tender or {}).get("priority") or "").upper()
             if priority == "HIGH":
                 high_priority.append(tender)
-
+        
         if not high_priority:
             logger.info("No HIGH priority urgent tenders to alert on.")
             return False
@@ -106,7 +106,7 @@ class EmailAlerter:
         if not self.recipients:
             logger.warning("No recipients configured for email alerts")
             return False
-
+        
         if not self.sender_email or not self.sender_password:
             logger.warning("Email alerts enabled, but sender credentials are missing.")
             return False
@@ -136,7 +136,7 @@ class EmailAlerter:
             # Requirements: handle errors gracefully
             logger.error(f"❌ Failed to send email alert: {e}")
             return False
-
+    
     def send_scraper_failure_alert(self, failing_sources: Dict[str, Dict[str, Any]]):
         """
         Send email alert when scrapers fail repeatedly (e.g., 3 times in a row).
@@ -147,18 +147,18 @@ class EmailAlerter:
         failing_sources = failing_sources or {}
         if not failing_sources:
             return False
-
+        
         if not self.recipients:
             logger.warning("No recipients configured for scraper failure alerts")
             return False
-
+        
         if not self.sender_email or not self.sender_password:
             logger.warning("Scraper failure alerts enabled, but sender credentials are missing.")
             return False
-
+        
         sources = list(failing_sources.keys())
         subject = f"⚠️ Scraper Alert: {len(sources)} Source{'' if len(sources) == 1 else 's'} Failing Repeatedly"
-
+        
         plain_lines = ["SCRAPER FAILURE ALERT", "=" * 50, ""]
         plain_lines.append("The following sources have failed 3 times in a row:")
         plain_lines.append("")
@@ -170,7 +170,7 @@ class EmailAlerter:
         plain_lines.append("")
         plain_lines.append("Recommendation: consider disabling or investigating these scrapers.")
         plain_text = "\n".join(plain_lines)
-
+        
         html_rows = ""
         for src in sources:
             m = failing_sources.get(src, {}) or {}
@@ -187,7 +187,7 @@ class EmailAlerter:
                 <td style="padding: 12px; color:#444;">{err}</td>
             </tr>
             """
-
+        
         html_body = f"""
         <!DOCTYPE html>
         <html>
@@ -203,7 +203,7 @@ class EmailAlerter:
                 </div>
                 <div style="padding: 18px 18px 8px 18px;">
                     <p style="margin: 0 0 12px 0; color: #333;">
-                        Recommendation: consider disabling or investigating the scrapers below.
+                        Recommendation: consider disabling or investigating these scrapers.
                     </p>
                     <table style="border-collapse: collapse; width: 100%; margin: 12px 0;">
                         <tr>
@@ -223,14 +223,14 @@ class EmailAlerter:
         </body>
         </html>
         """
-
+        
         msg = MIMEMultipart("alternative")
         msg["Subject"] = subject
         msg["From"] = self.sender_email
         msg["To"] = ", ".join(self.recipients)
         msg.attach(MIMEText(plain_text, "plain"))
         msg.attach(MIMEText(html_body, "html"))
-
+        
         try:
             with smtplib.SMTP(self.smtp_server, self.smtp_port) as server:
                 server.starttls()
@@ -352,7 +352,7 @@ class EmailAlerter:
                 border-radius: 12px;
                 box-shadow: 0 2px 8px rgba(0,0,0,0.1);
                 overflow: hidden;">
-
+        
                 <!-- Header -->
                 <div style="
                     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -372,7 +372,7 @@ class EmailAlerter:
                         The following tenders require immediate attention
                     </p>
                 </div>
-
+        
                 <!-- Content -->
                 <div style="padding: 30px 20px;">
                     <p style="
@@ -382,7 +382,7 @@ class EmailAlerter:
                         <strong>{len(tenders)}</strong> urgent tender{'' if len(tenders) == 1 else 's'}
                         {'is' if len(tenders) == 1 else 'are'} closing soon and require immediate review:
                     </p>
-
+        
                     <!-- Tenders Table -->
                     <table style="
                         width: 100%;
@@ -445,7 +445,7 @@ class EmailAlerter:
                         </tbody>
                     </table>
                 </div>
-
+        
                 <!-- Footer -->
                 <div style="
                     padding: 20px;
@@ -456,7 +456,7 @@ class EmailAlerter:
                         margin: 0 0 10px 0;
                         color: #666;
                         font-size: 14px;">
-                        View the full dashboard for more details:
+                        View full dashboard for more details:
                     </p>
                     <a href="https://tender-intelligence-dashboard.vercel.app" style="
                         display: inline-block;
@@ -480,18 +480,43 @@ class EmailAlerter:
         </body>
         </html>
         """
+    
+    def send_email(subject, html_content):
+        """Send email via SMTP"""
+        if not EMAIL_CONFIG["sender_email"] or not EMAIL_CONFIG["recipient_emails"]:
+            logger.warning("⚠️ Email not configured. Update EMAIL_CONFIG in utils/email_alerts.py")
+            return False
+        
+        try:
+            msg = MIMEMultipart("alternative")
+            msg["Subject"] = subject
+            msg["From"] = EMAIL_CONFIG["sender_email"]
+            msg["To"] = ", ".join(EMAIL_CONFIG["recipient_emails"])
+            
+            msg.attach(MIMEText(html_content, "html"))
+            
+            with smtplib.SMTP(EMAIL_CONFIG["smtp_server"], EMAIL_CONFIG["smtp_port"]) as server:
+                server.starttls()
+                server.login(EMAIL_CONFIG["sender_email"], EMAIL_CONFIG["sender_password"])
+                server.sendmail(
+                    EMAIL_CONFIG["sender_email"],
+                    EMAIL_CONFIG["recipient_emails"],
+                    msg.as_string()
+                )
+            
+            logger.info("✅ Email sent successfully!")
+            return True
+        except Exception as e:
+            logger.error(f"❌ Email failed: {e}")
+            return False
 
-
-# ============================================================
-# DAILY DIGEST FUNCTIONS (for daily_runner.py)
-# ============================================================
 
 def load_tender_payload():
-    """Load the canonical tenders payload used by the deployed dashboard."""
+    """Load canonical tenders payload used by the deployed dashboard."""
     automation_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     dashboard_tenders_json = os.path.join(automation_dir, "vercel-dashboard", "tenders.json")
     legacy_tenders_json = os.path.join(automation_dir, "output", "new_tenders.json")
-
+    
     for path in (dashboard_tenders_json, legacy_tenders_json):
         if not os.path.exists(path):
             continue
@@ -500,15 +525,15 @@ def load_tender_payload():
                 payload = json.load(f)
         except Exception:
             continue
-
-        if isinstance(payload, list):
-            return {"tenders": payload, "meta": {}, "source_path": path}
-        if isinstance(payload, dict):
-            tenders = payload.get("tenders") or payload.get("data") or []
-            meta = payload.get("meta") or {}
-            if isinstance(tenders, list) and isinstance(meta, dict):
-                return {"tenders": tenders, "meta": meta, "source_path": path}
-
+    
+    if isinstance(payload, list):
+        return {"tenders": payload, "meta": {}, "source_path": path}
+    if isinstance(payload, dict):
+        tenders = payload.get("tenders") or payload.get("data") or []
+        meta = payload.get("meta") or {}
+        if isinstance(tenders, list) and isinstance(meta, dict):
+            return {"tenders": tenders, "meta": meta, "source_path": path}
+    
     return {"tenders": [], "meta": {}, "source_path": None}
 
 
@@ -545,14 +570,14 @@ def generate_email_html(tenders, meta=None):
     """Generate HTML email content"""
     meta = meta or {}
     build_id = meta.get("build_id") or meta.get("last_sync") or datetime.now().strftime("%Y-%m-%d %H:%M")
-
+    
     high_priority = [t for t in tenders if t.get("scores", {}).get("priority") == "HIGH"]
     medium_priority = [t for t in tenders if t.get("scores", {}).get("priority") == "MEDIUM"]
-
+    
     # Sort by closing date
     for lst in [high_priority, medium_priority]:
         lst.sort(key=lambda x: x.get("closing_date", "9999-99-99"))
-
+    
     html = f"""
     <html>
     <head>
@@ -583,18 +608,18 @@ def generate_email_html(tenders, meta=None):
             <p style="color: #888;">{datetime.now().strftime("%A, %d %B %Y")}</p>
             <p style="color: #888; font-size: 11px; margin-top: 0;">Build stamp: <strong>{build_id}</strong></p>
     """
-
+    
     if high_priority:
         html += f"<h2 style='color: #ff6b6b;'>🔥 High Priority ({len(high_priority)})</h2>"
         for t in high_priority:
             days = get_days_until_closing(t.get("closing_date"))
             urgency = get_urgency_text(days)
             urgency_class = "red" if days is not None and days <= 3 else "orange" if days is not None and days <= 7 else "green"
-
+            
             scores = t.get("scores", {})
             company = "TES" if scores.get("tes", 0) > scores.get("phakathi", 0) else "Phakathi" if scores.get("phakathi", 0) > scores.get("tes", 0) else "Both"
             company_class = "tes" if company == "TES" else "phakathi"
-
+            
             html += f"""
             <div class="tender high">
                 <span class="ref">{t.get('ref', 'N/A')}</span>
@@ -604,16 +629,16 @@ def generate_email_html(tenders, meta=None):
                 <div class="meta">📍 {t.get('client', 'Unknown')} | 📁 {t.get('category', 'Unknown')} | Score: {scores.get('composite', 0)}</div>
             </div>
             """
-
+    
     if medium_priority:
         html += f"<h2 style='color: #feca57;'>✅ Medium Priority ({len(medium_priority)})</h2>"
         for t in medium_priority[:5]:  # Limit to 5
             days = get_days_until_closing(t.get("closing_date"))
             urgency = get_urgency_text(days)
-
+            
             scores = t.get("scores", {})
             company = "TES" if scores.get("tes", 0) > scores.get("phakathi", 0) else "Phakathi" if scores.get("phakathi", 0) > scores.get("tes", 0) else "Both"
-
+            
             html += f"""
             <div class="tender medium">
                 <span class="ref">{t.get('ref', 'N/A')}</span>
@@ -622,10 +647,10 @@ def generate_email_html(tenders, meta=None):
                 <div class="meta">📍 {t.get('client', 'Unknown')} | {urgency}</div>
             </div>
             """
-
+    
     if not high_priority and not medium_priority:
         html += "<p style='text-align: center; color: #888; padding: 40px;'>No high or medium priority tenders today. 📭</p>"
-
+    
     html += f"""
             <div class="footer">
                 <p>View full dashboard: <a href="https://tender-intelligence-dashboard.vercel.app/">https://tender-intelligence-dashboard.vercel.app/</a></p>
@@ -635,7 +660,7 @@ def generate_email_html(tenders, meta=None):
     </body>
     </html>
     """
-
+    
     return html
 
 
@@ -644,15 +669,15 @@ def send_email(subject, html_content):
     if not EMAIL_CONFIG["sender_email"] or not EMAIL_CONFIG["recipient_emails"]:
         logger.warning("⚠️ Email not configured. Update EMAIL_CONFIG in utils/email_alerts.py")
         return False
-
+    
     try:
         msg = MIMEMultipart("alternative")
         msg["Subject"] = subject
         msg["From"] = EMAIL_CONFIG["sender_email"]
         msg["To"] = ", ".join(EMAIL_CONFIG["recipient_emails"])
-
+        
         msg.attach(MIMEText(html_content, "html"))
-
+        
         with smtplib.SMTP(EMAIL_CONFIG["smtp_server"], EMAIL_CONFIG["smtp_port"]) as server:
             server.starttls()
             server.login(EMAIL_CONFIG["sender_email"], EMAIL_CONFIG["sender_password"])
@@ -661,7 +686,7 @@ def send_email(subject, html_content):
                 EMAIL_CONFIG["recipient_emails"],
                 msg.as_string()
             )
-
+        
         logger.info("✅ Email sent successfully!")
         return True
     except Exception as e:
@@ -672,18 +697,18 @@ def send_email(subject, html_content):
 def send_daily_digest():
     """Main function to send daily digest"""
     logger.info("📧 Preparing daily tender digest...")
-
+    
     payload = load_tender_payload()
     tenders = payload.get("tenders") or []
     meta = payload.get("meta") or {}
     high_count = sum(1 for t in tenders if t.get("scores", {}).get("priority") == "HIGH")
-
+    
     if high_count == 0:
         logger.info("   No high priority tenders - skipping email")
         return False
-
+    
     stamp = meta.get("build_id") or meta.get("last_sync") or datetime.now().strftime("%Y-%m-%d")
     subject = f"🎯 {high_count} High Priority Tender{'s' if high_count != 1 else ''} - {stamp}"
     html = generate_email_html(tenders, meta=meta)
-
+    
     return send_email(subject, html)

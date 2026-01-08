@@ -5,6 +5,7 @@
 
 import os
 import sys
+from typing import Dict, List, Optional, Tuple, Any
 from openpyxl import Workbook, load_workbook
 from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
 from datetime import datetime
@@ -13,12 +14,12 @@ import re
 
 # Assuming these are in the parent directory, adjust if necessary
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from classify_engine import classify_tender
 from scoring_engine import score_tender
 from utils.duplicate_detector import find_duplicate, find_best_title_match
 
 logger = logging.getLogger(__name__)
-
 # Column headers (with new scoring columns)
 HEADERS = [
     "Tender Name",
@@ -50,7 +51,22 @@ PRIORITY_COLORS = {
 
 
 class ExcelWriter:
-    """Writes tender data to Excel spreadsheet with scoring"""
+    """
+    Writes tender data to Excel spreadsheet with scoring.
+    
+    Manages Excel workbook operations including:
+    - Loading existing workbooks or creating new ones
+    - Writing tender data with duplicate detection
+    - Applying scoring and formatting
+    - Maintaining caches for performance
+    
+    Attributes:
+        file_path: Path to Excel file
+        sheet_name: Name of worksheet
+        log_file_path: Path to log file for logging
+        fuzzy_duplicate_threshold: Threshold for fuzzy duplicate detection (0-100)
+        fuzzy_date_window_days: Days window for date-based duplicate matching
+    """
     
     def __init__(
         self,
@@ -60,7 +76,17 @@ class ExcelWriter:
         log_file_path: str = None,
         fuzzy_duplicate_threshold: int = 85,
         fuzzy_date_window_days: int = 7,
-    ):
+    ) -> None:
+        """
+        Initialize Excel writer.
+        
+        Args:
+            file_path: Path to Excel file
+            sheet_name: Name of worksheet (default: "Tender_Log")
+            log_file_path: Optional path to log file
+            fuzzy_duplicate_threshold: Fuzzy match threshold (default: 85)
+            fuzzy_date_window_days: Date window for duplicates (default: 7)
+        """
         self.file_path = file_path
         self.sheet_name = sheet_name
         self.log_file_path = log_file_path
@@ -69,20 +95,34 @@ class ExcelWriter:
         self._existing_refs_cache = None
         self._existing_tenders_cache = None
         self._ensure_workbook()
-
-    def _log(self, message: str, level: str = "INFO"):
-        if self.log_file_path:
-            try:
-                from utils.logging_tools import write_log
-
-                write_log(self.log_file_path, message, level)
-                return
-            except Exception:
-                pass
-        print(message)
+def _log(self, message: str, level: str = "INFO") -> None:
+    """
+    Log message to file and console
     
-    def _ensure_workbook(self):
-        """Create workbook if it doesn't exist"""
+    Args:
+        message: Message to log
+        level: Log level (default: "INFO")
+    """
+    if self.log_file_path:
+        try:
+            from utils.logging_tools import write_log
+
+            write_log(self.log_file_path, message, level)
+            return
+        except Exception:
+            pass
+    
+    print(message)
+    
+    def _ensure_workbook(self) -> None:
+        """
+        Create workbook if it doesn't exist, otherwise load existing one
+        
+        Side effects:
+            Sets self.wb to the workbook object
+            Creates headers if new workbook
+            Saves the workbook to file
+        """
         if os.path.exists(self.file_path):
             self.wb = load_workbook(self.file_path)
         else:
@@ -91,8 +131,14 @@ class ExcelWriter:
             self._write_headers()
             self.wb.save(self.file_path)
     
-    def _write_headers(self):
-        """Write column headers with formatting"""
+    def _write_headers(self) -> None:
+        """
+        Write column headers with formatting
+        
+        Side effects:
+            Writes headers to first row of worksheet
+            Applies font, fill, alignment, and column width formatting
+        """
         ws = self.wb.active
         
         # Header style
@@ -163,26 +209,32 @@ class ExcelWriter:
         match = re.match(r"^(.*?)\s*\(", value)
         return (match.group(1) if match else value).strip() or "Unknown"
 
-    def _get_existing_tenders_metadata(self):
+    def _get_existing_tenders_metadata(self) -> List[Dict[str, any]]:
+        """
+        Get metadata for existing tenders from Excel sheet
+        
+        Returns:
+            List of tender metadata dictionaries with ref, title, source, closing_date
+        """
         if self._existing_tenders_cache is not None:
             return self._existing_tenders_cache
-
+ 
         ws = self.wb.active
         tenders = []
-
+ 
         for row in range(2, ws.max_row + 1):
             tender_name = ws.cell(row=row, column=1).value
             industry = ws.cell(row=row, column=4).value
             closing_date = ws.cell(row=row, column=13).value
             ref = ws.cell(row=row, column=17).value
-
+ 
             ref_norm = str(ref).strip().upper() if ref else ""
             title = self._extract_title_from_tender_name(tender_name)
             source = self._extract_source_from_industry_cell(industry)
-
+ 
             if not title and not ref_norm:
                 continue
-
+ 
             tenders.append(
                 {
                     "ref": ref_norm,
@@ -191,7 +243,7 @@ class ExcelWriter:
                     "closing_date": str(closing_date).strip() if closing_date else "",
                 }
             )
-
+ 
         self._existing_tenders_cache = tenders
         return tenders
     
@@ -203,7 +255,28 @@ class ExcelWriter:
                     tes_fit: int = None, phakathi_fit: int = None) -> bool:
         """
         Write a single tender to Excel
-        Returns True if added, False if duplicate
+        
+        Args:
+            tender_name: Full tender name (e.g., "REF-001 - Title")
+            client: Client organization name
+            tender_type: Tender category/classification
+            industry: Industry type with source
+            fit_score: TES fit score (0-10)
+            stage: Tender stage (e.g., "New", "In Progress")
+            closing_date: Tender closing date string
+            status: Current status (e.g., "Open", "Closed")
+            next_action: Recommended next action
+            notes: Additional notes
+            reference_number: Tender reference number
+            composite_score: Overall composite score (0-10)
+            priority: Priority level (HIGH, MEDIUM, LOW)
+            risk_level: Risk assessment (Low, Medium, High)
+            revenue_potential: Revenue potential (Low, Medium, High)
+            tes_fit: TES suitability score (0-10)
+            phakathi_fit: Phakathi suitability score (0-10)
+            
+        Returns:
+            True if tender was added, False if duplicate
         """
         
         # Check for duplicates
@@ -272,9 +345,29 @@ class ExcelWriter:
             )
         return True
 
-    def add_tender_with_scoring(self, tender_data: dict):
+    def add_tender_with_scoring(self, tender_data: dict) -> Tuple[bool, Dict[str, Any], Dict[str, Any]]:
         """
-        Scores a tender and writes it to the Excel file.
+        Score a tender and write it to Excel file.
+        
+        Args:
+            tender_data: Dictionary containing tender information with keys:
+                - ref: Reference number
+                - title: Tender title
+                - description: Tender description
+                - client: Client organization
+                - closing_date: Closing date string
+                - source: Source name
+                
+        Returns:
+            Tuple of (was_added, scores_dict, classification_dict)
+            - was_added: True if tender was written, False if duplicate
+            - scores_dict: Dictionary with scoring results
+            - classification_dict: Dictionary with classification results
+            
+        Side effects:
+            - Writes to Excel file if not duplicate
+            - Updates internal caches
+            - Logs duplicate warnings
         """
         # Fuzzy duplicate check (skip scoring if likely duplicate)
         try:
