@@ -23,9 +23,9 @@ Remove confirmed duplicates, unused files, and dead code from the repo while cre
   - Dependencies: Task 3
   - Success: Only one canonical copy remains per duplicate group
 - [x] **Task 5**: Resolve frontend artifact ambiguity (kept both entrypoints; removed unused scripts + build refs) [MEDIUM RISK] [DONE]
-  - Files: `vercel-dashboard/index.html`, `vercel-dashboard/js/*`, `vercel-dashboard/script.js`, `vercel-dashboard/service-worker.js`
+  - Files: `vercel-dashboard/index.html` (uses inline scripts), `vercel-dashboard/js/*` (modular structure, not integrated), `vercel-dashboard/service-worker.js`
   - Dependencies: Task 2
-  - Success: Clear primary entrypoint and unused frontend files removed
+  - Success: Removed legacy `script.js`, kept inline scripts in index.html for stability
 - [x] **Task 6**: Remove unused files (non-frontend) [LOW RISK] [DONE]
   - Files: `assets/*`, `input/*`, `scrapers/*`, `utils/*`, `.claude/*`, `.vscode/*`, `.mcp.json`
   - Dependencies: Task 3
@@ -52,7 +52,8 @@ Cleanup complete.
 
 ## Review Summary
 ### Changes Made
-- `vercel-dashboard/script.js`, `vercel-dashboard/js/modules/config.js`: removed build/tenders URL fallbacks after deleting build artifacts.
+- `vercel-dashboard/js/modules/config.js`: removed build/tenders URL fallbacks after deleting build artifacts.
+- `vercel-dashboard/script.js`: deleted legacy monolithic script (functionality preserved in index.html inline scripts).
 - `classify_engine.py`, `keyword_rules.py`, `scrapers/national_treasury.py`, `scrapers/national_treasury_selenium.py`, `tools/chromedriver_manager.py`, `utils/bid_tracker.py`, `utils/folder_tools.py`, `utils/logging_tools.py`, `utils/multi_channel_alerts.py`, `utils/pdf_tools.py`, `utils/text_cleaner.py`, `tenderscan.py`: removed unused definitions and imports.
 - Deleted unused/duplicate assets and data snapshots (e.g., `vercel-dashboard/public/build/*`, dated `tenders-2025-12-13/14/15/16.json`, `assets/target_icon.png`, `gemini-king-mode.pdf`, `input/tenders.csv`, `input/test_scoring.csv`, `scrapers/etenders_selenium.py`, `utils/email_alerts_fixed.py`, `vercel-dashboard/js/advanced-filters.js`, `vercel-dashboard/js/notifications.js`, `vercel-dashboard/js/pwa-diagnostics.js`).
 
@@ -142,7 +143,7 @@ Verify the `/api/summarize` endpoint is working correctly and ensure the fronten
 
 ### Phase 3: Frontend Integration Verification
 - [ ] **Task 3.1**: Verify frontend can call the endpoint [LOW RISK]
-  - Files: `vercel-dashboard/script.js` (already implemented, verify only)
+  - Files: `vercel-dashboard/index.html` (inline scripts contain summarizeTender() function)
   - Check: `summarizeTender()` function exists and calls `/api/summarize`
   - Validation: Open browser console, no 404 or CORS errors
 
@@ -157,9 +158,9 @@ Verify the `/api/summarize` endpoint is working correctly and ensure the fronten
   - Expected: Beautiful formatted summary appears in modal
 
 - [ ] **Task 3.3**: Verify caching works [LOW RISK]
-  - Files: `vercel-dashboard/script.js` (already implemented)
+  - Files: `vercel-dashboard/index.html` (inline caching logic)
   - Test: Click "AI Summary" twice on same tender
-  - Expected: 
+  - Expected:
     - First click: API call (slow, ~2-3s)
     - Second click: Instant from localStorage cache
     - Regenerate button (↻) clears cache and fetches fresh
@@ -181,11 +182,11 @@ Verify the `/api/summarize` endpoint is working correctly and ensure the fronten
 - [ ] **Task 5.1**: Add retry logic for API failures [MEDIUM RISK]
   - Current: Single API call, fails if timeout
   - Enhancement: Auto-retry once on 5xx errors
-  - Files: `vercel-dashboard/script.js`
+  - Files: `vercel-dashboard/index.html` (inline scripts)
 
 - [ ] **Task 5.2**: Add model selection dropdown [LOW RISK]
   - Allow users to choose between different Claude models
-  - Files: `vercel-dashboard/index.html`, `vercel-dashboard/script.js`
+  - Files: `vercel-dashboard/index.html` (inline scripts)
 
 ---
 

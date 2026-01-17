@@ -72,8 +72,8 @@ Build user interface components for tender summarization.
 - Vanilla JavaScript (fetch API, localStorage)
 
 ### Key Files
-- `vercel-dashboard/index.html` - Full dashboard with modal implementation
-- `vercel-dashboard/script.js` - JavaScript functionality
+- `vercel-dashboard/index.html` - Full dashboard with modal implementation (uses inline scripts)
+- `vercel-dashboard/js/` - Modular JavaScript structure (modern alternative, not yet integrated into index.html)
 
 ---
 
@@ -157,7 +157,7 @@ Implement robust error handling and auto-retry logic.
 - Error boundary patterns
 
 ### Key Files
-- `vercel-dashboard/script.js` - Enhanced `summarizeTender()` function (lines 2763-2981)
+- `vercel-dashboard/index.html` - Contains inline `summarizeTender()` function (AI summary logic)
 
 ---
 
@@ -195,8 +195,7 @@ Allow users to choose between different algorithm options for summarization.
    - Restored on page load
 
 #### Code Locations
-- `vercel-dashboard/index.html` - Dropdown HTML (modal footer)
-- `vercel-dashboard/script.js` - Model selection logic
+- `vercel-dashboard/index.html` - Dropdown HTML (modal footer) + inline model selection logic
 - `app.py` - Backend model parameter handling (line 383)
 
 ---
@@ -246,7 +245,7 @@ tender-intelligence/
 ├── DEPLOYMENT.md               # Production deployment guide
 ├── vercel-dashboard/
 │   ├── index.html              # Dashboard UI with modal
-│   ├── script.js               # JavaScript functionality
+│   ├── js/                     # Modular JavaScript structure (not yet integrated)
 │   ├── style.css               # Styling
 │   ├── service-worker.js       # PWA offline support
 │   └── manifest.json           # PWA manifest

@@ -266,16 +266,18 @@ def _within_days(a: Optional[date], b: Optional[date], *, days: int) -> bool:
 
 ### 6.1 JavaScript Files Analyzed
 
-| File | Lines | Purpose |
-|------|-------|---------|
-| `vercel-dashboard/script.js` | 3500+ | Main dashboard logic |
-| `vercel-dashboard/js/notifications.js` | ~200 | Notification management |
-| `vercel-dashboard/js/analytics.js` | ~300 | Tender analytics |
-| `vercel-dashboard/js/advanced-filters.js` | ~400 | Advanced filtering |
-| `vercel-dashboard/js/pwa-diagnostics.js` | ~150 | PWA diagnostics |
+| File | Lines | Purpose | Status |
+|------|-------|---------|--------|
+| `vercel-dashboard/index.html` | ~5000+ | Main dashboard with inline scripts | Active (primary) |
+| `vercel-dashboard/js/analytics.js` | ~300 | Tender analytics module | Active (modular) |
+| `vercel-dashboard/js/modules/config.js` | ~50 | Configuration module | Active (modular) |
+| ~~`vercel-dashboard/script.js`~~ | ~~3500+~~ | ~~Main dashboard logic~~ | Deleted (replaced by inline scripts) |
+| ~~`vercel-dashboard/js/notifications.js`~~ | ~~200~~ | ~~Notification management~~ | Deleted (unused) |
+| ~~`vercel-dashboard/js/advanced-filters.js`~~ | ~~400~~ | ~~Advanced filtering~~ | Deleted (unused) |
+| ~~`vercel-dashboard/js/pwa-diagnostics.js`~~ | ~~150~~ | ~~PWA diagnostics~~ | Deleted (unused) |
 
-**Duplicate Code Found:** None significant  
-**Status:** JavaScript code is well-organized with minimal duplication
+**Duplicate Code Found:** None significant
+**Status:** Legacy `script.js` removed; dashboard uses inline scripts for stability. Modular `js/` structure exists but not yet integrated.
 
 ---
 
