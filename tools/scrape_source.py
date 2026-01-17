@@ -16,13 +16,10 @@ from scrapers.soes import (
     scrape_rand_water,
     scrape_transnet,
     scrape_sanral,
-    scrape_umgeni_water,
     scrape_sasol,
-    scrape_sanedi,
     scrape_anglo_american,
     scrape_harmony_gold,
     scrape_seriti,
-    scrape_exxaro,
     scrape_joburg_water,
     scrape_eskom,
 )
@@ -83,13 +80,10 @@ def run_scraper(scraper: str, config: Dict[str, Any]) -> List[Dict[str, Any]]:
             scrape_rand_water,
             scrape_transnet,
             scrape_sanral,
-            scrape_umgeni_water,
             scrape_sasol,
-            scrape_sanedi,
             scrape_anglo_american,
             scrape_harmony_gold,
             scrape_seriti,
-            scrape_exxaro,
         ):
             try:
                 tenders.extend(fn())
@@ -161,4 +155,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

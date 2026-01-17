@@ -1,45 +1,31 @@
 {
     "generated_at": "2025-12-16 08:16",
     "build_id": "2025-12-16 08:16 · c0ee2ac",
-    "build_sha": "c0ee2ac",
+    "build_sha": "c7a7ace",
     "next_run": "Daily 08:00",
     "counts": {
-        "total": 3,
+        "total": 2,
         "by_company": {
-            "Unknown": 3
+            "Unknown": 2
         },
         "by_priority": {
-            "MEDIUM": 2,
-            "LOW": 1
+            "MEDIUM": 2
         },
         "by_source": {
-            "Rand Water": 2,
-            "City of Ekurhuleni": 1
+            "Rand Water": 2
         }
     },
     "top": [
-        {
-            "title": "Open Tenders (Over R750 000)",
-            "source": "City of Ekurhuleni",
-            "company": "Unknown",
-            "priority": "LOW",
-            "close_date": "15/12/2025",
-            "fit": null,
-            "revenue": null,
-            "risk": null,
-            "suitability": 4.5,
-            "url": ""
-        },
         {
             "title": "RW10397693/25RR - THE SUPPLY AND DELIVERY OF AMMONIUM HYDROXIDE TO RAND WATER’S ZWARTKOPJES, EIKENHOF, PALMIET, AND MA",
             "source": "Rand Water",
             "company": "Unknown",
             "priority": "MEDIUM",
             "close_date": "2026-01-19",
-            "fit": null,
-            "revenue": null,
-            "risk": null,
-            "suitability": 5.8,
+            "fit": 6.0,
+            "revenue": 5.0,
+            "risk": 7.0,
+            "suitability": 8.0,
             "url": "https://www.randwater.co.za/./media/sc_pdf/RW10397693 25RR.pdf"
         },
         {
@@ -48,10 +34,10 @@
             "company": "Unknown",
             "priority": "MEDIUM",
             "close_date": "2026-01-30",
-            "fit": null,
-            "revenue": null,
-            "risk": null,
-            "suitability": 5.3,
+            "fit": 5.0,
+            "revenue": 5.0,
+            "risk": 7.0,
+            "suitability": 8.0,
             "url": "https://www.randwater.co.za/./media/sc_pdf/RW010413976-25 RW Advert.pdf"
         }
     ]

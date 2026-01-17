@@ -14,22 +14,15 @@ logger = logging.getLogger(__name__)
 
 DEFAULT_ALLOWED_SOURCES = [
     "National Treasury",
-    "City of Ekurhuleni",
-    "City of Tshwane",
     "City of Cape Town",
-    "eThekwini Municipality",
     "Rand Water",
     "Johannesburg Water",
     "Transnet",
     "Eskom",
     "SANRAL",
-    "Umgeni Water",
-    "Sasol",
-    "SANEDI",
     "Anglo American",
     "Harmony Gold",
     "Seriti Resources",
-    "Exxaro",
     "Unknown",
 ]
 
@@ -217,4 +210,3 @@ def format_validation_report(
             lines.append(f"  - {ex}")
 
     return "\n".join(lines) + "\n"
-

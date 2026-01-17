@@ -16,7 +16,6 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from scrapers.municipalities import scrape_all_municipalities
 from scrapers.soes import scrape_all_soes
 # NOTE: Umgeni, Eskom, SANRAL, Transnet scrapers disabled - etenders.gov.za API returns 405
-# from scrapers.umgeni_water import scrape_umgeni_water
 # from scrapers.eskom import scrape_eskom
 # from scrapers.sanral import scrape_sanral
 # from scrapers.transnet import scrape_transnet
@@ -157,7 +156,6 @@ def run_all_scrapers(monitor: ScraperMonitor = None):
     
     # NOTE: Disabled non-functional scrapers (405 errors on etenders.gov.za API)
     # TODO: Research correct etenders.gov.za API endpoints for:
-    # - Umgeni Water
     # - Eskom
     # - SANRAL
     # - Transnet

@@ -25,19 +25,12 @@ SOURCE_URLS = {
     "National Treasury": "https://www.etenders.gov.za/Home/opportunities?TextSearch=",
     "Rand Water": "https://www.randwater.co.za/availabletenders.php",
     "Eskom": "https://www.eskom.co.za/eskom-tenders/",
-    "Ekurhuleni": "https://www.ekurhuleni.gov.za/scm-tenders",
-    "Tshwane": "https://www.tshwane.gov.za/sites/Departments/Financial-Services/Pages/Tenders.aspx",
     "Cape Town": "https://web1.capetown.gov.za/web1/TenderPortal/",
-    "eThekwini": "https://www.durban.gov.za/pages/government/scm/tenders.aspx",
     "Transnet": "https://www.transnet.net/TenderPortal/",
     "Johannesburg Water": "https://www.johannesburgwater.co.za/tenders/",
-    "Umgeni Water": "https://www.umgeni.co.za/tenders/",
-    "Sasol": "https://www.sasol.com/procurement",
-    "SANEDI": "https://www.sanedi.org.za/tenders/",
     "Anglo American": "https://www.angloamerican.com/suppliers",
     "Harmony Gold": "https://www.harmony.co.za/business/procurement",
     "Seriti": "https://www.seritiza.com/procurement/",
-    "Exxaro": "https://www.exxaro.com/suppliers/",
     "SANRAL": "https://www.nra.co.za/live/tenders.php",
 }
 
@@ -403,15 +396,12 @@ def generate_dashboard_html(tenders):
             </div>
             
             <div class="section">
-                <h2>📊 Data Sources (11 Active)</h2>
+                <h2>📊 Data Sources (9 Active)</h2>
                 <div class="companies">
                     <div class="company-card" style="border-color: rgba(72,219,251,0.3);">
                         <div class="company-name" style="color: #48dbfb;">🏛️ Municipalities</div>
                         <div class="company-keywords">
-                            <span class="keyword">Ekurhuleni</span>
-                            <span class="keyword">Tshwane</span>
                             <span class="keyword">Cape Town</span>
-                            <span class="keyword">eThekwini</span>
                         </div>
                     </div>
                     <div class="company-card" style="border-color: rgba(254,202,87,0.3);">
@@ -420,10 +410,7 @@ def generate_dashboard_html(tenders):
                             <span class="keyword">Eskom</span>
                             <span class="keyword">Transnet</span>
                             <span class="keyword">Rand Water</span>
-                            <span class="keyword">Sasol</span>
-                            <span class="keyword">SANEDI</span>
                             <span class="keyword">Johannesburg Water</span>
-                            <span class="keyword">Umgeni Water</span>
                         </div>
                     </div>
                     <div class="company-card" style="border-color: rgba(255,107,107,0.3);">
@@ -432,7 +419,6 @@ def generate_dashboard_html(tenders):
                             <span class="keyword">Anglo American</span>
                             <span class="keyword">Harmony Gold</span>
                             <span class="keyword">Seriti</span>
-                            <span class="keyword">Exxaro</span>
                         </div>
                     </div>
                     <div class="company-card" style="border-color: rgba(162,155,254,0.3);">

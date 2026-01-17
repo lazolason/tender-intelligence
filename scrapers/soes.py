@@ -438,65 +438,6 @@ def scrape_eskom():
     return unique
 
 # ----------------------------------------------------------
-# UMGENI WATER
-# ----------------------------------------------------------
-def scrape_umgeni_water():
-    tenders = []
-    urls = ["https://www.umgeni.co.za/tenders/", "https://www.umgeni.co.za/procurement/"]
-    
-    had_successful_fetch = False
-    for url in urls:
-        try:
-            resp = safe_get(url, headers=HEADERS, timeout=20, verify=False, log=logger)
-            if resp is None:
-                continue
-            had_successful_fetch = True
-
-            soup = BeautifulSoup(resp.text, "html.parser")
-            rows = soup.select("table tr, .tender-item, article, a[href$='.pdf']")
-            for row in rows:
-                text = row.get_text(" ", strip=True)
-                if len(text) < 20:
-                    continue
-                ref_match = re.search(r'(UW[-/]?\d{4,}|UMGENI[-/]?\d+)', text)
-                if ref_match:
-                    date_match = re.search(r'(\d{1,2}[-/]\d{1,2}[-/]\d{2,4})', text)
-                    classification = classify_tender(text[:150], text)
-                    if classification["category"] != "Exclude":
-                        tenders.append({
-                            "ref": ref_match.group(1),
-                            "title": text[:150],
-                            "description": text[:500],
-                            "client": "Umgeni Water",
-                            "closing_date": date_match.group(1) if date_match else "",
-                            "category": classification["category"],
-                            "short_title": classification.get("short_title", "Tender"),
-                            "reason": classification.get("reason", ""),
-                            "source": "Umgeni Water",
-                            "url": url
-                        })
-                if tenders:
-                    break
-        except:
-            continue
-
-    if not had_successful_fetch:
-        raise RuntimeError("Umgeni Water: failed to fetch any URLs")
-    return tenders
-
-# ----------------------------------------------------------
-# SANEDI
-# ----------------------------------------------------------
-def scrape_sanedi():
-    return _scrape_soe_generic(
-        client_name="SANEDI",
-        urls=["https://www.sanedi.org.za/tenders/", "https://www.sanedi.org.za/procurement/"],
-        row_selector="table tr, .tender-item, article, .post",
-        ref_pattern=r'(SANEDI[-/]?\d{4,}|SAN[-/]?\d{4,})',
-        ref_prefix="SANEDI"
-    )
-
-# ----------------------------------------------------------
 # ANGLO AMERICAN
 # ----------------------------------------------------------
 def scrape_anglo_american():
@@ -533,18 +474,6 @@ def scrape_seriti():
     )
 
 # ----------------------------------------------------------
-# EXXARO
-# ----------------------------------------------------------
-def scrape_exxaro():
-    return _scrape_soe_generic(
-        client_name="Exxaro",
-        urls=["https://www.exxaro.com/suppliers/"],
-        row_selector="table tr, .tender-item, article",
-        ref_pattern=r'(EXX[-/]?\d{4,}|EXXARO[-/]?\d{4,})',
-        ref_prefix="EXX"
-    )
-
-# ----------------------------------------------------------
 # MASTER FUNCTION
 # ----------------------------------------------------------
 def scrape_all_soes():
@@ -557,12 +486,9 @@ def scrape_all_soes():
         ("Johannesburg Water", scrape_joburg_water_selenium),
         ("Transnet", scrape_transnet),
         ("Eskom", scrape_eskom),
-        ("Umgeni Water", scrape_umgeni_water),
-        ("SANEDI", scrape_sanedi),
         ("Anglo American", scrape_anglo_american),
         ("Harmony Gold", scrape_harmony_gold),
         ("Seriti", scrape_seriti),
-        ("Exxaro", scrape_exxaro),
     ]
     
     for name, scraper in scrapers:

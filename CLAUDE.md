@@ -126,14 +126,14 @@ Each scraper module follows this pattern:
 - Log errors using `utils.logging_tools.log_error()`
 
 **Active Scrapers**:
-- [municipalities.py](scrapers/municipalities.py) - Ekurhuleni, Tshwane, Cape Town, eThekwini
-- [soes.py](scrapers/soes.py) - Rand Water, Sasol, SANEDI, Anglo American, Harmony Gold, Seriti, Exxaro
+- [municipalities.py](scrapers/municipalities.py) - Cape Town
+- [soes.py](scrapers/soes.py) - Rand Water, Johannesburg Water, Transnet, Eskom, Anglo American, Harmony Gold, Seriti
 - [national_treasury_selenium.py](scrapers/national_treasury_selenium.py) - eTenders portal (Selenium-based)
 - [joburg_water_selenium.py](scrapers/joburg_water_selenium.py) - Johannesburg Water (Selenium-based)
 - [eskom_direct.py](scrapers/eskom_direct.py) - Eskom tender bulletin (Selenium-based)
 
 **Disabled Scrapers** (etenders.gov.za API returns 405 errors):
-- [eskom.py](scrapers/eskom.py), [sanral.py](scrapers/sanral.py), [transnet.py](scrapers/transnet.py), [umgeni_water.py](scrapers/umgeni_water.py)
+- [eskom.py](scrapers/eskom.py), [sanral.py](scrapers/sanral.py), [transnet.py](scrapers/transnet.py)
 
 ### Utils ([utils/](utils/))
 

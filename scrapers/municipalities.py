@@ -89,65 +89,6 @@ class BaseMunicipalityScraper:
 
 
 # ===========================================================
-# CITY OF EKURHULENI
-# ===========================================================
-class EkurhuleniScraper(BaseMunicipalityScraper):
-    
-    def __init__(self, timeout: int = 15):
-        super().__init__(
-            name="City of Ekurhuleni",
-            url="https://www.ekurhuleni.gov.za/tenders/",
-            timeout=timeout
-        )
-    
-    def parse_tenders(self, html: str):
-        soup = BeautifulSoup(html, "html.parser")
-        tenders = []
-        
-        # Look for tender tables or lists
-        for selector in ["table tbody tr", ".tender-item", "article", ".post"]:
-            rows = soup.select(selector)
-            if rows:
-                break
-        
-        for row in rows:
-            try:
-                # Extract links and text
-                link = row.find("a")
-                title = clean_text(link.get_text()) if link else clean_text(row.get_text())
-                
-                if not title or len(title) < 10:
-                    continue
-                
-                # Try to find date
-                date_elem = row.find(class_=lambda x: x and "date" in x.lower()) if row else None
-                closing_date = clean_text(date_elem.get_text()) if date_elem else ""
-                
-                # Try to find reference
-                ref_elem = row.find(class_=lambda x: x and ("ref" in x.lower() or "number" in x.lower())) if row else None
-                ref = clean_text(ref_elem.get_text()) if ref_elem else "EKU"
-                
-                classification = classify_tender(title, title)
-                
-                tenders.append({
-                    "ref": ref,
-                    "title": title,
-                    "short_title": classification["short_title"],
-                    "client": "City of Ekurhuleni",
-                    "closing_date": closing_date,
-                    "description": title,
-                    "category": classification["category"],
-                    "reason": classification["reason"],
-                    "source": self.name
-                })
-                
-            except Exception:
-                continue
-        
-        return tenders
-
-
-# ===========================================================
 # CITY OF CAPE TOWN
 # ===========================================================
 class CapeTownScraper(BaseMunicipalityScraper):
@@ -215,7 +156,6 @@ def scrape_all_municipalities(timeout: int = 15) -> List[Dict[str, any]]:
         List of tender dictionaries from all municipalities
     """
     scrapers = [
-        EkurhuleniScraper(timeout),
         CapeTownScraper(timeout),
     ]
     

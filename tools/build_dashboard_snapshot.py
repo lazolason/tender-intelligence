@@ -17,13 +17,10 @@ from scrapers.soes import (
     scrape_transnet,
     scrape_eskom,
     scrape_sanral,
-    scrape_umgeni_water,
     scrape_sasol,
-    scrape_sanedi,
     scrape_anglo_american,
     scrape_harmony_gold,
     scrape_seriti,
-    scrape_exxaro,
 )
 
 
@@ -196,13 +193,10 @@ def build_snapshot(limit: int) -> dict:
         scrape_transnet,
         scrape_eskom,
         scrape_sanral,
-        scrape_umgeni_water,
         scrape_sasol,
-        scrape_sanedi,
         scrape_anglo_american,
         scrape_harmony_gold,
         scrape_seriti,
-        scrape_exxaro,
     ]
     for scraper in soe_scrapers:
         try:

@@ -171,10 +171,8 @@ def _within_days(a: Optional[date], b: Optional[date], *, days: int) -> bool:
 
 | Function Name | Locations | Status |
 |---------------|-----------|--------|
-| `scrape_eskom()` | `scrapers/eskom.py`, `scrapers/soes.py`, `scrapers/etenders_selenium.py` | Different implementations for different sources |
-| `scrape_umgeni_water()` | `scrapers/umgeni_water.py`, `scrapers/soes.py`, `scrapers/etenders_selenium.py` | Different implementations for different sources |
-| `scrape_sanral()` | `scrapers/sanral.py`, `scrapers/soes.py`, `scrapers/etenders_selenium.py` | Different implementations for different sources |
-| `scrape_transnet()` | `scrapers/transnet.py`, `scrapers/soes.py`, `scrapers/etenders_selenium.py` | Different implementations for different sources |
+| `scrape_eskom()` | `scrapers/eskom.py`, `scrapers/soes.py` | Different implementations for different sources |
+| `scrape_transnet()` | `scrapers/transnet.py`, `scrapers/soes.py` | Different implementations for different sources |
 
 **Impact:** Naming collision but acceptable (different sources)  
 **Recommendation:** Consider renaming to indicate source (e.g., `scrape_eskom_direct()`, `scrape_eskom_etenders()`)

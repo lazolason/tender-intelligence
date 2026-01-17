@@ -1,3 +1,67 @@
+# Task: Remove Selected Scrapers (Ekurhuleni, Umgeni Water, SANEDI, Exxaro)
+
+## Objective
+Remove the Ekurhuleni municipal scraper and the Umgeni Water, SANEDI, and Exxaro SOE scrapers from the active scraper set, and clean up related code/files.
+
+---
+
+## Plan
+- [x] **Task 1**: Map all references and entrypoints for the four scrapers [LOW RISK] [DONE]
+  - Files: `scrapers/municipalities.py`, `scrapers/soes.py`, `scrapers/umgeni_water.py`, docs if needed
+  - Dependencies: none
+  - Success: Confirmed usage sites + list of files to edit/delete
+- [x] **Task 2**: Create backups for files to be modified or deleted [LOW RISK] [DONE]
+  - Files: `backups/...` plus targets from Task 1
+  - Dependencies: Task 1
+  - Success: Backup copies exist for every file in scope
+- [x] **Task 3**: Remove Ekurhuleni scraper implementation and registration [MEDIUM RISK] [DONE]
+  - Files: `scrapers/municipalities.py`
+  - Dependencies: Task 2
+  - Success: Ekurhuleni class removed and no longer referenced
+- [x] **Task 4**: Remove Umgeni Water, SANEDI, Exxaro scrapers and registrations [MEDIUM RISK] [DONE]
+  - Files: `scrapers/soes.py` (and `scrapers/umgeni_water.py` if unused)
+  - Dependencies: Task 2
+  - Success: Scrapers removed from SOE set with no dangling imports
+- [x] **Task 5**: Update any documentation/config lists referencing these scrapers [LOW RISK] [DONE]
+  - Files: docs/config files if applicable
+  - Dependencies: Task 3, Task 4
+  - Success: Docs match current active scrapers
+- [x] **Task 6**: Verification (syntax/import checks) [LOW RISK] [DONE]
+  - Files: modified Python files
+  - Dependencies: Task 3, Task 4
+  - Success: `python3 -m py_compile` passes for modified files
+
+---
+
+## Checkpoint
+Cleanup complete.
+
+---
+
+## Review Summary
+### Changes Made
+- `scrapers/municipalities.py`: removed the Ekurhuleni scraper and its registration.
+- `scrapers/soes.py`: removed Umgeni Water, SANEDI, and Exxaro scrapers from code and the SOE list.
+- `scrapers/umgeni_water.py`: deleted file (no longer used).
+- `tools/scrape_source.py`, `tools/build_dashboard_snapshot.py`: removed the deleted scrapers from imports and run lists.
+- `utils/data_validator.py`: removed the deleted sources plus City of Tshwane, eThekwini Municipality, and Sasol from the default allowed list.
+- `sync_to_vercel.py`, `vercel-dashboard/index.html`: updated data source lists/counts to remove Tshwane, eThekwini, and Sasol.
+- `CLAUDE.md`, `tenderscan.py`: updated source lists/comments to drop removed scrapers.
+- `reports/duplicate_and_conflict_analysis_report.md`: pruned duplicate function table to match current scraper set.
+- `vercel-dashboard/public/tenders-latest.json`, `vercel-dashboard/public/summary.json`: removed legacy source entries and regenerated summary counts.
+
+### Testing Performed
+- `python3 -m py_compile scrapers/municipalities.py scrapers/soes.py tools/scrape_source.py tools/build_dashboard_snapshot.py utils/data_validator.py sync_to_vercel.py tenderscan.py`
+- `python3 tools/generate_dashboard_summary.py --in vercel-dashboard/public/tenders-latest.json --out vercel-dashboard/public/summary.json`
+
+### Risk Assessment
+- Low/Medium: removal of scrapers and source references; any tooling/scripts that assumed those sources may need updates if run.
+
+### Follow-up Items
+- None.
+
+---
+
 # Task: Cleanup Duplicates, Unused Files, and Dead Code
 
 ## Objective
