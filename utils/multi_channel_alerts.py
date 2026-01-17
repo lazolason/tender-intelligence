@@ -382,43 +382,6 @@ def send_batch_alerts(config: AlertConfig, tenders: List[Dict]) -> Dict[str, Dic
 
 
 # ==========================================================
-# CONFIGURATION FROM FILE
-# ==========================================================
-
-def load_alert_config(config_path: str) -> AlertConfig:
-    """
-    Load alert configuration from config file
-    
-    Args:
-        config_path: Path to config file (config.yaml)
-        
-    Returns:
-        AlertConfig object
-    """
-    try:
-        import yaml
-        with open(config_path, 'r') as f:
-            config_data = yaml.safe_load(f)
-        
-        alerts_config = config_data.get('alerts', {})
-        
-        return AlertConfig(
-            slack_webhook=alerts_config.get('slack', {}).get('webhook'),
-            slack_channels=alerts_config.get('slack', {}).get('channels', {}),
-            twilio_account_sid=alerts_config.get('sms', {}).get('account_sid'),
-            twilio_auth_token=alerts_config.get('sms', {}).get('auth_token'),
-            twilio_from_number=alerts_config.get('sms', {}).get('from_number'),
-            sms_recipients=alerts_config.get('sms', {}).get('recipients', []),
-            push_tokens=alerts_config.get('push', {}).get('tokens', []),
-            enabled_channels=alerts_config.get('enabled', ['email'])
-        )
-    except Exception as e:
-        logger.warning(f"Failed to load alert config from {config_path}: {e}")
-        # Return default config
-        return AlertConfig()
-
-
-# ==========================================================
 # STANDALONE TEST
 # ==========================================================
 if __name__ == "__main__":

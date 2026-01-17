@@ -6,13 +6,6 @@
 import re
 from datetime import datetime
 
-# google_web_search is optional; provide a no-op fallback if not imported
-try:
-    from __main__ import google_web_search  # type: ignore
-except ImportError:
-    def google_web_search(*args, **kwargs):
-        return []
-
 def clean_text(text: str) -> str:
     """
     Cleans raw text from HTML scraping.
@@ -38,26 +31,6 @@ def clean_text(text: str) -> str:
     return text
 
 
-def clean_filename(text: str) -> str:
-    """
-    Cleans text for use in filenames.
-    Removes illegal characters.
-    """
-    if not text:
-        return ""
-    
-    # Remove illegal filename characters
-    text = re.sub(r'[<>:"/\\|?*]', "", text)
-    
-    # Replace spaces with underscores
-    text = text.replace(" ", "_")
-    
-    # Remove multiple underscores
-    text = re.sub(r"_+", "_", text)
-    
-    return text.strip("_")
-
-
 def extract_closing_date_from_text(text: str):
     """Extract closing date from text"""
     date_pattern = r"(\d{1,2})\s*(January|February|March|April|May|June|July|August|September|October|November|December|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s*(\d{4})?"
@@ -72,9 +45,3 @@ def extract_closing_date_from_text(text: str):
         except:
             return None
     return None
-
-def web_search_wrapper(query: str):
-    """
-    Performs a Google web search using the google_web_search tool.
-    """
-    return google_web_search(query=query)

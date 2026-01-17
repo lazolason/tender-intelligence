@@ -138,18 +138,6 @@ def get_installed_chromedriver_version():
     return None, None
 
 
-def load_version_lock():
-    """Load version lock info"""
-    if VERSION_LOCK_FILE.exists():
-        try:
-            with open(VERSION_LOCK_FILE, "r") as f:
-                return json.load(f)
-        except Exception:
-            pass
-    
-    return {}
-
-
 def save_version_lock(data):
     """Save version lock info"""
     try:

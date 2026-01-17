@@ -250,16 +250,6 @@ PHAKATHI_STRONG_SIGNALS = [
 ]
 
 # ===========================================================
-# NEGATIVE SIGNALS - If these appear, likely NOT relevant
-# ===========================================================
-
-NEGATIVE_SIGNALS = [
-    "maintenance", "refurbishment", "repair", "inspection",
-    "transformer", "turbine", "spillage", "scrap", "disposal",
-    "award", "cancellation", "regret", "bidders", "vehicle"
-]
-
-# ===========================================================
 # OVERRIDE RULES & CROSS CATEGORY
 # ===========================================================
 

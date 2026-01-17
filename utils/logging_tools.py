@@ -57,14 +57,5 @@ def rotate_log_if_needed(log_file_path: str, max_entries: int = 5000):
     except Exception as e:
         print(f"[LOG ERROR] Could not rotate log: {e}")
 
-# ----------------------------------------------------------
-# HIGH-LEVEL EVENTS
-# ----------------------------------------------------------
-def log_start(log_file_path: str, target: str):
-    write_log(log_file_path, f"Starting scrape for: {target}", "INFO")
-
-def log_end(log_file_path: str, total_found: int, total_added: int):
-    write_log(log_file_path, f"Scrape complete. Found: {total_found}, Added: {total_added}", "INFO")
-
 def log_error(log_file_path: str, message: str):
     write_log(log_file_path, f"ERROR → {message}", "ERROR")

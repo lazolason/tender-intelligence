@@ -153,13 +153,3 @@ def classify_tender(title: str, description: str) -> dict:
         "reason": "No clear classification signals detected",
         "short_title": make_short_title(title)
     }
-
-# ----------------------------------------------------------
-# PLACEHOLDER FOR FUTURE LLM UNDERSTANDING (GPT)
-# ----------------------------------------------------------
-def llm_enhancement(description: str):
-    """
-    This function will later connect to GPT to refine classification.
-    For now, it's a placeholder for Phase 3A.
-    """
-    return None

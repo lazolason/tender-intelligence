@@ -455,60 +455,6 @@ def get_client_performance(db_path: str, client: str, limit: int = 20) -> Dict:
         }
 
 
-def get_category_performance(db_path: str, category: str) -> Dict:
-    """
-    Get performance metrics by tender category
-    
-    Args:
-        db_path: Path to database file
-        category: Category to analyze (TES, Phakathi, Both)
-        
-    Returns:
-        Dictionary with category performance data
-    """
-    try:
-        with get_db_connection(db_path) as conn:
-            cursor = conn.cursor()
-            
-            # Get tenders by category (inferred from ref)
-            cursor.execute("""
-                SELECT * FROM bid_outcomes
-                WHERE bid_submitted = 1
-                ORDER BY bid_date DESC
-            """, )
-            rows = cursor.fetchall()
-            
-            # Filter by category
-            category_rows = [row for row in rows if _infer_category_from_ref(row[1]) == category]
-            
-            if not category_rows:
-                return {
-                    'category': category,
-                    'total_bids': 0,
-                    'wins': 0,
-                    'win_rate': 0.0
-                }
-            
-            total_bids = len(category_rows)
-            wins = sum(1 for row in category_rows if row[5] == 'won')
-            win_rate = wins / total_bids if total_bids > 0 else 0.0
-            
-            return {
-                'category': category,
-                    'total_bids': total_bids,
-                    'wins': wins,
-                    'win_rate': win_rate
-            }
-    except Exception as e:
-        logger.error(f"Failed to get category performance: {e}")
-        return {
-            'category': category,
-            'total_bids': 0,
-            'wins': 0,
-            'win_rate': 0.0
-        }
-
-
 def _infer_category_from_ref(ref: str) -> str:
     """
     Infer tender category from reference number

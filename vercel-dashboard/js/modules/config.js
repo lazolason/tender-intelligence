@@ -7,13 +7,10 @@ export const config = {
     cacheTtlMs: 60 * 60 * 1000, // 1 hour
     tenderJsonUrls: [
         "/public/tenders-latest.json",
-        "/public/build/tenders.json",
         "/tenders.json",
         "./tenders.json",
-        "./public/build/tenders.json",
         "./public/tenders-latest.json",
         "/vercel-dashboard/tenders.json",
-        "/vercel-dashboard/public/build/tenders.json",
         "/vercel-dashboard/public/tenders-latest.json",
         "../tenders.json"
     ],

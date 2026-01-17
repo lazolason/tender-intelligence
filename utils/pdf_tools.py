@@ -38,15 +38,3 @@ def format_bytes(bytes_size):
         bytes_size /= 1024.0
     return f"{bytes_size:.1f} TB"
 
-
-def add_pdf_metadata(tender):
-    """
-    Add PDF size to tender dict if URL is PDF
-    Returns modified tender dict
-    """
-    url = tender.get("url", "")
-    if url.endswith('.pdf'):
-        pdf_size = get_pdf_size(url)
-        if pdf_size:
-            tender["pdf_size"] = pdf_size
-    return tender

@@ -41,11 +41,6 @@ ETENDER_URLS = [
     "https://www.etenders.gov.za/Home/opportunities",
     "https://www.etenders.gov.za/content/advertised-tenders"
 ]
-MAX_PAGES = 3
-WAIT_TIMEOUT = 20
-
-# Chromedriver management
-SETUP_ENVIRONMENT_ON_IMPORT = True
 
 
 class NationalTreasuryScraper:
