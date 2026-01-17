@@ -148,64 +148,6 @@ class EkurhuleniScraper(BaseMunicipalityScraper):
 
 
 # ===========================================================
-# CITY OF TSHWANE
-# ===========================================================
-class TshwaneScraper(BaseMunicipalityScraper):
-    
-    def __init__(self, timeout: int = 15):
-        super().__init__(
-            name="City of Tshwane",
-            url="https://www.tshwane.gov.za/sites/Departments/Financial-Services/Pages/Aborwa-Tenders.aspx",
-            timeout=timeout
-        )
-    
-    def parse_tenders(self, html: str):
-        soup = BeautifulSoup(html, "html.parser")
-        tenders = []
-        
-        # Tshwane uses SharePoint-style lists
-        for selector in ["table tbody tr", ".ms-listviewtable tr", ".tender", "li"]:
-            rows = soup.select(selector)
-            if rows:
-                break
-        
-        for row in rows:
-            try:
-                cells = row.find_all("td")
-                if len(cells) < 2:
-                    link = row.find("a")
-                    if link:
-                        title = clean_text(link.get_text())
-                    else:
-                        continue
-                else:
-                    title = clean_text(cells[1].get_text()) if len(cells) > 1 else clean_text(cells[0].get_text())
-                    ref = clean_text(cells[0].get_text()) if cells else "TSH"
-                
-                if not title or len(title) < 10:
-                    continue
-                
-                classification = classify_tender(title, title)
-                
-                tenders.append({
-                    "ref": ref if 'ref' in locals() else "TSH",
-                    "title": title,
-                    "short_title": classification["short_title"],
-                    "client": "City of Tshwane",
-                    "closing_date": "",
-                    "description": title,
-                    "category": classification["category"],
-                    "reason": classification["reason"],
-                    "source": self.name
-                })
-                
-            except Exception:
-                continue
-        
-        return tenders
-
-
-# ===========================================================
 # CITY OF CAPE TOWN
 # ===========================================================
 class CapeTownScraper(BaseMunicipalityScraper):
@@ -261,55 +203,6 @@ class CapeTownScraper(BaseMunicipalityScraper):
 
 
 # ===========================================================
-# ETHEKWINI MUNICIPALITY
-# ===========================================================
-class EthekwiniScraper(BaseMunicipalityScraper):
-    
-    def __init__(self, timeout: int = 15):
-        super().__init__(
-            name="eThekwini Municipality",
-            url="https://www.durban.gov.za/pages/government/tenders",
-            timeout=timeout
-        )
-    
-    def parse_tenders(self, html: str):
-        soup = BeautifulSoup(html, "html.parser")
-        tenders = []
-        
-        for selector in ["table tbody tr", ".tender", "article", ".content-item"]:
-            rows = soup.select(selector)
-            if rows:
-                break
-        
-        for row in rows:
-            try:
-                link = row.find("a")
-                title = clean_text(link.get_text()) if link else clean_text(row.get_text())
-                
-                if not title or len(title) < 10:
-                    continue
-                
-                classification = classify_tender(title, title)
-                
-                tenders.append({
-                    "ref": "ETH",
-                    "title": title,
-                    "short_title": classification["short_title"],
-                    "client": "eThekwini Municipality",
-                    "closing_date": "",
-                    "description": title,
-                    "category": classification["category"],
-                    "reason": classification["reason"],
-                    "source": self.name
-                })
-                
-            except Exception:
-                continue
-        
-        return tenders
-
-
-# ===========================================================
 # AGGREGATOR - RUN ALL MUNICIPALITIES
 # ===========================================================
 def scrape_all_municipalities(timeout: int = 15) -> List[Dict[str, any]]:
@@ -323,9 +216,7 @@ def scrape_all_municipalities(timeout: int = 15) -> List[Dict[str, any]]:
     """
     scrapers = [
         EkurhuleniScraper(timeout),
-        TshwaneScraper(timeout),
         CapeTownScraper(timeout),
-        EthekwiniScraper(timeout),
     ]
     
     all_tenders: List[Dict[str, any]] = []

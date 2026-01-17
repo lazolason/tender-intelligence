@@ -95,25 +95,26 @@ class ExcelWriter:
         self._existing_refs_cache = None
         self._existing_tenders_cache = None
         self._ensure_workbook()
-def _log(self, message: str, level: str = "INFO") -> None:
-    """
-    Log message to file and console
-    
-    Args:
-        message: Message to log
-        level: Log level (default: "INFO")
-    """
-    if self.log_file_path:
-        try:
-            from utils.logging_tools import write_log
 
-            write_log(self.log_file_path, message, level)
-            return
-        except Exception:
-            pass
-    
-    print(message)
-    
+    def _log(self, message: str, level: str = "INFO") -> None:
+        """
+        Log message to file and console
+
+        Args:
+            message: Message to log
+            level: Log level (default: "INFO")
+        """
+        if self.log_file_path:
+            try:
+                from utils.logging_tools import write_log
+
+                write_log(self.log_file_path, message, level)
+                return
+            except Exception:
+                pass
+
+        print(message)
+
     def _ensure_workbook(self) -> None:
         """
         Create workbook if it doesn't exist, otherwise load existing one

@@ -438,69 +438,6 @@ def scrape_eskom():
     return unique
 
 # ----------------------------------------------------------
-# SANRAL
-# ----------------------------------------------------------
-def scrape_sanral():
-    """Scrape SANRAL tenders"""
-    tenders = []
-    
-    urls = [
-        "https://www.nra.co.za/live/tenders.php",
-        "https://www.sanral.co.za/tenders/",
-    ]
-    
-    had_successful_fetch = False
-    for url in urls:
-        try:
-            resp = safe_get(url, headers=HEADERS, timeout=20, verify=False, log=logger)
-            if resp is None:
-                continue
-            had_successful_fetch = True
-
-            soup = BeautifulSoup(resp.text, "html.parser")
-            
-            # Check for tender links
-            links = soup.select("a[href*='tender'], a[href$='.pdf']")
-            for link in links:
-                href = link.get("href", "")
-                text = link.get_text(strip=True)
-                
-                if len(text) > 10:
-                    ref_match = re.search(r'(SANRAL[-/]?\d+|NRA[-/]?\d+|[A-Z]{1,3}[-/]?\d{3,})', text + href)
-                    ref = ref_match.group(1) if ref_match else f"SANRAL-{datetime.now().strftime('%Y%m%d')}-{len(tenders)+1}"
-                    
-                    date_match = re.search(r'(\d{1,2}[-/]\d{1,2}[-/]\d{2,4})', text)
-                    closing = date_match.group(1) if date_match else ""
-                    
-                    full_url = href if href.startswith("http") else f"{url.rsplit('/', 1)[0]}/{href}"
-                    
-                    classification = classify_tender(text, text)
-                    if classification["category"] != "Exclude":
-                        tenders.append({
-                            "ref": ref,
-                            "title": text[:150],
-                            "description": f"SANRAL tender: {text}",
-                            "client": "SANRAL",
-                            "closing_date": closing,
-                            "category": classification["category"],
-                            "short_title": classification.get("short_title", "Tender"),
-                            "reason": classification.get("reason", ""),
-                            "source": "SANRAL",
-                            "url": full_url
-                        })
-                
-            if tenders:
-                break
-                    
-        except Exception as e:
-            print(f"    SANRAL error: {e}")
-
-    if not had_successful_fetch:
-        raise RuntimeError("SANRAL: failed to fetch any URLs")
-    
-    return tenders
-
-# ----------------------------------------------------------
 # UMGENI WATER
 # ----------------------------------------------------------
 def scrape_umgeni_water():
@@ -546,18 +483,6 @@ def scrape_umgeni_water():
     if not had_successful_fetch:
         raise RuntimeError("Umgeni Water: failed to fetch any URLs")
     return tenders
-
-# ----------------------------------------------------------
-# SASOL
-# ----------------------------------------------------------
-def scrape_sasol():
-    return _scrape_soe_generic(
-        client_name="Sasol",
-        urls=["https://www.sasol.com/procurement", "https://www.sasol.com/suppliers"],
-        row_selector="table tr, .tender-item, article, .card",
-        ref_pattern=r'(SAS[-/]?\d{4,}|SASOL[-/]?\d+)',
-        ref_prefix="SAS"
-    )
 
 # ----------------------------------------------------------
 # SANEDI
@@ -632,9 +557,7 @@ def scrape_all_soes():
         ("Johannesburg Water", scrape_joburg_water_selenium),
         ("Transnet", scrape_transnet),
         ("Eskom", scrape_eskom),
-        ("SANRAL", scrape_sanral),
         ("Umgeni Water", scrape_umgeni_water),
-        ("Sasol", scrape_sasol),
         ("SANEDI", scrape_sanedi),
         ("Anglo American", scrape_anglo_american),
         ("Harmony Gold", scrape_harmony_gold),
