@@ -4,11 +4,10 @@ const RUNTIME_CACHE = 'runtime';
 
 // Cache static assets (app shell)
 const STATIC_ASSETS = [
-  '/',
-  '/index.html',
-  '/style.css',
-  '/script.js',
-  '/manifest.json',
+    './',
+    '/index.html',
+    '/style.css',
+    '/manifest.json',
   '/icons/icon-192x192.png',
 ];
 
