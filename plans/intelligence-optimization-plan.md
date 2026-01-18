@@ -2,7 +2,7 @@
 
 ## Executive Summary
 
-This document outlines recommendations to enhance the intelligence and effectiveness of the Tender Intelligence System for TES and Phakathi. The current system provides solid keyword-based classification and scoring, but there are significant opportunities for improvement through machine learning, historical analysis, and predictive analytics.
+This document outlines recommendations to enhance the intelligence and effectiveness of the Tender Intelligence System for Mexel Energy Sustain. The current system provides solid keyword-based classification and scoring, but there are significant opportunities for improvement through machine learning, historical analysis, and predictive analytics.
 
 ---
 
@@ -10,7 +10,7 @@ This document outlines recommendations to enhance the intelligence and effective
 
 ### Strengths
 - **Multi-source scraping** - 11+ data sources (municipalities, SOEs, mining, national treasury)
-- **Keyword-based classification** - Well-defined TES/Phakathi categorization rules
+- **Keyword-based classification** - Well-defined Mexel/TES categorization rules
 - **Multi-dimensional scoring** - Fit, industry, risk, revenue, suitability scores
 - **Automated workflow** - Daily scraping, validation, scoring, dashboard sync
 - **Email alerts** - Urgent tender notifications
@@ -41,7 +41,7 @@ from sentence_transformers import SentenceTransformer
 
 model = SentenceTransformer('all-MiniLM-L6-v2')
 
-# Create embeddings for TES/Phakathi reference texts
+# Create embeddings for Mexel/TES reference texts
 tes_reference = "Water treatment chemicals, cooling tower systems, chemical dosing"
 tes_embedding = model.encode(tes_reference)
 
@@ -60,12 +60,12 @@ similarity = cosine_similarity(tes_embedding, tender_embedding)
 # Use OpenAI/GPT for classification without training data
 def classify_with_llm(title, description):
     prompt = f"""
-    Classify this tender for TES (water treatment) or Phakathi (mechanical):
+    Classify this tender for Mexel (TES) (water treatment):
     
     Title: {title}
     Description: {description}
     
-    Return: TES, Phakathi, Both, or EXCLUDED with reason.
+    Return: Mexel (TES) or EXCLUDED with reason.
     """
     return call_openai(prompt)
 ```
@@ -90,7 +90,7 @@ def classify_with_llm(title, description):
 CREATE TABLE bid_outcomes (
     id SERIAL PRIMARY KEY,
     tender_ref VARCHAR(50),
-    company VARCHAR(20),  -- TES or Phakathi
+    company VARCHAR(20),  -- Mexel (TES)
     bid_submitted BOOLEAN,
     bid_amount DECIMAL,
     outcome ENUM('won', 'lost', 'withdrawn', 'no_bid'),
@@ -108,7 +108,6 @@ def analyze_win_rates():
     return {
         "by_category": {
             "TES": {"bids": 50, "wins": 15, "rate": 0.30},
-            "Phakathi": {"bids": 40, "wins": 12, "rate": 0.30}
         },
         "by_client": {
             "Eskom": {"bids": 20, "wins": 8, "rate": 0.40},
@@ -226,7 +225,6 @@ def train_win_probability_model():
     """Train model on historical bid outcomes"""
     features = [
         'industry_score', 'risk_score', 'revenue_score',
-        'tes_suitability', 'phakathi_suitability',
         'client_win_rate', 'days_to_deadline',
         'estimated_value', 'competitor_count'
     ]
