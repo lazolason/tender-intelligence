@@ -227,6 +227,24 @@ def generate_dashboard_html(tenders):
         .keyword-container {{ display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }}
         .keyword-tag {{ padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; background: rgba(102, 126, 234, 0.15); color: #a29bfe; border: 1px solid rgba(102, 126, 234, 0.3); text-transform: lowercase; }}
 
+        /* AI Summary Styles */
+        .ai-btn {{ background: linear-gradient(135deg, #7c6bf7, #5ec6ff); color: #0c0f1c; border: none; padding: 6px 12px; border-radius: 8px; font-size: 0.75rem; font-weight: 800; cursor: pointer; transition: all 0.2s ease; margin-left: 8px; }}
+        .ai-btn:hover {{ transform: scale(1.05); box-shadow: 0 5px 15px rgba(92, 137, 255, 0.3); }}
+        
+        .modal-overlay {{ position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); display: none; place-items: center; z-index: 1000; padding: 20px; }}
+        .modal-overlay.active {{ display: grid; }}
+        .modal-content {{ background: linear-gradient(135deg, #1c1a2e, #090a12); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; max-width: 700px; width: 100%; max-height: 90vh; overflow-y: auto; padding: 30px; box-shadow: 0 25px 50px rgba(0,0,0,0.5); position: relative; }}
+        .modal-close {{ position: absolute; top: 20px; right: 20px; background: rgba(255,255,255,0.05); border: none; color: #fff; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; }}
+        .modal-title {{ font-size: 1.5rem; color: #c9c2ff; margin-bottom: 10px; font-weight: 800; }}
+        .modal-subtitle {{ color: #8fa5ff; font-size: 0.9rem; margin-bottom: 20px; font-weight: 600; font-family: monospace; }}
+        .summary-text {{ line-height: 1.6; color: #eef2ff; font-size: 1rem; white-space: pre-wrap; }}
+        .summary-loading {{ display: flex; align-items: center; gap: 12px; color: #9ea3b5; font-weight: 600; }}
+        .spinner {{ width: 20px; height: 20px; border: 3px solid rgba(124, 107, 247, 0.2); border-top-color: #7c6bf7; border-radius: 50%; animation: spin 1s infinite linear; }}
+        @keyframes spin {{ to {{ transform: rotate(360deg); }} }}
+        .modal-footer {{ margin-top: 30px; display: flex; justify-content: space-between; align-items: center; }}
+        .copy-btn {{ background: rgba(255,255,255,0.05); color: #c7d2f5; border: 1px solid rgba(255,255,255,0.1); padding: 8px 16px; border-radius: 10px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 8px; }}
+        .cache-badge {{ font-size: 0.7rem; color: #27d17f; background: rgba(39, 209, 127, 0.1); padding: 4px 8px; border-radius: 6px; }}
+
         /* Countdown Badge */
         .countdown {{ padding: 4px 10px; border-radius: 12px; font-size: 0.7rem; font-weight: 600; }}
         .countdown.urgent {{ background: rgba(255, 107, 107, 0.3); color: #ff6b6b; animation: blink 1s infinite; }}
@@ -429,6 +447,22 @@ def generate_dashboard_html(tenders):
             <p>Local dashboard · Refresh: python3 sync_dashboard.py · Serve: python3 -m http.server 8000</p>
         </footer>
     </div>
+
+    <!-- AI Summary Modal -->
+    <div id="summaryModal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeSummaryModal()">✕</button>
+            <h2 id="modalTitle" class="modal-title">Tender Title</h2>
+            <div id="modalSubtitle" class="modal-subtitle">Reference Number</div>
+            <div id="summaryText" class="summary-text">
+                Summary loading...
+            </div>
+            <div class="modal-footer">
+                <span id="cacheBadge" class="cache-badge">✅ Cached summary</span>
+                <button class="copy-btn" onclick="copySummary()">📋 Copy to Clipboard</button>
+            </div>
+        </div>
+    </div>
     
     <script>
         let allTenders = [];
@@ -576,9 +610,12 @@ def generate_dashboard_html(tenders):
                         <div class="tender-right">
                             <span class="priority-badge priority-${{t.priority}}">${{t.priority}}</span>
                             <div class="score">${{t.score}}</div>
-                            <a href="${{t.url}}" target="_blank" rel="noopener" class="view-btn" onclick="event.stopPropagation()">
-                                View ↗
-                            </a>
+                            <div style="display: flex; gap: 8px;">
+                                <button class="ai-btn" onclick="event.stopPropagation(); openSummaryModal(${{idx}})">📄 Summary</button>
+                                <a href="${{t.url}}" target="_blank" rel="noopener" class="view-btn" onclick="event.stopPropagation()">
+                                    View ↗
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </li>`;
@@ -604,6 +641,78 @@ def generate_dashboard_html(tenders):
             window.currentFiltered = filtered;
         }}
         
+        // --- AI SUMMARY MODAL LOGIC ---
+        function openSummaryModal(index) {{
+            const tender = window.currentFiltered[index];
+            if (!tender) return;
+            
+            window.__currentTender = tender;
+            const modal = document.getElementById('summaryModal');
+            const title = document.getElementById('modalTitle');
+            const subtitle = document.getElementById('modalSubtitle');
+            const content = document.getElementById('summaryText');
+            const cacheBadge = document.getElementById('cacheBadge');
+            
+            title.textContent = tender.title;
+            subtitle.textContent = `${{tender.ref}} | ${{tender.client}}`;
+            content.innerHTML = '<div class="summary-loading"><div class="spinner"></div>Analyzing tender details...</div>';
+            cacheBadge.style.display = 'none';
+            
+            modal.classList.add('active');
+            
+            summarizeTender(tender);
+        }}
+        
+        function closeSummaryModal() {{
+            document.getElementById('summaryModal').classList.remove('active');
+        }}
+        
+        async function summarizeTender(tender) {{
+            const ref = tender.ref;
+            const content = document.getElementById('summaryText');
+            const cacheBadge = document.getElementById('cacheBadge');
+            
+            // Check cache
+            const cached = localStorage.getItem(`summary_${{ref}}`);
+            if (cached) {{
+                const data = JSON.parse(cached);
+                content.textContent = data.summary;
+                cacheBadge.style.display = 'block';
+                return;
+            }}
+            
+            try {{
+                const res = await fetch('http://localhost:5000/api/summarize', {{
+                    method: 'POST',
+                    headers: {{ 'Content-Type': 'application/json' }},
+                    body: JSON.stringify({{ tender }})
+                }});
+                
+                if (!res.ok) throw new Error('Summarization service unavailable');
+                
+                const data = await res.json();
+                content.textContent = data.summary;
+                
+                // Save to cache
+                localStorage.setItem(`summary_${{ref}}`, JSON.stringify({{
+                    summary: data.summary,
+                    ts: new Date().toISOString()
+                }}));
+                
+            }} catch (err) {{
+                content.innerHTML = `<div style="color: #ff7b7b;">❌ ${{err.message}}</div>`;
+            }}
+        }}
+        
+        function copySummary() {{
+            const text = document.getElementById('summaryText').textContent;
+            navigator.clipboard.writeText(text);
+            const btn = document.querySelector('.copy-btn');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '✅ Copied!';
+            setTimeout(() => btn.innerHTML = originalText, 2000);
+        }}
+
         function loadMore() {{
             renderTenders(currentFilter, true);
         }}
