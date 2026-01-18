@@ -1,9 +1,9 @@
 # ==========================================================
 # CLASSIFICATION ENGINE
-# TES-ONLY LOGIC
+# MEXEL-ONLY LOGIC (TES product)
 # ==========================================================
 
-from keyword_rules import TES_KEYWORDS, TES_OVERRIDE, EXCLUDE_KEYWORDS
+from keyword_rules import TES_KEYWORDS, TES_STRONG_SIGNALS, EXCLUDE_KEYWORDS
 
 import re
 
@@ -27,11 +27,8 @@ def keyword_hits(text: str, keywords: list) -> int:
 def should_exclude(text: str) -> tuple:
     """
     Check if tender matches exclusion keywords. Returns (should_exclude, reason).
-    Only allow override if STRONG TES signals are present.
+    Only allow override if strong Mexel/TES signals are present.
     """
-    from keyword_rules import TES_STRONG_SIGNALS
-
-    # Check for strong override signals (water treatment)
     has_strong_signal = any(kw in text for kw in TES_STRONG_SIGNALS)
 
     for kw in EXCLUDE_KEYWORDS:
@@ -79,29 +76,18 @@ def classify_tender(title: str, description: str) -> dict:
     tes_score = keyword_hits(text, TES_KEYWORDS)
 
     # ------------------------------------------------------
-    # OVERRIDE RULES
-    # ------------------------------------------------------
-    for word in TES_OVERRIDE:
-        if word in text:
-            return {
-                "category": "TES",
-                "reason": f"TES override keyword detected: '{word}'",
-                "short_title": make_short_title(title)
-            }
-
-    # ------------------------------------------------------
     # SCORE-BASED DECISION
     # ------------------------------------------------------
     if tes_score > 0:
         return {
-            "category": "TES",
-            "reason": f"TES keyword score: {tes_score}",
+            "category": "MEXEL",
+            "reason": f"Mexel/TES keyword score: {tes_score}",
             "short_title": make_short_title(title)
         }
 
-    # No signals → Unknown (But still usable)
+    # No signals → excluded (Mexel-only)
     return {
-        "category": "Unknown",
-        "reason": "No clear classification signals detected",
+        "category": "EXCLUDED",
+        "reason": "Excluded: no Mexel/TES keyword match",
         "short_title": make_short_title(title)
     }

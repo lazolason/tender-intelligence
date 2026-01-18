@@ -1,7 +1,6 @@
 # ================================================
-# KEYWORD RULES V2.0 - ACCURATE CAPABILITY MAPPING
-# TES: Water treatment chemicals + dosing systems + monitoring
-# Phakathi: NEW mechanical supply + white-metal bearing reconditioning ONLY
+# KEYWORD RULES V2.0 - MEXEL-ONLY MATCHING
+# Mexel Energy Sustain (TES product) only
 # ================================================
 
 # ===========================================================
@@ -94,64 +93,18 @@ EXCLUDE_KEYWORDS = [
 ]
 
 # ===========================================================
-# TES KEYWORDS - Water Treatment Chemicals + Systems + Monitoring
+# TES KEYWORDS - Mexel brand + TES product references
 # ===========================================================
 
 TES_KEYWORDS = [
-    # === 1. WATER TREATMENT CHEMICALS (Core Products) ===
-    "water treatment chemicals", "chemical supply", "chemical dosing",
-    
-    # Scale Inhibitors
-    "scale inhibitor", "antiscalant", "anti-scalant", "scale control",
-    
-    # Corrosion Inhibitors
-    "corrosion inhibitor", "corrosion control", "corrosion barrier",
-    
-    # Biocides (General only - specific commodity chemicals excluded)
-    "biocide", "biocidal", "antimicrobial", "microbiological control",
-    "oxidizing biocide", "non-oxidizing biocide", "biological control",
-    
-    # Dispersants
-    "dispersant", "fouling dispersant", "mud dispersant", "ash dispersant",
-    
-    # Film-Forming Agents (FFAs)
-    "film forming amine", "ffa", "film forming agent", "film-forming",
-    "mexsteam", "mexsteam 100", "steam treatment",
-    
-    # Surfactant-Based Conditioners
-    "surfactant", "surfactant conditioner", "surfactant-based",
-    "mexel", "mexel 432", "mexel432", "system conditioner",
-    
-    # Other Chemicals
-    "oxygen scavenger", "passivation", "neutralising amine", "neutralizing amine",
-    
-    # === 2. COOLING TOWER TREATMENT ===
-    "cooling tower", "cooling water treatment", "cooling tower treatment",
-    "cooling tower chemicals", "cooling water chemicals", "cooling system",
-    "condenser treatment", "cooling circuit", "cw treatment",
-    "thermal efficiency", "fouling control", "fouling removal",
-    
-    # === 3. BOILER TREATMENT ===
-    "boiler treatment", "boiler water treatment", "boiler chemicals",
-    "feedwater treatment", "condensate treatment", "steam system",
-    "boiler dosing", "steam quality", "boiler protection",
-    
-    # === 4. CHEMICAL DOSING SYSTEMS ===
-    "chemical dosing system", "dosing system", "dosing skid",
-    "dosing pump", "dosing equipment", "injection system",
-    "chemical injection", "automated dosing", "dosing control",
-    "tank and bund", "chemical storage",
-    
-    # === 5. WATER QUALITY MONITORING ===
-    "water quality monitoring", "online monitoring", "water monitoring",
-    "sensor", "ph probe", "conductivity", "orp", "redox",
-    "corrosion probe", "monitoring system", "data intelligence",
-    "compliance monitoring", "water analysis",
-    
-    # === 6. APPLICATIONS (Where TES works) ===
-    "heat exchanger", "condenser", "evaporator", "chiller",
-    "closed circuit", "open circuit", "recirculating system",
-    "separation circuit", "mineral processing", "desalination",
+    "mexel",
+    "mexel 432",
+    "mexel432",
+    "mexsteam",
+    "mexsteam 100",
+    "mexel energy sustain",
+    "mexel energy",
+    "tes",
 ]
 
 # ===========================================================
@@ -159,19 +112,12 @@ TES_KEYWORDS = [
 # ===========================================================
 
 TES_STRONG_SIGNALS = [
-    "cooling tower", "boiler", "water treatment", "chemical dosing",
-    "scale inhibitor", "corrosion inhibitor", "biocide", "dispersant",
-    "surfactant", "mexel", "mexel432", "film forming", "ffa",
-    "dosing system", "water quality monitoring", "heat exchanger"
-]
-
-# ===========================================================
-# OVERRIDE RULES
-# ===========================================================
-
-TES_OVERRIDE = [
-    "cooling tower", "boiler", "water treatment", "chemical dosing",
-    "scale inhibitor", "corrosion inhibitor", "biocide", "dispersant",
-    "surfactant", "mexel", "film forming", "dosing system",
-    "water quality", "condenser treatment", "heat exchanger"
+    "mexel",
+    "mexel 432",
+    "mexel432",
+    "mexsteam",
+    "mexsteam 100",
+    "mexel energy sustain",
+    "mexel energy",
+    "tes",
 ]

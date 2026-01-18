@@ -27,9 +27,8 @@ DEFAULT_ALLOWED_SOURCES = [
 ]
 
 DEFAULT_ALLOWED_CATEGORIES = [
+    "MEXEL",
     "TES",
-    "Phakathi",
-    "Both",
     "Exclude",
     "EXCLUDED",
     "Unknown",

@@ -572,8 +572,7 @@ def generate_email_html(tenders, meta=None):
             .urgency.yellow {{ background: #fff9e6; color: #f9a825; }}
             .urgency.green {{ background: #e8f5e9; color: #4caf50; }}
             .company {{ display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 10px; margin-left: 10px; }}
-            .company.tes {{ background: #e3f2fd; color: #2196f3; }}
-            .company.phakathi {{ background: #fff3e0; color: #ff9800; }}
+            .company.mexel {{ background: #e3f2fd; color: #2196f3; }}
             .footer {{ text-align: center; color: #888; font-size: 11px; margin-top: 20px; }}
         </style>
     </head>
@@ -592,8 +591,8 @@ def generate_email_html(tenders, meta=None):
             urgency_class = "red" if days is not None and days <= 3 else "orange" if days is not None and days <= 7 else "green"
 
             scores = t.get("scores", {})
-            company = "TES" if scores.get("tes", 0) > scores.get("phakathi", 0) else "Phakathi" if scores.get("phakathi", 0) > scores.get("tes", 0) else "Both"
-            company_class = "tes" if company == "TES" else "phakathi"
+            company = t.get("company") or "Mexel"
+            company_class = "mexel"
 
             html += f"""
             <div class="tender high">
@@ -612,12 +611,12 @@ def generate_email_html(tenders, meta=None):
             urgency = get_urgency_text(days)
 
             scores = t.get("scores", {})
-            company = "TES" if scores.get("tes", 0) > scores.get("phakathi", 0) else "Phakathi" if scores.get("phakathi", 0) > scores.get("tes", 0) else "Both"
+            company = t.get("company") or "Mexel"
 
             html += f"""
             <div class="tender medium">
                 <span class="ref">{t.get('ref', 'N/A')}</span>
-                <span class="company">{company}</span>
+                <span class="company mexel">{company}</span>
                 <div class="title">{t.get('title', 'Unknown')[:80]}</div>
                 <div class="meta">📍 {t.get('client', 'Unknown')} | {urgency}</div>
             </div>
@@ -629,7 +628,7 @@ def generate_email_html(tenders, meta=None):
     html += f"""
             <div class="footer">
                 <p>View full dashboard: <a href="https://tender-intelligence-dashboard.vercel.app/">https://tender-intelligence-dashboard.vercel.app/</a></p>
-                <p>Tender Intelligence System | TES & Phakathi</p>
+                <p>Tender Intelligence System | Mexel Energy Sustain (TES)</p>
             </div>
         </div>
     </body>

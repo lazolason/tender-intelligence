@@ -30,7 +30,6 @@ HEADERS = [
     "Composite Score",
     "Priority",
     "TES Fit",
-    "Phakathi Fit",
     "Risk Level",
     "Revenue Potential",
     "Stage",
@@ -162,16 +161,15 @@ class ExcelWriter:
             'F': 14,  # Composite Score
             'G': 10,  # Priority
             'H': 10,  # TES Fit
-            'I': 12,  # Phakathi Fit
-            'J': 12,  # Risk Level
-            'K': 15,  # Revenue Potential
-            'L': 10,  # Stage
-            'M': 12,  # Closing Date
-            'N': 10,  # Status
-            'O': 15,  # Next Action
-            'P': 50,  # Notes
-            'Q': 20,  # Reference Number
-            'R': 12,  # Date Added
+            'I': 12,  # Risk Level
+            'J': 15,  # Revenue Potential
+            'K': 10,  # Stage
+            'L': 12,  # Closing Date
+            'M': 10,  # Status
+            'N': 15,  # Next Action
+            'O': 50,  # Notes
+            'P': 20,  # Reference Number
+            'Q': 12,  # Date Added
         }
         
         for col_letter, width in col_widths.items():
@@ -186,7 +184,7 @@ class ExcelWriter:
         existing = set()
         
         for row in range(2, ws.max_row + 1):
-            ref = ws.cell(row=row, column=17).value  # Reference Number column
+            ref = ws.cell(row=row, column=16).value  # Reference Number column
             if ref:
                 existing.add(str(ref).strip().upper())
         
@@ -226,8 +224,8 @@ class ExcelWriter:
         for row in range(2, ws.max_row + 1):
             tender_name = ws.cell(row=row, column=1).value
             industry = ws.cell(row=row, column=4).value
-            closing_date = ws.cell(row=row, column=13).value
-            ref = ws.cell(row=row, column=17).value
+            closing_date = ws.cell(row=row, column=12).value
+            ref = ws.cell(row=row, column=16).value
  
             ref_norm = str(ref).strip().upper() if ref else ""
             title = self._extract_title_from_tender_name(tender_name)
@@ -253,7 +251,7 @@ class ExcelWriter:
                     status: str, next_action: str, notes: str, reference_number: str,
                     composite_score: float = None, priority: str = None,
                     risk_level: str = None, revenue_potential: str = None,
-                    tes_fit: int = None, phakathi_fit: int = None) -> bool:
+                    tes_fit: int = None) -> bool:
         """
         Write a single tender to Excel
         
@@ -274,7 +272,6 @@ class ExcelWriter:
             risk_level: Risk assessment (Low, Medium, High)
             revenue_potential: Revenue potential (Low, Medium, High)
             tes_fit: TES suitability score (0-10)
-            phakathi_fit: Phakathi suitability score (0-10)
             
         Returns:
             True if tender was added, False if duplicate
@@ -306,7 +303,6 @@ class ExcelWriter:
             composite_score or fit_score,
             priority or "MEDIUM",
             tes_fit or 0,
-            phakathi_fit or 0,
             risk_level or "Medium",
             revenue_potential or "Medium",
             stage,
@@ -462,8 +458,7 @@ class ExcelWriter:
             priority=priority,
             risk_level=scores["risk_level"],
             revenue_potential=scores["revenue_potential"],
-            tes_fit=scores["tes_suitability"],
-            phakathi_fit=scores["phakathi_suitability"]
+            tes_fit=scores["tes_suitability"]
         )
 
         return was_added, scores, classification
@@ -490,7 +485,7 @@ class ExcelWriter:
                 stats["by_priority"][priority] += 1
             
             # By status
-            status = ws.cell(row=row, column=14).value or "Unknown"
+            status = ws.cell(row=row, column=13).value or "Unknown"
             stats["by_status"][status] = stats["by_status"].get(status, 0) + 1
         
         return stats
@@ -506,7 +501,7 @@ if __name__ == "__main__":
     added = writer.write_tender(
         tender_name="TEST-001 - Cooling Water Treatment",
         client="Eskom",
-        tender_type="TES",
+        tender_type="MEXEL",
         industry="Power Generation",
         fit_score=8,
         stage="New",
@@ -519,8 +514,7 @@ if __name__ == "__main__":
         priority="HIGH",
         risk_level="Low",
         revenue_potential="High",
-        tes_fit=9,
-        phakathi_fit=2
+        tes_fit=9
     )
     
     print(f"Added: {added}")

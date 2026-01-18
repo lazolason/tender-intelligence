@@ -1,7 +1,7 @@
 # ==========================================================
 # SCORING ENGINE
 # Comprehensive tender scoring system
-# Fit, Industry, Risk, Revenue, TES/Phakathi Suitability
+# Fit, Industry, Risk, Revenue, Mexel (TES product) Suitability
 # ==========================================================
 
 import re
@@ -9,7 +9,7 @@ from datetime import datetime, timedelta
 
 # ----------------------------------------------------------
 # INDUSTRY SCORING WEIGHTS
-# Higher = more valuable for TES/Phakathi
+# Higher = more valuable for Mexel (TES)
 # ----------------------------------------------------------
 INDUSTRY_SCORES = {
     # HIGH VALUE (8-10)
@@ -126,7 +126,7 @@ TES_MODERATE_FIT = [
 
 def calculate_fit_score(title: str, description: str, category: str) -> dict:
     """
-    Calculate overall fit score (1-10) based on TES alignment
+    Calculate overall fit score (1-10) based on Mexel (TES) alignment
     """
     text = f"{title} {description}".lower()
 
@@ -134,9 +134,9 @@ def calculate_fit_score(title: str, description: str, category: str) -> dict:
     reasons = []
 
     # Category boost
-    if category == "TES":
+    if category in ("MEXEL", "TES"):
         score += 2
-        reasons.append("TES category match")
+        reasons.append("Mexel category match")
 
     # Strong fit keywords
     tes_strong = sum(1 for kw in TES_STRONG_FIT if kw in text)
@@ -283,7 +283,7 @@ def calculate_revenue_score(title: str, description: str) -> dict:
 
 def calculate_suitability_scores(title: str, description: str) -> dict:
     """
-    Calculate TES suitability score
+    Calculate Mexel (TES) suitability score
     """
     text = f"{title} {description}".lower()
 
@@ -372,21 +372,14 @@ if __name__ == "__main__":
             "description": "Supply and delivery of cooling water treatment chemicals for power station condensers including scale inhibitors and biocides for 3 year period",
             "client": "Eskom Holdings",
             "closing_date": "2025-12-15",
-            "category": "TES"
-        },
-        {
-            "title": "Pump Refurbishment and Mechanical Repairs",
-            "description": "Refurbishment of centrifugal pumps including impeller replacement and white metal bearing recasting",
-            "client": "City of Johannesburg",
-            "closing_date": "2025-12-20",
-            "category": "Phakathi"
+            "category": "MEXEL"
         },
         {
             "title": "Office Cleaning Services",
             "description": "Provision of cleaning services for municipal offices",
             "client": "Local Municipality",
             "closing_date": "2025-12-10",
-            "category": "Unknown"
+            "category": "EXCLUDED"
         }
     ]
     
