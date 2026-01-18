@@ -209,6 +209,7 @@ def process_tenders(tenders):
             tender_name = f"{ref} - {title}" if ref and ref != "NA" else title
             
             was_added, scores, classification = excel_writer.add_tender_with_scoring(t)
+            t["matched_keywords"] = classification.get("matched_keywords", [])
             
             if was_added:
                 total_added += 1
