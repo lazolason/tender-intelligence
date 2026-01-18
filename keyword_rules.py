@@ -155,84 +155,6 @@ TES_KEYWORDS = [
 ]
 
 # ===========================================================
-# PHAKATHI KEYWORDS - NEW Mechanical Supply + White-Metal Bearing Reconditioning
-# ===========================================================
-
-PHAKATHI_KEYWORDS = [
-    # === 1. NEW PUMP SUPPLY ===
-    "supply of pumps", "supply and delivery of pumps", "pump supply",
-    "new pumps", "pump procurement", "pumps tender",
-    "centrifugal pump", "slurry pump", "dewatering pump",
-    "vertical pump", "horizontal pump", "submersible pump",
-    
-    # === 2. NEW PUMP PARTS & COMPONENTS ===
-    "pump spares", "pump parts", "pump components",
-    "impeller supply", "impeller", "pump impeller",
-    "mechanical seal", "seal supply", "pump seals",
-    "shaft supply", "pump shaft", "wear rings", "wear parts",
-    
-    # === 3. NEW BEARING SUPPLY ===
-    "bearing supply", "new bearings", "bearing procurement",
-    "ball bearings", "roller bearings", "spherical bearings",
-    "thrust bearings", "sleeve bearings", "journal bearings",
-    
-    # === 4. WHITE-METAL BEARING RECONDITIONING (ONLY EXCEPTION) ===
-    "white metal bearing", "whitemetal bearing", "white-metal",
-    "babbitt bearing", "white metal reconditioning", "bearing re-metalling",
-    "white metal casting", "bearing reconditioning",
-    "line boring", "bearing refurbishment",  # ONLY valid if "white metal" present
-    "plummer block", "bearing shell",
-    
-    # === 5. FABRICATION WORKSHOP ===
-    "fabrication services", "custom fabrication", "steel fabrication",
-    "tank fabrication", "vessel fabrication", "structural fabrication",
-    "laser profiling", "plasma profiling", "laser cutting",
-    "rolling", "bending", "forming",
-    
-    # === 6. PRECISION MACHINING ===
-    "machining services", "cnc machining", "precision machining",
-    "turning", "milling", "boring", "grinding",
-    "component manufacturing", "precision engineering",
-    
-    # === 7. CONVEYOR COMPONENTS (NEW) ===
-    "conveyor components", "conveyor idler", "conveyor roller",
-    "conveyor belting", "idler supply", "roller supply",
-    "belt splice", "conveyor parts",
-    
-    # === 8. MECHANICAL COMPONENTS (NEW) ===
-    "coupling", "flexible coupling", "gear coupling", "coupling adaptor",
-    "gasket", "gland packing", "mechanical seal",
-    "o-ring", "seal kit",
-    "fittings", "fitting", "galvanised fitting", "pipe fitting",
-    "adaptor", "washer",
-    
-    # === 9. HEAT TREATMENT ===
-    "heat treatment", "stress relieving", "annealing",
-    "normalizing", "hardening",
-    
-    # === 10. INDUSTRIAL TECHNOLOGY (IIoT & Controls) ===
-    "instrumentation", "control system", "automation",
-    "iiot", "industrial iot", "scada", "plc",
-    "data analytics", "asset monitoring", "condition monitoring",
-    "vibration monitoring", "predictive maintenance",
-    
-    # === 11. INSTALLATION (NEW equipment) ===
-    "supply and installation", "supply and install",
-    "installation services", "commissioning",
-]
-
-# ===========================================================
-# SWITCHGEAR KEYWORDS - Electrical Panels & Control
-# ===========================================================
-
-SWITCHGEAR_KEYWORDS = [
-    "switchgear supply", "mv switchgear", "lv switchgear",
-    "distribution board supply", "db board supply",
-    "panel supply", "control panel supply", "mcc supply",
-    "motor control centre", "breaker supply",
-]
-
-# ===========================================================
 # POSITIVE SIGNALS - If these appear, likely relevant
 # ===========================================================
 
@@ -243,14 +165,8 @@ TES_STRONG_SIGNALS = [
     "dosing system", "water quality monitoring", "heat exchanger"
 ]
 
-PHAKATHI_STRONG_SIGNALS = [
-    "pump supply", "bearing supply", "white metal", "white-metal",
-    "fabrication", "machining", "conveyor", "impeller",
-    "laser profiling", "cnc machining", "bearing reconditioning"
-]
-
 # ===========================================================
-# OVERRIDE RULES & CROSS CATEGORY
+# OVERRIDE RULES
 # ===========================================================
 
 TES_OVERRIDE = [
@@ -258,15 +174,4 @@ TES_OVERRIDE = [
     "scale inhibitor", "corrosion inhibitor", "biocide", "dispersant",
     "surfactant", "mexel", "film forming", "dosing system",
     "water quality", "condenser treatment", "heat exchanger"
-]
-
-PHAKATHI_OVERRIDE = [
-    "pump supply", "bearing supply", "white metal", "fabrication",
-    "machining", "conveyor", "impeller", "laser profiling",
-    "cnc", "precision machining", "component manufacturing"
-]
-
-BOTH_CATEGORY_TRIGGERS = [
-    "pump station with water treatment", "cooling tower and pumps",
-    "boiler and fabrication", "water treatment and mechanical"
 ]

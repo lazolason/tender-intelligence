@@ -119,24 +119,6 @@ TES_MODERATE_FIT = [
     "industrial", "process", "plant",
 ]
 
-# ----------------------------------------------------------
-# PHAKATHI SUITABILITY KEYWORDS
-# ----------------------------------------------------------
-PHAKATHI_STRONG_FIT = [
-    "pump", "impeller", "shaft", "bearing",
-    "white metal", "babbitt", "casting",
-    "machining", "fabrication", "welding",
-    "gearbox", "coupling", "mechanical seal",
-    "refurbishment", "overhaul", "repair",
-    "switchgear", "mcc", "panel", "distribution",
-]
-
-PHAKATHI_MODERATE_FIT = [
-    "mechanical", "rotating", "equipment",
-    "maintenance", "workshop", "spares",
-    "valve", "pipe", "flange",
-]
-
 
 # ==========================================================
 # SCORING FUNCTIONS
@@ -144,45 +126,31 @@ PHAKATHI_MODERATE_FIT = [
 
 def calculate_fit_score(title: str, description: str, category: str) -> dict:
     """
-    Calculate overall fit score (1-10) based on TES/Phakathi alignment
+    Calculate overall fit score (1-10) based on TES alignment
     """
     text = f"{title} {description}".lower()
-    
+
     score = 5  # Base score
     reasons = []
-    
+
     # Category boost
     if category == "TES":
         score += 2
         reasons.append("TES category match")
-    elif category == "Phakathi":
-        score += 2
-        reasons.append("Phakathi category match")
-    elif category == "Both":
-        score += 3
-        reasons.append("Dual TES+Phakathi opportunity")
-    
+
     # Strong fit keywords
     tes_strong = sum(1 for kw in TES_STRONG_FIT if kw in text)
-    phakathi_strong = sum(1 for kw in PHAKATHI_STRONG_FIT if kw in text)
-    
+
     if tes_strong >= 3:
         score += 2
         reasons.append(f"Strong TES alignment ({tes_strong} keywords)")
     elif tes_strong >= 1:
         score += 1
         reasons.append(f"TES alignment ({tes_strong} keywords)")
-    
-    if phakathi_strong >= 3:
-        score += 2
-        reasons.append(f"Strong Phakathi alignment ({phakathi_strong} keywords)")
-    elif phakathi_strong >= 1:
-        score += 1
-        reasons.append(f"Phakathi alignment ({phakathi_strong} keywords)")
-    
+
     # Cap at 10
     score = min(10, max(1, score))
-    
+
     return {
         "fit_score": score,
         "fit_reasons": reasons,
@@ -315,27 +283,19 @@ def calculate_revenue_score(title: str, description: str) -> dict:
 
 def calculate_suitability_scores(title: str, description: str) -> dict:
     """
-    Calculate TES and Phakathi suitability scores separately
+    Calculate TES suitability score
     """
     text = f"{title} {description}".lower()
-    
+
     # TES Score
     tes_score = 0
     tes_strong = sum(1 for kw in TES_STRONG_FIT if kw in text)
     tes_moderate = sum(1 for kw in TES_MODERATE_FIT if kw in text)
     tes_score = min(10, tes_strong * 2 + tes_moderate)
-    
-    # Phakathi Score
-    phakathi_score = 0
-    phakathi_strong = sum(1 for kw in PHAKATHI_STRONG_FIT if kw in text)
-    phakathi_moderate = sum(1 for kw in PHAKATHI_MODERATE_FIT if kw in text)
-    phakathi_score = min(10, phakathi_strong * 2 + phakathi_moderate)
-    
+
     return {
         "tes_suitability": tes_score,
         "tes_fit": "Strong" if tes_score >= 6 else "Moderate" if tes_score >= 3 else "Weak",
-        "phakathi_suitability": phakathi_score,
-        "phakathi_fit": "Strong" if phakathi_score >= 6 else "Moderate" if phakathi_score >= 3 else "Weak",
     }
 
 
@@ -359,10 +319,9 @@ def score_tender(title: str, description: str, client: str = "",
     # Composite priority score (weighted average)
     composite = (
         fit["fit_score"] * 0.30 +          # 30% weight
-        industry["industry_score"] * 0.20 + # 20% weight
-        risk["risk_score"] * 0.15 +         # 15% weight
-        revenue["revenue_score"] * 0.20 +   # 20% weight
-        max(suitability["tes_suitability"], suitability["phakathi_suitability"]) * 0.15  # 15% weight
+        industry["industry_score"] * 0.25 + # 25% weight
+        risk["risk_score"] * 0.20 +         # 20% weight
+        revenue["revenue_score"] * 0.25     # 25% weight
     )
     
     priority = "HIGH" if composite >= 7 else "MEDIUM" if composite >= 5 else "LOW"
@@ -387,7 +346,7 @@ def score_tender(title: str, description: str, client: str = "",
 
 def generate_recommendation(fit, industry, risk, revenue, suitability, composite):
     """Generate actionable recommendation"""
-    
+
     if composite >= 8:
         return "🔥 PRIORITY BID - Strong fit, pursue immediately"
     elif composite >= 6:
@@ -395,7 +354,7 @@ def generate_recommendation(fit, industry, risk, revenue, suitability, composite
             return "⚠️ REVIEW CAREFULLY - Good opportunity but high risk factors"
         return "✅ RECOMMENDED - Good opportunity, prepare bid"
     elif composite >= 4:
-        if suitability["tes_suitability"] >= 6 or suitability["phakathi_suitability"] >= 6:
+        if suitability["tes_suitability"] >= 6:
             return "📋 CONSIDER - Core capability match despite moderate overall score"
         return "📝 EVALUATE - May be worth pursuing if capacity allows"
     else:
@@ -451,8 +410,7 @@ if __name__ == "__main__":
         print(f"   Industry Score: {scores['industry_score']}/10 ({scores['industry_matched']})")
         print(f"   Risk Score:     {scores['risk_score']}/10 ({scores['risk_level']} risk)")
         print(f"   Revenue Score:  {scores['revenue_score']}/10 ({scores['revenue_potential']})")
-        print(f"   TES Fit:        {scores['tes_suitability']}/10 ({scores['tes_fit']})")
-        print(f"   Phakathi Fit:   {scores['phakathi_suitability']}/10 ({scores['phakathi_fit']})")
+        print(f"   TES Suitability: {scores['tes_suitability']}/10 ({scores['tes_fit']})")
         print(f"   ─────────────────────────────────")
         print(f"   COMPOSITE:      {scores['composite_score']}/10 → {scores['priority']}")
         print(f"   {scores['recommendation']}")

@@ -1,3 +1,47 @@
+# Task: Remove Phakathi + Restrict to TES/Mexel Only
+
+## Objective
+Remove Phakathi from classification, scoring, UI, docs, and outputs, and restrict tender matching to TES/Mexel-only logic.
+
+---
+
+## Plan
+- [ ] **Task 1**: Define exact scope for “TES/Mexel only” filtering (keywords, categories, outputs) [LOW RISK]
+  - Files: (analysis only)
+  - Dependencies: none
+  - Success: Agreed definition of TES/Mexel-only match + filtering behavior for existing data
+- [ ] **Task 2**: Create backups for all files to be modified [LOW RISK]
+  - Files: `backups/...` plus targets identified in Task 1
+  - Dependencies: Task 1
+  - Success: Backup copies exist for every file in scope
+- [ ] **Task 3**: Remove Phakathi from classification + keyword rules [MEDIUM RISK]
+  - Files: `keyword_rules.py`, `classify_engine.py`
+  - Dependencies: Task 2
+  - Success: No Phakathi category logic; TES/Mexel-only categories remain
+- [ ] **Task 4**: Remove Phakathi from scoring + outputs [MEDIUM RISK]
+  - Files: `scoring_engine.py`, `utils/excel_writer.py`, `utils/email_alerts.py`
+  - Dependencies: Task 2
+  - Success: No Phakathi scores/columns emitted; scoring still works for TES-only
+- [ ] **Task 5**: Update dashboard/UI to TES-only [MEDIUM RISK]
+  - Files: `vercel-dashboard/index.html`, `vercel-dashboard/style.css`, `sync_to_vercel.py`, `vercel-dashboard/public/*.json` (if regenerated)
+  - Dependencies: Task 2
+  - Success: No Phakathi UI labels, filters, or styling
+- [ ] **Task 6**: Update tooling/docs/tests [LOW RISK]
+  - Files: `CLAUDE.md`, `utils/README.md`, `weekly_report.py`, `vercel-dashboard/tests/*`, any other references
+  - Dependencies: Task 3, Task 4, Task 5
+  - Success: All references align with TES/Mexel-only behavior
+- [ ] **Task 7**: Verification (syntax/import + targeted tests) [LOW RISK]
+  - Files: modified Python/JS files
+  - Dependencies: Task 3, Task 4, Task 5, Task 6
+  - Success: `python3 -m py_compile` passes and any JS tests updated
+
+---
+
+## Checkpoint
+Await approval before making code changes.
+
+---
+
 # Task: Remove Selected Scrapers (Ekurhuleni, Umgeni Water, SANEDI, Exxaro)
 
 ## Objective
