@@ -96,7 +96,8 @@ def classify_tender(title: str, description: str) -> dict:
         return {
             "category": "MEXEL",
             "reason": f"Strong match: {', '.join(strong_hits[:3])}",
-            "short_title": make_short_title(title)
+            "short_title": make_short_title(title),
+            "matched_keywords": list(set(strong_hits + weak_hits + context_hits))
         }
 
     # Logic 2: Context + Weak Match (e.g. "water treatment" + "chemical supply")
@@ -104,7 +105,8 @@ def classify_tender(title: str, description: str) -> dict:
         return {
             "category": "MEXEL",
             "reason": f"Context ({context_hits[0]}) + Supporting signal ({weak_hits[0]})",
-            "short_title": make_short_title(title)
+            "short_title": make_short_title(title),
+            "matched_keywords": list(set(strong_hits + weak_hits + context_hits))
         }
 
     # Logic 3: Multiple context hits (e.g. "boiler water treatment plant")
@@ -113,12 +115,14 @@ def classify_tender(title: str, description: str) -> dict:
         return {
             "category": "MEXEL",
             "reason": f"High context overlap: {', '.join(list(set(context_hits))[:3])}",
-            "short_title": make_short_title(title)
+            "short_title": make_short_title(title),
+            "matched_keywords": list(set(strong_hits + weak_hits + context_hits))
         }
 
     # No signals → excluded (Mexel-only)
     return {
         "category": "EXCLUDED",
         "reason": "Excluded: no Mexel/TES keyword match",
-        "short_title": make_short_title(title)
+        "short_title": make_short_title(title),
+        "matched_keywords": []
     }

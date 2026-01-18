@@ -139,7 +139,8 @@ def generate_dashboard_html(tenders):
             "company": company,
             "tes_score": tes_score,
             "closing_date": t.get("closing_date", ""),
-            "contact": t.get("contact", "")
+            "contact": t.get("contact", ""),
+            "matched_keywords": t.get("matched_keywords", [])
         })
     
     # Save full dataset with metadata for client-side loading
@@ -222,6 +223,10 @@ def generate_dashboard_html(tenders):
         .priority-MEDIUM {{ background: rgba(254, 202, 87, 0.2); color: #feca57; }}
         .priority-LOW {{ background: rgba(72, 219, 251, 0.2); color: #48dbfb; }}
         
+        /* Keyword Tags */
+        .keyword-container {{ display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }}
+        .keyword-tag {{ padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; background: rgba(102, 126, 234, 0.15); color: #a29bfe; border: 1px solid rgba(102, 126, 234, 0.3); text-transform: lowercase; }}
+
         /* Countdown Badge */
         .countdown {{ padding: 4px 10px; border-radius: 12px; font-size: 0.7rem; font-weight: 600; }}
         .countdown.urgent {{ background: rgba(255, 107, 107, 0.3); color: #ff6b6b; animation: blink 1s infinite; }}
@@ -541,6 +546,14 @@ def generate_dashboard_html(tenders):
                 const daysLeft = getDaysUntil(t.closing_date);
                 const urgencyClass = daysLeft !== null && daysLeft <= 3 ? 'urgent' : (daysLeft !== null && daysLeft <= 7 ? 'warning' : '');
                 
+                // Construct keyword tags
+                let keywordHtml = "";
+                if (t.matched_keywords && Array.isArray(t.matched_keywords) && t.matched_keywords.length > 0) {{
+                    keywordHtml = '<div class="keyword-container">' + 
+                        t.matched_keywords.map(kw => `<span class="keyword-tag">${{kw}}</span>`).join('') + 
+                        '</div>';
+                }}
+
                 return `<li class="tender-item ${{urgencyClass}}" onclick="window.open('${{t.url}}', '_blank')">
                     <div class="tender-content">
                         <div class="tender-info">
@@ -551,6 +564,7 @@ def generate_dashboard_html(tenders):
                             </div>
                             <div class="tender-title">${{t.title}} ${{isPdf ? '📄' : ''}}</div>
                             ${{desc ? `<div class="tender-description">${{desc}}</div>` : ''}}
+                            ${{keywordHtml}}
                             <div class="tender-meta">
                                 <span>📍 ${{t.client}}</span>
                                 <span>📁 ${{t.category}}</span>
