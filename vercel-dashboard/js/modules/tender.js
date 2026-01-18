@@ -33,23 +33,17 @@ export function getTenderCompanyScope(tender) {
     const t = tender || {};
     const raw = (t.company || t.company_scope || t.scope || t.category || '').toString().trim();
     const norm = raw.toLowerCase();
-    if (norm === 'tes') return 'TES';
-    if (norm === 'phakathi') return 'Phakathi';
-    if (norm === 'both' || norm === 'tes + phakathi' || norm === 'tes/phakathi') return 'Both';
+    if (norm === 'mexel' || norm === 'tes' || norm === 'mexel energy sustain') return 'Mexel';
 
     try {
         const relevance = classifyTender(t)?.relevance;
-        if (relevance === 'TES' || relevance === 'Phakathi' || relevance === 'Both') return relevance;
+        if (relevance === 'Mexel') return relevance;
     } catch (e) {}
 
     const scores = t.scores || {};
     const tesSuit = Number(scores.tes_suitability);
-    const phSuit = Number(scores.phakathi_suitability);
     const hasTes = Number.isFinite(tesSuit) && tesSuit > 0;
-    const hasPh = Number.isFinite(phSuit) && phSuit > 0;
-    if (hasTes && hasPh) return 'Both';
-    if (hasTes) return 'TES';
-    if (hasPh) return 'Phakathi';
+    if (hasTes) return 'Mexel';
 
     return 'Unknown';
 }
@@ -110,37 +104,29 @@ export function classifyTender(tender) {
     ];
 
     const tesKeywords = [
-        "chemical", "chemicals", "dosing", "chlorine", "hypochlorite", "biocide",
-        "surfactant", "dispersant", "amine", "cooling", "cooling tower",
-        "boiler", "steam", "ro", "reverse osmosis", "filtration",
-        "water treatment plant", "softener"
-    ];
-
-    const phakathiKeywords = [
-        "pumps", "pump", "valves", "fabrication", "mechanical", "electrical",
-        "switchgear", "motors", "install", "installation",
-        "maintenance", "commissioning", "steelwork"
+        "mexel",
+        "mexel 432",
+        "mexel432",
+        "mexsteam",
+        "mexsteam 100",
+        "mexel energy",
+        "mexel energy sustain",
+        "tes"
     ];
 
     const categories = [];
 
     const hasCivil = civilKeywords.some(k => desc.includes(k));
     const hasTES = tesKeywords.some(k => desc.includes(k));
-    const hasPhakathi = phakathiKeywords.some(k => desc.includes(k));
 
     let relevance = "Unknown";
-    if (hasTES && hasPhakathi) {
-        relevance = "Both";
-    } else if (hasTES) {
-        relevance = "TES";
-    } else if (hasPhakathi) {
-        relevance = "Phakathi";
+    if (hasTES) {
+        relevance = "Mexel";
     } else if (hasCivil) {
         relevance = "OutOfScope";
     }
 
-    if (hasTES) categories.push("Chemical/Water");
-    if (hasPhakathi) categories.push("Mechanical/Electrical");
+    if (hasTES) categories.push("Mexel/TES");
     if (relevance === "OutOfScope" && hasCivil) categories.push("Civil/Infrastructure");
 
     const priority = (tender.priority || "").toUpperCase();
@@ -149,7 +135,7 @@ export function classifyTender(tender) {
     let bidDecision = "REVIEW";
     if (relevance === "OutOfScope") {
         bidDecision = "NO_BID";
-    } else if ((relevance === "TES" || relevance === "Phakathi" || relevance === "Both") && fit !== null && fit >= 5 && priority !== "LOW") {
+    } else if (relevance === "Mexel" && fit !== null && fit >= 5 && priority !== "LOW") {
         bidDecision = "BID";
     }
 
@@ -221,7 +207,7 @@ export function computeDecision(tender) {
     const avgScore = (fit + suitability) / 2;
 
     if (isOutOfScope) {
-        return makeDecision('No-Bid', 'nobid', 'Outside TES / Phakathi scope (civil / infrastructure)', 96);
+        return makeDecision('No-Bid', 'nobid', 'Outside Mexel scope (civil / infrastructure)', 96);
     }
     if (fit >= 7 && suitability >= 6 && (isHighPriority || isMediumPriority)) {
         let conf = Math.round(70 + avgScore * 3);
@@ -264,19 +250,15 @@ export function generateAIInsight(tender) {
     const { relevance, bidDecision } = classifyTender(tender);
 
     if (relevance === 'OutOfScope') {
-        const rel = 'This tender is a civil/infrastructure upgrade. Neither TES nor Phakathi operate in this category.';
+        const rel = 'This tender is a civil/infrastructure upgrade. Mexel does not operate in this category.';
         const opp = 'Opportunity evaluation: outside our scope; deprioritise unless strategy changes.';
         const act = 'Recommended action: NO BID — mark as not relevant and exclude from pursuit.';
         return `${rel}\n${opp}\n${act}`;
     }
 
     let relevanceText = 'Relevance unclear; tender should be manually reviewed.';
-    if (relevance === 'Both' || company === 'BOTH') {
-        relevanceText = 'Both TES and Phakathi may participate given mixed scope indicators.';
-    } else if (relevance === 'TES' || company === 'TES') {
-        relevanceText = 'The scope indicates strong relevance for TES due to water treatment chemicals, cooling, dosing, RO, or boiler references.';
-    } else if (relevance === 'Phakathi' || company === 'PHAKATHI') {
-        relevanceText = 'This tender aligns with Phakathi\'s mechanical/electrical offering based on installation, maintenance, pumps, or fabrication scope.';
+    if (relevance === 'Mexel' || company === 'MEXEL') {
+        relevanceText = 'The scope indicates strong relevance for Mexel due to TES, Mexel, or related water treatment references.';
     }
 
     const oppLines = [];
@@ -289,12 +271,6 @@ export function generateAIInsight(tender) {
     const opportunity = oppLines.length ? oppLines.join(' ') : 'Opportunity signal is moderate; further validation needed.';
 
     let action = 'Recommended next step: review historical awards, confirm volume requirements, and prepare pricing scenarios.';
-    if (relevance === 'Phakathi' || company === 'PHAKATHI') {
-        action = 'Recommended action: request technical drawings, verify site conditions, and assess fabrication or installation lead times.';
-    }
-    if (relevance === 'Both' || company === 'BOTH') {
-        action = 'Recommended action: split review between TES and Phakathi leads, confirm scope boundaries, and price jointly if feasible.';
-    }
     if (bidDecision === 'NO_BID') {
         action = 'Recommended action: NO BID — outside target scope.';
     }
@@ -322,7 +298,7 @@ export function getFilteredTendersForExport() {
         .filter((t) => !isTenderHidden(t?.ref))
         .filter((t) => getDaysUntil(t?.closing_date) === null || getDaysUntil(t?.closing_date) >= 0);
 
-    if (filter === 'TES' || filter === 'Phakathi' || filter === 'Both') {
+    if (filter === 'Mexel') {
         filtered = filtered.filter((t) => getCompany(t) === filter);
     } else if (filter === 'HIGH' || filter === 'MEDIUM' || filter === 'LOW') {
         filtered = filtered.filter((t) => getPriority(t) === filter);
@@ -405,8 +381,7 @@ export function smartSearchTenders(query, tenders) {
         nextWeek: /\bnext week\b/i,
         thisWeek: /\bthis week\b|\bweek\b/i,
         urgent: /\burgent\b|\bhigh priority\b/i,
-        companyTes: /\btes\b/i,
-        companyPhakathi: /\bphakathi\b/i,
+        companyMexel: /\b(mexel|tes)\b/i,
     };
 
     const sourceKeywords = [
@@ -421,7 +396,7 @@ export function smartSearchTenders(query, tenders) {
     ];
 
     const matchedSources = sourceKeywords.filter((kw) => q.includes(kw));
-    const matchCompany = patterns.companyTes.test(q) ? 'TES' : patterns.companyPhakathi.test(q) ? 'Phakathi' : null;
+    const matchCompany = patterns.companyMexel.test(q) ? 'Mexel' : null;
 
     const hasSmartMatch =
         patterns.closesToday.test(q) ||

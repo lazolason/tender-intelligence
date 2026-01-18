@@ -19,13 +19,14 @@ scrapers:
   
   # Search terms for National Treasury
   search_terms:
-    - "water treatment"
-    - "cooling system"
-    - "pumps"
-    - "mechanical"
-    - "switchgear"
-    - "chemical"
-    - "fabrication"
+    - "mexel"
+    - "mexel 432"
+    - "mexel432"
+    - "mexsteam"
+    - "mexsteam 100"
+    - "mexel energy sustain"
+    - "mexel energy"
+    - "tes"
   
   # URLs
   urls:
@@ -33,9 +34,7 @@ scrapers:
 
 # Classification settings
 classification:
-  tes_priority: true        # TES overrides if overlapping
-  pakati_priority: true     # Phakathi overrides if mechanical supply
-  both_category_enabled: true
+  mexel_only: true          # Mexel Energy Sustain (TES product) only
 
 # Excel sheet names
 excel:
@@ -73,8 +72,7 @@ email_alerts:
     sender_email: ""  # Loaded from SMTP_USER env var
     sender_password: ""  # Loaded from SMTP_PASSWORD env var (app-specific password)
     recipients:
-      # - "team@tes.co.za"
-      # - "team@phakathi.co.za"
+      # - "team@mexel.co.za"
   urgent_threshold_days: 3  # Alert for HIGH priority tenders closing within N days
   
 # Logging settings

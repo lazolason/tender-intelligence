@@ -30,22 +30,22 @@ describe('Tender Functions', () => {
   });
 
   describe('classifyTender', () => {
-    it('should classify water treatment tenders as TES', () => {
+    it('should classify Mexel tenders as Mexel', () => {
       const tender = {
-        description: 'Water treatment plant maintenance',
-        title: 'Water treatment services'
+        description: 'Mexel TES dosing program for cooling water',
+        title: 'Mexel 432 supply'
       };
       const classification = classifyTender(tender);
-      expect(classification.company).toBe('TES');
+      expect(classification.relevance).toBe('Mexel');
     });
 
-    it('should classify electrical tenders as Phakathi', () => {
+    it('should classify civil tenders as out of scope', () => {
       const tender = {
-        description: 'Electrical infrastructure installation',
-        title: 'HVAC and electrical systems'
+        description: 'Civil construction upgrades for pump station infrastructure',
+        title: 'Civil works upgrade'
       };
       const classification = classifyTender(tender);
-      expect(classification.company).toBe('Phakathi');
+      expect(classification.relevance).toBe('OutOfScope');
     });
   });
 

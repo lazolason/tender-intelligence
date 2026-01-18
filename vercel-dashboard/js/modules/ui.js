@@ -490,8 +490,7 @@ export function initUI() {
                 "Tender Intelligence – Daily Summary",
                 "",
                 `Total tenders today: ${summary.total}`,
-                `TES-fit tenders: ${summary.tes}`,
-                `Phakathi-fit tenders: ${summary.phakathi}`,
+                `Mexel-fit tenders: ${summary.mexel}`,
                 "",
                 "Sent from Tender Intelligence dashboard."
             ];
@@ -646,12 +645,10 @@ async function executeAction(action) {
  */
 function getKpiSummary() {
     const totalKpi = document.getElementById('kpiTotalTenders') || document.querySelector(".stat-value.total");
-    const tesKpi = document.getElementById('kpiTesFit') || document.querySelector(".stat-value.tes-color");
-    const pakatiKpi = document.getElementById('kpiPhakathiFit') || document.querySelector(".stat-value.phakathi-color");
+    const mexelKpi = document.getElementById('kpiMexelFit') || document.querySelector(".stat-value.mexel-color");
     return {
         total: totalKpi ? totalKpi.textContent.trim() : "0",
-        tes: tesKpi ? tesKpi.textContent.trim() : "0",
-        phakathi: pakatiKpi ? pakatiKpi.textContent.trim() : "0"
+        mexel: mexelKpi ? mexelKpi.textContent.trim() : "0"
     };
 }
 
@@ -664,8 +661,7 @@ function updatePrintHeader(meta, tendersSummary) {
     const lastSyncSpan = document.getElementById("print-last-sync");
     const nextRunSpan = document.getElementById("print-next-run");
     const totalSpan = document.getElementById("print-total-tenders");
-    const tesSpan = document.getElementById("print-tes-tenders");
-    const pakatiSpan = document.getElementById("print-phakathi-tenders");
+    const mexelSpan = document.getElementById("print-mexel-tenders");
 
     if (lastSyncSpan && meta && meta.last_sync) {
         lastSyncSpan.textContent = "Last sync: " + meta.last_sync;
@@ -676,8 +672,7 @@ function updatePrintHeader(meta, tendersSummary) {
 
     if (tendersSummary) {
         if (totalSpan) totalSpan.textContent = String(tendersSummary.total || "0");
-        if (tesSpan) tesSpan.textContent = String(tendersSummary.tes || "0");
-        if (pakatiSpan) pakatiSpan.textContent = String(tendersSummary.phakathi || "0");
+        if (mexelSpan) mexelSpan.textContent = String(tendersSummary.mexel || "0");
     }
 }
 

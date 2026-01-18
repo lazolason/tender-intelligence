@@ -190,7 +190,7 @@ def generate_email_summary(results):
         <hr style="border: none; border-top: 1px solid #eee; margin: 25px 0;">
         
         <p style="color: #888; font-size: 12px; margin: 0; text-align: center;">
-            Tender Intelligence System v2.0 | TES & Phakathi<br>
+            Tender Intelligence System v2.0 | Mexel Energy Sustain<br>
             Dashboard: {'✅ Updated' if results.get('sync', {}).get('status') == 'success' else '⚠️ Pending'} | 
             Email: {'✅ Sent' if results.get('email', {}).get('status') == 'sent' else '⚠️ Not sent'}
         </p>

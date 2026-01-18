@@ -33,7 +33,7 @@
         .stat-value { font-size: 2.5rem; font-weight: 700; margin-bottom: 10px; }
         .stat-label { color: #888; text-transform: uppercase; letter-spacing: 1px; font-size: 0.75rem; }
         .high { color: #ff6b6b; } .medium { color: #feca57; } .low { color: #48dbfb; } .total { color: #a29bfe; }
-        .tes-color { color: #48dbfb; } .phakathi-color { color: #feca57; }
+        .mexel-color { color: #48dbfb; }
         
         /* Sections */
         .section { background: rgba(255,255,255,0.03); border-radius: 20px; padding: 30px; margin: 30px 0; border: 1px solid rgba(255,255,255,0.05); }
@@ -55,9 +55,7 @@
         
         /* Badges */
         .company-badge { padding: 4px 12px; border-radius: 15px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
-        .company-TES { background: rgba(72, 219, 251, 0.2); color: #48dbfb; border: 1px solid rgba(72, 219, 251, 0.4); }
-        .company-Phakathi { background: rgba(254, 202, 87, 0.2); color: #feca57; border: 1px solid rgba(254, 202, 87, 0.4); }
-        .company-Both { background: rgba(162, 155, 254, 0.2); color: #a29bfe; border: 1px solid rgba(162, 155, 254, 0.4); }
+        .company-MEXEL { background: rgba(72, 219, 251, 0.2); color: #48dbfb; border: 1px solid rgba(72, 219, 251, 0.4); }
         .priority-badge { padding: 8px 16px; border-radius: 25px; font-size: 0.75rem; font-weight: 700; }
         .priority-HIGH { background: rgba(255, 107, 107, 0.2); color: #ff6b6b; }
         .priority-MEDIUM { background: rgba(254, 202, 87, 0.2); color: #feca57; }
@@ -132,9 +130,9 @@
     <div class="container">
         <header>
             <h1>🎯 Tender Intelligence</h1>
-            <p class="subtitle"><span class="status"></span>TES & Phakathi Automation Engine</p>
-            <div class="last-sync">🔄 Last synced: 18 Jan 2026, 08:00</div>
-            <div class="last-sync" style="margin-top: 10px; background: rgba(72,219,251,0.2); border-color: rgba(72,219,251,0.3);">📊 Rand Water: 2 | Johannesburg Water: 2</div>
+            <p class="subtitle"><span class="status"></span>Mexel Energy Sustain Automation Engine</p>
+            <div class="last-sync">🔄 Last synced: 18 Jan 2026, 08:30</div>
+            <div class="last-sync" style="margin-top: 10px; background: rgba(72,219,251,0.2); border-color: rgba(72,219,251,0.3);">📊 Rand Water: 2</div>
         </header>
         
         <nav class="tab-nav">
@@ -146,16 +144,15 @@
         <!-- DASHBOARD TAB -->
         <div id="dashboard" class="tab-content active">
             <div class="stats">
-                <div class="stat-card"><div class="stat-value total">4</div><div class="stat-label">Total</div></div>
+                <div class="stat-card"><div class="stat-value total">2</div><div class="stat-label">Total</div></div>
                 <div class="stat-card"><div class="stat-value high">0</div><div class="stat-label">🔥 High</div></div>
-                <div class="stat-card"><div class="stat-value medium">3</div><div class="stat-label">✅ Medium</div></div>
-                <div class="stat-card"><div class="stat-value low">1</div><div class="stat-label">📝 Low</div></div>
-                <div class="stat-card"><div class="stat-value tes-color">1</div><div class="stat-label">💧 TES</div></div>
-                <div class="stat-card"><div class="stat-value phakathi-color">1</div><div class="stat-label">⚙️ Phakathi</div></div>
+                <div class="stat-card"><div class="stat-value medium">2</div><div class="stat-label">✅ Medium</div></div>
+                <div class="stat-card"><div class="stat-value low">0</div><div class="stat-label">📝 Low</div></div>
+                <div class="stat-card"><div class="stat-value mexel-color">2</div><div class="stat-label">⚗️ Mexel (TES)</div></div>
             </div>
             
             <div class="section">
-                <h2>📋 Active Tenders (<span id="displayedCount">4</span> of <span id="totalCount">4</span>)</h2>
+                <h2>📋 Active Tenders (<span id="displayedCount">2</span> of <span id="totalCount">2</span>)</h2>
                 
                 <!-- Search Box -->
                 <div style="margin-bottom: 20px;">
@@ -166,12 +163,11 @@
                 </div>
                 
                 <div class="filter-tabs">
-                    <button class="filter-tab active" onclick="filterTenders('all')">All (<span id="countAll">4</span>)</button>
-                    <button class="filter-tab" onclick="filterTenders('TES')">💧 TES (<span id="countTES">1</span>)</button>
-                    <button class="filter-tab" onclick="filterTenders('Phakathi')">⚙️ Phakathi (<span id="countPhakathi">1</span>)</button>
+                    <button class="filter-tab active" onclick="filterTenders('all')">All (<span id="countAll">2</span>)</button>
+                    <button class="filter-tab" onclick="filterTenders('Mexel')">⚗️ Mexel (<span id="countMexel">2</span>)</button>
                     <button class="filter-tab high" onclick="filterTenders('HIGH')">🔥 HIGH (<span id="countHIGH">0</span>)</button>
-                    <button class="filter-tab medium" onclick="filterTenders('MEDIUM')">⚡ MEDIUM (<span id="countMEDIUM">3</span>)</button>
-                    <button class="filter-tab low" onclick="filterTenders('LOW')">📝 LOW (<span id="countLOW">1</span>)</button>
+                    <button class="filter-tab medium" onclick="filterTenders('MEDIUM')">⚡ MEDIUM (<span id="countMEDIUM">2</span>)</button>
+                    <button class="filter-tab low" onclick="filterTenders('LOW')">📝 LOW (<span id="countLOW">0</span>)</button>
                 </div>
                 <ul class="tender-list" id="tenderList"></ul>
                 <div id="loadMoreContainer" style="text-align: center; margin-top: 20px; display: none;">
@@ -212,7 +208,7 @@
                 <h2>🏢 Company Focus Areas</h2>
                 <div class="companies">
                     <div class="company-card" style="border-color: rgba(72,219,251,0.5);">
-                        <div class="company-name" style="color: #48dbfb;">💧 TES</div>
+                        <div class="company-name" style="color: #48dbfb;">⚗️ Mexel (TES)</div>
                         <div class="company-focus">Water Treatment & Cooling Specialists</div>
                         <div class="company-keywords">
                             <span class="keyword">Water Treatment</span>
@@ -220,17 +216,6 @@
                             <span class="keyword">Chemical Dosing</span>
                             <span class="keyword">RO Systems</span>
                             <span class="keyword">Boiler Treatment</span>
-                        </div>
-                    </div>
-                    <div class="company-card" style="border-color: rgba(254,202,87,0.5);">
-                        <div class="company-name" style="color: #feca57;">⚙️ Phakathi</div>
-                        <div class="company-focus">Mechanical & Electrical Solutions</div>
-                        <div class="company-keywords">
-                            <span class="keyword">Pumps</span>
-                            <span class="keyword">Mechanical</span>
-                            <span class="keyword">Fabrication</span>
-                            <span class="keyword">Switchgear</span>
-                            <span class="keyword">Valves</span>
                         </div>
                     </div>
                 </div>
@@ -274,7 +259,7 @@
         </div>
         
         <footer>
-            <p>Tender Intelligence System v3.0 | TES & Phakathi</p>
+            <p>Tender Intelligence System v3.0 | Mexel Energy Sustain</p>
             <p>Automated scans: Daily 6AM | Weekly Reports: Monday 7AM</p>
         </footer>
     </div>
@@ -304,18 +289,17 @@
                 allTenders = [
         {
                 "ref": "RW10397693/25RR",
-                "title": "RW10397693/25RR - THE SUPPLY AND DELIVERY OF AMMONIUM HYDROXIDE TO RAND WATER\u2019S ZWARTKOPJES, EIKENHOF, PALMIET, AND MA",
-                "description": "THE SUPPLY AND DELIVERY OF AMMONIUM HYDROXIDE TO RAND WATER\u2019S ZWARTKOPJES, EIKENHOF, PALMIET, AND MAPLETON BOOSTER PUMPING STATIONS FOR A PERIOD OF TWENTY (20) YEARS",
+                "title": "RW10397693/25RR - THE SUPPLY AND DELIVERY OF AMMONIUM HYDROXIDE TO RAND WATER'S ZWARTKOPJES, EIKENHOF, PALMIET, AND MA",
+                "description": "THE SUPPLY AND DELIVERY OF AMMONIUM HYDROXIDE TO RAND WATER'S ZWARTKOPJES, EIKENHOF, PALMIET, AND MAPLETON BOOSTER PUMPING STATIONS FOR A PERIOD OF TWENTY (20) YEARS",
                 "client": "Rand Water",
                 "priority": "MEDIUM",
-                "score": 6.3,
-                "category": "Phakathi",
+                "score": 5.8,
+                "category": "Mexel",
                 "source": "Rand Water",
                 "url": "https://www.randwater.co.za/./media/sc_pdf/RW10397693 25RR.pdf",
                 "pdf_size": "",
-                "company": "Both",
-                "tes_score": 0,
-                "phakathi_score": 0,
+                "company": "Mexel",
+                "tes_score": 6,
                 "closing_date": "2026-01-19",
                 "contact": "Jabulile Molema - jmolema@randwater.co.za - 011 682 0393"
         },
@@ -326,49 +310,14 @@
                 "client": "Rand Water",
                 "priority": "MEDIUM",
                 "score": 5.3,
-                "category": "Unknown",
+                "category": "Mexel",
                 "source": "Rand Water",
                 "url": "https://www.randwater.co.za/./media/sc_pdf/RW010413976-25 RW Advert.pdf",
                 "pdf_size": "",
-                "company": "Both",
-                "tes_score": 0,
-                "phakathi_score": 0,
+                "company": "Mexel",
+                "tes_score": 5,
                 "closing_date": "2026-01-30",
                 "contact": "Johannes Sebothoma Tel no. (011) 682-0860  E-Mail:jsebotho@randwater.co.za"
-        },
-        {
-                "ref": "JW 14402",
-                "title": "TURFFONTEIN CORRIDORS OF FREEDOM \u2013 WATER UPGRADE (FORESTHILL TOWER AND PUMSTATION).",
-                "description": "Category: Construction. TURFFONTEIN CORRIDORS OF FREEDOM \u2013 WATER UPGRADE (FORESTHILL TOWER AND PUMSTATION).",
-                "client": "Johannesburg Water",
-                "priority": "LOW",
-                "score": 4.7,
-                "category": "Unknown",
-                "source": "Johannesburg Water",
-                "url": "https://www.johannesburgwater.co.za/tenders/",
-                "pdf_size": "",
-                "company": "TES",
-                "tes_score": 1,
-                "phakathi_score": 0,
-                "closing_date": "2026-02-16",
-                "contact": ""
-        },
-        {
-                "ref": "JW OPS 077/24",
-                "title": "REPAIRS AND MAINTENANCE OF LOW AND MEDIUM VOLTAGE ELECTRICAL INFRASTRUCTURE FOR\nBULK WASTEWATER WORKS AS AND WHEN REQUIRED FOR A PERIOD OF 36 MONTHS",
-                "description": "Category: Services: Electrical. REPAIRS AND MAINTENANCE OF LOW AND MEDIUM VOLTAGE ELECTRICAL INFRASTRUCTURE FOR\nBULK WASTEWATER WORKS AS AND WHEN REQUIRED FOR A PERIOD OF 36 MONTHS",
-                "client": "Johannesburg Water",
-                "priority": "MEDIUM",
-                "score": 5.3,
-                "category": "Phakathi",
-                "source": "Johannesburg Water",
-                "url": "https://www.johannesburgwater.co.za/tenders/",
-                "pdf_size": "",
-                "company": "Phakathi",
-                "tes_score": 1,
-                "phakathi_score": 3,
-                "closing_date": "2026-01-25",
-                "contact": ""
         }
 ];
                 renderTenders('all');
@@ -413,7 +362,7 @@
             let filtered = allTenders.filter(t => getDaysUntil(t.closing_date) === null || getDaysUntil(t.closing_date) >= 0);
             
             // Apply category/priority filter
-            if (filter === 'TES' || filter === 'Phakathi' || filter === 'Both') {
+            if (filter === 'Mexel') {
                 filtered = filtered.filter(t => t.company === filter);
             } else if (filter === 'HIGH' || filter === 'MEDIUM' || filter === 'LOW') {
                 filtered = filtered.filter(t => t.priority === filter);
@@ -440,8 +389,7 @@
             // Update filter counts dynamically
             const allActive = allTenders.filter(t => getDaysUntil(t.closing_date) === null || getDaysUntil(t.closing_date) >= 0);
             document.getElementById('countAll').textContent = allActive.length;
-            document.getElementById('countTES').textContent = allActive.filter(t => t.company === 'TES').length;
-            document.getElementById('countPhakathi').textContent = allActive.filter(t => t.company === 'Phakathi').length;
+            document.getElementById('countMexel').textContent = allActive.filter(t => t.company === 'Mexel').length;
             document.getElementById('countHIGH').textContent = allActive.filter(t => t.priority === 'HIGH').length;
             document.getElementById('countMEDIUM').textContent = allActive.filter(t => t.priority === 'MEDIUM').length;
             document.getElementById('countLOW').textContent = allActive.filter(t => t.priority === 'LOW').length;

@@ -52,7 +52,7 @@ def get_weekly_stats():
     stats = {
         "total": 0,
         "this_week": 0,
-        "by_type": {"TES": 0, "Phakathi": 0, "Both": 0, "Unknown": 0},
+        "by_type": {"MEXEL": 0, "Unknown": 0},
         "by_priority": {"HIGH": 0, "MEDIUM": 0, "LOW": 0},
         "by_status": {},
         "closing_soon": [],
@@ -69,10 +69,13 @@ def get_weekly_stats():
         industry = ws.cell(row=row, column=4).value or "Unknown"
         composite = ws.cell(row=row, column=6).value or 5
         priority = ws.cell(row=row, column=7).value or "MEDIUM"
-        closing = ws.cell(row=row, column=13).value or ""
-        status = ws.cell(row=row, column=14).value or "Open"
-        date_added = ws.cell(row=row, column=18).value or ""
-        ref = ws.cell(row=row, column=17).value or ""
+        closing = ws.cell(row=row, column=12).value or ""
+        status = ws.cell(row=row, column=13).value or "Open"
+        date_added = ws.cell(row=row, column=17).value or ""
+        ref = ws.cell(row=row, column=16).value or ""
+
+        if t_type == "TES":
+            t_type = "MEXEL"
         
         if t_type in stats["by_type"]:
             stats["by_type"][t_type] += 1
@@ -157,8 +160,7 @@ def generate_weekly_html(stats: dict) -> str:
             .badge {{ display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 0.8em; font-weight: bold; }}
             .badge-high {{ background: #F44336; color: white; }}
             .badge-medium {{ background: #FFC107; color: black; }}
-            .badge-tes {{ background: #2196F3; color: white; }}
-            .badge-phakathi {{ background: #9C27B0; color: white; }}
+            .badge-mexel {{ background: #2196F3; color: white; }}
             .chart-container {{ margin: 20px 0; }}
             .bar {{ height: 25px; background: #1565C0; margin: 5px 0; border-radius: 3px; color: white; padding: 3px 10px; }}
         </style>
@@ -248,7 +250,7 @@ def generate_weekly_html(stats: dict) -> str:
             <tr><th>Ref</th><th>Tender</th><th>Client</th><th>Type</th><th>Score</th></tr>
         """
         for t in stats['high_priority'][:5]:
-            type_badge = "badge-tes" if t['type'] == "TES" else "badge-phakathi"
+            type_badge = "badge-mexel"
             html += f"""
             <tr>
                 <td>{t['ref']}</td>
@@ -440,8 +442,7 @@ def run_weekly():
     print(f"   Added this week:  {stats['this_week']}")
     print(f"   Closing soon:     {len(stats['closing_soon'])}")
     print(f"   HIGH priority:    {stats['by_priority']['HIGH']}")
-    print(f"   TES tenders:      {stats['by_type']['TES']}")
-    print(f"   Phakathi tenders: {stats['by_type']['Phakathi']}")
+    print(f"   Mexel tenders:    {stats['by_type']['MEXEL']}")
     print("=" * 50)
     
     return stats

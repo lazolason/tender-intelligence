@@ -246,7 +246,7 @@ Initialize Excel writer.
 - `fuzzy_duplicate_threshold`: Fuzzy match threshold (default: 85)
 - `fuzzy_date_window_days`: Date window for duplicates (default: 7)
 
-#### `write_tender(tender_name, client, tender_type, industry, fit_score, stage, closing_date, status, next_action, notes, reference_number, *, composite_score, priority, risk_level, revenue_potential, tes_fit, phakathi_fit) -> bool`
+#### `write_tender(tender_name, client, tender_type, industry, fit_score, stage, closing_date, status, next_action, notes, reference_number, *, composite_score, priority, risk_level, revenue_potential, tes_fit) -> bool`
 Write a single tender to Excel.
 
 **Parameters:**
@@ -266,7 +266,6 @@ Write a single tender to Excel.
 - `risk_level`: Risk assessment (Low, Medium, High)
 - `revenue_potential`: Revenue potential (Low, Medium, High)
 - `tes_fit`: TES suitability score (0-10)
-- `phakathi_fit`: Phakathi suitability score (0-10)
 
 **Returns:**
 - `True` if tender was added, `False` if duplicate
@@ -287,7 +286,7 @@ from utils.excel_writer import ExcelWriter
 
 writer = ExcelWriter("/path/to/tender_log.xlsx")
 stats = writer.get_stats()
-# Returns: {"total": 100, "by_type": {"TES": 50, "Phakathi": 30}, "by_priority": {"HIGH": 20, "MEDIUM": 50, "LOW": 30}}
+# Returns: {"total": 100, "by_type": {"MEXEL": 50}, "by_priority": {"HIGH": 20, "MEDIUM": 50, "LOW": 30}}
 ```
 
 ---
@@ -462,7 +461,7 @@ writer = ExcelWriter(
 was_added = writer.write_tender(
     tender_name="NT-001 - Supply of Water Treatment Chemicals",
     client="Eskom",
-    tender_type="TES",
+    tender_type="MEXEL",
     industry="Power Generation",
     fit_score=8,
     stage="New",
@@ -475,8 +474,7 @@ was_added = writer.write_tender(
     priority="HIGH",
     risk_level="Low",
     revenue_potential="High",
-    tes_fit=9,
-    phakathi_fit=2
+    tes_fit=9
 )
 
 if was_added:

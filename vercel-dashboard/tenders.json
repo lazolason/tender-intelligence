@@ -1,25 +1,24 @@
 {
   "meta": {
-    "last_sync": "2026-01-18 08:00",
+    "last_sync": "2026-01-18 08:30",
     "next_run": "Daily 08:00",
-    "tender_count": 4,
-    "last_update": "2026-01-18T08:00:08.310154"
+    "tender_count": 2,
+    "last_update": "2026-01-18T08:30:05.069246"
   },
   "tenders": [
     {
       "ref": "RW10397693/25RR",
-      "title": "RW10397693/25RR - THE SUPPLY AND DELIVERY OF AMMONIUM HYDROXIDE TO RAND WATER\u2019S ZWARTKOPJES, EIKENHOF, PALMIET, AND MA",
-      "description": "THE SUPPLY AND DELIVERY OF AMMONIUM HYDROXIDE TO RAND WATER\u2019S ZWARTKOPJES, EIKENHOF, PALMIET, AND MAPLETON BOOSTER PUMPING STATIONS FOR A PERIOD OF TWENTY (20) YEARS",
+      "title": "RW10397693/25RR - THE SUPPLY AND DELIVERY OF AMMONIUM HYDROXIDE TO RAND WATER'S ZWARTKOPJES, EIKENHOF, PALMIET, AND MA",
+      "description": "THE SUPPLY AND DELIVERY OF AMMONIUM HYDROXIDE TO RAND WATER'S ZWARTKOPJES, EIKENHOF, PALMIET, AND MAPLETON BOOSTER PUMPING STATIONS FOR A PERIOD OF TWENTY (20) YEARS",
       "client": "Rand Water",
       "priority": "MEDIUM",
-      "score": 6.3,
-      "category": "Phakathi",
+      "score": 5.8,
+      "category": "Mexel",
       "source": "Rand Water",
       "url": "https://www.randwater.co.za/./media/sc_pdf/RW10397693 25RR.pdf",
       "pdf_size": "",
-      "company": "Both",
-      "tes_score": 0,
-      "phakathi_score": 0,
+      "company": "Mexel",
+      "tes_score": 6,
       "closing_date": "2026-01-19",
       "contact": "Jabulile Molema - jmolema@randwater.co.za - 011 682 0393"
     },
@@ -30,49 +29,14 @@
       "client": "Rand Water",
       "priority": "MEDIUM",
       "score": 5.3,
-      "category": "Unknown",
+      "category": "Mexel",
       "source": "Rand Water",
       "url": "https://www.randwater.co.za/./media/sc_pdf/RW010413976-25 RW Advert.pdf",
       "pdf_size": "",
-      "company": "Both",
-      "tes_score": 0,
-      "phakathi_score": 0,
+      "company": "Mexel",
+      "tes_score": 5,
       "closing_date": "2026-01-30",
       "contact": "Johannes Sebothoma Tel no. (011) 682-0860  E-Mail:jsebotho@randwater.co.za"
-    },
-    {
-      "ref": "JW 14402",
-      "title": "TURFFONTEIN CORRIDORS OF FREEDOM \u2013 WATER UPGRADE (FORESTHILL TOWER AND PUMSTATION).",
-      "description": "Category: Construction. TURFFONTEIN CORRIDORS OF FREEDOM \u2013 WATER UPGRADE (FORESTHILL TOWER AND PUMSTATION).",
-      "client": "Johannesburg Water",
-      "priority": "LOW",
-      "score": 4.7,
-      "category": "Unknown",
-      "source": "Johannesburg Water",
-      "url": "https://www.johannesburgwater.co.za/tenders/",
-      "pdf_size": "",
-      "company": "TES",
-      "tes_score": 1,
-      "phakathi_score": 0,
-      "closing_date": "2026-02-16",
-      "contact": ""
-    },
-    {
-      "ref": "JW OPS 077/24",
-      "title": "REPAIRS AND MAINTENANCE OF LOW AND MEDIUM VOLTAGE ELECTRICAL INFRASTRUCTURE FOR\nBULK WASTEWATER WORKS AS AND WHEN REQUIRED FOR A PERIOD OF 36 MONTHS",
-      "description": "Category: Services: Electrical. REPAIRS AND MAINTENANCE OF LOW AND MEDIUM VOLTAGE ELECTRICAL INFRASTRUCTURE FOR\nBULK WASTEWATER WORKS AS AND WHEN REQUIRED FOR A PERIOD OF 36 MONTHS",
-      "client": "Johannesburg Water",
-      "priority": "MEDIUM",
-      "score": 5.3,
-      "category": "Phakathi",
-      "source": "Johannesburg Water",
-      "url": "https://www.johannesburgwater.co.za/tenders/",
-      "pdf_size": "",
-      "company": "Phakathi",
-      "tes_score": 1,
-      "phakathi_score": 3,
-      "closing_date": "2026-01-25",
-      "contact": ""
     }
   ]
 }

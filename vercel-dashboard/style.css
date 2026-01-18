@@ -317,7 +317,7 @@
         .stat-value { font-size: 2.5rem; font-weight: 700; margin-bottom: 10px; }
         .stat-label { color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; font-size: 0.75rem; }
         .high { color: #ff6b6b; } .medium { color: #feca57; } .low { color: #48dbfb; } .total { color: #a29bfe; }
-        .tes-color { color: #48dbfb; } .phakathi-color { color: #feca57; }
+        .mexel-color { color: #48dbfb; }
         
         /* Sections */
         .section { background-color: var(--surface-1); border-radius: 20px; padding: 30px; margin: 30px 0; border: 1px solid var(--border-color); }
@@ -466,9 +466,7 @@
         
         /* Badges */
         .company-badge { padding: 4px 12px; border-radius: 15px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
-        .company-TES { background: rgba(72, 219, 251, 0.2); color: #48dbfb; border: 1px solid rgba(72, 219, 251, 0.4); }
-        .company-Phakathi { background: rgba(254, 202, 87, 0.2); color: #feca57; border: 1px solid rgba(254, 202, 87, 0.4); }
-        .company-Both { background: rgba(162, 155, 254, 0.2); color: #a29bfe; border: 1px solid rgba(162, 155, 254, 0.4); }
+        .company-Mexel { background: rgba(72, 219, 251, 0.2); color: #48dbfb; border: 1px solid rgba(72, 219, 251, 0.4); }
         .priority-badge { padding: 8px 16px; border-radius: 25px; font-size: 0.75rem; font-weight: 700; }
         .priority-HIGH { background: rgba(255, 107, 107, 0.2); color: #ff6b6b; }
         .priority-MEDIUM { background: rgba(254, 202, 87, 0.2); color: #feca57; }
@@ -562,9 +560,7 @@
         .scope-toggle input { accent-color: #667eea; }
         .scope-pill { display: inline-block; padding: 4px 10px; border-radius: 999px; font-size: 0.75rem; font-weight: 600; }
         .scope-pill-out { background-color: var(--surface-3); color: var(--text-secondary); }
-        .scope-pill-tes { background: rgba(72,219,251,0.18); color: #48dbfb; }
-        .scope-pill-phakathi { background: rgba(254,202,87,0.18); color: #feca57; }
-        .scope-pill-both { background: rgba(162,155,254,0.18); color: #a29bfe; }
+        .scope-pill-mexel { background: rgba(72,219,251,0.18); color: #48dbfb; }
         .decision-pill-bid { background: rgba(0,255,136,0.15); color: #6af7b5; border-radius: 8px; padding: 6px 10px; font-weight: 700; }
         .decision-pill-nobid { background: rgba(255,107,107,0.15); color: #ff9b9b; border-radius: 8px; padding: 6px 10px; font-weight: 700; }
         .decision-pill-review { background-color: var(--surface-3); color: var(--text-primary); border-radius: 8px; padding: 6px 10px; font-weight: 700; }

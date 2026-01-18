@@ -47,6 +47,14 @@ def load_tenders():
                 return data
     return []
 
+def is_mexel_tender(tender):
+    """Filter to Mexel-only tenders (TES product keywords)."""
+    category = (tender.get("category") or "").strip().upper()
+    if category in ("MEXEL", "TES"):
+        return True
+    scores = tender.get("scores", {}) or {}
+    return scores.get("tes_suitability", 0) > 0
+
 def get_search_url(tender):
     """Generate a search URL for the tender"""
     source = tender.get("source", "")
@@ -65,15 +73,14 @@ def get_search_url(tender):
 
 def generate_dashboard_html(tenders):
     """Generate updated dashboard HTML with real tender data"""
-    
+
+    tenders = [t for t in tenders if is_mexel_tender(t)]
     total = len(tenders)
     high = sum(1 for t in tenders if t.get("scores", {}).get("priority") == "HIGH")
     medium = sum(1 for t in tenders if t.get("scores", {}).get("priority") == "MEDIUM")
     low = sum(1 for t in tenders if t.get("scores", {}).get("priority") == "LOW")
     
-    tes_count = sum(1 for t in tenders if t.get("scores", {}).get("tes_suitability", 0) > t.get("scores", {}).get("phakathi_suitability", 0))
-    phakathi_count = sum(1 for t in tenders if t.get("scores", {}).get("phakathi_suitability", 0) > t.get("scores", {}).get("tes_suitability", 0))
-    both_count = total - tes_count - phakathi_count
+    mexel_count = total
     
     # Priority counts
     high_count = sum(1 for t in tenders if t.get("scores", {}).get("priority") == "HIGH")
@@ -93,14 +100,7 @@ def generate_dashboard_html(tenders):
     for t in tenders:  # Process ALL tenders, not just first 20
         scores = t.get("scores", {})
         tes_score = scores.get("tes_suitability", 0)
-        phakathi_score = scores.get("phakathi_suitability", 0)
-        
-        if tes_score > phakathi_score:
-            company = "TES"
-        elif phakathi_score > tes_score:
-            company = "Phakathi"
-        else:
-            company = "Both"
+        company = "Mexel"
         
         url = t.get("url", "") or get_search_url(t)
         
@@ -122,6 +122,10 @@ def generate_dashboard_html(tenders):
             except:
                 pass
         
+        category = t.get("category", "Unknown")
+        if category in ("TES", "MEXEL"):
+            category = "Mexel"
+
         js_tenders.append({
             "ref": t.get("ref", "N/A"),
             "title": t.get("title", "Unknown"),
@@ -129,13 +133,12 @@ def generate_dashboard_html(tenders):
             "client": t.get("client", "Unknown"),
             "priority": scores.get("priority", "LOW"),
             "score": scores.get("composite_score", scores.get("composite", 0)),
-            "category": t.get("category", "Unknown"),
+            "category": category,
             "source": t.get("source", "Unknown"),
             "url": url,
             "pdf_size": pdf_size,
             "company": company,
             "tes_score": tes_score,
-            "phakathi_score": phakathi_score,
             "closing_date": t.get("closing_date", ""),
             "contact": t.get("contact", "")
         })
@@ -192,7 +195,7 @@ def generate_dashboard_html(tenders):
         .stat-value {{ font-size: 2.5rem; font-weight: 700; margin-bottom: 10px; }}
         .stat-label {{ color: #888; text-transform: uppercase; letter-spacing: 1px; font-size: 0.75rem; }}
         .high {{ color: #ff6b6b; }} .medium {{ color: #feca57; }} .low {{ color: #48dbfb; }} .total {{ color: #a29bfe; }}
-        .tes-color {{ color: #48dbfb; }} .phakathi-color {{ color: #feca57; }}
+        .mexel-color {{ color: #48dbfb; }}
         
         /* Sections */
         .section {{ background: rgba(255,255,255,0.03); border-radius: 20px; padding: 30px; margin: 30px 0; border: 1px solid rgba(255,255,255,0.05); }}
@@ -214,9 +217,7 @@ def generate_dashboard_html(tenders):
         
         /* Badges */
         .company-badge {{ padding: 4px 12px; border-radius: 15px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }}
-        .company-TES {{ background: rgba(72, 219, 251, 0.2); color: #48dbfb; border: 1px solid rgba(72, 219, 251, 0.4); }}
-        .company-Phakathi {{ background: rgba(254, 202, 87, 0.2); color: #feca57; border: 1px solid rgba(254, 202, 87, 0.4); }}
-        .company-Both {{ background: rgba(162, 155, 254, 0.2); color: #a29bfe; border: 1px solid rgba(162, 155, 254, 0.4); }}
+        .company-MEXEL {{ background: rgba(72, 219, 251, 0.2); color: #48dbfb; border: 1px solid rgba(72, 219, 251, 0.4); }}
         .priority-badge {{ padding: 8px 16px; border-radius: 25px; font-size: 0.75rem; font-weight: 700; }}
         .priority-HIGH {{ background: rgba(255, 107, 107, 0.2); color: #ff6b6b; }}
         .priority-MEDIUM {{ background: rgba(254, 202, 87, 0.2); color: #feca57; }}
@@ -291,7 +292,7 @@ def generate_dashboard_html(tenders):
     <div class="container">
         <header>
             <h1>🎯 Tender Intelligence</h1>
-            <p class="subtitle"><span class="status"></span>TES & Phakathi Automation Engine</p>
+            <p class="subtitle"><span class="status"></span>Mexel Energy Sustain Automation Engine</p>
             <div class="last-sync">🔄 Last synced: {last_updated}</div>
             <div class="last-sync" style="margin-top: 10px; background: rgba(72,219,251,0.2); border-color: rgba(72,219,251,0.3);">📊 {source_breakdown}</div>
         </header>
@@ -309,8 +310,7 @@ def generate_dashboard_html(tenders):
                 <div class="stat-card"><div class="stat-value high">{high}</div><div class="stat-label">🔥 High</div></div>
                 <div class="stat-card"><div class="stat-value medium">{medium}</div><div class="stat-label">✅ Medium</div></div>
                 <div class="stat-card"><div class="stat-value low">{low}</div><div class="stat-label">📝 Low</div></div>
-                <div class="stat-card"><div class="stat-value tes-color">{tes_count}</div><div class="stat-label">💧 TES</div></div>
-                <div class="stat-card"><div class="stat-value phakathi-color">{phakathi_count}</div><div class="stat-label">⚙️ Phakathi</div></div>
+                <div class="stat-card"><div class="stat-value mexel-color">{mexel_count}</div><div class="stat-label">⚗️ Mexel (TES)</div></div>
             </div>
             
             <div class="section">
@@ -326,8 +326,7 @@ def generate_dashboard_html(tenders):
                 
                 <div class="filter-tabs">
                     <button class="filter-tab active" onclick="filterTenders('all')">All (<span id="countAll">{total}</span>)</button>
-                    <button class="filter-tab" onclick="filterTenders('TES')">💧 TES (<span id="countTES">{tes_count}</span>)</button>
-                    <button class="filter-tab" onclick="filterTenders('Phakathi')">⚙️ Phakathi (<span id="countPhakathi">{phakathi_count}</span>)</button>
+                    <button class="filter-tab" onclick="filterTenders('Mexel')">⚗️ Mexel (<span id="countMexel">{mexel_count}</span>)</button>
                     <button class="filter-tab high" onclick="filterTenders('HIGH')">🔥 HIGH (<span id="countHIGH">{high_count}</span>)</button>
                     <button class="filter-tab medium" onclick="filterTenders('MEDIUM')">⚡ MEDIUM (<span id="countMEDIUM">{medium_count}</span>)</button>
                     <button class="filter-tab low" onclick="filterTenders('LOW')">📝 LOW (<span id="countLOW">{low_count}</span>)</button>
@@ -371,7 +370,7 @@ def generate_dashboard_html(tenders):
                 <h2>🏢 Company Focus Areas</h2>
                 <div class="companies">
                     <div class="company-card" style="border-color: rgba(72,219,251,0.5);">
-                        <div class="company-name" style="color: #48dbfb;">💧 TES</div>
+                        <div class="company-name" style="color: #48dbfb;">⚗️ Mexel (TES)</div>
                         <div class="company-focus">Water Treatment & Cooling Specialists</div>
                         <div class="company-keywords">
                             <span class="keyword">Water Treatment</span>
@@ -379,17 +378,6 @@ def generate_dashboard_html(tenders):
                             <span class="keyword">Chemical Dosing</span>
                             <span class="keyword">RO Systems</span>
                             <span class="keyword">Boiler Treatment</span>
-                        </div>
-                    </div>
-                    <div class="company-card" style="border-color: rgba(254,202,87,0.5);">
-                        <div class="company-name" style="color: #feca57;">⚙️ Phakathi</div>
-                        <div class="company-focus">Mechanical & Electrical Solutions</div>
-                        <div class="company-keywords">
-                            <span class="keyword">Pumps</span>
-                            <span class="keyword">Mechanical</span>
-                            <span class="keyword">Fabrication</span>
-                            <span class="keyword">Switchgear</span>
-                            <span class="keyword">Valves</span>
                         </div>
                     </div>
                 </div>
@@ -433,7 +421,7 @@ def generate_dashboard_html(tenders):
         </div>
         
         <footer>
-            <p>Tender Intelligence System v3.0 | TES & Phakathi</p>
+            <p>Tender Intelligence System v3.0 | Mexel Energy Sustain</p>
             <p>Automated scans: Daily 6AM | Weekly Reports: Monday 7AM</p>
         </footer>
     </div>
@@ -503,7 +491,7 @@ def generate_dashboard_html(tenders):
             let filtered = allTenders.filter(t => getDaysUntil(t.closing_date) === null || getDaysUntil(t.closing_date) >= 0);
             
             // Apply category/priority filter
-            if (filter === 'TES' || filter === 'Phakathi' || filter === 'Both') {{
+            if (filter === 'Mexel') {{
                 filtered = filtered.filter(t => t.company === filter);
             }} else if (filter === 'HIGH' || filter === 'MEDIUM' || filter === 'LOW') {{
                 filtered = filtered.filter(t => t.priority === filter);
@@ -530,8 +518,7 @@ def generate_dashboard_html(tenders):
             // Update filter counts dynamically
             const allActive = allTenders.filter(t => getDaysUntil(t.closing_date) === null || getDaysUntil(t.closing_date) >= 0);
             document.getElementById('countAll').textContent = allActive.length;
-            document.getElementById('countTES').textContent = allActive.filter(t => t.company === 'TES').length;
-            document.getElementById('countPhakathi').textContent = allActive.filter(t => t.company === 'Phakathi').length;
+            document.getElementById('countMexel').textContent = allActive.filter(t => t.company === 'Mexel').length;
             document.getElementById('countHIGH').textContent = allActive.filter(t => t.priority === 'HIGH').length;
             document.getElementById('countMEDIUM').textContent = allActive.filter(t => t.priority === 'MEDIUM').length;
             document.getElementById('countLOW').textContent = allActive.filter(t => t.priority === 'LOW').length;

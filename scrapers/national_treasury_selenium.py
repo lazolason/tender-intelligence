@@ -275,11 +275,11 @@ class NationalTreasuryScraper:
         self.tenders = unique
         
         # Count relevant
-        relevant = [t for t in self.tenders if t["category"] in ["TES", "Phakathi", "Both"]]
+        relevant = [t for t in self.tenders if t["category"] in ["MEXEL", "TES"]]
         
         print(f"\n📊 Results:")
         print(f"   Total scraped: {len(self.tenders)}")
-        print(f"   TES/Phakathi:  {len(relevant)}")
+        print(f"   Mexel (TES):   {len(relevant)}")
         
         return self.tenders
 

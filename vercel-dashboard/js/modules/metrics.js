@@ -18,8 +18,7 @@ export function computeDashboardMetrics(tenders) {
     const active = list.filter(isTenderActive);
     const activeCount = active.length;
 
-    let tesFitCount = 0;
-    let phakathiFitCount = 0;
+    let mexelFitCount = 0;
     let highPriorityCount = 0;
 
     const byPriorityActive = { HIGH: 0, MEDIUM: 0, LOW: 0, OTHER: 0 };
@@ -48,19 +47,13 @@ export function computeDashboardMetrics(tenders) {
         }
 
         const scope = getTenderCompanyScope(t);
-        if (scope === 'TES') tesFitCount += 1;
-        else if (scope === 'Phakathi') phakathiFitCount += 1;
-        else if (scope === 'Both') {
-            tesFitCount += 1;
-            phakathiFitCount += 1;
-        }
+        if (scope === 'Mexel') mexelFitCount += 1;
     }
 
     return {
         totalCount,
         activeCount,
-        tesFitCount,
-        phakathiFitCount,
+        mexelFitCount,
         highPriorityCount,
         byPriorityActive,
         bySource,
@@ -105,13 +98,11 @@ export function updatePriorityMixBar(byPriorityActive, activeTotal) {
 export function updateDashboardStatsUI(metrics) {
     if (!metrics) return;
     setTextById('kpiTotalTenders', metrics.totalCount);
-    setTextById('kpiTesFit', metrics.tesFitCount);
-    setTextById('kpiPhakathiFit', metrics.phakathiFitCount);
+    setTextById('kpiMexelFit', metrics.mexelFitCount);
     setTextById('kpiHighPriority', metrics.highPriorityCount);
 
     setTextById('pipelineTotalActive', metrics.activeCount);
-    setTextById('pipelineTesActive', metrics.tesFitCount);
-    setTextById('pipelinePhakathiActive', metrics.phakathiFitCount);
+    setTextById('pipelineMexelActive', metrics.mexelFitCount);
 
     updatePriorityMixBar(metrics.byPriorityActive, metrics.activeCount);
 }

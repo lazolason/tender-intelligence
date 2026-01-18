@@ -484,7 +484,7 @@ if __name__ == "__main__":
     if SEMANTIC_DEDUP_AVAILABLE and new_items:
         try:
             original_count = len(new_items)
-            new_items = filter_duplicates(new_items)
+            new_items, duplicates = filter_duplicates(new_items)
             filtered_count = len(new_items)
             duplicates_found = original_count - filtered_count
             if duplicates_found > 0:

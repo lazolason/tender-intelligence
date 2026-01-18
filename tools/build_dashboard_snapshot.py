@@ -410,7 +410,7 @@ def render_daily_email_html(payload: Dict[str, Any], summary: Dict[str, Any], da
   <body>
     <div class="container">
       <h1>Tender Intelligence – Daily Digest</h1>
-      <p class="sub">TES &amp; Phakathi decision layer · {esc(date_line)}</p>
+      <p class="sub">Mexel Energy Sustain decision layer · {esc(date_line)}</p>
       <p class="stamp">Build stamp: <strong>{esc(build_id)}</strong></p>
 
       <div class="kpis">

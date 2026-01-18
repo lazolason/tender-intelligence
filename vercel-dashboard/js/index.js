@@ -295,8 +295,7 @@ window.smartSearchTenders = function(query, tenders) {
         nextWeek: /\bnext week\b/i,
         thisWeek: /\bthis week\b|\bweek\b/i,
         urgent: /\burgent\b|\bhigh priority\b/i,
-        companyTes: /\btes\b/i,
-        companyPhakathi: /\bphakathi\b/i,
+        companyMexel: /\b(mexel|tes)\b/i,
     };
 
     const sourceKeywords = [
@@ -311,7 +310,7 @@ window.smartSearchTenders = function(query, tenders) {
     ];
 
     const matchedSources = sourceKeywords.filter((kw) => q.includes(kw));
-    const matchCompany = patterns.companyTes.test(q) ? 'TES' : patterns.companyPhakathi.test(q) ? 'Phakathi' : null;
+    const matchCompany = patterns.companyMexel.test(q) ? 'Mexel' : null;
 
     const hasSmartMatch =
         patterns.closesToday.test(q) ||

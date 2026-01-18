@@ -1,7 +1,7 @@
 {
   "name": "Tender Intelligence Dashboard",
   "short_name": "Tenders",
-  "description": "TES & Phakathi tender tracking system",
+  "description": "Mexel Energy Sustain tender tracking system",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#1a1a2e",
@@ -66,4 +66,3 @@
     }
   ]
 }
-

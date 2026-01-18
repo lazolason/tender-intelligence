@@ -43,7 +43,7 @@ export const ITEM_HEIGHT = 150;
 export const CHUNK_SIZE = 50;
 export const BUFFER = 5;
 
-export const teamMembers = ['Lazola Sonqishe', 'John Doe', 'Jane Smith', 'TES Team', 'Phakathi Team'];
+export const teamMembers = ['Lazola Sonqishe', 'John Doe', 'Jane Smith', 'Mexel Team'];
 
 export const tenderLifecycleStatuses = [
     { value: 'Not Started', color: 'gray', icon: '⏳' },

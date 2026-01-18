@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**Tender Intelligence System** - Automated tender scraping, classification, and scoring engine for TES (water treatment) and Phakathi (mechanical supply). Scrapes 11+ South African government and SOE sources, scores opportunities using a composite scoring engine, and displays results on a Vercel-hosted PWA dashboard.
+**Tender Intelligence System** - Automated tender scraping, classification, and scoring engine for Mexel Energy Sustain (TES product). Scrapes 11+ South African government and SOE sources, scores opportunities using a composite scoring engine, and displays results on a Vercel-hosted PWA dashboard.
 
 ## Architecture
 
@@ -15,7 +15,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
    - [scrapers/](scrapers/) - Individual scraper modules for each data source (municipalities, SOEs, National Treasury, Eskom, etc.)
    - [utils/](utils/) - Shared utilities (Excel writer, validators, duplicate detection, PDF analysis, alerts)
    - [scoring_engine.py](scoring_engine.py) - Composite scoring algorithm (fit, industry, risk, revenue dimensions)
-   - [keyword_rules.py](keyword_rules.py) - Classification rules defining what qualifies as TES vs Phakathi vs EXCLUDED
+   - [keyword_rules.py](keyword_rules.py) - Classification rules defining what qualifies as Mexel (TES) vs EXCLUDED
 
 2. **Dashboard Sync** (Python → Static PWA)
    - [sync_to_vercel.py](sync_to_vercel.py) - Generates static HTML dashboard from scraped data and pushes to GitHub (triggers Vercel auto-deploy)
@@ -41,8 +41,8 @@ Scrapers → tenderscan.py → Validation → Classification → Scoring → Exc
 
 ### Key Design Decisions
 
-- **Scoring vs Classification**: Classification ([keyword_rules.py](keyword_rules.py)) determines TES/Phakathi/EXCLUDED using keyword matching. Scoring ([scoring_engine.py](scoring_engine.py)) evaluates priority (HIGH/MEDIUM/LOW) using composite metrics (fit, industry, risk, revenue).
-- **Dual Suitability**: Each tender gets both `tes_suitability` and `phakathi_suitability` scores. The higher score determines the `company` field displayed on the dashboard.
+- **Scoring vs Classification**: Classification ([keyword_rules.py](keyword_rules.py)) determines Mexel (TES)/EXCLUDED using keyword matching. Scoring ([scoring_engine.py](scoring_engine.py)) evaluates priority (HIGH/MEDIUM/LOW) using composite metrics (fit, industry, risk, revenue).
+- **Suitability**: Each tender gets a `tes_suitability` score (TES product fit). The dashboard treats all classified tenders as Mexel.
 - **Dashboard Persistence**: [sync_to_vercel.py](sync_to_vercel.py) merges new tenders with existing ones (up to 200 max) to prevent empty UI when no new tenders are found.
 - **Selenium Toggle**: Controlled by `config.yaml` → `scrapers.enable_selenium`. Some scrapers (National Treasury, Joburg Water, Eskom Direct) require Selenium. Disabled in production to avoid Chrome dependencies.
 
@@ -151,7 +151,7 @@ Each scraper module follows this pattern:
 
 Composite scoring algorithm with four dimensions:
 
-1. **Fit Score (30%)** - Keyword density matching TES/Phakathi capabilities
+1. **Fit Score (30%)** - Keyword density matching Mexel (TES) capabilities
 2. **Industry Score (25%)** - Client industry value (power=10, mining=9, municipal=7, etc.)
 3. **Risk Score (20%)** - Inverse scoring for complexity indicators (CIDB grades, experience requirements, performance bonds)
 4. **Revenue Score (25%)** - Contract value potential (multi-year, framework, panel contracts)
@@ -162,19 +162,15 @@ Composite scoring algorithm with four dimensions:
 - Composite Score < 4.5 → `LOW`
 
 **Company Suitability**:
-- `tes_suitability` and `phakathi_suitability` are calculated separately
-- Dashboard shows tender assigned to company with higher suitability score
-- Use `company = "Both"` if scores are equal
+- `tes_suitability` is calculated for TES product fit
+- Dashboard labels all classified tenders as Mexel
 
 ### Classification Rules ([keyword_rules.py](keyword_rules.py))
 
 Three keyword lists define classification:
 
 1. **EXCLUDE_KEYWORDS** - Auto-reject (construction, security, IT, maintenance services, transformers, turbines)
-2. **TES_KEYWORDS** - Water treatment chemicals, RO systems, cooling towers, chemical dosing, boiler treatment
-3. **PHAKATHI_KEYWORDS** - NEW mechanical supply only (pumps, valves, switchgear, fabrication), white-metal bearing reconditioning
-
-**Important**: Phakathi is NOT a maintenance provider. Exclude all "maintenance", "repair", "refurbishment" tenders except white-metal bearing reconditioning.
+2. **TES_KEYWORDS** - Mexel brand + TES product references
 
 ### Dashboard Sync ([sync_to_vercel.py](sync_to_vercel.py))
 
@@ -188,7 +184,7 @@ Process:
 **Features**:
 - Virtual scrolling (loads 20 tenders at a time)
 - Search across ref, title, description, source, client
-- Filters: All, TES, Phakathi, HIGH, MEDIUM, LOW
+- Filters: All, Mexel, HIGH, MEDIUM, LOW
 - Calendar view with closing date visualization
 - Countdown badges (urgent: ≤3 days, warning: ≤7 days)
 - PWA manifest for mobile installation

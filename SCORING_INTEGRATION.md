@@ -285,7 +285,7 @@ DEBUG=false                          # Debug mode (never enable in production)
     "title": "Water Treatment Equipment Supply",
     "description": "Supply and installation of water treatment systems...",
     "client": "City of Cape Town",
-    "category": "TES",
+    "category": "MEXEL",
     "ref": "CT-2025-001",
     "closing_date": "2025-12-31"
   },

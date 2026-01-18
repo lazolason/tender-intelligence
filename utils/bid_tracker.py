@@ -110,7 +110,7 @@ def record_bid_outcome(
     Args:
         db_path: Path to database file
         tender_ref: Tender reference number
-        company: Company name (TES or Phakathi)
+        company: Company name (Mexel)
         bid_submitted: Whether bid was submitted
         bid_amount: Bid amount in ZAR
         outcome: Bid result (won, lost, withdrawn, no_bid)
@@ -276,7 +276,7 @@ def get_win_rates(
     
     Args:
         db_path: Path to database file
-        company: Filter by company (TES or Phakathi)
+        company: Filter by company (Mexel)
         period_start: Start date (YYYY-MM-DD)
         period_end: End date (YYYY-MM-DD)
         
@@ -463,21 +463,21 @@ def _infer_category_from_ref(ref: str) -> str:
         ref: Tender reference number
         
     Returns:
-        Category (TES, Phakathi, Both, Unknown)
+        Category (MEXEL, Unknown)
     """
     ref_upper = ref.upper()
     
     # National Treasury tenders
     if ref_upper.startswith('NT'):
-        return 'TES'
+        return 'MEXEL'
     
     # Eskom tenders
     if ref_upper.startswith('ESK') or ref_upper.startswith('E'):
-        return 'Phakathi'
+        return 'MEXEL'
     
     # Johannesburg Water tenders
     if ref_upper.startswith('JW') or ref_upper.startswith('RFQJW'):
-        return 'Phakathi'
+        return 'MEXEL'
     
     # Default
     return 'Unknown'
@@ -542,25 +542,25 @@ if __name__ == "__main__":
         # Test recording bid outcomes
         print("\n--- Recording Bid Outcomes ---")
         
-        record_bid_outcome(db_path, "NT-001", "TES", True, 500000.0, "won", None, None, "2025-01-15")
-        record_bid_outcome(db_path, "NT-002", "TES", True, 750000.0, "lost", "Competitor X", 600000.0, "2025-01-20")
-        record_bid_outcome(db_path, "ESK-001", "Phakathi", True, 1200000.0, "won", None, None, "2025-01-10")
-        record_bid_outcome(db_path, "ESK-002", "Phakathi", False, None, "withdrawn", None, None, "2025-01-05")
+        record_bid_outcome(db_path, "NT-001", "MEXEL", True, 500000.0, "won", None, None, "2025-01-15")
+        record_bid_outcome(db_path, "NT-002", "MEXEL", True, 750000.0, "lost", "Competitor X", 600000.0, "2025-01-20")
+        record_bid_outcome(db_path, "ESK-001", "MEXEL", True, 1200000.0, "won", None, None, "2025-01-10")
+        record_bid_outcome(db_path, "ESK-002", "MEXEL", False, None, "withdrawn", None, None, "2025-01-05")
         
         # Test adding notes
         print("\n--- Adding Notes ---")
-        add_bid_note(db_path, "NT-001", "TES", "Strong technical proposal, good pricing")
-        add_bid_note(db_path, "ESK-001", "Phakathi", "Follow up on technical questions")
+        add_bid_note(db_path, "NT-001", "MEXEL", "Strong technical proposal, good pricing")
+        add_bid_note(db_path, "ESK-001", "MEXEL", "Follow up on technical questions")
         
         # Test retrieving outcomes
         print("\n--- Retrieving Bid Outcomes ---")
         
-        outcome = get_bid_outcome(db_path, "NT-001", "TES")
+        outcome = get_bid_outcome(db_path, "NT-001", "MEXEL")
         if outcome:
-            print(f"NT-001 (TES): {outcome['outcome']}, Bid: R{outcome['bid_amount']:,.0f}")
+            print(f"NT-001 (MEXEL): {outcome['outcome']}, Bid: R{outcome['bid_amount']:,.0f}")
         
-        notes = get_bid_notes(db_path, "NT-001", "TES")
-        print(f"NT-001 (TES) Notes: {len(notes)} note(s)")
+        notes = get_bid_notes(db_path, "NT-001", "MEXEL")
+        print(f"NT-001 (MEXEL) Notes: {len(notes)} note(s)")
         
         # Test analytics
         print("\n--- Analytics ---")
@@ -578,10 +578,10 @@ if __name__ == "__main__":
         # Test client performance
         print("\n--- Client Performance ---")
         
-        tes_perf = get_client_performance(db_path, "TES")
-        print(f"TES Performance: {tes_perf['win_rate']:.1%} win rate ({tes_perf['wins']}/{tes_perf['total_bids']})")
-        print(f"Recent TES bids:")
-        for bid in tes_perf['recent_bids']:
+        mexel_perf = get_client_performance(db_path, "MEXEL")
+        print(f"MEXEL Performance: {mexel_perf['win_rate']:.1%} win rate ({mexel_perf['wins']}/{mexel_perf['total_bids']})")
+        print(f"Recent MEXEL bids:")
+        for bid in mexel_perf['recent_bids']:
             print(f"  {bid['tender_ref']}: {bid['outcome']} - R{bid['bid_amount']:,.0f if bid['bid_amount'] else 'N/A'}")
         
         # Cleanup

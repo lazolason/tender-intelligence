@@ -44,8 +44,8 @@ export function createTenderRow(item, idx) {
     const countdownStatus = t.status || getCountdownHtml(t.closing_date) || '-';
     const link = t.url ? `<a href="${t.url}" target="_blank" rel="noopener" class="view-btn" style="padding: 6px 15px; font-size: 0.8rem;" onclick="event.stopPropagation()">Open ↗</a>` : '-';
     const decision = computeDecision(t);
-    const scopeClass = relevance === 'OutOfScope' ? 'scope-pill-out' : relevance === 'TES' ? 'scope-pill-tes' : relevance === 'Phakathi' ? 'scope-pill-phakathi' : relevance === 'Both' ? 'scope-pill-both' : 'scope-pill-out';
-    const scopeText = relevance === 'OutOfScope' ? 'Not in scope' : relevance === 'TES' ? 'TES' : relevance === 'Phakathi' ? 'Phakathi' : relevance === 'Both' ? 'TES + Phakathi' : 'Review';
+    const scopeClass = relevance === 'OutOfScope' ? 'scope-pill-out' : relevance === 'Mexel' ? 'scope-pill-mexel' : 'scope-pill-out';
+    const scopeText = relevance === 'OutOfScope' ? 'Not in scope' : relevance === 'Mexel' ? 'Mexel' : 'Review';
     const decisionPill = `<span class="decision-pill ${decision.className}">${decision.label}<span class="reason"> · ${decision.reason}</span><span class="confidence"> · ${decision.confidence}%</span></span>`;
     const categoryTags = (categories || []).map(c => `<span class="category-tag">${c}</span>`).join('');
     const assignment = getTenderAssignment(t.ref);
@@ -301,7 +301,7 @@ export function renderTenders() {
         .filter((t) => !isTenderHidden(t?.ref))
         .filter((t) => getDaysUntil(t.closing_date) === null || getDaysUntil(t.closing_date) >= 0);
 
-    if (filter === 'TES' || filter === 'Phakathi' || filter === 'Both') {
+    if (filter === 'Mexel') {
         filtered = filtered.filter(t => getCompany(t) === filter);
     } else if (filter === 'HIGH' || filter === 'MEDIUM' || filter === 'LOW') {
         filtered = filtered.filter(t => getPriority(t) === filter);
