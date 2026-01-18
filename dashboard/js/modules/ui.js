@@ -23,7 +23,7 @@ import {
 import { getActiveWatchlist, updateWatchlistBadges, exportWatchlistCsv, addAllHighPriorityToWatchlist } from './storage.js';
 import { getFilteredTendersForExport } from './tender.js';
 import { applyTenderPayload, refreshDashboardData } from './data.js';
-import { computeDashboardMetrics, updateDashboardStatsUI, renderDashboardSourceHealth, renderAutomationLogs, updateFooter } from './modules/metrics.js';
+import { computeDashboardMetrics, updateDashboardStatsUI, renderDashboardSourceHealth, renderAutomationLogs, updateFooter } from './metrics.js';
 
 /**
  * Initialize theme toggle
@@ -548,7 +548,10 @@ export function initUI() {
     showTenderSkeleton(8);
 
     loadTenderPayload()
-        .then(applyTenderPayload)
+        .then(payload => {
+            applyTenderPayload(payload);
+            renderTenders();
+        })
         .catch(err => {
             console.error("Error fetching tenders:", err);
             setDataStatus({ level: "err", source: "error", count: 0, updated: "–", error: err });

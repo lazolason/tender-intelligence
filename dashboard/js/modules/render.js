@@ -17,11 +17,12 @@ import {
     getPriority,
     getCountdownHtml,
     classifyTender,
-    computeDecision
+    computeDecision,
+    getStatusMeta
 } from './tender.js';
 import { escapeHtml, formatNiceDateTime } from '../utils/helpers.js';
-import { getTenderAssignment, getTenderCurrentStatus, isTenderWatchlisted, toggleWatchlist } from './storage.js';
-import { teamMembers, tenderLifecycleStatuses, getStatusMeta } from './config.js';
+import { getTenderAssignment, getTenderCurrentStatus, isTenderWatchlisted, toggleWatchlist, getCurrentUsername, getUnreadMentionCount, clearTenderAssignment, setTenderAssignment } from './storage.js';
+import { teamMembers, tenderLifecycleStatuses } from './config.js';
 
 /**
  * Create tender row element
@@ -169,7 +170,7 @@ export function createTenderCard(item, idx) {
     const decisionPill = `<span class="decision-pill ${decision.className}">${decision.label}<span class="reason"> · ${decision.reason}</span><span class="confidence"> · ${decision.confidence}%</span></span>`;
     const categoryTags = (item.classification?.categories || []).map(c => `<span class="category-tag">${c}</span>`).join('');
 
-    const starActive = isWatchlisted(t.ref);
+    const starActive = isTenderWatchlisted(t.ref);
     const starBtn = `<button class="watchlist-star ${starActive ? 'active' : ''}" data-ref="${escapeHtml(t.ref || '')}" type="button" aria-label="Toggle watchlist">★</button>`;
     const openLink = url ? `<a class="tender-card-open" href="${url}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">Open ↗</a>` : '';
 
