@@ -100,3 +100,33 @@ def safe_driver_get(driver, url: str, *, driver_get_with_retry=None, log: Option
         active_logger.error("Final failure after retries: %s (%s)", url, exc)
         return False
 
+# ==========================================================
+# SIMPLE RETRY DECORATOR (User Requested)
+# ==========================================================
+from functools import wraps
+import time
+
+def retry_request(max_attempts=3, delay=2):
+    """
+    Simple retry decorator for requests.
+    Usage:
+        @retry_request(max_attempts=3, delay=2)
+        def fetch_url(url):
+            ...
+    """
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            last_exception = None
+            for attempt in range(max_attempts):
+                try:
+                    return func(*args, **kwargs)
+                except Exception as e:
+                    last_exception = e
+                    if attempt < max_attempts - 1:
+                        time.sleep(delay)
+            if last_exception:
+                raise last_exception
+        return wrapper
+    return decorator
+

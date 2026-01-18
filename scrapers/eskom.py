@@ -16,7 +16,14 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from utils.text_cleaner import clean_text, extract_closing_date_from_text
 from classify_engine import classify_tender
+from utils.retry_tools import retry_request
 
+# Apply the decorator to your fetch function
+@retry_request(max_attempts=3, delay=2)
+def fetch_eskom_data(url, params, headers):
+    response = requests.post(url, data=params, headers=headers, timeout=30, verify=False)
+    response.raise_for_status()
+    return response
 
 def scrape_eskom():
     """
@@ -47,8 +54,7 @@ def scrape_eskom():
             "departments": "Eskom"
         }
         
-        response = requests.post(url, data=params, headers=headers, timeout=10, verify=False)
-        response.raise_for_status()
+        response = fetch_eskom_data(url, params, headers)
         
         soup = BeautifulSoup(response.content, "html.parser")
         
@@ -99,7 +105,7 @@ def scrape_eskom():
                 }
                 
                 # Classify
-                classification = classify_tender(tender)
+                classification = classify_tender(tender["title"], tender["description"])
                 tender["category"] = classification["category"]
                 tender["reason"] = classification.get("reason", "")
                 
