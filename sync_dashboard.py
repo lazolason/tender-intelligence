@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
 # ==========================================================
-# SYNC TENDER DATA TO VERCEL DASHBOARD
-# Updates HTML and pushes to GitHub (triggers Vercel auto-deploy)
+# SYNC TENDER DATA TO LOCAL DASHBOARD
+# Updates HTML for local, static dashboard use
 # ==========================================================
 
 import json
 import os
-import subprocess
 from datetime import datetime, timedelta
 from urllib.parse import quote
 
@@ -14,11 +13,11 @@ from urllib.parse import quote
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 # Tenders are written to output folder in project root
 OUTPUT_DIR = os.path.join(PROJECT_DIR, "output")
-# Vercel dashboard is in project root
-VERCEL_DIR = os.path.join(PROJECT_DIR, "vercel-dashboard")
+# Local dashboard is in project root
+DASHBOARD_DIR = os.path.join(PROJECT_DIR, "dashboard")
 TENDERS_JSON = os.path.join(OUTPUT_DIR, "new_tenders.json")
-DASHBOARD_HTML = os.path.join(VERCEL_DIR, "index.html")
-TENDERS_DATA_JSON = os.path.join(VERCEL_DIR, "tenders.json")  # Full dataset for client-side
+DASHBOARD_HTML = os.path.join(DASHBOARD_DIR, "index.html")
+TENDERS_DATA_JSON = os.path.join(DASHBOARD_DIR, "tenders.json")  # Full dataset for client-side
 
 # Source URLs for tender portals
 SOURCE_URLS = {
@@ -703,20 +702,9 @@ def generate_dashboard_html(tenders):
 </html>'''
     return html
 
-def push_to_github():
-    """Push to GitHub (triggers Vercel auto-deploy)"""
-    try:
-        os.chdir(VERCEL_DIR)
-        subprocess.run(["git", "add", "-A"], capture_output=True)
-        subprocess.run(["git", "commit", "-m", f"Sync: {datetime.now().strftime('%Y-%m-%d %H:%M')}"], capture_output=True)
-        result = subprocess.run(["git", "push"], capture_output=True, text=True, timeout=60)
-        return result.returncode == 0, result.stdout + result.stderr
-    except Exception as e:
-        return False, str(e)
-
 def sync():
     """Main sync function"""
-    print("🔄 Syncing tender data to Vercel...")
+    print("🔄 Syncing tender data to local dashboard...")
     
     tenders = load_tenders()
     scraped_count = len(tenders)
@@ -729,7 +717,7 @@ def sync():
     
     html = generate_dashboard_html(tenders)
     
-    os.makedirs(VERCEL_DIR, exist_ok=True)
+    os.makedirs(DASHBOARD_DIR, exist_ok=True)
     with open(DASHBOARD_HTML, "w") as f:
         f.write(html)
     print(f"   ✅ Dashboard HTML updated")
@@ -749,16 +737,9 @@ def sync():
             else:
                 print(f"   ✅ QA Pass: {scraped_count} tenders scraped = {displayed_count} displayed")
     
-    print("   🚀 Pushing to GitHub (triggers Vercel auto-deploy)...")
-    success, output = push_to_github()
-    
-    if success:
-        print(f"   ✅ Pushed! Vercel will auto-deploy in ~30 seconds")
-        print(f"   🌐 https://tender-intelligence-dashboard-d6ku8xn58.vercel.app")
-        return True
-    else:
-        print(f"   ⚠️ Git push issue: {output[:100]}")
-        return False
+    print("   ✅ Local dashboard data refreshed")
+    print("   🌐 Serve locally with: cd dashboard && python3 -m http.server 8000")
+    return True
 
 if __name__ == "__main__":
     sync()

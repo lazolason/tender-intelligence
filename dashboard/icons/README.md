@@ -3,7 +3,7 @@ Place generated PWA icons in this folder.
 Suggested workflow:
 - Use https://realfavicongenerator.net/ (or similar)
 - Upload the dashboard logo
-- Generate the PNG sizes referenced by `vercel-dashboard/manifest.json`
+- Generate the PNG sizes referenced by `dashboard/manifest.json`
 - Put them here with the exact filenames:
   - `icon-72x72.png`
   - `icon-96x96.png`
@@ -13,4 +13,3 @@ Suggested workflow:
   - `icon-192x192.png`
   - `icon-384x384.png`
   - `icon-512x512.png`
-

@@ -72,8 +72,8 @@ Build user interface components for tender summarization.
 - Vanilla JavaScript (fetch API, localStorage)
 
 ### Key Files
-- `vercel-dashboard/index.html` - Full dashboard with modal implementation (uses inline scripts)
-- `vercel-dashboard/js/` - Modular JavaScript structure (modern alternative, not yet integrated into index.html)
+- `dashboard/index.html` - Full dashboard with modal implementation (uses inline scripts)
+- `dashboard/js/` - Modular JavaScript structure (modern alternative, not yet integrated into index.html)
 
 ---
 
@@ -89,7 +89,7 @@ Document production deployment and ensure security.
    - Pre-deployment checklist
    - Environment variable setup
    - API key management
-   - Vercel deployment steps
+   - Local dashboard usage steps
    - Self-hosted backend options
    - Verification procedures
    - Security best practices
@@ -110,7 +110,7 @@ Document production deployment and ensure security.
 #### Configuration Files
 - `.env.example` - Environment variable template
 - `config.yaml` - Scoring weights and thresholds
-- `vercel.json` - Vercel deployment configuration
+- Local-only setup (no hosting-specific config)
 
 ---
 
@@ -157,7 +157,7 @@ Implement robust error handling and auto-retry logic.
 - Error boundary patterns
 
 ### Key Files
-- `vercel-dashboard/index.html` - Contains inline `summarizeTender()` function (AI summary logic)
+- `dashboard/index.html` - Contains inline `summarizeTender()` function (AI summary logic)
 
 ---
 
@@ -195,7 +195,7 @@ Allow users to choose between different algorithm options for summarization.
    - Restored on page load
 
 #### Code Locations
-- `vercel-dashboard/index.html` - Dropdown HTML (modal footer) + inline model selection logic
+- `dashboard/index.html` - Dropdown HTML (modal footer) + inline model selection logic
 - `app.py` - Backend model parameter handling (line 383)
 
 ---
@@ -218,8 +218,8 @@ Allow users to choose between different algorithm options for summarization.
 
 ### Components
 
-1. **Frontend (Vercel Dashboard)**
-   - Static PWA hosted on Vercel
+1. **Frontend (Local Dashboard)**
+   - Static PWA served locally
    - Vanilla JavaScript (no frameworks)
    - localStorage for caching
    - Fetch API for backend calls
@@ -233,7 +233,7 @@ Allow users to choose between different algorithm options for summarization.
 3. **External Services**
    - Summarization API (configurable)
    - GitHub (for auto-deployment)
-   - Vercel (for static hosting)
+   - Local static server (python http.server)
 
 ### File Structure
 
@@ -243,7 +243,7 @@ tender-intelligence/
 ├── config.yaml                 # Scoring weights and configuration
 ├── .env.example                # Environment variable template
 ├── DEPLOYMENT.md               # Production deployment guide
-├── vercel-dashboard/
+├── dashboard/
 │   ├── index.html              # Dashboard UI with modal
 │   ├── js/                     # Modular JavaScript structure (not yet integrated)
 │   ├── style.css               # Styling

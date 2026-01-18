@@ -239,7 +239,7 @@ def _within_days(a: Optional[date], b: Optional[date], *, days: int) -> bool:
 **Status:** All Python files have valid syntax  
 **Issues Found:** None
 
-**JavaScript Files Analyzed:** Multiple files in `vercel-dashboard/`  
+**JavaScript Files Analyzed:** Multiple files in `dashboard/`  
 **Status:** All JavaScript files have valid syntax  
 **Issues Found:** None
 
@@ -266,13 +266,13 @@ def _within_days(a: Optional[date], b: Optional[date], *, days: int) -> bool:
 
 | File | Lines | Purpose | Status |
 |------|-------|---------|--------|
-| `vercel-dashboard/index.html` | ~5000+ | Main dashboard with inline scripts | Active (primary) |
-| `vercel-dashboard/js/analytics.js` | ~300 | Tender analytics module | Active (modular) |
-| `vercel-dashboard/js/modules/config.js` | ~50 | Configuration module | Active (modular) |
-| ~~`vercel-dashboard/script.js`~~ | ~~3500+~~ | ~~Main dashboard logic~~ | Deleted (replaced by inline scripts) |
-| ~~`vercel-dashboard/js/notifications.js`~~ | ~~200~~ | ~~Notification management~~ | Deleted (unused) |
-| ~~`vercel-dashboard/js/advanced-filters.js`~~ | ~~400~~ | ~~Advanced filtering~~ | Deleted (unused) |
-| ~~`vercel-dashboard/js/pwa-diagnostics.js`~~ | ~~150~~ | ~~PWA diagnostics~~ | Deleted (unused) |
+| `dashboard/index.html` | ~5000+ | Main dashboard with inline scripts | Active (primary) |
+| `dashboard/js/analytics.js` | ~300 | Tender analytics module | Active (modular) |
+| `dashboard/js/modules/config.js` | ~50 | Configuration module | Active (modular) |
+| ~~`dashboard/script.js`~~ | ~~3500+~~ | ~~Main dashboard logic~~ | Deleted (replaced by inline scripts) |
+| ~~`dashboard/js/notifications.js`~~ | ~~200~~ | ~~Notification management~~ | Deleted (unused) |
+| ~~`dashboard/js/advanced-filters.js`~~ | ~~400~~ | ~~Advanced filtering~~ | Deleted (unused) |
+| ~~`dashboard/js/pwa-diagnostics.js`~~ | ~~150~~ | ~~PWA diagnostics~~ | Deleted (unused) |
 
 **Duplicate Code Found:** None significant
 **Status:** Legacy `script.js` removed; dashboard uses inline scripts for stability. Modular `js/` structure exists but not yet integrated.

@@ -13,11 +13,11 @@ def _as_number(value):
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Validate dashboard tenders.json payload shape")
-    parser.add_argument("--path", default="vercel-dashboard/tenders.json", help="Path to tenders.json")
+    parser.add_argument("--path", default="dashboard/tenders.json", help="Path to tenders.json")
     parser.add_argument(
         "--summary-path",
         default=None,
-        help="Optional path to summary.json (e.g. vercel-dashboard/public/summary.json) to validate as well",
+        help="Optional path to summary.json (e.g. dashboard/public/summary.json) to validate as well",
     )
     args = parser.parse_args()
 

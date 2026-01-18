@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # ==========================================================
 # DAILY TENDER RUNNER v2.0
-# Runs daily scan, generates report, syncs to Vercel, sends alerts
+# Runs daily scan, generates report, syncs local dashboard, sends alerts
 # ==========================================================
 
 import os
@@ -60,19 +60,19 @@ def run_daily():
         results["scan"] = {"status": "error", "message": str(e)}
         print(f"   ❌ Scan failed: {e}")
     
-    # Step 2: Sync to Vercel
-    print("\n🔄 Step 2: Syncing to Vercel...")
+    # Step 2: Sync local dashboard
+    print("\n🔄 Step 2: Syncing local dashboard...")
     try:
-        from sync_to_vercel import sync
+        from sync_dashboard import sync
         sync_success = sync()
         results["sync"] = {"status": "success" if sync_success else "failed"}
         if sync_success:
-            print(f"   ✅ Vercel dashboard updated!")
+            print(f"   ✅ Local dashboard updated!")
         else:
-            print(f"   ⚠️ Vercel sync had issues")
+            print(f"   ⚠️ Local dashboard sync had issues")
     except Exception as e:
         results["sync"] = {"status": "error", "message": str(e)}
-        print(f"   ⚠️ Vercel sync skipped: {e}")
+        print(f"   ⚠️ Local dashboard sync skipped: {e}")
     
     # Step 3: Send email alerts for HIGH priority tenders
     print("\n📧 Step 3: Sending email alerts...")
@@ -123,7 +123,7 @@ def run_daily():
    Dashboard: {'✅' if results.get('sync', {}).get('status') == 'success' else '⚠️'}
    Email:     {'✅' if results.get('email', {}).get('status') == 'sent' else '⚠️'}
    
-   🌐 View Dashboard: https://tender-intelligence-dashboard.vercel.app/
+   🌐 View Dashboard: http://localhost:8000/
 """)
     
     return results
@@ -179,7 +179,7 @@ def generate_email_summary(results):
         
         <div style="background: #f8f9fa; padding: 20px; border-radius: 12px; margin: 25px 0; text-align: center;">
             <p style="margin: 0 0 15px 0; color: #666;">View all tenders on your dashboard:</p>
-            <a href="https://tender-intelligence-dashboard.vercel.app/" 
+            <a href="http://localhost:8000/" 
                style="display: inline-block; background: linear-gradient(135deg, #667eea, #764ba2); 
                       color: white; padding: 12px 30px; border-radius: 25px; text-decoration: none;
                       font-weight: 600;">

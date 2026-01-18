@@ -263,7 +263,7 @@ class EmailAlerter:
             lines.append("-" * 50)
         
         lines.append("")
-        lines.append("View full dashboard: https://tender-intelligence-dashboard.vercel.app")
+        lines.append("View full dashboard: http://localhost:8000")
         return "\n".join(lines)
     
     def _generate_html_email(self, tenders):
@@ -458,7 +458,7 @@ class EmailAlerter:
                         font-size: 14px;">
                         View the full dashboard for more details:
                     </p>
-                    <a href="https://tender-intelligence-dashboard.vercel.app" style="
+                    <a href="http://localhost:8000" style="
                         display: inline-block;
                         padding: 10px 24px;
                         background: #667eea;
@@ -489,7 +489,7 @@ class EmailAlerter:
 def load_tender_payload():
     """Load the canonical tenders payload used by the deployed dashboard."""
     automation_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    dashboard_tenders_json = os.path.join(automation_dir, "vercel-dashboard", "tenders.json")
+    dashboard_tenders_json = os.path.join(automation_dir, "dashboard", "tenders.json")
     legacy_tenders_json = os.path.join(automation_dir, "output", "new_tenders.json")
 
     for path in (dashboard_tenders_json, legacy_tenders_json):
@@ -627,7 +627,7 @@ def generate_email_html(tenders, meta=None):
 
     html += f"""
             <div class="footer">
-                <p>View full dashboard: <a href="https://tender-intelligence-dashboard.vercel.app/">https://tender-intelligence-dashboard.vercel.app/</a></p>
+                <p>View full dashboard: <a href="http://localhost:8000/">http://localhost:8000/</a></p>
                 <p>Tender Intelligence System | Mexel Energy Sustain (TES)</p>
             </div>
         </div>

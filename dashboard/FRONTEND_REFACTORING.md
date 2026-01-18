@@ -23,7 +23,7 @@ The Tender Intelligence Dashboard frontend has been refactored from a monolithic
 ## Module Structure
 
 ```
-vercel-dashboard/js/
+dashboard/js/
 ├── index.js                 # Main entry point (exports all functions globally)
 ├── modules/
 │   ├── config.js           # Configuration and state management
@@ -114,7 +114,7 @@ vercel-dashboard/js/
 
 ### Test Files
 ```
-vercel-dashboard/tests/
+dashboard/tests/
 ├── setup.js           # Test setup and mocks
 ├── helpers.test.js     # Helper function tests
 └── tender.test.js      # Tender logic tests

@@ -457,8 +457,8 @@ def render_daily_email_html(payload: Dict[str, Any], summary: Dict[str, Any], da
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Build Vercel dashboard tenders.json snapshot")
-    parser.add_argument("--out", default="vercel-dashboard/tenders.json", help="Output path for tenders.json")
+    parser = argparse.ArgumentParser(description="Build local dashboard tenders.json snapshot")
+    parser.add_argument("--out", default="dashboard/tenders.json", help="Output path for tenders.json")
     parser.add_argument("--limit", type=int, default=200, help="Max tenders to keep in snapshot")
     parser.add_argument(
         "--inputs",
@@ -468,12 +468,12 @@ def main() -> None:
     )
     parser.add_argument(
         "--public-dir",
-        default="vercel-dashboard/public",
+        default="dashboard/public",
         help="Directory for versioned dashboard artifacts (tenders-latest.json, tenders-YYYY-MM-DD.json, summary.json)",
     )
     parser.add_argument(
         "--dashboard-url",
-        default=os.environ.get("DASHBOARD_URL") or "https://tender-intelligence-dashboard.vercel.app/",
+        default=os.environ.get("DASHBOARD_URL") or "http://localhost:8000/",
         help="Dashboard URL to embed in generated email artifact",
     )
     args = parser.parse_args()

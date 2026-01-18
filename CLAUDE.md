@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**Tender Intelligence System** - Automated tender scraping, classification, and scoring engine for Mexel Energy Sustain (TES product). Scrapes 11+ South African government and SOE sources, scores opportunities using a composite scoring engine, and displays results on a Vercel-hosted PWA dashboard.
+**Tender Intelligence System** - Automated tender scraping, classification, and scoring engine for Mexel Energy Sustain (TES product). Scrapes 11+ South African government and SOE sources, scores opportunities using a composite scoring engine, and displays results on a local-only PWA dashboard.
 
 ## Architecture
 
@@ -18,8 +18,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
    - [keyword_rules.py](keyword_rules.py) - Classification rules defining what qualifies as Mexel (TES) vs EXCLUDED
 
 2. **Dashboard Sync** (Python → Static PWA)
-   - [sync_to_vercel.py](sync_to_vercel.py) - Generates static HTML dashboard from scraped data and pushes to GitHub (triggers Vercel auto-deploy)
-   - [vercel-dashboard/](vercel-dashboard/) - Static PWA with offline support, virtual scrolling, filters, calendar view
+   - [sync_dashboard.py](sync_dashboard.py) - Generates static HTML dashboard from scraped data for local use
+   - [dashboard/](dashboard/) - Static PWA with offline support, virtual scrolling, filters, calendar view
 
 3. **Flask API** (Optional, for automation triggers)
    - [app.py](app.py) - Minimal Flask API with `/api/run/*` and `/cron/*` endpoints
@@ -32,18 +32,18 @@ Scrapers → tenderscan.py → Validation → Classification → Scoring → Exc
                                                                     ↓
                                                               output/new_tenders.json
                                                                     ↓
-                                                            sync_to_vercel.py
+                                                            sync_dashboard.py
                                                                     ↓
-                                                          vercel-dashboard/index.html
+                                                          dashboard/index.html
                                                                     ↓
-                                                            Git Push → Vercel Deploy
+                                                            Local static server
 ```
 
 ### Key Design Decisions
 
 - **Scoring vs Classification**: Classification ([keyword_rules.py](keyword_rules.py)) determines Mexel (TES)/EXCLUDED using keyword matching. Scoring ([scoring_engine.py](scoring_engine.py)) evaluates priority (HIGH/MEDIUM/LOW) using composite metrics (fit, industry, risk, revenue).
 - **Suitability**: Each tender gets a `tes_suitability` score (TES product fit). The dashboard treats all classified tenders as Mexel.
-- **Dashboard Persistence**: [sync_to_vercel.py](sync_to_vercel.py) merges new tenders with existing ones (up to 200 max) to prevent empty UI when no new tenders are found.
+- **Dashboard Persistence**: [sync_dashboard.py](sync_dashboard.py) merges new tenders with existing ones (up to 200 max) to prevent empty UI when no new tenders are found.
 - **Selenium Toggle**: Controlled by `config.yaml` → `scrapers.enable_selenium`. Some scrapers (National Treasury, Joburg Water, Eskom Direct) require Selenium. Disabled in production to avoid Chrome dependencies.
 
 ## Common Development Commands
@@ -65,8 +65,8 @@ pip install -r requirements.txt
 # Run full tender scan (scrapes all sources, scores, logs to Excel)
 python tenderscan.py
 
-# Sync results to Vercel dashboard (generates HTML, pushes to GitHub)
-python sync_to_vercel.py
+# Sync results to local dashboard (generates HTML + tenders.json)
+python sync_dashboard.py
 
 # Run weekly report generation
 python weekly_report.py
@@ -94,7 +94,7 @@ python tools/validate_dashboard_tenders_json.py
 python tools/build_dashboard_snapshot.py
 
 # Test dashboard locally (serves on http://localhost:8000)
-cd vercel-dashboard && python3 -m http.server 8000
+cd dashboard && python3 -m http.server 8000
 ```
 
 ### Configuration
@@ -172,13 +172,13 @@ Three keyword lists define classification:
 1. **EXCLUDE_KEYWORDS** - Auto-reject (construction, security, IT, maintenance services, transformers, turbines)
 2. **TES_KEYWORDS** - Mexel brand + TES product references
 
-### Dashboard Sync ([sync_to_vercel.py](sync_to_vercel.py))
+### Dashboard Sync ([sync_dashboard.py](sync_dashboard.py))
 
 Process:
 1. Load tenders from `output/new_tenders.json`
 2. Generate static HTML with embedded JS/CSS (no external dependencies)
-3. Create `vercel-dashboard/tenders.json` for client-side loading
-4. Git add, commit, push to trigger Vercel auto-deploy
+3. Create `dashboard/tenders.json` for client-side loading
+4. Serve locally with `python3 -m http.server 8000`
 5. QA checks ensure scraped count matches displayed count
 
 **Features**:
@@ -202,11 +202,10 @@ Enable in [config.yaml](config.yaml) under `alerts` section.
 
 ## Deployment
 
-### Vercel Dashboard Deployment
+### Local Dashboard Usage
 
-1. Run `python sync_to_vercel.py` to generate static files
-2. Push to GitHub (auto-triggers Vercel deployment)
-3. Vercel config: Framework=None, Root=`vercel-dashboard/`, Build Command=(empty)
+1. Run `python sync_dashboard.py` to generate static files
+2. Serve locally: `cd dashboard && python3 -m http.server 8000`
 
 See [DEPLOYMENT.md](DEPLOYMENT.md) for full deployment guide.
 
@@ -236,7 +235,7 @@ See [com.tenderscan.daily.plist](com.tenderscan.daily.plist) and [com.tenderscan
 
 **Dashboard shows 0 tenders**
 - Check `output/new_tenders.json` exists and has data
-- Verify `sync_to_vercel.py` completed without errors
+- Verify `sync_dashboard.py` completed without errors
 - QA checks in sync script will log count mismatches
 
 **Excel "Permission Denied" errors**
@@ -253,12 +252,12 @@ See [com.tenderscan.daily.plist](com.tenderscan.daily.plist) and [com.tenderscan
 1. **Never hardcode API keys** - Use environment variables or [.env](.env) file (see [.env.example](.env.example))
 2. **Always validate tender data** - Use `TenderValidator` from [utils/data_validator.py](utils/data_validator.py) before processing
 3. **Preserve Excel data** - [excel_writer.py](utils/excel_writer.py) uses append-only operations with duplicate detection to prevent data loss
-4. **Maintain dashboard persistence** - [sync_to_vercel.py](sync_to_vercel.py) merges new tenders with existing ones (max 200) to avoid empty UI
+4. **Maintain dashboard persistence** - [sync_dashboard.py](sync_dashboard.py) merges new tenders with existing ones (max 200) to avoid empty UI
 5. **Classification before scoring** - tenderscan.py first excludes unwanted tenders via [keyword_rules.py](keyword_rules.py), then scores remaining tenders
 6. **Scraper isolation** - Each scraper handles only data extraction; [tenderscan.py](tenderscan.py) handles all classification, scoring, and logging
 
 ## Git Workflow
 
 - Main branch: `main`
-- [sync_to_vercel.py](sync_to_vercel.py) auto-commits with message format: `Sync: YYYY-MM-DD HH:MM`
+- Run `python sync_dashboard.py` after scans to refresh the local dashboard
 - Includes co-authorship attribution in commits (see Git Safety Protocol in [DEPLOYMENT.md](DEPLOYMENT.md))

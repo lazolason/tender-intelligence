@@ -1,3 +1,62 @@
+# Task: Make Dashboard Local-Only (Remove Hosting References)
+
+## Objective
+Remove hosting-specific references and make the dashboard run locally on macOS only.
+
+---
+
+## Plan
+- [x] **Task 1**: Confirm scope decisions (rename `dashboard/` folder? rename `sync_dashboard.py`?) [LOW RISK] [DONE]
+  - Files: (analysis only)
+  - Dependencies: none
+  - Success: Agreed naming + path strategy
+- [x] **Task 2**: Create backups for files to be modified [LOW RISK] [DONE]
+  - Files: `backups/...` plus targets identified in Task 1
+  - Dependencies: Task 1
+  - Success: Backup copies exist for every file in scope
+- [x] **Task 3**: Remove hosting-specific configs and automation hooks [MEDIUM RISK] [DONE]
+  - Files: hosting config and deployment docs removed (`README_DEPLOY.md`, `DEPLOYMENT.md`, `DEPLOY_DASHBOARD_AUTOMATION.md`)
+  - Dependencies: Task 2
+  - Success: No hosting-specific config remains in the project
+- [x] **Task 4**: Update local dashboard sync + runtime instructions [MEDIUM RISK] [DONE]
+  - Files: `sync_dashboard.py` (or renamed), `daily_runner.py`, `utils/email_alerts.py`, `tools/build_dashboard_snapshot.py`
+  - Dependencies: Task 1, Task 2
+  - Success: Local-only flow documented and default URLs point to localhost
+- [x] **Task 5**: Update docs + references for local-only usage [LOW RISK] [DONE]
+  - Files: `CLAUDE.md`, `SCORING_INTEGRATION.md`, `dashboard/*`, `reports/duplicate_and_conflict_analysis_report.md`
+  - Dependencies: Task 3, Task 4
+  - Success: No hosting-specific references remain in active docs
+- [x] **Task 6**: Verification (local server command + quick sanity) [LOW RISK] [DONE]
+  - Files: modified docs/scripts
+  - Dependencies: Task 4, Task 5
+  - Success: Local run instructions are correct and consistent
+
+---
+
+## Checkpoint
+Approved and completed.
+
+---
+
+## Review Summary
+### Changes Made
+- Renamed the dashboard folder and updated `sync_dashboard.py` for local-only use (no git push).
+- Updated local runtime paths and URLs in `daily_runner.py`, `utils/email_alerts.py`, `tools/build_dashboard_snapshot.py`, `tools/validate_dashboard_tenders_json.py`.
+- Updated dashboard config and docs to reflect local usage and the renamed folder.
+- Removed hosting-specific files: deployment docs and config.
+
+### Testing Performed
+- `python3 -m py_compile sync_dashboard.py daily_runner.py utils/email_alerts.py tools/build_dashboard_snapshot.py tools/validate_dashboard_tenders_json.py`
+
+### Risk Assessment
+- Medium: folder rename and sync script rename require path updates.
+- Low: documentation and URL changes only.
+
+### Follow-up Items
+- Run `python3 -m py_compile sync_dashboard.py daily_runner.py utils/email_alerts.py tools/build_dashboard_snapshot.py tools/validate_dashboard_tenders_json.py`.
+
+---
+
 # Task: Remove Phakathi + Restrict to TES/Mexel Only
 
 ## Objective
@@ -23,11 +82,11 @@ Remove Phakathi from classification, scoring, UI, docs, and outputs, and restric
   - Dependencies: Task 2
   - Success: No Phakathi scores/columns emitted; scoring still works for TES-only
 - [x] **Task 5**: Update dashboard/UI to TES-only [MEDIUM RISK] [DONE]
-  - Files: `vercel-dashboard/index.html`, `vercel-dashboard/style.css`, `sync_to_vercel.py`, `vercel-dashboard/public/*.json` (if regenerated)
+  - Files: `dashboard/index.html`, `dashboard/style.css`, `sync_dashboard.py`, `dashboard/public/*.json` (if regenerated)
   - Dependencies: Task 2
   - Success: No Phakathi UI labels, filters, or styling
 - [x] **Task 6**: Update tooling/docs/tests [LOW RISK] [DONE]
-  - Files: `CLAUDE.md`, `utils/README.md`, `weekly_report.py`, `vercel-dashboard/tests/*`, any other references
+  - Files: `CLAUDE.md`, `utils/README.md`, `weekly_report.py`, `dashboard/tests/*`, any other references
   - Dependencies: Task 3, Task 4, Task 5
   - Success: All references align with TES/Mexel-only behavior
 - [x] **Task 7**: Verification (syntax/import + targeted tests) [LOW RISK] [DONE]
@@ -46,21 +105,21 @@ Approved and completed.
 ### Changes Made
 - `keyword_rules.py`, `classify_engine.py`, `scoring_engine.py`: Mexel-only classification and scoring (MEXEL category, TES keyword match only).
 - `utils/excel_writer.py`, `utils/email_alerts.py`, `utils/data_validator.py`: removed Phakathi outputs/columns and aligned category validation.
-- `sync_to_vercel.py`, `vercel-dashboard/index.html`, `vercel-dashboard/style.css`: Mexel-only UI, filters, badges, and labels.
-- `vercel-dashboard/js/modules/*`, `vercel-dashboard/js/index.js`, `vercel-dashboard/tests/tender.test.js`: Mexel-only client logic and updated tests.
+- `sync_dashboard.py`, `dashboard/index.html`, `dashboard/style.css`: Mexel-only UI, filters, badges, and labels.
+- `dashboard/js/modules/*`, `dashboard/js/index.js`, `dashboard/tests/tender.test.js`: Mexel-only client logic and updated tests.
 - `config.yaml`, `CLAUDE.md`, `SCORING_INTEGRATION.md`, `utils/README.md`, `daily_runner.py`, `weekly_report.py`: documentation and config updated to Mexel-only.
-- `vercel-dashboard/public/tenders-latest.json`, `vercel-dashboard/public/summary.json`, `vercel-dashboard/tenders.json`, `output/new_tenders.json`: refreshed example data to Mexel-only.
+- `dashboard/public/tenders-latest.json`, `dashboard/public/summary.json`, `dashboard/tenders.json`, `output/new_tenders.json`: refreshed example data to Mexel-only.
 
 ### Testing Performed
-- `python3 -m py_compile classify_engine.py scoring_engine.py utils/excel_writer.py utils/email_alerts.py utils/data_validator.py sync_to_vercel.py weekly_report.py scrapers/national_treasury_selenium.py utils/bid_tracker.py`
+- `python3 -m py_compile classify_engine.py scoring_engine.py utils/excel_writer.py utils/email_alerts.py utils/data_validator.py sync_dashboard.py weekly_report.py scrapers/national_treasury_selenium.py utils/bid_tracker.py`
 
 ### Risk Assessment
 - Medium: classification/scoring outputs changed (Mexel-only filtering and category labels).
 - Low: dashboard text/labels and documentation updates.
 
 ### Follow-up Items
-- Run `python3 -m py_compile classify_engine.py scoring_engine.py utils/excel_writer.py utils/email_alerts.py utils/data_validator.py sync_to_vercel.py weekly_report.py` and update results.
-- Run `npm test` in `vercel-dashboard` if tests are in use (vitest).
+- Run `python3 -m py_compile classify_engine.py scoring_engine.py utils/excel_writer.py utils/email_alerts.py utils/data_validator.py sync_dashboard.py weekly_report.py` and update results.
+- Run `npm test` in `dashboard` if tests are in use (vitest).
 
 ---
 
@@ -111,14 +170,14 @@ Cleanup complete.
 - `scrapers/umgeni_water.py`: deleted file (no longer used).
 - `tools/scrape_source.py`, `tools/build_dashboard_snapshot.py`: removed the deleted scrapers from imports and run lists.
 - `utils/data_validator.py`: removed the deleted sources plus City of Tshwane, eThekwini Municipality, and Sasol from the default allowed list.
-- `sync_to_vercel.py`, `vercel-dashboard/index.html`: updated data source lists/counts to remove Tshwane, eThekwini, and Sasol.
+- `sync_dashboard.py`, `dashboard/index.html`: updated data source lists/counts to remove Tshwane, eThekwini, and Sasol.
 - `CLAUDE.md`, `tenderscan.py`: updated source lists/comments to drop removed scrapers.
 - `reports/duplicate_and_conflict_analysis_report.md`: pruned duplicate function table to match current scraper set.
-- `vercel-dashboard/public/tenders-latest.json`, `vercel-dashboard/public/summary.json`: removed legacy source entries and regenerated summary counts.
+- `dashboard/public/tenders-latest.json`, `dashboard/public/summary.json`: removed legacy source entries and regenerated summary counts.
 
 ### Testing Performed
-- `python3 -m py_compile scrapers/municipalities.py scrapers/soes.py tools/scrape_source.py tools/build_dashboard_snapshot.py utils/data_validator.py sync_to_vercel.py tenderscan.py`
-- `python3 tools/generate_dashboard_summary.py --in vercel-dashboard/public/tenders-latest.json --out vercel-dashboard/public/summary.json`
+- `python3 -m py_compile scrapers/municipalities.py scrapers/soes.py tools/scrape_source.py tools/build_dashboard_snapshot.py utils/data_validator.py sync_dashboard.py tenderscan.py`
+- `python3 tools/generate_dashboard_summary.py --in dashboard/public/tenders-latest.json --out dashboard/public/summary.json`
 
 ### Risk Assessment
 - Low/Medium: removal of scrapers and source references; any tooling/scripts that assumed those sources may need updates if run.
@@ -149,11 +208,11 @@ Remove confirmed duplicates, unused files, and dead code from the repo while cre
   - Dependencies: Task 2
   - Success: Backup copies exist for every file in scope
 - [x] **Task 4**: Remove duplicate data artifacts [LOW RISK] [DONE]
-  - Files: `vercel-dashboard/public/*`, `vercel-dashboard/public/build/*`, `input/*`
+  - Files: `dashboard/public/*`, `dashboard/public/build/*`, `input/*`
   - Dependencies: Task 3
   - Success: Only one canonical copy remains per duplicate group
 - [x] **Task 5**: Resolve frontend artifact ambiguity (kept both entrypoints; removed unused scripts + build refs) [MEDIUM RISK] [DONE]
-  - Files: `vercel-dashboard/index.html` (uses inline scripts), `vercel-dashboard/js/*` (modular structure, not integrated), `vercel-dashboard/service-worker.js`
+  - Files: `dashboard/index.html` (uses inline scripts), `dashboard/js/*` (modular structure, not integrated), `dashboard/service-worker.js`
   - Dependencies: Task 2
   - Success: Removed legacy `script.js`, kept inline scripts in index.html for stability
 - [x] **Task 6**: Remove unused files (non-frontend) [LOW RISK] [DONE]
@@ -182,10 +241,10 @@ Cleanup complete.
 
 ## Review Summary
 ### Changes Made
-- `vercel-dashboard/js/modules/config.js`: removed build/tenders URL fallbacks after deleting build artifacts.
-- `vercel-dashboard/script.js`: deleted legacy monolithic script (functionality preserved in index.html inline scripts).
+- `dashboard/js/modules/config.js`: removed build/tenders URL fallbacks after deleting build artifacts.
+- `dashboard/script.js`: deleted legacy monolithic script (functionality preserved in index.html inline scripts).
 - `classify_engine.py`, `keyword_rules.py`, `scrapers/national_treasury.py`, `scrapers/national_treasury_selenium.py`, `tools/chromedriver_manager.py`, `utils/bid_tracker.py`, `utils/folder_tools.py`, `utils/logging_tools.py`, `utils/multi_channel_alerts.py`, `utils/pdf_tools.py`, `utils/text_cleaner.py`, `tenderscan.py`: removed unused definitions and imports.
-- Deleted unused/duplicate assets and data snapshots (e.g., `vercel-dashboard/public/build/*`, dated `tenders-2025-12-13/14/15/16.json`, `assets/target_icon.png`, `gemini-king-mode.pdf`, `input/tenders.csv`, `input/test_scoring.csv`, `scrapers/etenders_selenium.py`, `utils/email_alerts_fixed.py`, `vercel-dashboard/js/advanced-filters.js`, `vercel-dashboard/js/notifications.js`, `vercel-dashboard/js/pwa-diagnostics.js`).
+- Deleted unused/duplicate assets and data snapshots (e.g., `dashboard/public/build/*`, dated `tenders-2025-12-13/14/15/16.json`, `assets/target_icon.png`, `gemini-king-mode.pdf`, `input/tenders.csv`, `input/test_scoring.csv`, `scrapers/etenders_selenium.py`, `utils/email_alerts_fixed.py`, `dashboard/js/advanced-filters.js`, `dashboard/js/notifications.js`, `dashboard/js/pwa-diagnostics.js`).
 
 ### Testing Performed
 - `python3 -m py_compile classify_engine.py keyword_rules.py scrapers/national_treasury.py scrapers/national_treasury_selenium.py tools/chromedriver_manager.py utils/bid_tracker.py utils/folder_tools.py utils/logging_tools.py utils/multi_channel_alerts.py utils/pdf_tools.py utils/text_cleaner.py tenderscan.py`
@@ -194,7 +253,7 @@ Cleanup complete.
 - Low/Medium: removed unused files and dead code; potential risk if any manual workflows relied on deleted snapshots or the removed scraper.
 
 ### Follow-up Items
-- Remaining unused but kept for tooling/docs: `.claude/settings.local.json`, `.vscode/settings.json`, `input/tenders_template.csv`, `scrapers/__init__.py`, `utils/__init__.py`, `vercel-dashboard/package.json`, `vercel-dashboard/vitest.config.js`.
+- Remaining unused but kept for tooling/docs: `.claude/settings.local.json`, `.vscode/settings.json`, `input/tenders_template.csv`, `scrapers/__init__.py`, `utils/__init__.py`, `dashboard/package.json`, `dashboard/vitest.config.js`.
 - `utils/pdf_tools.py` now contains unused helpers (`get_pdf_size`, `format_bytes`) if you want to remove or document them later.
 
 ---
@@ -273,12 +332,12 @@ Verify the `/api/summarize` endpoint is working correctly and ensure the fronten
 
 ### Phase 3: Frontend Integration Verification
 - [ ] **Task 3.1**: Verify frontend can call the endpoint [LOW RISK]
-  - Files: `vercel-dashboard/index.html` (inline scripts contain summarizeTender() function)
+  - Files: `dashboard/index.html` (inline scripts contain summarizeTender() function)
   - Check: `summarizeTender()` function exists and calls `/api/summarize`
   - Validation: Open browser console, no 404 or CORS errors
 
 - [ ] **Task 3.2**: Test "✨ AI Summary" button in modal [MEDIUM RISK]
-  - Files: `vercel-dashboard/index.html` (verify button exists)
+  - Files: `dashboard/index.html` (verify button exists)
   - Test: 
     1. Open dashboard on localhost:8000
     2. Click a tender to open modal
@@ -288,7 +347,7 @@ Verify the `/api/summarize` endpoint is working correctly and ensure the fronten
   - Expected: Beautiful formatted summary appears in modal
 
 - [ ] **Task 3.3**: Verify caching works [LOW RISK]
-  - Files: `vercel-dashboard/index.html` (inline caching logic)
+  - Files: `dashboard/index.html` (inline caching logic)
   - Test: Click "AI Summary" twice on same tender
   - Expected:
     - First click: API call (slow, ~2-3s)
@@ -300,7 +359,7 @@ Verify the `/api/summarize` endpoint is working correctly and ensure the fronten
   - Files: Update `README.md` or deployment guide
   - Content: 
     - How to set `ANTHROPIC_API_KEY` on Render
-    - How to set `ANTHROPIC_API_KEY` on Vercel (if backend moves there)
+    - How to set `ANTHROPIC_API_KEY` on a hosting provider (if backend moves there)
     - Security note: Never hardcode keys, always use environment variables
 
 - [ ] **Task 4.2**: Verify no sensitive data in git history [LOW RISK]
@@ -312,11 +371,11 @@ Verify the `/api/summarize` endpoint is working correctly and ensure the fronten
 - [ ] **Task 5.1**: Add retry logic for API failures [MEDIUM RISK]
   - Current: Single API call, fails if timeout
   - Enhancement: Auto-retry once on 5xx errors
-  - Files: `vercel-dashboard/index.html` (inline scripts)
+  - Files: `dashboard/index.html` (inline scripts)
 
 - [ ] **Task 5.2**: Add model selection dropdown [LOW RISK]
   - Allow users to choose between different Claude models
-  - Files: `vercel-dashboard/index.html` (inline scripts)
+  - Files: `dashboard/index.html` (inline scripts)
 
 ---
 

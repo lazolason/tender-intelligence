@@ -10,8 +10,8 @@ export const config = {
         "/tenders.json",
         "./tenders.json",
         "./public/tenders-latest.json",
-        "/vercel-dashboard/tenders.json",
-        "/vercel-dashboard/public/tenders-latest.json",
+        "/dashboard/tenders.json",
+        "/dashboard/public/tenders-latest.json",
         "../tenders.json"
     ],
     seedPayload: {
