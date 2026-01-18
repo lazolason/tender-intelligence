@@ -260,7 +260,7 @@
         
         <footer>
             <p>Tender Intelligence System v3.0 | Mexel Energy Sustain</p>
-            <p>Automated scans: Daily 6AM | Weekly Reports: Monday 7AM</p>
+            <p>Local dashboard · Refresh: python3 sync_dashboard.py · Serve: python3 -m http.server 8000</p>
         </footer>
     </div>
     
@@ -504,7 +504,7 @@
             
             // Get tenders by date
             const tendersByDate = {};
-            tenders.forEach(t => {
+            allTenders.forEach(t => {
                 if (t.closing_date) {
                     const date = t.closing_date;
                     if (!tendersByDate[date]) tendersByDate[date] = [];
@@ -542,7 +542,7 @@
         
         function showDayTenders(dateStr) {
             const container = document.getElementById('dayTenders');
-            const dayTenders = tenders.filter(t => t.closing_date === dateStr);
+            const dayTenders = allTenders.filter(t => t.closing_date === dateStr);
             
             if (dayTenders.length === 0) {
                 container.innerHTML = `<p style="color: #888; text-align: center;">No tenders closing on ${dateStr}</p>`;
