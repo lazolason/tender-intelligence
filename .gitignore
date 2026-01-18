@@ -28,3 +28,7 @@ Thumbs.db
 
 # MCP Server Configuration (contains API keys)
 .mcp.json
+
+# Virtual Environments
+.venv/
+.venv311/
