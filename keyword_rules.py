@@ -130,7 +130,9 @@ WEAK_MATCH_KEYWORDS = [
 CONTEXT_KEYWORDS = [
     "water", "treatment", "cooling", "boiler", "steam", "condensate",
     "tower", "heat exchanger", "condenser", "plant", "industrial",
-    "utility", "power station", "refinery", "effluent", "process water"
+    "utility", "power station", "refinery", "effluent", "process water",
+    "hvac", "crac", "data centre", "data center", "precision cooling",
+    "computer room", "server room", "chiller"
 ]
 
 # Aliases for backward compatibility
