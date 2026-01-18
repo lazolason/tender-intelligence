@@ -1,13 +1,17 @@
 # ================================================
-# KEYWORD RULES V2.0 - MEXEL-ONLY MATCHING
-# Mexel Energy Sustain (TES product) only
+# KEYWORD RULES V3.0 - MEXEL ENERGY SUSTAIN (TES)
+# Sophisticated matching for Mexel-only tenders
 # ================================================
 
 # ===========================================================
-# EXCLUSION LIST - Skip these tenders completely
+# NEGATIVE KEYWORDS - Skip these tenders completely
 # ===========================================================
+NEGATIVE_KEYWORDS = [
+    # ===== NEW NEGATIVES FROM BRAND GUIDELINES =====
+    "swimming pool", "pool chemicals", "potable water bottling", "bottled water",
+    "janitorial", "cleaning services", "laundry", "linen", "sewage removal",
+    "lab reagents", "laboratory supplies", "household", "domestic",
 
-EXCLUDE_KEYWORDS = [
     # ===== CONSTRUCTION / CIVIL =====
     "construction", "building construction", "civil construction", "civil works",
     "perimeter wall", "guardhouse", "guard house", "fencing", "palisade fence",
@@ -23,7 +27,6 @@ EXCLUDE_KEYWORDS = [
     
     # ===== REFURBISHMENT (EXCLUDE - except white-metal bearing reconditioning) =====
     "refurbishment", "refurbish", "overhaul", "retrofit",
-    # Note: "bearing reconditioning" is allowed ONLY if "white metal" is also present
     
     # ===== TRANSFORMERS & ELECTRICAL EQUIPMENT =====
     "transformer", "transformers", "transformer supply", "transformer oil",
@@ -60,7 +63,7 @@ EXCLUDE_KEYWORDS = [
     "security guarding", "security guard", "physical security",
     "armed response", "access control", "cctv", "surveillance",
     
-    # ===== CLEANING =====
+    # ===== CLEANING (EXTENDED) =====
     "cleaning services", "cleaning consumables", "janitorial",
     "office cleaning", "hygiene services",
     
@@ -82,7 +85,7 @@ EXCLUDE_KEYWORDS = [
     "painting", "landscaping", "grass cutting", "property management",
     "minor works",
     
-    # ===== TENDER ADMIN (notifications we don't care about) =====
+    # ===== TENDER ADMIN =====
     "notification of award", "award notification", "publication of bidders",
     "list of bidders", "regret letter", "tender cancellation",
     "tender validity", "names of bidders", "cancellation notification",
@@ -93,31 +96,44 @@ EXCLUDE_KEYWORDS = [
 ]
 
 # ===========================================================
-# TES KEYWORDS - Mexel brand + TES product references
+# STRONG MATCH KEYWORDS - High probability of Mexel (TES) fit
 # ===========================================================
-
-TES_KEYWORDS = [
-    "mexel",
-    "mexel 432",
-    "mexel432",
-    "mexsteam",
-    "mexsteam 100",
-    "mexel energy sustain",
-    "mexel energy",
-    "tes",
+STRONG_MATCH_KEYWORDS = [
+    "mexel", "mexel 432", "mexel432", "mexsteam", "mexsteam 100", "mexsteam100",
+    "film forming amine", "filming amine", "film forming agent", "ffa",
+    "scale inhibitor", "antiscalant", "anti-scalant", "corrosion inhibitor",
+    "corrosion barrier", "oxygen scavenger", "oxidizing biocide",
+    "non-oxidizing biocide", "neutralising amine", "neutralizing amine",
+    "dispersant", "fouling dispersant", "mud dispersant", "ash dispersant",
+    "biodispersant", "bio-dispersant", "cooling tower", "cooling water",
+    "open recirculating", "closed loop cooling", "condenser cleaning",
+    "condenser tubes", "boiler water treatment", "boiler chemical",
+    "condensate treatment", "condensate polishing", "boiler blowdown",
+    "deaerator", "legionella", "thermal efficiency", "heat transfer efficiency",
+    "fouling factor", "approach temperature", "corrosion rate monitoring"
 ]
 
 # ===========================================================
-# POSITIVE SIGNALS - If these appear, likely relevant
+# WEAK MATCH KEYWORDS - Supporting signals
 # ===========================================================
-
-TES_STRONG_SIGNALS = [
-    "mexel",
-    "mexel 432",
-    "mexel432",
-    "mexsteam",
-    "mexsteam 100",
-    "mexel energy sustain",
-    "mexel energy",
-    "tes",
+WEAK_MATCH_KEYWORDS = [
+    "chemical supply", "chemical dosing", "surfactant", "surfactant-based",
+    "system conditioner", "antimicrobial", "biological control",
+    "microbiological control", "passivation", "membrane cleaning", "cip",
+    "clean-in-place", "demineralisation", "demineralization", "ion exchange",
+    "softener", "ro", "reverse osmosis"
 ]
+
+# ===========================================================
+# CONTEXT KEYWORDS - Areas where Mexel (TES) operates
+# ===========================================================
+CONTEXT_KEYWORDS = [
+    "water", "treatment", "cooling", "boiler", "steam", "condensate",
+    "tower", "heat exchanger", "condenser", "plant", "industrial",
+    "utility", "power station", "refinery", "effluent", "process water"
+]
+
+# Aliases for backward compatibility
+EXCLUDE_KEYWORDS = NEGATIVE_KEYWORDS
+TES_KEYWORDS = STRONG_MATCH_KEYWORDS
+TES_STRONG_SIGNALS = STRONG_MATCH_KEYWORDS

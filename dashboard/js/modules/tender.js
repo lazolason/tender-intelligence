@@ -103,30 +103,60 @@ export function classifyTender(tender) {
         "building", "infrastructure"
     ];
 
-    const tesKeywords = [
-        "mexel",
-        "mexel 432",
-        "mexel432",
-        "mexsteam",
-        "mexsteam 100",
-        "mexel energy",
-        "mexel energy sustain",
-        "tes"
+    const strongKeywords = [
+        "mexel", "mexel 432", "mexel432", "mexsteam", "mexsteam 100", "mexsteam100",
+        "film forming amine", "filming amine", "film forming agent", "ffa",
+        "scale inhibitor", "antiscalant", "anti-scalant", "corrosion inhibitor",
+        "corrosion barrier", "oxygen scavenger", "oxidizing biocide",
+        "non-oxidizing biocide", "neutralising amine", "neutralizing amine",
+        "dispersant", "fouling dispersant", "mud dispersant", "ash dispersant",
+        "biodispersant", "bio-dispersant", "cooling tower", "cooling water",
+        "open recirculating", "closed loop cooling", "condenser cleaning",
+        "condenser tubes", "boiler water treatment", "boiler chemical",
+        "condensate treatment", "condensate polishing", "boiler blowdown",
+        "deaerator", "legionella", "thermal efficiency", "heat transfer efficiency",
+        "fouling factor", "approach temperature", "corrosion rate monitoring"
+    ];
+
+    const weakKeywords = [
+        "chemical supply", "chemical dosing", "surfactant", "surfactant-based",
+        "system conditioner", "antimicrobial", "biological control",
+        "microbiological control", "passivation", "membrane cleaning", "cip",
+        "clean-in-place", "demineralisation", "demineralization", "ion exchange",
+        "softener", "ro", "reverse osmosis"
+    ];
+
+    const contextKeywords = [
+        "water", "treatment", "cooling", "boiler", "steam", "condensate",
+        "tower", "heat exchanger", "condenser", "plant", "industrial",
+        "utility", "power station", "refinery", "effluent", "process water"
+    ];
+
+    const negativeKeywords = [
+        "swimming pool", "pool chemicals", "potable water bottling", "bottled water",
+        "janitorial", "cleaning services", "laundry", "linen", "sewage removal",
+        "lab reagents", "laboratory supplies", "household", "domestic"
     ];
 
     const categories = [];
 
     const hasCivil = civilKeywords.some(k => desc.includes(k));
-    const hasTES = tesKeywords.some(k => desc.includes(k));
+    const fullText = `${tender.title || ''} ${desc}`;
+    const hasStrong = strongKeywords.some(k => fullText.includes(k));
+    const hasWeak = weakKeywords.some(k => fullText.includes(k));
+    const hasContext = contextKeywords.some(k => fullText.includes(k));
+    const hasNegative = negativeKeywords.some(k => fullText.includes(k));
 
     let relevance = "Unknown";
-    if (hasTES) {
+    if (hasNegative && !hasStrong) {
+        relevance = "OutOfScope";
+    } else if (hasStrong || (hasWeak && hasContext)) {
         relevance = "Mexel";
     } else if (hasCivil) {
         relevance = "OutOfScope";
     }
 
-    if (hasTES) categories.push("Mexel/TES");
+    if (relevance === "Mexel") categories.push("Mexel/TES");
     if (relevance === "OutOfScope" && hasCivil) categories.push("Civil/Infrastructure");
 
     const priority = (tender.priority || "").toUpperCase();
