@@ -342,11 +342,17 @@ def scrape_transnet():
 # ----------------------------------------------------------
 def scrape_eskom():
     """Scrape Eskom tenders"""
+    try:
+        from scrapers.eskom_direct import scrape_eskom_tenders
+        return scrape_eskom_tenders(use_selenium_fallback=False, api_timeout=30)
+    except Exception as e:
+        print(f"    Eskom direct scraper failed, falling back to HTML scrape: {e}")
+
     tenders = []
     had_successful_fetch = False
     
     urls = [
-        "https://www.eskom.co.za/eskom-tenders/",
+        "https://www.eskom.co.za/tenders/",
         "https://www.eskom.co.za/procurement/tenders/",
     ]
     

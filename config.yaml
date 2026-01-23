@@ -13,7 +13,7 @@ paths:
 
 # Scraper settings
 scrapers:
-  enable_selenium: false    # Enable Selenium-based scrapers (National Treasury)
+  enable_selenium: true    # Enable Selenium-based scrapers (National Treasury)
   timeout: 15
   user_agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)"
   
