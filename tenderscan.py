@@ -19,6 +19,8 @@ from scrapers.soes import scrape_all_soes
 # from scrapers.eskom import scrape_eskom
 # from scrapers.sanral import scrape_sanral
 # from scrapers.transnet import scrape_transnet
+# from scrapers.sadc import scrape_all_sadc
+from scrapers.water_boards import scrape_all_water_boards
 
 # Import utils
 from utils.excel_writer import ExcelWriter
@@ -173,6 +175,30 @@ def run_all_scrapers(monitor: ScraperMonitor = None):
         except Exception as e:
             log_error(LOG_FILE, f"Eskom tender bulletin scraper failed: {e}")
             failed_sources.append("Eskom Tender Bulletin")
+
+    # Water Boards (Umgeni, Magalies, Lepelle)
+    write_log(LOG_FILE, "=== Scraping Water Boards ===")
+    try:
+        with monitor.track("Water Boards") as run:
+            wb_tenders = scrape_all_water_boards()
+            run.tenders_found = len(wb_tenders)
+        all_tenders.extend(wb_tenders)
+        write_log(LOG_FILE, f"Water Boards: {len(wb_tenders)} tenders found")
+    except Exception as e:
+        log_error(LOG_FILE, f"Water Board scraper failed: {e}")
+        failed_sources.append("Water Boards")
+
+    # SADC Region (Botswana, Namibia)
+    # write_log(LOG_FILE, "=== Scraping SADC Region ===")
+    # try:
+    #     with monitor.track("SADC Region") as run:
+    #         sadc_tenders = scrape_all_sadc()
+    #         run.tenders_found = len(sadc_tenders)
+    #     all_tenders.extend(sadc_tenders)
+    #     write_log(LOG_FILE, f"SADC Region: {len(sadc_tenders)} tenders found")
+    # except Exception as e:
+    #     log_error(LOG_FILE, f"SADC Region scraper failed: {e}")
+    #     failed_sources.append("SADC Region")
     
     if failed_sources:
         write_log(LOG_FILE, f"Failed sources this run: {', '.join(sorted(set(failed_sources)))}", "WARNING")

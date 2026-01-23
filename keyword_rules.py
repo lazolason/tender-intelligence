@@ -12,6 +12,13 @@ NEGATIVE_KEYWORDS = [
     "janitorial", "cleaning services", "laundry", "linen", "sewage removal",
     "lab reagents", "laboratory supplies", "household", "domestic",
 
+    # ===== TRADITIONAL / BULK CHEMICALS (Exclusion) =====
+    "calcium hypochlorite", "hypochlorite", "chlorine", "granular chlorine",
+    "liquid chlorine", "hth", "bleach", "hydrated lime", "quicklime", "liquid lime",
+    "caustic soda", "sodium hydroxide", "activated carbon", "anthracite",
+    "ferric chloride", "aluminium sulphate", "alum", "salt supply",
+    "potable water treatment", "drinking water chemicals", "filter sand",
+
     # ===== CONSTRUCTION / CIVIL =====
     "construction", "building construction", "civil construction", "civil works",
     "perimeter wall", "guardhouse", "guard house", "fencing", "palisade fence",
@@ -102,7 +109,7 @@ STRONG_MATCH_KEYWORDS = [
     "mexel", "mexel 432", "mexel432", "mexsteam", "mexsteam 100", "mexsteam100",
     "film forming amine", "filming amine", "film forming agent", "ffa",
     "scale inhibitor", "antiscalant", "anti-scalant", "corrosion inhibitor",
-    "corrosion barrier", "oxygen scavenger", "oxidizing biocide",
+    "corrosion barrier", "oxygen scavenger",
     "non-oxidizing biocide", "neutralising amine", "neutralizing amine",
     "dispersant", "fouling dispersant", "mud dispersant", "ash dispersant",
     "biodispersant", "bio-dispersant", "cooling tower", "cooling water",
@@ -110,7 +117,11 @@ STRONG_MATCH_KEYWORDS = [
     "condenser tubes", "boiler water treatment", "boiler chemical",
     "condensate treatment", "condensate polishing", "boiler blowdown",
     "deaerator", "legionella", "thermal efficiency", "heat transfer efficiency",
-    "fouling factor", "approach temperature", "corrosion rate monitoring"
+    "fouling factor", "approach temperature", "corrosion rate monitoring",
+    # ===== NEW PREMIUM KEYWORDS =====
+    "asme ptc 12.2", "pulsed dosing", "alkylamine", "surface active agent",
+    "mussel control", "macro-fouling", "macrofouling", "bio-dispersant",
+    "condenser performance", "vacuum improvement", "megawatt recovery", "mw gain"
 ]
 
 # ===========================================================
@@ -118,10 +129,13 @@ STRONG_MATCH_KEYWORDS = [
 # ===========================================================
 WEAK_MATCH_KEYWORDS = [
     "chemical supply", "chemical dosing", "surfactant", "surfactant-based",
-    "system conditioner", "antimicrobial", "biological control",
+    "oxidizing biocide", "system conditioner", "antimicrobial", "biological control",
     "microbiological control", "passivation", "membrane cleaning", "cip",
     "clean-in-place", "demineralisation", "demineralization", "ion exchange",
-    "softener", "ro", "reverse osmosis"
+    "softener", "ro", "reverse osmosis",
+    # ===== NEW ECO & OUTCOME KEYWORDS =====
+    "environmentally friendly water treatment", "green chemical",
+    "biodegradable biocide", "heat rate improvement", "server room cooling"
 ]
 
 # ===========================================================

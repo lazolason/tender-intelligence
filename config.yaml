@@ -9,11 +9,11 @@ paths:
   tender_log_excel: "/Users/lazolasonqishe/Documents/MASTER/TENDERS/01_Tender_Log/Tender_Dashboard_v2.xlsx"
   active_tenders: "/Users/lazolasonqishe/Documents/MASTER/TENDERS/02_Active_Tenders/"
   output_dir: "/Users/lazolasonqishe/Documents/MASTER/TENDERS/00_System/04_Automation/output/"
-  log_file: "/Users/lazolasonqishe/Documents/MASTER/TENDERS/00_System/04_Automation/logs/scraper.log"
+  log_file: "/Users/lazolasonqishe/Documents/tender-intelligence/logs/scraper.log"
 
 # Scraper settings
 scrapers:
-  enable_selenium: true    # Enable Selenium-based scrapers (National Treasury)
+  enable_selenium: false    # Enable Selenium-based scrapers (National Treasury)
   timeout: 15
   user_agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)"
   

@@ -31,6 +31,11 @@ SOURCE_URLS = {
     "Harmony Gold": "https://www.harmony.co.za/business/procurement",
     "Seriti": "https://www.seritiza.com/procurement/",
     "SANRAL": "https://www.nra.co.za/live/tenders.php",
+    "Umgeni Water": "https://umngeni-uthukela.co.za/tenders/",
+    "Magalies Water": "https://magalieswater.co.za/tenders/",
+    "Lepelle Northern Water": "https://lepellewater.co.za/tenders/",
+    "Botswana": "https://www.etender.co.bw/",
+    "Namibia": "https://www.namibiatenders.com/tenders",
 }
 
 def load_tenders():
@@ -493,8 +498,9 @@ def generate_dashboard_html(tenders):
         
         // Calculate days until closing
         function getDaysUntil(dateStr) {{
-            if (!dateStr) return null;
+            if (!dateStr || dateStr === "New") return null;
             const closing = new Date(dateStr);
+            if (isNaN(closing.getTime())) return null;
             const today = new Date();
             today.setHours(0,0,0,0);
             closing.setHours(0,0,0,0);
@@ -574,7 +580,7 @@ def generate_dashboard_html(tenders):
             const endIndex = Math.min(startIndex + itemsPerPage, filtered.length);
             const toDisplay = filtered.slice(startIndex, endIndex);
             
-            const html = toDisplay.map(t => {{
+            const html = toDisplay.map((t, idx) => {{
                 const desc = t.description && t.description !== t.title ? t.description : '';
                 const isPdf = t.url && t.url.endsWith('.pdf');
                 const daysLeft = getDaysUntil(t.closing_date);

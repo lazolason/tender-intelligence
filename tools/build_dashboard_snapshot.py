@@ -16,11 +16,18 @@ from scrapers.soes import (
     scrape_rand_water,
     scrape_transnet,
     scrape_eskom,
-    scrape_sanral,
-    scrape_sasol,
     scrape_anglo_american,
     scrape_harmony_gold,
     scrape_seriti,
+)
+from scrapers.water_boards import (
+    scrape_umgeni_water,
+    scrape_magalies_water,
+    scrape_lepelle_water,
+)
+from scrapers.sadc import (
+    scrape_botswana,
+    scrape_namibia,
 )
 
 
@@ -192,11 +199,14 @@ def build_snapshot(limit: int) -> dict:
         scrape_rand_water,
         scrape_transnet,
         scrape_eskom,
-        scrape_sanral,
-        scrape_sasol,
         scrape_anglo_american,
         scrape_harmony_gold,
         scrape_seriti,
+        scrape_umgeni_water,
+        scrape_magalies_water,
+        scrape_lepelle_water,
+        scrape_botswana,
+        scrape_namibia,
     ]
     for scraper in soe_scrapers:
         try:

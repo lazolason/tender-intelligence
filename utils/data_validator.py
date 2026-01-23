@@ -23,6 +23,9 @@ DEFAULT_ALLOWED_SOURCES = [
     "Anglo American",
     "Harmony Gold",
     "Seriti Resources",
+    "Umgeni Water",
+    "Magalies Water",
+    "Lepelle Northern Water",
     "Unknown",
 ]
 
