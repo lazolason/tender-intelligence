@@ -3,11 +3,73 @@ import os
 import sys
 import subprocess
 import platform
+import json
 from pathlib import Path
 
 TOOLS_DIR = Path(__file__).parent
 DRIVER_DIR = TOOLS_DIR / "chromedriver"
 DRIVER_EXE = "chromedriver"
+
+# Platform detection
+SYSTEM = platform.system()
+if SYSTEM == "Darwin":
+    PLATFORM = "mac-x64" if platform.machine() == "x86_64" else "mac-arm64"
+    DRIVER_EXT = ""
+elif SYSTEM == "Linux":
+    PLATFORM = "linux64"
+    DRIVER_EXT = ""
+elif SYSTEM == "Windows":
+    PLATFORM = "win64"
+    DRIVER_EXT = ".exe"
+else:
+    PLATFORM = "unknown"
+    DRIVER_EXT = ""
+
+VERSION_LOCK_FILE = DRIVER_DIR / "version_lock.json"
+
+
+
+def get_chrome_version():
+    """Get installed Chrome version"""
+    try:
+        if SYSTEM == "Darwin":
+            chrome_path = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+            cmd = [chrome_path, "--version"]
+        elif SYSTEM == "Linux":
+            cmd = ["google-chrome", "--version"]
+        elif SYSTEM == "Windows":
+            chrome_path = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
+            cmd = [chrome_path, "--version"]
+        else:
+            return None, None, None
+        
+        result = subprocess.run(cmd, capture_output=True, text=True, timeout=5)
+        version_str = result.stdout.strip().split()[-1]
+        major = version_str.split(".")[0]
+        return major, version_str, chrome_path if SYSTEM in ["Darwin", "Windows"] else "google-chrome"
+    except Exception:
+        return None, None, None
+
+def get_installed_chromedriver_version():
+    """Get installed chromedriver version"""
+    driver_path = DRIVER_DIR / f"chromedriver{DRIVER_EXT}"
+    if not driver_path.exists():
+        return None, None
+    
+    try:
+        cmd = [str(driver_path), "--version"]
+        result = subprocess.run(cmd, capture_output=True, text=True, timeout=5)
+        version_str = result.stdout.strip().split()[1]
+        major = version_str.split(".")[0]
+        return major, version_str
+    except Exception:
+        return None, None
+
+def save_version_lock(data):
+    """Save version lock file"""
+    DRIVER_DIR.mkdir(parents=True, exist_ok=True)
+    with open(VERSION_LOCK_FILE, "w") as f:
+        json.dump(data, f, indent=2)
 
 def get_system_driver_path():
     fallbacks = [
