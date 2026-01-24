@@ -36,3 +36,14 @@ venv_test/
 
 # Dependencies
 node_modules/
+
+# Output files (generated)
+output/*.json
+output/*.txt
+output/scraper_*.json
+
+# ChromeDriver binaries
+tools/chromedriver/
+
+# Config overrides
+mexel_config.json
