@@ -87,7 +87,7 @@ def main() -> int:
 
         if isinstance(scores, dict):
             # Validate expected score types when present
-            for key in ("fit", "revenue", "risk", "industry", "composite"):
+            for key in ("fit", "industry", "composite"):
                 if key in scores and scores[key] is not None and _as_number(scores[key]) is None:
                     print(f"ERROR: tender[{i}].scores.{key} must be a number when present", file=sys.stderr)
                     return 1

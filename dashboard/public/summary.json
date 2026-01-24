@@ -1,44 +1,40 @@
 {
-    "generated_at": "2026-01-22 10:06",
-    "build_id": "2026-01-22 10:06",
-    "build_sha": null,
-    "next_run": "Daily 08:00",
-    "counts": {
-        "total": 2,
-        "by_company": {
-            "Mexel": 2
-        },
-        "by_priority": {
-            "LOW": 2
-        },
-        "by_source": {
-            "Rand Water": 2
-        }
+  "generated_at": "2026-01-22 10:06",
+  "build_id": "2026-01-22 10:06",
+  "build_sha": null,
+  "next_run": "Daily 08:00",
+  "counts": {
+    "total": 2,
+    "by_company": {
+      "Mexel": 2
     },
-    "top": [
-        {
-            "title": "RW10397693/25RR - THE SUPPLY AND DELIVERY OF AMMONIUM HYDROXIDE TO RAND WATER'S ZWARTKOPJES, EIKENHOF, PALMIET, AND MA",
-            "source": "Rand Water",
-            "company": "Mexel",
-            "priority": "LOW",
-            "close_date": "2026-01-19",
-            "fit": null,
-            "revenue": null,
-            "risk": null,
-            "suitability": null,
-            "url": "https://www.randwater.co.za/./media/sc_pdf/RW10397693 25RR.pdf"
-        },
-        {
-            "title": "RW10413976-25 CALCIUM HYPOCHLORITE GRANULES - SUPPLY AND DELIVERY OF CALCIUM HYPOCHLORITE GRANULES TO RAND WATER SITES FOR A PERIOD OF SIXTY (60) ",
-            "source": "Rand Water",
-            "company": "Mexel",
-            "priority": "LOW",
-            "close_date": "2026-01-30",
-            "fit": null,
-            "revenue": null,
-            "risk": null,
-            "suitability": null,
-            "url": "https://www.randwater.co.za/./media/sc_pdf/RW010413976-25 RW Advert.pdf"
-        }
-    ]
+    "by_priority": {
+      "LOW": 2
+    },
+    "by_source": {
+      "Rand Water": 2
+    }
+  },
+  "top": [
+    {
+      "title": "RW10397693/25RR - THE SUPPLY AND DELIVERY OF AMMONIUM HYDROXIDE TO RAND WATER'S ZWARTKOPJES, EIKENHOF, PALMIET, AND MA",
+      "source": "Rand Water",
+      "company": "Mexel",
+      "priority": "LOW",
+      "close_date": "2026-01-19",
+      "fit": null,
+      "suitability": null,
+      "url": "https://www.randwater.co.za/./media/sc_pdf/RW10397693 25RR.pdf"
+    },
+    {
+      "title": "RW10413976-25 CALCIUM HYPOCHLORITE GRANULES - SUPPLY AND DELIVERY OF CALCIUM HYPOCHLORITE GRANULES TO RAND WATER SITES FOR A PERIOD OF SIXTY (60) ",
+      "source": "Rand Water",
+      "company": "Mexel",
+      "priority": "LOW",
+      "close_date": "2026-01-30",
+      "fit": null,
+      "suitability": null,
+      "url": "https://www.randwater.co.za/./media/sc_pdf/RW010413976-25 RW Advert.pdf"
+    }
+  ]
 }

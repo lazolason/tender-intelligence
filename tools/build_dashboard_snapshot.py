@@ -150,13 +150,11 @@ def build_summary(meta: Dict[str, Any], tenders: List[dict]) -> Dict[str, Any]:
         by_priority[priority] = by_priority.get(priority, 0) + 1
 
         fit = _as_number(scores.get("fit"))
-        revenue = _as_number(scores.get("revenue"))
-        risk = _as_number(scores.get("risk"))
         suitability = _as_number(scores.get("industry")) or _as_number(scores.get("composite"))
         scored_rows.append(
             (
                 fit if fit is not None else -1.0,
-                revenue if revenue is not None else -1.0,
+                suitability if suitability is not None else -1.0,
                 {
                     "title": t.get("title") or "-",
                     "source": source,
@@ -164,8 +162,6 @@ def build_summary(meta: Dict[str, Any], tenders: List[dict]) -> Dict[str, Any]:
                     "priority": priority,
                     "close_date": t.get("closing_date") or t.get("close_date") or "-",
                     "fit": fit,
-                    "revenue": revenue,
-                    "risk": risk,
                     "suitability": suitability,
                     "url": t.get("url") or "",
                 },
@@ -382,8 +378,6 @@ def render_daily_email_html(payload: Dict[str, Any], summary: Dict[str, Any], da
             <td class="col-priority">{esc(priority)}</td>
             <td class="col-scores">
               <span>Fit {esc(scores.get("fit", "-"))}</span>
-              <span>Rev {esc(scores.get("revenue", "-"))}</span>
-              <span>Risk {esc(scores.get("risk", "-"))}</span>
             </td>
             <td class="col-link">{f'<a href="{esc(url)}" target="_blank" rel="noopener noreferrer">View</a>' if url else '-'}</td>
           </tr>

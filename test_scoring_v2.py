@@ -2,7 +2,7 @@ import json
 import re
 
 # 1. Load the Configuration
-with open('tes_config.json', 'r') as f:
+with open('mexel_config.json', 'r') as f:
     config = json.load(f)
 
 def score_tender(title, description):

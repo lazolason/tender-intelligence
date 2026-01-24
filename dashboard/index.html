@@ -153,8 +153,8 @@
         <header>
             <h1>🎯 Tender Intelligence</h1>
             <p class="subtitle"><span class="status"></span>Mexel Energy Sustain Automation Engine</p>
-            <div class="last-sync">🔄 Last synced: 24 Jan 2026, 13:24</div>
-            <div class="last-sync" style="margin-top: 10px; background: rgba(72,219,251,0.2); border-color: rgba(72,219,251,0.3);">📊 Eskom: 3</div>
+            <div class="last-sync">🔄 Last synced: 24 Jan 2026, 16:34</div>
+            <div class="last-sync" style="margin-top: 10px; background: rgba(72,219,251,0.2); border-color: rgba(72,219,251,0.3);">📊 Eskom Holdings: 1 | Sasol: 1</div>
         </header>
         
         <nav class="tab-nav">
@@ -166,15 +166,15 @@
         <!-- DASHBOARD TAB -->
         <div id="dashboard" class="tab-content active">
             <div class="stats">
-                <div class="stat-card"><div class="stat-value total">3</div><div class="stat-label">Total</div></div>
-                <div class="stat-card"><div class="stat-value high">3</div><div class="stat-label">🔥 High</div></div>
-                <div class="stat-card"><div class="stat-value medium">0</div><div class="stat-label">✅ Medium</div></div>
+                <div class="stat-card"><div class="stat-value total">2</div><div class="stat-label">Total</div></div>
+                <div class="stat-card"><div class="stat-value high">0</div><div class="stat-label">🔥 High</div></div>
+                <div class="stat-card"><div class="stat-value medium">2</div><div class="stat-label">✅ Medium</div></div>
                 <div class="stat-card"><div class="stat-value low">0</div><div class="stat-label">📝 Low</div></div>
-                <div class="stat-card"><div class="stat-value mexel-color">3</div><div class="stat-label">⚗️ Mexel</div></div>
+                <div class="stat-card"><div class="stat-value mexel-color">2</div><div class="stat-label">⚗️ Mexel</div></div>
             </div>
             
             <div class="section">
-                <h2>📋 Active Tenders (<span id="displayedCount">3</span> of <span id="totalCount">3</span>)</h2>
+                <h2>📋 Active Tenders (<span id="displayedCount">2</span> of <span id="totalCount">2</span>)</h2>
                 
                 <!-- Search Box -->
                 <div style="margin-bottom: 20px;">
@@ -185,10 +185,10 @@
                 </div>
                 
                 <div class="filter-tabs">
-                    <button class="filter-tab active" onclick="filterTenders('all')">All (<span id="countAll">3</span>)</button>
-                    <button class="filter-tab" onclick="filterTenders('Mexel')">⚗️ Mexel (<span id="countMexel">3</span>)</button>
-                    <button class="filter-tab high" onclick="filterTenders('HIGH')">🔥 HIGH (<span id="countHIGH">3</span>)</button>
-                    <button class="filter-tab medium" onclick="filterTenders('MEDIUM')">⚡ MEDIUM (<span id="countMEDIUM">0</span>)</button>
+                    <button class="filter-tab active" onclick="filterTenders('all')">All (<span id="countAll">2</span>)</button>
+                    <button class="filter-tab" onclick="filterTenders('Mexel')">⚗️ Mexel (<span id="countMexel">2</span>)</button>
+                    <button class="filter-tab high" onclick="filterTenders('HIGH')">🔥 HIGH (<span id="countHIGH">0</span>)</button>
+                    <button class="filter-tab medium" onclick="filterTenders('MEDIUM')">⚡ MEDIUM (<span id="countMEDIUM">2</span>)</button>
                     <button class="filter-tab low" onclick="filterTenders('LOW')">📝 LOW (<span id="countLOW">0</span>)</button>
                 </div>
                 <ul class="tender-list" id="tenderList"></ul>
@@ -326,53 +326,36 @@
                 // Fallback to embedded data
                 allTenders = [
         {
-                "ref": "MPHEN11110GXAWARD",
-                "title": "MPHEN11110GXAWARD - Award of Operation and management of the Sewage treatment plant at Hendrina Power Station",
-                "description": "MPHEN11110GXAWARD - Award of Operation and management of the Sewage treatment plant at Hendrina Power Station",
-                "client": "Eskom",
-                "priority": "HIGH",
-                "score": 7.2,
-                "category": "Eskom (Power)",
-                "source": "Eskom",
-                "url": "https://www.eskom.co.za/eskom-tenders/",
+                "ref": "NT001",
+                "title": "NT001 - Supply of Cooling Water Treatment Chemicals",
+                "description": "NT001 - Supply of Cooling Water Treatment Chemicals",
+                "client": "Eskom Holdings",
+                "priority": "MEDIUM",
+                "score": 5.0,
+                "category": "Power",
+                "source": "Eskom Holdings",
+                "url": "https://www.google.com/search?q=NT001%20NT001%20-%20Supply%20of%20Cooling%20Water%20Treatmen%20tender%20site%3Agov.za",
                 "pdf_size": "",
                 "company": "Mexel",
-                "mexel_score": 2.0,
-                "closing_date": "2026-02-03",
+                "mexel_score": 0.0,
+                "closing_date": "2025-12-15",
                 "contact": "",
                 "matched_keywords": []
         },
         {
-                "ref": "MPKUS11014GXR1",
-                "title": "MPKUS11014GXR1 - The Provision of Operating and Commissioning Support Resources for Kusile Power Station for a period",
-                "description": "MPKUS11014GXR1 - The Provision of Operating and Commissioning Support Resources for Kusile Power Station for a period",
-                "client": "Eskom",
-                "priority": "HIGH",
-                "score": 8.0,
-                "category": "Eskom (Power)",
-                "source": "Eskom",
-                "url": "https://www.eskom.co.za/eskom-tenders/",
+                "ref": "NT004",
+                "title": "NT004 - Boiler Water Treatment Services",
+                "description": "NT004 - Boiler Water Treatment Services",
+                "client": "Sasol",
+                "priority": "MEDIUM",
+                "score": 5.0,
+                "category": "Petrochemical",
+                "source": "Sasol",
+                "url": "https://www.google.com/search?q=NT004%20NT004%20-%20Boiler%20Water%20Treatment%20Services%20tender%20site%3Agov.za",
                 "pdf_size": "",
                 "company": "Mexel",
                 "mexel_score": 0.0,
-                "closing_date": "2029-08-15",
-                "contact": "",
-                "matched_keywords": []
-        },
-        {
-                "ref": "E2138GXMWP",
-                "title": "E2138GXMWP - Request For Information (RFI) for South African Hydroelectric Power Station Development.",
-                "description": "E2138GXMWP - Request For Information (RFI) for South African Hydroelectric Power Station Development.",
-                "client": "Eskom",
-                "priority": "HIGH",
-                "score": 7.2,
-                "category": "Eskom (Power)",
-                "source": "Eskom",
-                "url": "https://www.eskom.co.za/eskom-tenders/",
-                "pdf_size": "",
-                "company": "Mexel",
-                "mexel_score": 0.0,
-                "closing_date": "2026-01-30",
+                "closing_date": "2025-12-22",
                 "contact": "",
                 "matched_keywords": []
         }

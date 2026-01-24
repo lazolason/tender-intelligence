@@ -32,7 +32,7 @@ describe('Tender Functions', () => {
   describe('classifyTender', () => {
     it('should classify Mexel tenders as Mexel', () => {
       const tender = {
-        description: 'Mexel TES dosing program for cooling water',
+        description: 'Mexel Mexel dosing program for cooling water',
         title: 'Mexel 432 supply'
       };
       const classification = classifyTender(tender);

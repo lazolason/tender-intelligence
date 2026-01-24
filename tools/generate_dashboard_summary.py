@@ -90,8 +90,7 @@ def build_summary(tenders: List[dict], meta: Dict[str, Any], build_sha: Optional
         by_priority[priority] = by_priority.get(priority, 0) + 1
 
         fit = _as_number(scores.get("fit")) if "fit" in scores else _as_number(scores.get("fit_score"))
-        revenue = _as_number(scores.get("revenue")) if "revenue" in scores else _as_number(scores.get("revenue_score"))
-        risk = _as_number(scores.get("risk")) if "risk" in scores else _as_number(scores.get("risk_score"))
+        # Keep only fit/industry/composite-style metrics
 
         suitability = (
             _as_number(scores.get("suitability"))
@@ -111,8 +110,6 @@ def build_summary(tenders: List[dict], meta: Dict[str, Any], build_sha: Optional
                     "priority": priority,
                     "close_date": t.get("closing_date") or t.get("close_date") or "-",
                     "fit": fit,
-                    "revenue": revenue,
-                    "risk": risk,
                     "suitability": suitability,
                     "url": t.get("url") or "",
                 },
@@ -171,4 +168,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

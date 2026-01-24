@@ -1,6 +1,6 @@
 # V3.0 Classification System - Verification Report
 **Date:** 2026-01-18  
-**System:** Tender Intelligence - Mexel Energy Sustain (TES)  
+**System:** Tender Intelligence - Mexel Energy Sustain  
 **Version:** V3.0 Classification with Transparent Keyword Matching
 
 ---
@@ -44,7 +44,7 @@ CONTEXT_KEYWORDS = [
 - `server room` - Server room environments
 - `chiller` - Industrial cooling chillers
 
-**Impact:** SITA data centre tenders will now be captured and classified as MEXEL (TES) opportunities.
+**Impact:** SITA data centre tenders will now be captured and classified as MEXEL opportunities.
 
 ---
 
@@ -97,7 +97,7 @@ dashboard/index.html (JavaScript)
   "category": "MEXEL",
   "scores": {
     "composite_score": 5.8,
-    "tes_suitability": 6
+    "mexel_suitability": 6
   },
   "matched_keywords": ["mexel", "cooling tower", "water treatment"]
 }
@@ -111,7 +111,7 @@ dashboard/index.html (JavaScript)
   "category": "MEXEL",
   "scores": {
     "composite_score": 5.3,
-    "tes_suitability": 5
+    "mexel_suitability": 5
   },
   "matched_keywords": ["chemical supply"]
 }
@@ -133,7 +133,7 @@ dashboard/index.html (JavaScript)
   "ref": "RW10397693/25RR",
   "category": "Mexel",
   "score": 5.8,
-  "tes_score": 6,
+  "mexel_score": 6,
   "matched_keywords": [
     "mexel",
     "cooling tower",
@@ -203,7 +203,7 @@ if (t.matched_keywords && Array.isArray(t.matched_keywords) && t.matched_keyword
 - HIGH Priority: 0
 - MEDIUM Priority: 0
 - LOW Priority: 2
-- Mexel (TES): 2
+- Mexel: 2
 
 **Keywords Displayed:**
 - Tender RW10397693/25RR: `["mexel", "cooling tower", "water treatment"]`

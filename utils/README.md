@@ -246,7 +246,7 @@ Initialize Excel writer.
 - `fuzzy_duplicate_threshold`: Fuzzy match threshold (default: 85)
 - `fuzzy_date_window_days`: Date window for duplicates (default: 7)
 
-#### `write_tender(tender_name, client, tender_type, industry, fit_score, stage, closing_date, status, next_action, notes, reference_number, *, composite_score, priority, risk_level, revenue_potential, tes_fit) -> bool`
+#### `write_tender(tender_name, client, tender_type, industry, fit_score, stage, closing_date, status, next_action, notes, reference_number, *, composite_score, priority, mexel_fit) -> bool`
 Write a single tender to Excel.
 
 **Parameters:**
@@ -254,7 +254,7 @@ Write a single tender to Excel.
 - `client`: Client organization name
 - `tender_type`: Tender category/classification
 - `industry`: Industry type with source
-- `fit_score`: TES fit score (0-10)
+- `fit_score`: Mexel fit score (0-10)
 - `stage`: Tender stage (e.g., "New", "In Progress")
 - `closing_date`: Tender closing date string
 - `status`: Current status (e.g., "Open", "Closed")
@@ -263,9 +263,7 @@ Write a single tender to Excel.
 - `reference_number`: Tender reference number
 - `composite_score`: Overall composite score (0-10)
 - `priority`: Priority level (HIGH, MEDIUM, LOW)
-- `risk_level`: Risk assessment (Low, Medium, High)
-- `revenue_potential`: Revenue potential (Low, Medium, High)
-- `tes_fit`: TES suitability score (0-10)
+- `mexel_fit`: Mexel suitability score (0-10)
 
 **Returns:**
 - `True` if tender was added, `False` if duplicate
@@ -472,9 +470,7 @@ was_added = writer.write_tender(
     reference_number="NT-001",
     composite_score=8.5,
     priority="HIGH",
-    risk_level="Low",
-    revenue_potential="High",
-    tes_fit=9
+    mexel_fit=9
 )
 
 if was_added:

@@ -57,38 +57,38 @@ Approved and completed.
 
 ---
 
-# Task: Remove Phakathi + Restrict to TES/Mexel Only
+# Task: Restrict to Mexel Only
 
 ## Objective
-Remove Phakathi from classification, scoring, UI, docs, and outputs, and restrict tender matching to TES/Mexel-only logic.
+Remove legacy category references from classification, scoring, UI, docs, and outputs, and restrict tender matching to Mexel-only logic.
 
 ---
 
 ## Plan
-- [x] **Task 1**: Define exact scope for “TES/Mexel only” filtering (keywords, categories, outputs) [LOW RISK] [DONE]
+- [x] **Task 1**: Define exact scope for “Mexel only” filtering (keywords, categories, outputs) [LOW RISK] [DONE]
   - Files: (analysis only)
   - Dependencies: none
-  - Success: Agreed definition of TES/Mexel-only match + filtering behavior for existing data
+  - Success: Agreed definition of Mexel-only match + filtering behavior for existing data
 - [x] **Task 2**: Create backups for all files to be modified [LOW RISK] [DONE]
   - Files: `backups/...` plus targets identified in Task 1
   - Dependencies: Task 1
   - Success: Backup copies exist for every file in scope
-- [x] **Task 3**: Remove Phakathi from classification + keyword rules [MEDIUM RISK] [DONE]
+- [x] **Task 3**: Remove legacy category from classification + keyword rules [MEDIUM RISK] [DONE]
   - Files: `keyword_rules.py`, `classify_engine.py`
   - Dependencies: Task 2
-  - Success: No Phakathi category logic; TES/Mexel-only categories remain
-- [x] **Task 4**: Remove Phakathi from scoring + outputs [MEDIUM RISK] [DONE]
+  - Success: Mexel-only categories remain
+- [x] **Task 4**: Remove legacy category from scoring + outputs [MEDIUM RISK] [DONE]
   - Files: `scoring_engine.py`, `utils/excel_writer.py`, `utils/email_alerts.py`
   - Dependencies: Task 2
-  - Success: No Phakathi scores/columns emitted; scoring still works for TES-only
-- [x] **Task 5**: Update dashboard/UI to TES-only [MEDIUM RISK] [DONE]
+  - Success: No legacy scores/columns emitted; scoring still works for Mexel-only
+- [x] **Task 5**: Update dashboard/UI to Mexel-only [MEDIUM RISK] [DONE]
   - Files: `dashboard/index.html`, `dashboard/style.css`, `sync_dashboard.py`, `dashboard/public/*.json` (if regenerated)
   - Dependencies: Task 2
-  - Success: No Phakathi UI labels, filters, or styling
+  - Success: No legacy category UI labels, filters, or styling
 - [x] **Task 6**: Update tooling/docs/tests [LOW RISK] [DONE]
   - Files: `CLAUDE.md`, `utils/README.md`, `weekly_report.py`, `dashboard/tests/*`, any other references
   - Dependencies: Task 3, Task 4, Task 5
-  - Success: All references align with TES/Mexel-only behavior
+  - Success: All references align with Mexel-only behavior
 - [x] **Task 7**: Verification (syntax/import + targeted tests) [LOW RISK] [DONE]
   - Files: modified Python/JS files
   - Dependencies: Task 3, Task 4, Task 5, Task 6
@@ -103,8 +103,8 @@ Approved and completed.
 
 ## Review Summary
 ### Changes Made
-- `keyword_rules.py`, `classify_engine.py`, `scoring_engine.py`: Mexel-only classification and scoring (MEXEL category, TES keyword match only).
-- `utils/excel_writer.py`, `utils/email_alerts.py`, `utils/data_validator.py`: removed Phakathi outputs/columns and aligned category validation.
+- `keyword_rules.py`, `classify_engine.py`, `scoring_engine.py`: Mexel-only classification and scoring (MEXEL category, Mexel keyword match only).
+- `utils/excel_writer.py`, `utils/email_alerts.py`, `utils/data_validator.py`: removed legacy category outputs/columns and aligned category validation.
 - `sync_dashboard.py`, `dashboard/index.html`, `dashboard/style.css`: Mexel-only UI, filters, badges, and labels.
 - `dashboard/js/modules/*`, `dashboard/js/index.js`, `dashboard/tests/tender.test.js`: Mexel-only client logic and updated tests.
 - `config.yaml`, `CLAUDE.md`, `SCORING_INTEGRATION.md`, `utils/README.md`, `daily_runner.py`, `weekly_report.py`: documentation and config updated to Mexel-only.
