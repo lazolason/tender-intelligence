@@ -23,7 +23,7 @@ from scrapers.soes import scrape_all_soes
 from scrapers.water_boards import scrape_all_water_boards
 
 # Import utils
-from utils.excel_writer import ExcelWriter
+from utils.db_writer import DatabaseWriter
 from utils.folder_tools import create_tender_folder
 from utils.logging_tools import write_log, log_error, rotate_log_if_needed
 from utils.data_validator import TenderValidator, format_validation_report
@@ -40,7 +40,7 @@ with open(config_path, "r") as f:
     CONFIG = yaml.safe_load(f)
 
 # Paths
-EXCEL_PATH = CONFIG["paths"]["tender_log_excel"]
+DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "tenders.db")
 ACTIVE_TENDERS_DIR = CONFIG["paths"]["active_tenders"]
 OUTPUT_DIR = CONFIG["paths"]["output_dir"]
 LOG_FILE = CONFIG["paths"]["log_file"]
@@ -89,9 +89,9 @@ except ImportError:
     log_error(LOG_FILE, "Multi-channel alerts not available - install with: pip install slack-sdk twilio")
 
 # ----------------------------------------------------------
-# INITIALISE EXCEL WRITER
+# INITIALISE DATABASE WRITER
 # ----------------------------------------------------------
-excel_writer = ExcelWriter(EXCEL_PATH, SHEET_NAME, log_file_path=LOG_FILE)
+db_writer = DatabaseWriter(DB_PATH, log_file_path=LOG_FILE)
 
 # ----------------------------------------------------------
 # RUN ALL SCRAPERS
@@ -234,7 +234,7 @@ def process_tenders(tenders):
             
             tender_name = f"{ref} - {title}" if ref and ref != "NA" else title
             
-            was_added, scores, classification = excel_writer.add_tender_with_scoring(t)
+            was_added, scores, classification = db_writer.add_tender_with_scoring(t)
             t["matched_keywords"] = classification.get("matched_keywords", [])
             
             if was_added:

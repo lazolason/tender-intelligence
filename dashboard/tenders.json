@@ -1,43 +1,37 @@
 {
   "meta": {
-    "last_sync": "2026-01-24 16:34",
+    "last_sync": "2026-01-24 19:43",
     "next_run": "Daily 08:00",
     "tender_count": 2,
-    "last_update": "2026-01-24T16:34:19.728503"
+    "last_update": "2026-01-24T19:43:31.644953"
   },
   "tenders": [
     {
       "ref": "NT001",
-      "title": "NT001 - Supply of Cooling Water Treatment Chemicals",
-      "description": "NT001 - Supply of Cooling Water Treatment Chemicals",
+      "title": "Supply of Cooling Water Treatment Chemicals",
+      "description": "",
       "client": "Eskom Holdings",
       "priority": "MEDIUM",
       "score": 5.0,
-      "category": "Power",
-      "source": "Eskom Holdings",
-      "url": "https://www.google.com/search?q=NT001%20NT001%20-%20Supply%20of%20Cooling%20Water%20Treatmen%20tender%20site%3Agov.za",
-      "pdf_size": "",
+      "category": "Mexel",
+      "source": "Power",
+      "url": "https://www.google.com/search?q=NT001%20Supply%20of%20Cooling%20Water%20Treatment%20Chemic%20tender%20site%3Agov.za",
       "company": "Mexel",
-      "mexel_score": 0.0,
       "closing_date": "2025-12-15",
-      "contact": "",
       "matched_keywords": []
     },
     {
       "ref": "NT004",
-      "title": "NT004 - Boiler Water Treatment Services",
-      "description": "NT004 - Boiler Water Treatment Services",
+      "title": "Boiler Water Treatment Services",
+      "description": "",
       "client": "Sasol",
       "priority": "MEDIUM",
       "score": 5.0,
-      "category": "Petrochemical",
-      "source": "Sasol",
-      "url": "https://www.google.com/search?q=NT004%20NT004%20-%20Boiler%20Water%20Treatment%20Services%20tender%20site%3Agov.za",
-      "pdf_size": "",
+      "category": "Mexel",
+      "source": "Petrochemical",
+      "url": "https://www.google.com/search?q=NT004%20Boiler%20Water%20Treatment%20Services%20tender%20site%3Agov.za",
       "company": "Mexel",
-      "mexel_score": 0.0,
       "closing_date": "2025-12-22",
-      "contact": "",
       "matched_keywords": []
     }
   ]

@@ -96,13 +96,16 @@ def run_daily():
         results["email"] = {"status": "error", "message": str(e)}
         print(f"   ⚠️ Email alerts skipped: {e}")
     
-    # Step 4: Generate email summary (HTML backup)
-    print("\n📄 Step 4: Generating HTML summary...")
+    # Step 5: Database Backup
+    print("\n💾 Step 5: Backing up database...")
     try:
-        summary = generate_email_summary(results)
-        print(f"   ✅ Summary saved to output/daily_email.html")
+        from utils.backup_database import backup_database
+        if backup_database():
+            print(f"   ✅ Database backed up successfully!")
+        else:
+            print(f"   ⚠️ Database backup failed")
     except Exception as e:
-        print(f"   ⚠️ Summary generation failed: {e}")
+        print(f"   ⚠️ Backup generation failed: {e}")
     
     # Final summary
     print("\n" + "=" * 60)
