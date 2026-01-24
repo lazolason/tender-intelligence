@@ -1,0 +1,11 @@
+[run]
+omit =
+    */.venv/*
+    */.venv311/*
+    */venv_test/*
+    */dashboard/*
+    */backups/*
+    */scrapers/*
+    tests/*
+    setup_chromedriver.py
+    chromedriver_manager.py
