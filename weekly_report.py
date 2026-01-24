@@ -74,9 +74,6 @@ def get_weekly_stats():
         date_added = ws.cell(row=row, column=17).value or ""
         ref = ws.cell(row=row, column=16).value or ""
 
-        if t_type == "TES":
-            t_type = "MEXEL"
-        
         if t_type in stats["by_type"]:
             stats["by_type"][t_type] += 1
         

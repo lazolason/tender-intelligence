@@ -189,9 +189,9 @@ def test_semantic_duplicates():
 ```python
 # tests/test_bid_tracker.py
 def test_win_rate_calculation():
-    record_bid_outcome("REF001", "TES", True, 500000, "won", None, None)
-    record_bid_outcome("REF002", "TES", True, 300000, "lost", "Competitor X", 250000)
-    rate = get_win_rates("TES")
+    record_bid_outcome("REF001", "Mexel", True, 500000, "won", None, None)
+    record_bid_outcome("REF002", "Mexel", True, 300000, "lost", "Competitor X", 250000)
+    rate = get_win_rates("Mexel")
     assert rate == 0.5
 ```
 

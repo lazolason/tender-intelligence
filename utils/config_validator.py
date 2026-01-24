@@ -58,7 +58,7 @@ def validate_config(config: Dict[str, Any]) -> Tuple[bool, List[str]]:
     # Validate scoring section
     if 'scoring' in config:
         scoring = config['scoring']
-        required_weights = ['fit_weight', 'industry_weight', 'risk_weight', 'revenue_weight']
+        required_weights = ['fit_weight', 'industry_weight']
         for weight in required_weights:
             if weight not in scoring:
                 errors.append(f"Missing scoring weight: scoring.{weight}")

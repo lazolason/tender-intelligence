@@ -91,7 +91,7 @@ export function openTenderModal(tender) {
 
     const kv = (k, v) => `<div class="tender-detail-kv"><div class="k">${escapeHtml(k)}</div><div class="v">${v || '–'}</div></div>`;
     if (overviewEl) {
-        const tesScore = tender?.scores?.tes_suitability ?? tender?.scores?.tes_score ?? null;
+        const mexelScore = tender?.scores?.mexel_suitability ?? tender?.scores?.mexel_score ?? null;
         const composite = tender?.scores?.composite_score ?? tender?.scores?.composite ?? null;
 
         const contactRaw = tender.contact || tender.contacts || tender.contact_info || '';
@@ -126,8 +126,8 @@ export function openTenderModal(tender) {
 
                 <div class="tender-detail-score-grid">
                     <div class="tender-score-card">
-                        <div class="tender-score-label">Mexel (TES) score</div>
-                        <div class="tender-score-value">${Number.isFinite(Number(tesScore)) ? escapeHtml(String(tesScore)) : '–'}</div>
+                        <div class="tender-score-label">Mexel score</div>
+                        <div class="tender-score-value">${Number.isFinite(Number(mexelScore)) ? escapeHtml(String(mexelScore)) : '–'}</div>
                     </div>
                     <div class="tender-score-card">
                         <div class="tender-score-label">Composite</div>

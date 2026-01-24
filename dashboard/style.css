@@ -578,16 +578,14 @@
         .tenders-table th:nth-child(3), .tenders-table td:nth-child(3) { width: 110px; } /* Company */
         .tenders-table th:nth-child(4), .tenders-table td:nth-child(4) { width: 90px; }  /* Priority */
         .tenders-table th:nth-child(5), .tenders-table td:nth-child(5) { width: 110px; } /* Close date */
-        .tenders-table th:nth-child(6), .tenders-table td:nth-child(6),
-        .tenders-table th:nth-child(7), .tenders-table td:nth-child(7),
-        .tenders-table th:nth-child(8), .tenders-table td:nth-child(8) { width: 70px; }  /* Fit/Rev/Risk */
-        .tenders-table th:nth-child(9), .tenders-table td:nth-child(9) { width: 90px; }  /* Status */
-        .tenders-table th:nth-child(10), .tenders-table td:nth-child(10) { width: 110px; } /* Scope */
-        .tenders-table th:nth-child(11), .tenders-table td:nth-child(11) { width: 320px; } /* Decision */
-        .tenders-table th:nth-child(12), .tenders-table td:nth-child(12) { width: 90px; } /* Action */
+        .tenders-table th:nth-child(6), .tenders-table td:nth-child(6) { width: 70px; }  /* Fit */
+        .tenders-table th:nth-child(7), .tenders-table td:nth-child(7) { width: 90px; }  /* Status */
+        .tenders-table th:nth-child(8), .tenders-table td:nth-child(8) { width: 110px; } /* Scope */
+        .tenders-table th:nth-child(9), .tenders-table td:nth-child(9) { width: 320px; } /* Decision */
+        .tenders-table th:nth-child(10), .tenders-table td:nth-child(10) { width: 90px; } /* Action */
         .tenders-table td:nth-child(1),
-        .tenders-table td:nth-child(11) { overflow-wrap: anywhere; }
-        .tenders-table td:nth-child(11) .decision-pill { white-space: normal; }
+        .tenders-table td:nth-child(9) { overflow-wrap: anywhere; }
+        .tenders-table td:nth-child(9) .decision-pill { white-space: normal; }
 
         .tender-table-scroll {
             overflow-x: auto;
@@ -605,7 +603,7 @@
         .tender-table-scroll.view-compact .category-tag,
         .tender-table-scroll.view-compact .mention-pill,
         .tender-table-scroll.view-compact .watchlist-star { display: none !important; }
-        /* Hide Fit, Revenue, Risk, Status, Scope, Decision columns in compact mode */
+        /* Hide Fit, Status, Scope, Decision columns in compact mode */
         .tender-table-scroll.view-compact th:nth-child(6),
         .tender-table-scroll.view-compact td:nth-child(6),
         .tender-table-scroll.view-compact th:nth-child(7),
@@ -613,11 +611,7 @@
         .tender-table-scroll.view-compact th:nth-child(8),
         .tender-table-scroll.view-compact td:nth-child(8),
         .tender-table-scroll.view-compact th:nth-child(9),
-        .tender-table-scroll.view-compact td:nth-child(9),
-        .tender-table-scroll.view-compact th:nth-child(10),
-        .tender-table-scroll.view-compact td:nth-child(10),
-        .tender-table-scroll.view-compact th:nth-child(11),
-        .tender-table-scroll.view-compact td:nth-child(11) { display: none; }
+        .tender-table-scroll.view-compact td:nth-child(9) { display: none; }
 
         /* Card view */
         .tender-grid {

@@ -45,7 +45,7 @@ def _scrape_eskom_tenders_api(max_tenders, timeout=30):
     seen = set()
     url = f"{API_BASE_URL}/Lookup/GetTender?TENDER_ID="
 
-    response = requests.get(url, timeout=timeout, verify=certifi.where())
+    response = requests.get(url, timeout=timeout, verify=False)
     response.raise_for_status()
     data = response.json()
 
@@ -108,8 +108,12 @@ def _scrape_eskom_tenders_selenium(max_tenders):
 
         if chromedriver_path:
             service = Service(chromedriver_path)
+            env = os.environ.copy()
+            env["DBUS_SESSION_BUS_ADDRESS"] = "/dev/null"
             driver = webdriver.Chrome(service=service, options=chrome_options)
         else:
+            env = os.environ.copy()
+            env["DBUS_SESSION_BUS_ADDRESS"] = "/dev/null"
             driver = webdriver.Chrome(options=chrome_options)
 
         # Navigate to Eskom tender bulletin - use search page which has all opportunities

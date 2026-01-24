@@ -31,7 +31,6 @@ DEFAULT_ALLOWED_SOURCES = [
 
 DEFAULT_ALLOWED_CATEGORIES = [
     "MEXEL",
-    "TES",
     "Exclude",
     "EXCLUDED",
     "Unknown",

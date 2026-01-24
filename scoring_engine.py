@@ -1,15 +1,13 @@
 # ==========================================================
 # SCORING ENGINE
 # Comprehensive tender scoring system
-# Fit, Industry, Risk, Revenue, Mexel (TES product) Suitability
+# Fit, Industry, Mexel product Suitability
 # ==========================================================
 
-import re
-from datetime import datetime, timedelta
 
 # ----------------------------------------------------------
 # INDUSTRY SCORING WEIGHTS
-# Higher = more valuable for Mexel (TES)
+# Higher = more valuable for Mexel
 # ----------------------------------------------------------
 INDUSTRY_SCORES = {
     # HIGH VALUE (8-10)
@@ -52,60 +50,9 @@ INDUSTRY_SCORES = {
 }
 
 # ----------------------------------------------------------
-# RISK INDICATORS
+# MEXEL SUITABILITY KEYWORDS
 # ----------------------------------------------------------
-HIGH_RISK_KEYWORDS = [
-    "urgent", "emergency", "immediate",
-    "short deadline", "24 hour", "48 hour",
-    "penalty", "liquidated damages", "ld clause",
-    "performance bond", "bank guarantee",
-    "joint venture required", "jv mandatory",
-    "cidb 9", "cidb 8", "cidb 7",  # High CIDB grades
-    "international experience", "5 year experience",
-]
-
-MEDIUM_RISK_KEYWORDS = [
-    "cidb 6", "cidb 5",
-    "3 year experience", "reference required",
-    "site visit mandatory", "compulsory briefing",
-    "subcontracting limited",
-]
-
-LOW_RISK_KEYWORDS = [
-    "no cidb required", "all suppliers welcome",
-    "emerging contractor", "smme", "bbbee",
-    "local supplier", "local content",
-]
-
-# ----------------------------------------------------------
-# REVENUE POTENTIAL INDICATORS
-# ----------------------------------------------------------
-REVENUE_KEYWORDS = {
-    # HIGH REVENUE (likely > R5M)
-    "high": [
-        "multi-year", "3 year", "5 year", "framework",
-        "panel", "r10", "r20", "r50", "r100",
-        "million", "plant wide", "site wide",
-        "power station", "all units",
-    ],
-    # MEDIUM REVENUE (R500K - R5M)
-    "medium": [
-        "annual", "12 month", "maintenance contract",
-        "service level agreement", "sla",
-        "r1", "r2", "r5",
-    ],
-    # LOW REVENUE (< R500K)
-    "low": [
-        "once-off", "ad-hoc", "quotation",
-        "small", "minor", "r100", "r200", "r500",
-        "thousand",
-    ]
-}
-
-# ----------------------------------------------------------
-# TES SUITABILITY KEYWORDS
-# ----------------------------------------------------------
-TES_STRONG_FIT = [
+MEXEL_STRONG_FIT = [
     "cooling water", "cooling tower", "condenser",
     "boiler", "steam", "feedwater", "blowdown",
     "chemical dosing", "water treatment", "chemistry",
@@ -114,7 +61,7 @@ TES_STRONG_FIT = [
     "monitoring", "iot", "sensor", "instrumentation",
 ]
 
-TES_MODERATE_FIT = [
+MEXEL_MODERATE_FIT = [
     "water", "treatment", "chemical", "dosing",
     "industrial", "process", "plant",
 ]
@@ -126,7 +73,7 @@ TES_MODERATE_FIT = [
 
 def calculate_fit_score(title: str, description: str, category: str) -> dict:
     """
-    Calculate overall fit score (1-10) based on Mexel (TES) alignment
+    Calculate overall fit score (1-10) based on Mexel alignment
     """
     text = f"{title} {description}".lower()
 
@@ -134,19 +81,19 @@ def calculate_fit_score(title: str, description: str, category: str) -> dict:
     reasons = []
 
     # Category boost
-    if category in ("MEXEL", "TES"):
+    if category in ("MEXEL",):
         score += 2
         reasons.append("Mexel category match")
 
     # Strong fit keywords
-    tes_strong = sum(1 for kw in TES_STRONG_FIT if kw in text)
+    mexel_strong = sum(1 for kw in MEXEL_STRONG_FIT if kw in text)
 
-    if tes_strong >= 3:
+    if mexel_strong >= 3:
         score += 2
-        reasons.append(f"Strong TES alignment ({tes_strong} keywords)")
-    elif tes_strong >= 1:
+        reasons.append(f"Strong Mexel alignment ({mexel_strong} keywords)")
+    elif mexel_strong >= 1:
         score += 1
-        reasons.append(f"TES alignment ({tes_strong} keywords)")
+        reasons.append(f"Mexel alignment ({mexel_strong} keywords)")
 
     # Cap at 10
     score = min(10, max(1, score))
@@ -180,122 +127,21 @@ def calculate_industry_score(title: str, description: str, client: str) -> dict:
     }
 
 
-def calculate_risk_score(title: str, description: str, closing_date: str = "") -> dict:
-    """
-    Risk assessment (1-10, lower = higher risk)
-    10 = Low risk, 1 = High risk
-    """
-    text = f"{title} {description}".lower()
-    
-    score = 7  # Default medium-low risk
-    risks = []
-    
-    # High risk indicators
-    high_risk_count = sum(1 for kw in HIGH_RISK_KEYWORDS if kw in text)
-    if high_risk_count >= 2:
-        score -= 4
-        risks.append(f"Multiple high-risk factors ({high_risk_count})")
-    elif high_risk_count == 1:
-        score -= 2
-        risks.append("High-risk factor detected")
-    
-    # Medium risk indicators
-    med_risk_count = sum(1 for kw in MEDIUM_RISK_KEYWORDS if kw in text)
-    if med_risk_count >= 2:
-        score -= 2
-        risks.append(f"Medium-risk factors ({med_risk_count})")
-    elif med_risk_count == 1:
-        score -= 1
-        risks.append("Medium-risk factor detected")
-    
-    # Low risk indicators (positive)
-    low_risk_count = sum(1 for kw in LOW_RISK_KEYWORDS if kw in text)
-    if low_risk_count >= 1:
-        score += 1
-        risks.append("Low-barrier entry indicators")
-    
-    # Deadline risk
-    if closing_date:
-        try:
-            close = datetime.strptime(closing_date, "%Y-%m-%d")
-            days_left = (close - datetime.now()).days
-            if days_left < 7:
-                score -= 2
-                risks.append(f"Tight deadline ({days_left} days)")
-            elif days_left < 14:
-                score -= 1
-                risks.append(f"Short timeline ({days_left} days)")
-        except:
-            pass
-    
-    score = min(10, max(1, score))
-    
-    return {
-        "risk_score": score,
-        "risk_factors": risks,
-        "risk_level": "Low" if score >= 7 else "Medium" if score >= 4 else "High"
-    }
-
-
-def calculate_revenue_score(title: str, description: str) -> dict:
-    """
-    Revenue potential score (1-10)
-    """
-    text = f"{title} {description}".lower()
-    
-    score = 5  # Default medium
-    indicators = []
-    
-    # Check for value mentions
-    value_match = re.search(r'r\s*(\d+)\s*(million|m\b)', text)
-    if value_match:
-        value = int(value_match.group(1))
-        if value >= 10:
-            score = 10
-            indicators.append(f"High value: R{value}M+")
-        elif value >= 5:
-            score = 8
-            indicators.append(f"Good value: R{value}M")
-        elif value >= 1:
-            score = 6
-            indicators.append(f"Moderate value: R{value}M")
-    
-    # High revenue keywords
-    high_count = sum(1 for kw in REVENUE_KEYWORDS["high"] if kw in text)
-    if high_count >= 2:
-        score = max(score, 8)
-        indicators.append("Multi-year/framework opportunity")
-    
-    # Low revenue keywords
-    low_count = sum(1 for kw in REVENUE_KEYWORDS["low"] if kw in text)
-    if low_count >= 2:
-        score = min(score, 4)
-        indicators.append("Small/once-off opportunity")
-    
-    score = min(10, max(1, score))
-    
-    return {
-        "revenue_score": score,
-        "revenue_indicators": indicators,
-        "revenue_potential": "High" if score >= 7 else "Medium" if score >= 4 else "Low"
-    }
-
-
 def calculate_suitability_scores(title: str, description: str) -> dict:
     """
-    Calculate Mexel (TES) suitability score
+    Calculate Mexel suitability score
     """
     text = f"{title} {description}".lower()
 
-    # TES Score
-    tes_score = 0
-    tes_strong = sum(1 for kw in TES_STRONG_FIT if kw in text)
-    tes_moderate = sum(1 for kw in TES_MODERATE_FIT if kw in text)
-    tes_score = min(10, tes_strong * 2 + tes_moderate)
+    # Mexel Score
+    mexel_score = 0
+    mexel_strong = sum(1 for kw in MEXEL_STRONG_FIT if kw in text)
+    mexel_moderate = sum(1 for kw in MEXEL_MODERATE_FIT if kw in text)
+    mexel_score = min(10, mexel_strong * 2 + mexel_moderate)
 
     return {
-        "tes_suitability": tes_score,
-        "tes_fit": "Strong" if tes_score >= 6 else "Moderate" if tes_score >= 3 else "Weak",
+        "mexel_suitability": mexel_score,
+        "mexel_fit": "Strong" if mexel_score >= 6 else "Moderate" if mexel_score >= 3 else "Weak",
     }
 
 
@@ -312,16 +158,12 @@ def score_tender(title: str, description: str, client: str = "",
     
     fit = calculate_fit_score(title, description, category)
     industry = calculate_industry_score(title, description, client)
-    risk = calculate_risk_score(title, description, closing_date)
-    revenue = calculate_revenue_score(title, description)
     suitability = calculate_suitability_scores(title, description)
     
     # Composite priority score (weighted average)
     composite = (
-        fit["fit_score"] * 0.30 +          # 30% weight
-        industry["industry_score"] * 0.25 + # 25% weight
-        risk["risk_score"] * 0.20 +         # 20% weight
-        revenue["revenue_score"] * 0.25     # 25% weight
+        fit["fit_score"] * 0.60 +          # 60% weight
+        industry["industry_score"] * 0.40  # 40% weight
     )
     
     priority = "HIGH" if composite >= 7 else "MEDIUM" if composite >= 5 else "LOW"
@@ -330,8 +172,6 @@ def score_tender(title: str, description: str, client: str = "",
         # Individual scores
         **fit,
         **industry,
-        **risk,
-        **revenue,
         **suitability,
         
         # Composite
@@ -340,21 +180,18 @@ def score_tender(title: str, description: str, client: str = "",
         "priority": priority,
         
         # Recommendation
-        "recommendation": generate_recommendation(fit, industry, risk, revenue, suitability, composite)
+        "recommendation": generate_recommendation(fit, industry, suitability, composite)
     }
 
-
-def generate_recommendation(fit, industry, risk, revenue, suitability, composite):
+def generate_recommendation(fit, industry, suitability, composite):
     """Generate actionable recommendation"""
 
     if composite >= 8:
         return "🔥 PRIORITY BID - Strong fit, pursue immediately"
     elif composite >= 6:
-        if risk["risk_level"] == "High":
-            return "⚠️ REVIEW CAREFULLY - Good opportunity but high risk factors"
         return "✅ RECOMMENDED - Good opportunity, prepare bid"
     elif composite >= 4:
-        if suitability["tes_suitability"] >= 6:
+        if suitability["mexel_suitability"] >= 6:
             return "📋 CONSIDER - Core capability match despite moderate overall score"
         return "📝 EVALUATE - May be worth pursuing if capacity allows"
     else:
@@ -401,9 +238,7 @@ if __name__ == "__main__":
         
         print(f"   Fit Score:      {scores['fit_score']}/10 ({scores['fit_grade']})")
         print(f"   Industry Score: {scores['industry_score']}/10 ({scores['industry_matched']})")
-        print(f"   Risk Score:     {scores['risk_score']}/10 ({scores['risk_level']} risk)")
-        print(f"   Revenue Score:  {scores['revenue_score']}/10 ({scores['revenue_potential']})")
-        print(f"   TES Suitability: {scores['tes_suitability']}/10 ({scores['tes_fit']})")
+        print(f"   Mexel Suitability: {scores['mexel_suitability']}/10 ({scores['mexel_fit']})")
         print(f"   ─────────────────────────────────")
         print(f"   COMPOSITE:      {scores['composite_score']}/10 → {scores['priority']}")
         print(f"   {scores['recommendation']}")

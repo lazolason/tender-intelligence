@@ -10,7 +10,7 @@ This document outlines recommendations to enhance the intelligence and effective
 
 ### Strengths
 - **Multi-source scraping** - 11+ data sources (municipalities, SOEs, mining, national treasury)
-- **Keyword-based classification** - Well-defined Mexel/TES categorization rules
+- **Keyword-based classification** - Well-defined Mexel categorization rules
 - **Multi-dimensional scoring** - Fit, industry, risk, revenue, suitability scores
 - **Automated workflow** - Daily scraping, validation, scoring, dashboard sync
 - **Email alerts** - Urgent tender notifications
@@ -41,13 +41,13 @@ from sentence_transformers import SentenceTransformer
 
 model = SentenceTransformer('all-MiniLM-L6-v2')
 
-# Create embeddings for Mexel/TES reference texts
-tes_reference = "Water treatment chemicals, cooling tower systems, chemical dosing"
-tes_embedding = model.encode(tes_reference)
+# Create embeddings for Mexel reference texts
+mexel_reference = "Water treatment chemicals, cooling tower systems, chemical dosing"
+mexel_embedding = model.encode(mexel_reference)
 
 # Compare with tender description
 tender_embedding = model.encode(tender_description)
-similarity = cosine_similarity(tes_embedding, tender_embedding)
+similarity = cosine_similarity(mexel_embedding, tender_embedding)
 ```
 
 **Benefits:**
@@ -60,12 +60,12 @@ similarity = cosine_similarity(tes_embedding, tender_embedding)
 # Use OpenAI/GPT for classification without training data
 def classify_with_llm(title, description):
     prompt = f"""
-    Classify this tender for Mexel (TES) (water treatment):
+    Classify this tender for Mexel (water treatment):
     
     Title: {title}
     Description: {description}
     
-    Return: Mexel (TES) or EXCLUDED with reason.
+    Return: Mexel or EXCLUDED with reason.
     """
     return call_openai(prompt)
 ```
@@ -90,7 +90,7 @@ def classify_with_llm(title, description):
 CREATE TABLE bid_outcomes (
     id SERIAL PRIMARY KEY,
     tender_ref VARCHAR(50),
-    company VARCHAR(20),  -- Mexel (TES)
+    company VARCHAR(20),  -- Mexel
     bid_submitted BOOLEAN,
     bid_amount DECIMAL,
     outcome ENUM('won', 'lost', 'withdrawn', 'no_bid'),
@@ -107,7 +107,7 @@ def analyze_win_rates():
     """Calculate win rates by category, client, industry"""
     return {
         "by_category": {
-            "TES": {"bids": 50, "wins": 15, "rate": 0.30},
+            "Mexel": {"bids": 50, "wins": 15, "rate": 0.30},
         },
         "by_client": {
             "Eskom": {"bids": 20, "wins": 8, "rate": 0.40},
@@ -224,7 +224,7 @@ from sklearn.ensemble import RandomForestClassifier
 def train_win_probability_model():
     """Train model on historical bid outcomes"""
     features = [
-        'industry_score', 'risk_score', 'revenue_score',
+        'industry_score',
         'client_win_rate', 'days_to_deadline',
         'estimated_value', 'competitor_count'
     ]
@@ -409,9 +409,9 @@ def smart_alert_rules(tender):
     if tender['composite_score'] >= 8:
         # Immediate alert for high-value tenders
         send_immediate_alert(tender)
-    elif tender['tes_suitability'] >= 8:
-        # Alert TES team directly
-        send_team_alert(tender, team='TES')
+    elif tender['mexel_suitability'] >= 8:
+        # Alert Mexel team directly
+        send_team_alert(tender, team='Mexel')
     elif tender['days_left'] <= 7 and tender['priority'] == 'HIGH':
         # Urgent deadline alert
         send_deadline_alert(tender)

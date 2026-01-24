@@ -110,7 +110,7 @@ def record_bid_outcome(
     Args:
         db_path: Path to database file
         tender_ref: Tender reference number
-        company: Company name (Mexel)
+        company: Company name
         bid_submitted: Whether bid was submitted
         bid_amount: Bid amount in ZAR
         outcome: Bid result (won, lost, withdrawn, no_bid)
@@ -276,7 +276,7 @@ def get_win_rates(
     
     Args:
         db_path: Path to database file
-        company: Filter by company (Mexel)
+        company: Filter by company
         period_start: Start date (YYYY-MM-DD)
         period_end: End date (YYYY-MM-DD)
         

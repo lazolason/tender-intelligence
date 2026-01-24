@@ -33,7 +33,7 @@ export function getTenderCompanyScope(tender) {
     const t = tender || {};
     const raw = (t.company || t.company_scope || t.scope || t.category || '').toString().trim();
     const norm = raw.toLowerCase();
-    if (norm === 'mexel' || norm === 'tes' || norm === 'mexel energy sustain') return 'Mexel';
+    if (norm === 'mexel' || norm === 'mexel energy sustain') return 'Mexel';
 
     try {
         const relevance = classifyTender(t)?.relevance;
@@ -41,9 +41,9 @@ export function getTenderCompanyScope(tender) {
     } catch (e) {}
 
     const scores = t.scores || {};
-    const tesSuit = Number(scores.tes_suitability);
-    const hasTes = Number.isFinite(tesSuit) && tesSuit > 0;
-    if (hasTes) return 'Mexel';
+    const mexelSuit = Number(scores.mexel_suitability);
+    const hasMexel = Number.isFinite(mexelSuit) && mexelSuit > 0;
+    if (hasMexel) return 'Mexel';
 
     return 'Unknown';
 }
@@ -156,7 +156,7 @@ export function classifyTender(tender) {
         relevance = "OutOfScope";
     }
 
-    if (relevance === "Mexel") categories.push("Mexel/TES");
+    if (relevance === "Mexel") categories.push("Mexel");
     if (relevance === "OutOfScope" && hasCivil) categories.push("Civil/Infrastructure");
 
     const priority = (tender.priority || "").toUpperCase();
@@ -274,8 +274,6 @@ export function generateAIInsight(tender) {
     };
 
     const fitScore = getVal(['fit_score', 'score', 'fit']);
-    const revenueScore = getVal(['revenue_score', 'revenue']);
-    const riskScore = getVal(['risk_score', 'risk']);
 
     const { relevance, bidDecision } = classifyTender(tender);
 
@@ -288,7 +286,7 @@ export function generateAIInsight(tender) {
 
     let relevanceText = 'Relevance unclear; tender should be manually reviewed.';
     if (relevance === 'Mexel' || company === 'MEXEL') {
-        relevanceText = 'The scope indicates strong relevance for Mexel due to TES, Mexel, or related water treatment references.';
+        relevanceText = 'The scope indicates strong relevance for Mexel due to Mexel, or related water treatment references.';
     }
 
     const oppLines = [];
@@ -296,8 +294,6 @@ export function generateAIInsight(tender) {
     if (priorityText) oppLines.push(priorityText);
     if (priority === 'HIGH') oppLines.push('Time-sensitive tender requiring urgent attention.');
     if (fitScore !== null && fitScore >= 5) oppLines.push('Strong match to internal capability scoring.');
-    if (revenueScore !== null && revenueScore >= 5) oppLines.push('Revenue potential appears attractive.');
-    if (riskScore !== null && riskScore >= 60) oppLines.push('Potential risk due to unclear scope, competition, or contractual complexity.');
     const opportunity = oppLines.length ? oppLines.join(' ') : 'Opportunity signal is moderate; further validation needed.';
 
     let action = 'Recommended next step: review historical awards, confirm volume requirements, and prepare pricing scenarios.';
@@ -411,7 +407,7 @@ export function smartSearchTenders(query, tenders) {
         nextWeek: /\bnext week\b/i,
         thisWeek: /\bthis week\b|\bweek\b/i,
         urgent: /\burgent\b|\bhigh priority\b/i,
-        companyMexel: /\b(mexel|tes)\b/i,
+        companyMexel: /\bmexel\b/i,
     };
 
     const sourceKeywords = [

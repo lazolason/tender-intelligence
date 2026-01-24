@@ -162,8 +162,6 @@ export function normalizeTender(t) {
     const company = (t.company || t.category || "").trim();
     const scores = t.scores || {
         fit: t.score ?? t.fit ?? t.fit_score,
-        revenue: t.revenue_score ?? t.revenue,
-        risk: t.risk_score ?? t.risk,
         suitability: t.suitability_score ?? t.suitability ?? t.industry ?? t.composite
     };
 

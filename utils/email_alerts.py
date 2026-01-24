@@ -628,7 +628,7 @@ def generate_email_html(tenders, meta=None):
     html += f"""
             <div class="footer">
                 <p>View full dashboard: <a href="http://localhost:8000/">http://localhost:8000/</a></p>
-                <p>Tender Intelligence System | Mexel Energy Sustain (TES)</p>
+                <p>Tender Intelligence System | Mexel Energy Sustain</p>
             </div>
         </div>
     </body>

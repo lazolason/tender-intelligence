@@ -81,10 +81,13 @@ class NationalTreasuryScraper:
         options.add_argument("--window-size=1920,1080")
         options.add_argument("--disable-extensions")
         options.add_argument("--disable-notifications")
+        options.add_argument("--remote-debugging-port=9222")
         options.add_argument("user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36")
         
         # Use isolated driver with Service
         service = Service(driver_path)
+        env = os.environ.copy()
+        env["DBUS_SESSION_BUS_ADDRESS"] = "/dev/null"
         self.driver = webdriver.Chrome(service=service, options=options)
         self.driver.set_page_load_timeout(30)
     
@@ -275,11 +278,11 @@ class NationalTreasuryScraper:
         self.tenders = unique
         
         # Count relevant
-        relevant = [t for t in self.tenders if t["category"] in ["MEXEL", "TES"]]
+        relevant = [t for t in self.tenders if t["category"] == "MEXEL"]
         
         print(f"\n📊 Results:")
         print(f"   Total scraped: {len(self.tenders)}")
-        print(f"   Mexel (TES):   {len(relevant)}")
+        print(f"   Mexel:   {len(relevant)}")
         
         return self.tenders
 

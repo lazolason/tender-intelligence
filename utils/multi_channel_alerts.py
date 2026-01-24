@@ -392,7 +392,7 @@ if __name__ == "__main__":
         "description": "Supply and delivery of cooling water treatment chemicals",
         "source": "National Treasury",
         "closing_date": "2025-01-15",
-        "category": "TES",
+        "category": "MEXEL",
         "scores": {
             "priority": "HIGH",
             "composite_score": 8.5

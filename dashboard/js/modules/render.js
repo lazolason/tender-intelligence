@@ -40,8 +40,6 @@ export function createTenderRow(item, idx) {
     const priority = getPriority(t) || '-';
     const closeDate = t.closing_date || '-';
     const fitScore = (t.score ?? scores.fit ?? scores.fit_score ?? '-') || '-';
-    const revenueScore = (t.revenue_score ?? scores.revenue ?? scores.revenue_score ?? '-') || '-';
-    const riskScore = (t.risk_score ?? scores.risk ?? scores.risk_score ?? '-') || '-';
     const countdownStatus = t.status || getCountdownHtml(t.closing_date) || '-';
     const link = t.url ? `<a href="${t.url}" target="_blank" rel="noopener" class="view-btn" style="padding: 6px 15px; font-size: 0.8rem;" onclick="event.stopPropagation()">Open ↗</a>` : '-';
     const decision = computeDecision(t);
@@ -107,8 +105,6 @@ export function createTenderRow(item, idx) {
         </td>
         <td style="padding: 15px; color: #ccc;">${closeDate}</td>
         <td style="padding: 15px; font-weight: bold; color: #fff;">${fitScore}</td>
-        <td style="padding: 15px; color: #ccc;">${revenueScore}</td>
-        <td style="padding: 15px; color: #ccc;">${riskScore}</td>
         <td style="padding: 15px;">${countdownStatus}</td>
         <td style="padding: 15px;"><span class="scope-pill ${scopeClass}">${scopeText}</span></td>
         <td style="padding: 15px;">${decisionPill}</td>

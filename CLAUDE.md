@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**Tender Intelligence System** - Automated tender scraping, classification, and scoring engine for Mexel Energy Sustain (TES product). Scrapes 11+ South African government and SOE sources, scores opportunities using a composite scoring engine, and displays results on a local-only PWA dashboard.
+**Tender Intelligence System** - Automated tender scraping, classification, and scoring engine for Mexel Energy Sustain. Scrapes 11+ South African government and SOE sources, scores opportunities using a composite scoring engine, and displays results on a local-only PWA dashboard.
 
 ## Architecture
 
@@ -14,8 +14,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
    - [tenderscan.py](tenderscan.py) - Main automation engine that orchestrates all scrapers, validates data, classifies tenders, scores them, logs to Excel, and generates output files
    - [scrapers/](scrapers/) - Individual scraper modules for each data source (municipalities, SOEs, National Treasury, Eskom, etc.)
    - [utils/](utils/) - Shared utilities (Excel writer, validators, duplicate detection, PDF analysis, alerts)
-   - [scoring_engine.py](scoring_engine.py) - Composite scoring algorithm (fit, industry, risk, revenue dimensions)
-   - [keyword_rules.py](keyword_rules.py) - Classification rules defining what qualifies as Mexel (TES) vs EXCLUDED
+- [scoring_engine.py](scoring_engine.py) - Composite scoring algorithm (fit, industry, Mexel suitability)
+   - [keyword_rules.py](keyword_rules.py) - Classification rules defining what qualifies as Mexel vs EXCLUDED
 
 2. **Dashboard Sync** (Python → Static PWA)
    - [sync_dashboard.py](sync_dashboard.py) - Generates static HTML dashboard from scraped data for local use
@@ -41,8 +41,8 @@ Scrapers → tenderscan.py → Validation → Classification → Scoring → Exc
 
 ### Key Design Decisions
 
-- **Scoring vs Classification**: Classification ([keyword_rules.py](keyword_rules.py)) determines Mexel (TES)/EXCLUDED using keyword matching. Scoring ([scoring_engine.py](scoring_engine.py)) evaluates priority (HIGH/MEDIUM/LOW) using composite metrics (fit, industry, risk, revenue).
-- **Suitability**: Each tender gets a `tes_suitability` score (TES product fit). The dashboard treats all classified tenders as Mexel.
+- **Scoring vs Classification**: Classification ([keyword_rules.py](keyword_rules.py)) determines Mexel/EXCLUDED using keyword matching. Scoring ([scoring_engine.py](scoring_engine.py)) evaluates priority (HIGH/MEDIUM/LOW) using composite metrics (fit, industry).
+- **Suitability**: Each tender gets a `mexel_suitability` score (Mexel product fit). The dashboard treats all classified tenders as Mexel.
 - **Dashboard Persistence**: [sync_dashboard.py](sync_dashboard.py) merges new tenders with existing ones (up to 200 max) to prevent empty UI when no new tenders are found.
 - **Selenium Toggle**: Controlled by `config.yaml` → `scrapers.enable_selenium`. Some scrapers (National Treasury, Joburg Water, Eskom Direct) require Selenium. Disabled in production to avoid Chrome dependencies.
 
@@ -149,12 +149,10 @@ Each scraper module follows this pattern:
 
 ### Scoring System ([scoring_engine.py](scoring_engine.py))
 
-Composite scoring algorithm with four dimensions:
+Composite scoring algorithm with two dimensions:
 
-1. **Fit Score (30%)** - Keyword density matching Mexel (TES) capabilities
-2. **Industry Score (25%)** - Client industry value (power=10, mining=9, municipal=7, etc.)
-3. **Risk Score (20%)** - Inverse scoring for complexity indicators (CIDB grades, experience requirements, performance bonds)
-4. **Revenue Score (25%)** - Contract value potential (multi-year, framework, panel contracts)
+1. **Fit Score (60%)** - Keyword density matching Mexel capabilities
+2. **Industry Score (40%)** - Client industry value (power=10, mining=9, municipal=7, etc.)
 
 **Priority Calculation**:
 - Composite Score ≥ 7.0 → `HIGH`
@@ -162,7 +160,7 @@ Composite scoring algorithm with four dimensions:
 - Composite Score < 4.5 → `LOW`
 
 **Company Suitability**:
-- `tes_suitability` is calculated for TES product fit
+- `mexel_suitability` is calculated for Mexel product fit
 - Dashboard labels all classified tenders as Mexel
 
 ### Classification Rules ([keyword_rules.py](keyword_rules.py))
@@ -170,12 +168,12 @@ Composite scoring algorithm with four dimensions:
 Three keyword lists define classification:
 
 1. **EXCLUDE_KEYWORDS** - Auto-reject (construction, security, IT, maintenance services, transformers, turbines)
-2. **TES_KEYWORDS** - Mexel brand + TES product references
+2. **MEXEL_KEYWORDS** - Mexel brand + Mexel product references
 
 ### Dashboard Sync ([sync_dashboard.py](sync_dashboard.py))
 
 Process:
-1. Load tenders from `output/new_tenders.json`
+1. Load active tenders from the Excel log + overlay new tenders from `output/new_tenders.json`
 2. Generate static HTML with embedded JS/CSS (no external dependencies)
 3. Create `dashboard/tenders.json` for client-side loading
 4. Serve locally with `python3 -m http.server 8000`

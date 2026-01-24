@@ -153,8 +153,8 @@
         <header>
             <h1>🎯 Tender Intelligence</h1>
             <p class="subtitle"><span class="status"></span>Mexel Energy Sustain Automation Engine</p>
-            <div class="last-sync">🔄 Last synced: 23 Jan 2026, 08:10</div>
-            <div class="last-sync" style="margin-top: 10px; background: rgba(72,219,251,0.2); border-color: rgba(72,219,251,0.3);">📊 Eskom: 19 | Test: 4 | Johannesburg Water: 2 | National Treasury: 1</div>
+            <div class="last-sync">🔄 Last synced: 24 Jan 2026, 13:24</div>
+            <div class="last-sync" style="margin-top: 10px; background: rgba(72,219,251,0.2); border-color: rgba(72,219,251,0.3);">📊 Eskom: 3</div>
         </header>
         
         <nav class="tab-nav">
@@ -166,15 +166,15 @@
         <!-- DASHBOARD TAB -->
         <div id="dashboard" class="tab-content active">
             <div class="stats">
-                <div class="stat-card"><div class="stat-value total">26</div><div class="stat-label">Total</div></div>
-                <div class="stat-card"><div class="stat-value high">9</div><div class="stat-label">🔥 High</div></div>
-                <div class="stat-card"><div class="stat-value medium">17</div><div class="stat-label">✅ Medium</div></div>
+                <div class="stat-card"><div class="stat-value total">3</div><div class="stat-label">Total</div></div>
+                <div class="stat-card"><div class="stat-value high">3</div><div class="stat-label">🔥 High</div></div>
+                <div class="stat-card"><div class="stat-value medium">0</div><div class="stat-label">✅ Medium</div></div>
                 <div class="stat-card"><div class="stat-value low">0</div><div class="stat-label">📝 Low</div></div>
-                <div class="stat-card"><div class="stat-value mexel-color">26</div><div class="stat-label">⚗️ Mexel (TES)</div></div>
+                <div class="stat-card"><div class="stat-value mexel-color">3</div><div class="stat-label">⚗️ Mexel</div></div>
             </div>
             
             <div class="section">
-                <h2>📋 Active Tenders (<span id="displayedCount">26</span> of <span id="totalCount">26</span>)</h2>
+                <h2>📋 Active Tenders (<span id="displayedCount">3</span> of <span id="totalCount">3</span>)</h2>
                 
                 <!-- Search Box -->
                 <div style="margin-bottom: 20px;">
@@ -185,10 +185,10 @@
                 </div>
                 
                 <div class="filter-tabs">
-                    <button class="filter-tab active" onclick="filterTenders('all')">All (<span id="countAll">26</span>)</button>
-                    <button class="filter-tab" onclick="filterTenders('Mexel')">⚗️ Mexel (<span id="countMexel">26</span>)</button>
-                    <button class="filter-tab high" onclick="filterTenders('HIGH')">🔥 HIGH (<span id="countHIGH">9</span>)</button>
-                    <button class="filter-tab medium" onclick="filterTenders('MEDIUM')">⚡ MEDIUM (<span id="countMEDIUM">17</span>)</button>
+                    <button class="filter-tab active" onclick="filterTenders('all')">All (<span id="countAll">3</span>)</button>
+                    <button class="filter-tab" onclick="filterTenders('Mexel')">⚗️ Mexel (<span id="countMexel">3</span>)</button>
+                    <button class="filter-tab high" onclick="filterTenders('HIGH')">🔥 HIGH (<span id="countHIGH">3</span>)</button>
+                    <button class="filter-tab medium" onclick="filterTenders('MEDIUM')">⚡ MEDIUM (<span id="countMEDIUM">0</span>)</button>
                     <button class="filter-tab low" onclick="filterTenders('LOW')">📝 LOW (<span id="countLOW">0</span>)</button>
                 </div>
                 <ul class="tender-list" id="tenderList"></ul>
@@ -230,7 +230,7 @@
                 <h2>🏢 Company Focus Areas</h2>
                 <div class="companies">
                     <div class="company-card" style="border-color: rgba(72,219,251,0.5);">
-                        <div class="company-name" style="color: #48dbfb;">⚗️ Mexel (TES)</div>
+                        <div class="company-name" style="color: #48dbfb;">⚗️ Mexel</div>
                         <div class="company-focus">Water Treatment & Cooling Specialists</div>
                         <div class="company-keywords">
                             <span class="keyword">Water Treatment</span>
@@ -326,444 +326,53 @@
                 // Fallback to embedded data
                 allTenders = [
         {
-                "ref": "TES override keyword detected: 'cooling'\n[AI Score: 8.8/10 | Priority: HIGH]\n\ud83d\udd25 PRIORITY BID - Strong fit, pursue immediately",
-                "title": "Cooling Water Treatment Chemical Supply",
-                "description": "Cooling Water Treatment Chemical Supply",
-                "client": "Eskom Holdings",
-                "priority": "HIGH",
-                "score": 8.8,
-                "category": "Mexel",
-                "source": "Test",
-                "url": "https://www.google.com/search?q=TES%20override%20keyword%20detected%3A%20%27cooling%27%0A%5BAI%20Score%3A%208.8/10%20%7C%20Priority%3A%20HIGH%5D%0A%F0%9F%94%A5%20PRIORITY%20BID%20-%20Strong%20fit%2C%20pursue%20immediately%20Cooling%20Water%20Treatment%20Chemical%20Supply%20tender",
-                "pdf_size": "",
-                "company": "Mexel",
-                "tes_score": 0,
-                "closing_date": "New",
-                "contact": "",
-                "matched_keywords": []
-        },
-        {
-                "ref": "TES override keyword detected: 'boiler'\n[AI Score: 8.3/10 | Priority: HIGH]\n\ud83d\udd25 PRIORITY BID - Strong fit, pursue immediately",
-                "title": "Pump Overhaul and White Metal Bearing Recasting",
-                "description": "Pump Overhaul and White Metal Bearing Recasting",
-                "client": "Sasol",
-                "priority": "HIGH",
-                "score": 8.3,
-                "category": "Mexel",
-                "source": "Test",
-                "url": "https://www.google.com/search?q=TES%20override%20keyword%20detected%3A%20%27boiler%27%0A%5BAI%20Score%3A%208.3/10%20%7C%20Priority%3A%20HIGH%5D%0A%F0%9F%94%A5%20PRIORITY%20BID%20-%20Strong%20fit%2C%20pursue%20immediately%20Pump%20Overhaul%20and%20White%20Metal%20Bearing%20Recasting%20tender",
-                "pdf_size": "",
-                "company": "Mexel",
-                "tes_score": 0,
-                "closing_date": "New",
-                "contact": "",
-                "matched_keywords": []
-        },
-        {
-                "ref": "TES override keyword detected: 'cooling'\n[AI Score: 6.3/10 | Priority: MEDIUM]\n\u26a0\ufe0f REVIEW CAREFULLY - Good opportunity but high risk factors",
-                "title": "Emergency Cooling System Repairs",
-                "description": "Emergency Cooling System Repairs",
-                "client": "Eskom",
-                "priority": "MEDIUM",
-                "score": 6.3,
-                "category": "Mexel",
-                "source": "Test",
-                "url": "https://www.google.com/search?q=TES%20override%20keyword%20detected%3A%20%27cooling%27%0A%5BAI%20Score%3A%206.3/10%20%7C%20Priority%3A%20MEDIUM%5D%0A%E2%9A%A0%EF%B8%8F%20REVIEW%20CAREFULLY%20-%20Good%20opportunity%20but%20high%20risk%20factors%20Emergency%20Cooling%20System%20Repairs%20tender",
-                "pdf_size": "",
-                "company": "Mexel",
-                "tes_score": 0,
-                "closing_date": "New",
-                "contact": "",
-                "matched_keywords": []
-        },
-        {
-                "ref": "TES override keyword detected: 'chemical'\n[AI Score: 8.2/10 | Priority: HIGH]\n\ud83d\udd25 PRIORITY BID - Strong fit, pursue immediately",
-                "title": "Water Treatment Plant Upgrade",
-                "description": "Water Treatment Plant Upgrade",
-                "client": "Johannesburg Water",
-                "priority": "HIGH",
-                "score": 8.2,
-                "category": "Mexel",
-                "source": "Test",
-                "url": "https://www.google.com/search?q=TES%20override%20keyword%20detected%3A%20%27chemical%27%0A%5BAI%20Score%3A%208.2/10%20%7C%20Priority%3A%20HIGH%5D%0A%F0%9F%94%A5%20PRIORITY%20BID%20-%20Strong%20fit%2C%20pursue%20immediately%20Water%20Treatment%20Plant%20Upgrade%20tender",
-                "pdf_size": "",
-                "company": "Mexel",
-                "tes_score": 0,
-                "closing_date": "New",
-                "contact": "",
-                "matched_keywords": []
-        },
-        {
-                "ref": "TES override keyword detected: 'steam'\n[AI Score: 5.5/10 | Priority: MEDIUM]\n\ud83d\udcdd EVALUATE - May be worth pursuing if capacity allows",
-                "title": "Earth Leakage",
-                "description": "Earth Leakage",
-                "client": "Johannesburg Water",
-                "priority": "MEDIUM",
-                "score": 5.5,
-                "category": "Mexel",
-                "source": "Johannesburg Water",
-                "url": "https://www.johannesburgwater.co.za/tenders/",
-                "pdf_size": "",
-                "company": "Mexel",
-                "tes_score": 0,
-                "closing_date": "New",
-                "contact": "",
-                "matched_keywords": []
-        },
-        {
-                "ref": "TES override keyword detected: 'steam'\n[AI Score: 6.2/10 | Priority: MEDIUM]\n\u2705 RECOMMENDED - Good opportunity, prepare bid",
-                "title": "SUPPLY, DELIVERY, INSTALLATION, COMMISSIONING ON A ONCE-OFF BASIS, ANNUAL MAINTENANCE AND REPAIRS OF AIR CONDITIONERS AS AND WHEN FOR 36 MONTHS AT CYD",
-                "description": "SUPPLY, DELIVERY, INSTALLATION, COMMISSIONING ON A ONCE-OFF BASIS, ANNUAL MAINTENANCE AND REPAIRS OF AIR CONDITIONERS AS AND WHEN FOR 36 MONTHS AT CYD",
-                "client": "Johannesburg Water",
-                "priority": "MEDIUM",
-                "score": 6.2,
-                "category": "Mexel",
-                "source": "Johannesburg Water",
-                "url": "https://www.johannesburgwater.co.za/tenders/",
-                "pdf_size": "",
-                "company": "Mexel",
-                "tes_score": 0,
-                "closing_date": "New",
-                "contact": "",
-                "matched_keywords": []
-        },
-        {
-                "ref": "TES keyword score: 1\n[AI Score: 6.3/10 | Priority: MEDIUM]\n\u2705 RECOMMENDED - Good opportunity, prepare bid",
-                "title": "Publication of Names of Bidders - Workshop Consumables",
-                "description": "Publication of Names of Bidders - Workshop Consumables",
-                "client": "Eskom",
-                "priority": "MEDIUM",
-                "score": 6.3,
-                "category": "Mexel",
-                "source": "Eskom",
-                "url": "https://www.eskom.co.za/eskom-tenders/",
-                "pdf_size": "",
-                "company": "Mexel",
-                "tes_score": 0,
-                "closing_date": "New",
-                "contact": "",
-                "matched_keywords": []
-        },
-        {
-                "ref": "TES keyword score: 1\n[AI Score: 6.1/10 | Priority: MEDIUM]\n\u2705 RECOMMENDED - Good opportunity, prepare bid",
-                "title": "Procurement of Smart Boards for various sites for the period of five (5) years",
-                "description": "Procurement of Smart Boards for various sites for the period of five (5) years",
-                "client": "Eskom",
-                "priority": "MEDIUM",
-                "score": 6.1,
-                "category": "Mexel",
-                "source": "Eskom",
-                "url": "https://www.eskom.co.za/eskom-tenders/",
-                "pdf_size": "",
-                "company": "Mexel",
-                "tes_score": 0,
-                "closing_date": "New",
-                "contact": "",
-                "matched_keywords": []
-        },
-        {
-                "ref": "TES keyword score: 1\n[AI Score: 6.1/10 | Priority: MEDIUM]\n\u2705 RECOMMENDED - Good opportunity, prepare bid",
-                "title": "\u2022 Actions/ initiatives must be simple, relatable and actionable. \u2022 Action plans to be aligned to the",
-                "description": "\u2022 Actions/ initiatives must be simple, relatable and actionable. \u2022 Action plans to be aligned to the",
-                "client": "Eskom",
-                "priority": "MEDIUM",
-                "score": 6.1,
-                "category": "Mexel",
-                "source": "Eskom",
-                "url": "https://www.eskom.co.za/eskom-tenders/",
-                "pdf_size": "",
-                "company": "Mexel",
-                "tes_score": 0,
-                "closing_date": "New",
-                "contact": "",
-                "matched_keywords": []
-        },
-        {
-                "ref": "TES override keyword detected: 'chemical'\n[AI Score: 6.8/10 | Priority: MEDIUM]\n\u2705 RECOMMENDED - Good opportunity, prepare bid",
-                "title": "Provision of hazardous chemical spillage Management in Gauteng Cluster on \u201cas and when required\u201d bas",
-                "description": "Provision of hazardous chemical spillage Management in Gauteng Cluster on \u201cas and when required\u201d bas",
-                "client": "Eskom",
-                "priority": "MEDIUM",
-                "score": 6.8,
-                "category": "Mexel",
-                "source": "Eskom",
-                "url": "https://www.eskom.co.za/eskom-tenders/",
-                "pdf_size": "",
-                "company": "Mexel",
-                "tes_score": 0,
-                "closing_date": "New",
-                "contact": "",
-                "matched_keywords": []
-        },
-        {
-                "ref": "TES keyword score: 1\n[AI Score: 6.1/10 | Priority: MEDIUM]\n\u2705 RECOMMENDED - Good opportunity, prepare bid",
-                "title": "E1823CXMWP_Bidders Names",
-                "description": "E1823CXMWP_Bidders Names",
-                "client": "Eskom",
-                "priority": "MEDIUM",
-                "score": 6.1,
-                "category": "Mexel",
-                "source": "Eskom",
-                "url": "https://www.eskom.co.za/eskom-tenders/",
-                "pdf_size": "",
-                "company": "Mexel",
-                "tes_score": 0,
-                "closing_date": "New",
-                "contact": "",
-                "matched_keywords": []
-        },
-        {
-                "ref": "TES keyword score: 1\n[AI Score: 6.1/10 | Priority: MEDIUM]\n\u2705 RECOMMENDED - Good opportunity, prepare bid",
-                "title": "Tender Cancellation - The provision of a Capability Provider in support of GCD Project Management Fr",
-                "description": "Tender Cancellation - The provision of a Capability Provider in support of GCD Project Management Fr",
-                "client": "Eskom",
-                "priority": "MEDIUM",
-                "score": 6.1,
-                "category": "Mexel",
-                "source": "Eskom",
-                "url": "https://www.eskom.co.za/eskom-tenders/",
-                "pdf_size": "",
-                "company": "Mexel",
-                "tes_score": 0,
-                "closing_date": "New",
-                "contact": "",
-                "matched_keywords": []
-        },
-        {
-                "ref": "TES keyword score: 1\n[AI Score: 5.8/10 | Priority: MEDIUM]\n\ud83d\udcdd EVALUATE - May be worth pursuing if capacity allows",
-                "title": "SURVEY SUPPLY DELIVERY INSTALLATION OF LANDFILL GAS MONITORING SYSTEM FOR THOHOYANDOU LANDFILL SITE",
-                "description": "SURVEY SUPPLY DELIVERY INSTALLATION OF LANDFILL GAS MONITORING SYSTEM FOR THOHOYANDOU LANDFILL SITE",
-                "client": "National Treasury",
-                "priority": "MEDIUM",
-                "score": 5.8,
-                "category": "Mexel",
-                "source": "National Treasury",
-                "url": "https://www.etenders.gov.za/Home/opportunities?TextSearch=TES%20keyword%20score%3A%201%0A%5BAI%20Score%3A%205.8/10%20%7C%20Priority%3A%20MEDIUM%5D%0A%F0%9F%93%9D%20EVALUATE%20-%20May%20be%20worth%20pursuing%20if%20capacity%20allows",
-                "pdf_size": "",
-                "company": "Mexel",
-                "tes_score": 0,
-                "closing_date": "New",
-                "contact": "",
-                "matched_keywords": []
-        },
-        {
-                "ref": "TES override keyword detected: 'water treatment'\n[AI Score: 7.5/10 | Priority: HIGH]\n\u2705 RECOMMENDED - Good opportunity, prepare bid",
-                "title": "REGRET LETTER: THE MECHANICAL REFURBISHMENT OF THE DEMINERALISATION AND CONDENSATE POLISHING REGENER",
-                "description": "REGRET LETTER: THE MECHANICAL REFURBISHMENT OF THE DEMINERALISATION AND CONDENSATE POLISHING REGENER",
-                "client": "Eskom",
-                "priority": "HIGH",
-                "score": 7.5,
-                "category": "Mexel",
-                "source": "Eskom",
-                "url": "https://www.eskom.co.za/eskom-tenders/",
-                "pdf_size": "",
-                "company": "Mexel",
-                "tes_score": 0,
-                "closing_date": "New",
-                "contact": "",
-                "matched_keywords": []
-        },
-        {
-                "ref": "TES keyword score: 1\n[AI Score: 6.1/10 | Priority: MEDIUM]\n\u2705 RECOMMENDED - Good opportunity, prepare bid",
-                "title": "cancelation of the tender for tender for the establishment of an enabling contract to provide for fi",
-                "description": "cancelation of the tender for tender for the establishment of an enabling contract to provide for fi",
-                "client": "Eskom",
-                "priority": "MEDIUM",
-                "score": 6.1,
-                "category": "Mexel",
-                "source": "Eskom",
-                "url": "https://www.eskom.co.za/eskom-tenders/",
-                "pdf_size": "",
-                "company": "Mexel",
-                "tes_score": 0,
-                "closing_date": "New",
-                "contact": "",
-                "matched_keywords": []
-        },
-        {
-                "ref": "TES keyword score: 1\n[Score: 6.1/10 | Priority: MEDIUM]\n\u2705 RECOMMENDED - Good opportunity, prepare bid",
-                "title": "Transactional Advisor Services to conduct feasibility study for establishment of the BESS manufactur",
-                "description": "Transactional Advisor Services to conduct feasibility study for establishment of the BESS manufactur",
-                "client": "Eskom",
-                "priority": "MEDIUM",
-                "score": 6.1,
-                "category": "Mexel",
-                "source": "Eskom",
-                "url": "https://www.eskom.co.za/eskom-tenders/",
-                "pdf_size": "",
-                "company": "Mexel",
-                "tes_score": 0,
-                "closing_date": "New",
-                "contact": "",
-                "matched_keywords": []
-        },
-        {
-                "ref": "TES override keyword detected: 'water treatment'\n[Score: 7.3/10 | Priority: HIGH]\n\u2705 RECOMMENDED - Good opportunity, prepare bid",
-                "title": "KUSILE POWER STATION WASTEWATER TREATMENT PLANT CHEMICAL SUPPLY AND DELIVERY FOR A PERIOD OF FIVE YE",
-                "description": "KUSILE POWER STATION WASTEWATER TREATMENT PLANT CHEMICAL SUPPLY AND DELIVERY FOR A PERIOD OF FIVE YE",
-                "client": "Eskom",
-                "priority": "HIGH",
-                "score": 7.3,
-                "category": "Mexel",
-                "source": "Eskom",
-                "url": "https://www.eskom.co.za/eskom-tenders/",
-                "pdf_size": "",
-                "company": "Mexel",
-                "tes_score": 0,
-                "closing_date": "New",
-                "contact": "",
-                "matched_keywords": []
-        },
-        {
-                "ref": "TES override keyword detected: 'boiler'\n[Score: 6.8/10 | Priority: MEDIUM]\n\u2705 RECOMMENDED - Good opportunity, prepare bid",
-                "title": "SUPPLY AND DELIVERY OF BOILER TUBES ON \u201cAN AS AND WHEN REQUIRED\u201d BASIS AT KUSILE POWER STATION FOR T",
-                "description": "SUPPLY AND DELIVERY OF BOILER TUBES ON \u201cAN AS AND WHEN REQUIRED\u201d BASIS AT KUSILE POWER STATION FOR T",
-                "client": "Eskom",
-                "priority": "MEDIUM",
-                "score": 6.8,
-                "category": "Mexel",
-                "source": "Eskom",
-                "url": "https://www.eskom.co.za/eskom-tenders/",
-                "pdf_size": "",
-                "company": "Mexel",
-                "tes_score": 0,
-                "closing_date": "New",
-                "contact": "",
-                "matched_keywords": []
-        },
-        {
-                "ref": "TES keyword score: 1\n[Score: 6.1/10 | Priority: MEDIUM]\n\u2705 RECOMMENDED - Good opportunity, prepare bid",
-                "title": "SUPPLY AND DELIVERY OF IT PERIPHERALS TO ALL ESKOM DIVISIONS AS AN WHEN REQUIRED FOR A PERIOD OF FIV",
-                "description": "SUPPLY AND DELIVERY OF IT PERIPHERALS TO ALL ESKOM DIVISIONS AS AN WHEN REQUIRED FOR A PERIOD OF FIV",
-                "client": "Eskom",
-                "priority": "MEDIUM",
-                "score": 6.1,
-                "category": "Mexel",
-                "source": "Eskom",
-                "url": "https://www.eskom.co.za/eskom-tenders/",
-                "pdf_size": "",
-                "company": "Mexel",
-                "tes_score": 0,
-                "closing_date": "New",
-                "contact": "",
-                "matched_keywords": []
-        },
-        {
-                "ref": "TES keyword score: 1\n[Score: 6.1/10 | Priority: MEDIUM]\n\u2705 RECOMMENDED - Good opportunity, prepare bid",
-                "title": "Eskom is seeking an independent accounting firm to review and assess Eskom Treasury\u2019s hedge accounti",
-                "description": "Eskom is seeking an independent accounting firm to review and assess Eskom Treasury\u2019s hedge accounti",
-                "client": "Eskom",
-                "priority": "MEDIUM",
-                "score": 6.1,
-                "category": "Mexel",
-                "source": "Eskom",
-                "url": "https://www.eskom.co.za/eskom-tenders/",
-                "pdf_size": "",
-                "company": "Mexel",
-                "tes_score": 0,
-                "closing_date": "New",
-                "contact": "",
-                "matched_keywords": []
-        },
-        {
-                "ref": "TES keyword score: 1\n[Score: 6.1/10 | Priority: MEDIUM]\n\u2705 RECOMMENDED - Good opportunity, prepare bid",
-                "title": "The Provision of Job Boards for Eskom to Place and Manage Job Adverts",
-                "description": "The Provision of Job Boards for Eskom to Place and Manage Job Adverts",
-                "client": "Eskom",
-                "priority": "MEDIUM",
-                "score": 6.1,
-                "category": "Mexel",
-                "source": "Eskom",
-                "url": "https://www.eskom.co.za/eskom-tenders/",
-                "pdf_size": "",
-                "company": "Mexel",
-                "tes_score": 0,
-                "closing_date": "New",
-                "contact": "",
-                "matched_keywords": []
-        },
-        {
-                "ref": "TES override keyword detected: 'water treatment'\n[Score: 7.2/10 | Priority: HIGH]\n\u2705 RECOMMENDED - Good opportunity, prepare bid",
-                "title": "MEDUPI WATER TREATMENT PLANT COMBINED SCOPE AND LABORATORIES\u2019 MODIFICATIONS -WORK AREA 1",
-                "description": "MEDUPI WATER TREATMENT PLANT COMBINED SCOPE AND LABORATORIES\u2019 MODIFICATIONS -WORK AREA 1",
+                "ref": "MPHEN11110GXAWARD",
+                "title": "MPHEN11110GXAWARD - Award of Operation and management of the Sewage treatment plant at Hendrina Power Station",
+                "description": "MPHEN11110GXAWARD - Award of Operation and management of the Sewage treatment plant at Hendrina Power Station",
                 "client": "Eskom",
                 "priority": "HIGH",
                 "score": 7.2,
-                "category": "Mexel",
+                "category": "Eskom (Power)",
                 "source": "Eskom",
                 "url": "https://www.eskom.co.za/eskom-tenders/",
                 "pdf_size": "",
                 "company": "Mexel",
-                "tes_score": 0,
-                "closing_date": "New",
+                "mexel_score": 2.0,
+                "closing_date": "2026-02-03",
                 "contact": "",
                 "matched_keywords": []
         },
         {
-                "ref": "TES override keyword detected: 'boiler'\n[Score: 6.8/10 | Priority: MEDIUM]\n\u2705 RECOMMENDED - Good opportunity, prepare bid",
-                "title": "The supply of Boiler Tubes Protection shields and other Boiler accessories Spares for the period of ",
-                "description": "The supply of Boiler Tubes Protection shields and other Boiler accessories Spares for the period of ",
-                "client": "Eskom",
-                "priority": "MEDIUM",
-                "score": 6.8,
-                "category": "Mexel",
-                "source": "Eskom",
-                "url": "https://www.eskom.co.za/eskom-tenders/",
-                "pdf_size": "",
-                "company": "Mexel",
-                "tes_score": 0,
-                "closing_date": "New",
-                "contact": "",
-                "matched_keywords": []
-        },
-        {
-                "ref": "TES override keyword detected: 'boiler'\n[Score: 8.1/10 | Priority: HIGH]\n\ud83d\udd25 PRIORITY BID - Strong fit, pursue immediately",
-                "title": "Regret Letter and Award Letter for Refurbishment of Boiler Feed Pump Turbine Low Pressure Control Va",
-                "description": "Regret Letter and Award Letter for Refurbishment of Boiler Feed Pump Turbine Low Pressure Control Va",
+                "ref": "MPKUS11014GXR1",
+                "title": "MPKUS11014GXR1 - The Provision of Operating and Commissioning Support Resources for Kusile Power Station for a period",
+                "description": "MPKUS11014GXR1 - The Provision of Operating and Commissioning Support Resources for Kusile Power Station for a period",
                 "client": "Eskom",
                 "priority": "HIGH",
-                "score": 8.1,
-                "category": "Mexel",
+                "score": 8.0,
+                "category": "Eskom (Power)",
                 "source": "Eskom",
                 "url": "https://www.eskom.co.za/eskom-tenders/",
                 "pdf_size": "",
                 "company": "Mexel",
-                "tes_score": 0,
-                "closing_date": "New",
+                "mexel_score": 0.0,
+                "closing_date": "2029-08-15",
                 "contact": "",
                 "matched_keywords": []
         },
         {
-                "ref": "E2279GXMPKRI",
-                "title": "Detail design, manufacturing, construction, factory acceptance testing, transporting, offloading, in",
-                "description": "Detail design, manufacturing, construction, factory acceptance testing, transporting, offloading, in",
+                "ref": "E2138GXMWP",
+                "title": "E2138GXMWP - Request For Information (RFI) for South African Hydroelectric Power Station Development.",
+                "description": "E2138GXMWP - Request For Information (RFI) for South African Hydroelectric Power Station Development.",
                 "client": "Eskom",
                 "priority": "HIGH",
                 "score": 7.2,
-                "category": "Mexel",
+                "category": "Eskom (Power)",
                 "source": "Eskom",
                 "url": "https://www.eskom.co.za/eskom-tenders/",
                 "pdf_size": "",
                 "company": "Mexel",
-                "tes_score": 0,
-                "closing_date": "2026-Jan-22",
-                "contact": "",
-                "matched_keywords": []
-        },
-        {
-                "ref": "E2247GXMPCAM",
-                "title": "Service, Repair and Calibration of all Test & Measuring Equipment for the 48 months at Camden Power ",
-                "description": "Service, Repair and Calibration of all Test & Measuring Equipment for the 48 months at Camden Power ",
-                "client": "Eskom",
-                "priority": "HIGH",
-                "score": 7.2,
-                "category": "Mexel",
-                "source": "Eskom",
-                "url": "https://www.eskom.co.za/eskom-tenders/",
-                "pdf_size": "",
-                "company": "Mexel",
-                "tes_score": 0,
-                "closing_date": "2026-Jan-22",
+                "mexel_score": 0.0,
+                "closing_date": "2026-01-30",
                 "contact": "",
                 "matched_keywords": []
         }
