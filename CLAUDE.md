@@ -165,10 +165,35 @@ Composite scoring algorithm with two dimensions:
 
 ### Classification Rules ([keyword_rules.py](keyword_rules.py))
 
-Three keyword lists define classification:
+**Three-Profile System** (PHASE 2 - Strict Competence Rules):
 
-1. **EXCLUDE_KEYWORDS** - Auto-reject (construction, security, IT, maintenance services, transformers, turbines)
-2. **MEXEL_KEYWORDS** - Mexel brand + Mexel product references
+1. **STRONG_MATCH_KEYWORDS** (Profile A: The Product)
+   - Automatic match - specific chemical technologies or brand names
+   - Examples: "mexel", "film forming amine", "scale inhibitor", "surfactant", "legionella"
+   - Any match → Immediate INCLUDE
+
+2. **SYSTEM_KEYWORDS** (Profile B1: The System)
+   - Industrial water systems that Mexel serves
+   - Examples: "cooling tower", "condenser", "boiler", "heat exchanger", "CRAC", "data center"
+   - **Must be paired with ACTION keyword** to qualify
+
+3. **ACTION_KEYWORDS** (Profile B2: The Action)
+   - Services or chemical applications Mexel provides
+   - Examples: "treatment", "chemical", "dosing", "efficiency", "PUE", "thermal efficiency"
+   - **Must be paired with SYSTEM keyword** to qualify
+
+4. **NEGATIVE_KEYWORDS** (Exclusions)
+   - Targeted exclusions for non-Mexel work
+   - Examples: "construction of", "split unit", "office air conditioning", "building hvac"
+   - **Note**: General "hvac" removed - too broad, excludes data center CRAC/CRAH systems
+   - Any match → Immediate EXCLUDE (overrides all other matches)
+
+**Classification Logic**:
+- NEGATIVE match → EXCLUDE
+- STRONG_MATCH → INCLUDE
+- (SYSTEM + ACTION) → INCLUDE
+- Otherwise → EXCLUDE
+
 
 ### Dashboard Sync ([sync_dashboard.py](sync_dashboard.py))
 

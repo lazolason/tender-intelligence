@@ -12,7 +12,9 @@ STRONG_MATCH_KEYWORDS = [
     "corrosion inhibitor", "corrosion barrier",
     "oxygen scavenger",
     "non-oxidizing biocide", "biodispersant",
-    "condensate polisher", "condensate polishing"
+    "condensate polisher", "condensate polishing",
+    # Highly specific technical terms
+    "surfactant", "legionella", "asme ptc 12.2"
 ]
 
 # PROFILE B1: THE SYSTEM (Must be paired with an Action)
@@ -24,7 +26,12 @@ SYSTEM_KEYWORDS = [
     "feedwater", "feed water",
     "heat exchanger", "chiller",
     "clarifier", "raw water treatment", "effluent treatment",
-    "demineralisation", "demineralization", "reverse osmosis", "ro plant"
+    "demineralisation", "demineralization", "reverse osmosis", "ro plant",
+    # Data center / critical infrastructure cooling
+    "crac", "crah", "chr",  # Computer Room Air Conditioning/Handler
+    "data center", "data centre",
+    "computer room", "server room",
+    "precision cooling", "close control cooling"
 ]
 
 # PROFILE B2: THE ACTION (Must be paired with a System)
@@ -34,16 +41,23 @@ ACTION_KEYWORDS = [
     "efficiency", "fouling", "passivation", "preservation",
     "water quality", "chemistry", "purification", "optimisation",
     "optimization", "additive",
+    # Data center efficiency metrics
+    "pue", "power usage effectiveness",
+    "vacuum recovery", "thermal efficiency",
+    "condenser efficiency",
     # Maintenance actions (Safe because they require a System pairing)
     "maintenance", "repair", "servicing", "overhaul", "refurbishment"
 ]
 
 # EXCLUSIONS (Refined)
 # Targeted exclusions for things that often get confused with water treatment.
+# NOTE: "hvac" removed - too broad, excludes data center CRAC/CRAH systems
 NEGATIVE_KEYWORDS = [
     "construction of", "building of", "civil works",
     "structural steel", "paving", "road",
-    "hvac", "air conditioning", "ventilation", "split unit",
+    # Building HVAC (NOT data center precision cooling)
+    "split unit", "office air conditioning", "building hvac", 
+    "building air conditioning", "ventilation",
     "security service", "cleaning service", "garden service", "hygiene",
     "consulting engineer", "transaction advisor", "panel of",
     "vehicle", "fleet", "transport", "shuttle",
