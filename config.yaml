@@ -8,7 +8,7 @@ paths:
   tenders_root: "/Users/lazolasonqishe/Documents/MASTER/TENDERS/"
   tender_log_excel: "/Users/lazolasonqishe/Documents/MASTER/TENDERS/01_Tender_Log/Tender_Dashboard_v2.xlsx"
   active_tenders: "/Users/lazolasonqishe/Documents/MASTER/TENDERS/02_Active_Tenders/"
-  output_dir: "/Users/lazolasonqishe/Documents/MASTER/TENDERS/00_System/04_Automation/output/"
+  output_dir: "/Users/lazolasonqishe/Documents/tender-intelligence/output/"
   log_file: "/Users/lazolasonqishe/Documents/tender-intelligence/logs/scraper.log"
 
 # Scraper settings
@@ -26,7 +26,6 @@ scrapers:
     - "mexsteam 100"
     - "mexel energy sustain"
     - "mexel energy"
-    - "tes"
   
   # URLs
   urls:
@@ -34,7 +33,7 @@ scrapers:
 
 # Classification settings
 classification:
-  mexel_only: true          # Mexel Energy Sustain (TES product) only
+  mexel_only: true          # Mexel Energy Sustain only
 
 # Excel sheet names
 excel:
@@ -42,10 +41,8 @@ excel:
 
 # Scoring engine weights
 scoring:
-  fit_weight: 0.30
-  industry_weight: 0.25
-  risk_weight: 0.20
-  revenue_weight: 0.25
+  fit_weight: 0.60
+  industry_weight: 0.40
   
   # Priority thresholds
   high_threshold: 7.0

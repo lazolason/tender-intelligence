@@ -295,7 +295,7 @@ window.smartSearchTenders = function(query, tenders) {
         nextWeek: /\bnext week\b/i,
         thisWeek: /\bthis week\b|\bweek\b/i,
         urgent: /\burgent\b|\bhigh priority\b/i,
-        companyMexel: /\b(mexel|tes)\b/i,
+        companyMexel: /\bmexel\b/i,
     };
 
     const sourceKeywords = [

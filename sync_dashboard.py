@@ -6,8 +6,11 @@
 
 import json
 import os
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 from urllib.parse import quote
+import yaml
+from openpyxl import load_workbook
+from dateutil import parser as date_parser
 
 # Paths
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -18,6 +21,25 @@ DASHBOARD_DIR = os.path.join(PROJECT_DIR, "dashboard")
 TENDERS_JSON = os.path.join(OUTPUT_DIR, "new_tenders.json")
 DASHBOARD_HTML = os.path.join(DASHBOARD_DIR, "index.html")
 TENDERS_DATA_JSON = os.path.join(DASHBOARD_DIR, "tenders.json")  # Full dataset for client-side
+CONFIG_PATH = os.path.join(PROJECT_DIR, "config.yaml")
+
+def load_config():
+    """Load configuration from config.yaml."""
+    try:
+        with open(CONFIG_PATH, "r") as f:
+            return yaml.safe_load(f) or {}
+    except FileNotFoundError:
+        print("⚠️ config.yaml not found, using defaults.")
+    except Exception as exc:
+        print(f"⚠️ Failed to read config.yaml: {exc}")
+    return {}
+
+CONFIG = load_config()
+EXCEL_PATH = (CONFIG.get("paths", {}) or {}).get("tender_log_excel", "")
+EXCEL_SHEET = (CONFIG.get("excel", {}) or {}).get("tender_log_sheet", "Tender_Log")
+MEXEL_ONLY = bool((CONFIG.get("classification", {}) or {}).get("mexel_only", False))
+DASHBOARD_SHOW_ALL = os.environ.get("DASHBOARD_SHOW_ALL", "").strip().lower() in ("1", "true", "yes")
+DASHBOARD_INCLUDE_PAST = os.environ.get("DASHBOARD_INCLUDE_PAST", "").strip().lower() in ("1", "true", "yes")
 
 # Source URLs for tender portals
 SOURCE_URLS = {
@@ -38,8 +60,8 @@ SOURCE_URLS = {
     "Namibia": "https://www.namibiatenders.com/tenders",
 }
 
-def load_tenders():
-    """Load tenders from JSON output"""
+def load_new_tenders():
+    """Load NEW tenders from JSON output."""
     if os.path.exists(TENDERS_JSON):
         with open(TENDERS_JSON, "r") as f:
             data = json.load(f)
@@ -51,13 +73,160 @@ def load_tenders():
                 return data
     return []
 
+def _parse_excel_date(value):
+    """Parse Excel cell into a date; returns None if invalid."""
+    if value is None or value == "":
+        return None
+    if isinstance(value, datetime):
+        return value.date()
+    if isinstance(value, date):
+        return value
+    try:
+        parsed = date_parser.parse(str(value))
+        return parsed.date()
+    except Exception:
+        return None
+
+def load_active_tenders_from_excel():
+    """Load active tenders from Excel log (closing date >= today)."""
+    if not EXCEL_PATH or not os.path.exists(EXCEL_PATH):
+        print("⚠️ Excel log not found; skipping Excel load.")
+        return []
+
+    try:
+        wb = load_workbook(EXCEL_PATH, read_only=True, data_only=True)
+    except Exception as exc:
+        print(f"⚠️ Failed to open Excel log: {exc}")
+        return []
+
+    if EXCEL_SHEET not in wb.sheetnames:
+        print(f"⚠️ Sheet '{EXCEL_SHEET}' not found in Excel log.")
+        return []
+
+    ws = wb[EXCEL_SHEET]
+    rows = ws.iter_rows(min_row=1, values_only=True)
+    try:
+        headers = next(rows)
+    except StopIteration:
+        return []
+
+    header_map = {str(h).strip(): idx for idx, h in enumerate(headers or []) if h}
+    today = datetime.now().date()
+    tenders = []
+    all_tenders = []
+
+    def get_val(row, key, default=""):
+        idx = header_map.get(key)
+        if idx is None or idx >= len(row):
+            return default
+        return row[idx] if row[idx] is not None else default
+
+    has_new_schema = "Reference Number" in header_map and "Composite Score" in header_map
+    has_legacy_schema = "Fit Score (1-5)" in header_map
+
+    for row in rows:
+        title = str(get_val(row, "Tender Name", "")).strip()
+        client = str(get_val(row, "Client", "")).strip()
+        tender_type = str(get_val(row, "Type", "")).strip()
+        industry = str(get_val(row, "Industry", "")).strip()
+        closing_raw = get_val(row, "Closing Date", "")
+        closing_date = _parse_excel_date(closing_raw)
+        is_active = bool(closing_date and closing_date >= today)
+
+        status = str(get_val(row, "Status", "Open")).strip().lower()
+        if status and status not in ("open", "active", "in progress"):
+            continue
+
+        if has_new_schema:
+            ref = str(get_val(row, "Reference Number", "")).strip()
+            priority = str(get_val(row, "Priority", "")).strip().upper() or "LOW"
+            composite_score = get_val(row, "Composite Score", 0) or 0
+            fit_score = get_val(row, "Fit Score", 0) or 0
+            mexel_fit = get_val(row, "Mexel Fit", 0) or 0
+        elif has_legacy_schema:
+            # Legacy sheet uses fewer scoring columns.
+            ref = ""
+            if " - " in title:
+                ref, title = title.split(" - ", 1)
+                ref = ref.strip()
+                title = title.strip()
+            priority = "MEDIUM"
+            composite_score = 0
+            fit_score = get_val(row, "Fit Score (1-5)", 0) or 0
+            mexel_fit = fit_score
+        else:
+            ref = ""
+            priority = "LOW"
+            composite_score = 0
+            fit_score = 0
+            mexel_fit = 0
+
+        entry = {
+            "ref": ref,
+            "title": title or ref or "Unknown",
+            "description": title or "",
+            "client": client or "Unknown",
+            "priority": priority,
+            "category": industry or "Unknown",
+            "type": tender_type,
+            "source": client or "Excel Log",
+            "closing_date": closing_date.isoformat() if closing_date else "",
+            "scores": {
+                "composite_score": float(composite_score) if composite_score != "" else 0,
+                "fit_score": float(fit_score) if fit_score != "" else 0,
+                "mexel_suitability": float(mexel_fit) if mexel_fit != "" else 0,
+                "priority": priority,
+            }
+        }
+        all_tenders.append(entry)
+        if is_active:
+            tenders.append(entry)
+
+    if DASHBOARD_INCLUDE_PAST or (not tenders and all_tenders):
+        return all_tenders
+    return tenders
+
+def _merge_tenders(primary, secondary):
+    """Merge tenders by reference/title, preferring primary records."""
+    merged = {}
+    for t in secondary:
+        key = (t.get("ref") or t.get("title") or "").strip().lower()
+        if key:
+            merged[key] = t
+    for t in primary:
+        key = (t.get("ref") or t.get("title") or "").strip().lower()
+        if key:
+            merged[key] = t
+    return list(merged.values())
+
+def load_tenders():
+    """Hybrid load: Excel active tenders + NEW tenders overlay."""
+    excel_tenders = load_active_tenders_from_excel()
+    new_tenders = load_new_tenders()
+    combined = _merge_tenders(new_tenders, excel_tenders)
+    return combined, {"excel": len(excel_tenders), "new": len(new_tenders)}
+
 def is_mexel_tender(tender):
-    """Filter to Mexel-only tenders (TES product keywords)."""
+    """Filter to Mexel-only tenders using multi-signal checks."""
     category = (tender.get("category") or "").strip().upper()
-    if category in ("MEXEL", "TES"):
+    tender_type = (tender.get("type") or tender.get("tender_type") or "").strip().upper()
+    if category == "MEXEL" or tender_type == "MEXEL":
         return True
     scores = tender.get("scores", {}) or {}
-    return scores.get("tes_suitability", 0) > 0
+    for value in (
+        scores.get("mexel_suitability"),
+        scores.get("mexel_score"),
+        scores.get("mexel_fit"),
+        tender.get("mexel_suitability"),
+        tender.get("mexel_score"),
+        tender.get("mexel_fit"),
+    ):
+        try:
+            if value is not None and float(value) > 0:
+                return True
+        except (TypeError, ValueError):
+            continue
+    return False
 
 def get_search_url(tender):
     """Generate a search URL for the tender"""
@@ -78,7 +247,8 @@ def get_search_url(tender):
 def generate_dashboard_html(tenders):
     """Generate updated dashboard HTML with real tender data"""
 
-    tenders = [t for t in tenders if is_mexel_tender(t)]
+    if MEXEL_ONLY and not DASHBOARD_SHOW_ALL:
+        tenders = [t for t in tenders if is_mexel_tender(t)]
     total = len(tenders)
     high = sum(1 for t in tenders if t.get("scores", {}).get("priority") == "HIGH")
     medium = sum(1 for t in tenders if t.get("scores", {}).get("priority") == "MEDIUM")
@@ -103,7 +273,7 @@ def generate_dashboard_html(tenders):
     js_tenders = []
     for t in tenders:  # Process ALL tenders, not just first 20
         scores = t.get("scores", {})
-        tes_score = scores.get("tes_suitability", 0)
+        mexel_score = scores.get("mexel_suitability", 0)
         company = "Mexel"
         
         url = t.get("url", "") or get_search_url(t)
@@ -127,7 +297,7 @@ def generate_dashboard_html(tenders):
                 pass
         
         category = t.get("category", "Unknown")
-        if category in ("TES", "MEXEL"):
+        if category in ("MEXEL",):
             category = "Mexel"
 
         js_tenders.append({
@@ -142,7 +312,7 @@ def generate_dashboard_html(tenders):
             "url": url,
             "pdf_size": pdf_size,
             "company": company,
-            "tes_score": tes_score,
+            "mexel_score": mexel_score,
             "closing_date": t.get("closing_date", ""),
             "contact": t.get("contact", ""),
             "matched_keywords": t.get("matched_keywords", [])
@@ -337,7 +507,7 @@ def generate_dashboard_html(tenders):
                 <div class="stat-card"><div class="stat-value high">{high}</div><div class="stat-label">🔥 High</div></div>
                 <div class="stat-card"><div class="stat-value medium">{medium}</div><div class="stat-label">✅ Medium</div></div>
                 <div class="stat-card"><div class="stat-value low">{low}</div><div class="stat-label">📝 Low</div></div>
-                <div class="stat-card"><div class="stat-value mexel-color">{mexel_count}</div><div class="stat-label">⚗️ Mexel (TES)</div></div>
+                <div class="stat-card"><div class="stat-value mexel-color">{mexel_count}</div><div class="stat-label">⚗️ Mexel</div></div>
             </div>
             
             <div class="section">
@@ -397,7 +567,7 @@ def generate_dashboard_html(tenders):
                 <h2>🏢 Company Focus Areas</h2>
                 <div class="companies">
                     <div class="company-card" style="border-color: rgba(72,219,251,0.5);">
-                        <div class="company-name" style="color: #48dbfb;">⚗️ Mexel (TES)</div>
+                        <div class="company-name" style="color: #48dbfb;">⚗️ Mexel</div>
                         <div class="company-focus">Water Treatment & Cooling Specialists</div>
                         <div class="company-keywords">
                             <span class="keyword">Water Treatment</span>
@@ -835,9 +1005,9 @@ def sync():
     """Main sync function"""
     print("🔄 Syncing tender data to local dashboard...")
     
-    tenders = load_tenders()
+    tenders, stats = load_tenders()
     scraped_count = len(tenders)
-    print(f"   Found {scraped_count} tenders")
+    print(f"   Found {scraped_count} tenders (Excel: {stats['excel']}, New: {stats['new']})")
     
     # QA Check: Verify JSON file exists and matches
     if os.path.exists(TENDERS_JSON):
