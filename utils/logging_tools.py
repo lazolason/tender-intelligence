@@ -5,7 +5,11 @@
 # ==========================================================
 
 import os
+import threading
 from datetime import datetime
+
+# Global lock for thread-safe logging
+_log_lock = threading.Lock()
 
 # ----------------------------------------------------------
 # WRITE A SINGLE LOG ENTRY
@@ -16,19 +20,19 @@ def write_log(log_file_path: str, message: str, level: str = "INFO"):
     Example:
     [2025-11-27 10:32:15] [INFO] Starting scrape for National Treasury
     """
+    with _log_lock:  # Thread-safe logging for parallel scrapers
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        line = f"[{timestamp}] [{level.upper()}] {message}\n"
 
-    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    line = f"[{timestamp}] [{level.upper()}] {message}\n"
+        # Ensure directory exists
+        os.makedirs(os.path.dirname(log_file_path), exist_ok=True)
 
-    # Ensure directory exists
-    os.makedirs(os.path.dirname(log_file_path), exist_ok=True)
+        # Append to log
+        with open(log_file_path, "a") as f:
+            f.write(line)
 
-    # Append to log
-    with open(log_file_path, "a") as f:
-        f.write(line)
-
-    # Mirror to terminal console
-    print(line.strip())
+        # Mirror to terminal console
+        print(line.strip())
 
 # ----------------------------------------------------------
 # ROTATE LOG IF TOO BIG (auto-clean)

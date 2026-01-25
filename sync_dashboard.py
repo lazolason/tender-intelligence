@@ -11,10 +11,14 @@ from datetime import datetime, timedelta, date
 from urllib.parse import quote
 import yaml
 from utils.db_writer import DatabaseWriter
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 # Paths
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
-DB_PATH = os.path.join(PROJECT_DIR, "data", "tenders.db")
+DB_PATH = os.getenv("DB_PATH", os.path.join(PROJECT_DIR, "data", "tenders.db"))
 DASHBOARD_DIR = os.path.join(PROJECT_DIR, "dashboard")
 DASHBOARD_HTML = os.path.join(DASHBOARD_DIR, "index.html")
 TENDERS_DATA_JSON = os.path.join(DASHBOARD_DIR, "tenders.json")  # Full dataset for client-side
@@ -54,20 +58,53 @@ SOURCE_URLS = {
     "Namibia": "https://www.namibiatenders.com/tenders",
 }
 
+def get_bid_statistics():
+    """Get bid outcome statistics from the database."""
+    try:
+        with sqlite3.connect(DB_PATH) as conn:
+            cursor = conn.cursor()
+            
+            # Total bids submitted
+            cursor.execute("SELECT COUNT(*) FROM bid_outcomes WHERE bid_submitted = 1")
+            total_bids = cursor.fetchone()[0]
+            
+            # Wins
+            cursor.execute("SELECT COUNT(*) FROM bid_outcomes WHERE outcome = 'won'")
+            wins = cursor.fetchone()[0]
+            
+            # Win rate
+            win_rate = (wins / total_bids * 100) if total_bids > 0 else 0
+            
+            return {
+                "total_bids": total_bids,
+                "wins": wins,
+                "win_rate": round(win_rate, 1)
+            }
+    except Exception as e:
+        print(f"⚠️ Failed to get bid statistics: {e}")
+        return {"total_bids": 0, "wins": 0, "win_rate": 0}
+
 def load_tenders():
-    """Load tenders from SQLite database."""
+    """Load tenders from SQLite database with PDF analysis."""
     tenders = []
     
     with sqlite3.connect(DB_PATH) as conn:
         conn.row_factory = sqlite3.Row
         cursor = conn.cursor()
         
-        # Get all relevant tenders
-        query = "SELECT * FROM tenders WHERE status IN ('Open', 'Active', 'In Progress')"
+        # Get all relevant tenders with LEFT JOIN to pdf_analysis
+        query = """
+            SELECT t.*, 
+                   p.page_count, p.word_count, p.requirements, p.deadlines, 
+                   p.values_extracted, p.contact_info
+            FROM tenders t
+            LEFT JOIN pdf_analysis p ON t.ref = p.tender_ref
+            WHERE t.status IN ('Open', 'Active', 'In Progress')
+        """
         if MEXEL_ONLY and not DASHBOARD_SHOW_ALL:
-            query += " AND category = 'MEXEL'"
+            query += " AND t.category = 'MEXEL'"
         
-        query += " ORDER BY created_at DESC"
+        query += " ORDER BY t.created_at DESC"
         
         cursor.execute(query)
         rows = cursor.fetchall()
@@ -83,6 +120,29 @@ def load_tenders():
             }
             # Add type for backward compatibility
             t["type"] = t.get("category", "Unknown")
+            
+            # Parse PDF analysis JSON fields if present
+            if t.get("requirements"):
+                try:
+                    t["requirements"] = json.loads(t["requirements"])
+                except:
+                    t["requirements"] = []
+            if t.get("deadlines"):
+                try:
+                    t["deadlines"] = json.loads(t["deadlines"])
+                except:
+                    t["deadlines"] = []
+            if t.get("values_extracted"):
+                try:
+                    t["values_extracted"] = json.loads(t["values_extracted"])
+                except:
+                    t["values_extracted"] = []
+            if t.get("contact_info"):
+                try:
+                    t["contact_info"] = json.loads(t["contact_info"])
+                except:
+                    t["contact_info"] = {}
+            
             tenders.append(t)
             
     return tenders, {"db_count": len(tenders)}
@@ -218,11 +278,22 @@ def sync():
         "tenders": tenders # Reconstruct the JS tenders if needed, but load_tenders does most of it
     }
     
+    # Get bid statistics
+    bid_stats = get_bid_statistics()
+    
     # Re-map tenders for dashboard compatibility
     js_tenders = []
     for t in tenders:
         url = t.get("url", "") or get_search_url(t)
-        js_tenders.append({
+        
+        # Parse matched_keywords if it's a string
+        matched_keywords = t.get("matched_keywords", "")
+        if isinstance(matched_keywords, str):
+            matched_keywords = [kw.strip() for kw in matched_keywords.split(",") if kw.strip()]
+        elif not matched_keywords:
+            matched_keywords = []
+        
+        tender_data = {
             "ref": t.get("ref", "N/A"),
             "title": t.get("title", "Unknown"),
             "description": t.get("description", t.get("title", "")),
@@ -234,12 +305,29 @@ def sync():
             "url": url,
             "company": "Mexel" if t.get("category") == "MEXEL" else "Unknown",
             "closing_date": t.get("closing_date", ""),
-            "matched_keywords": t.get("matched_keywords", [])
-        })
+            "matched_keywords": matched_keywords
+        }
+        
+        # Add PDF analysis if available
+        if t.get("page_count"):
+            tender_data["pdf_analysis"] = {
+                "page_count": t.get("page_count"),
+                "word_count": t.get("word_count"),
+                "requirements": t.get("requirements", []),
+                "deadlines": t.get("deadlines", []),
+                "values": t.get("values_extracted", []),
+                "contact": t.get("contact_info", {})
+            }
+        
+        js_tenders.append(tender_data)
 
+    # Update metadata with bid statistics
+    metadata["meta"]["bid_statistics"] = bid_stats
+    
     with open(TENDERS_DATA_JSON, 'w') as f:
         json.dump({"meta": metadata["meta"], "tenders": js_tenders}, f, indent=2)
     print(f"   ✅ Dashboard data file (tenders.json) updated")
+    print(f"   📊 Bid Statistics: {bid_stats['wins']}/{bid_stats['total_bids']} wins ({bid_stats['win_rate']}%)")
     
     return True
 

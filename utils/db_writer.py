@@ -59,12 +59,13 @@ class DatabaseWriter:
             with open(schema_path, 'r') as f:
                 schema_sql = f.read()
             
-            with sqlite3.connect(self.db_path) as conn:
+            # Use timeout for concurrent access (parallel scrapers)
+            with sqlite3.connect(self.db_path, timeout=10.0) as conn:
                 conn.executescript(schema_sql)
 
     def get_existing_references(self) -> set:
         """Get set of existing tender reference numbers."""
-        with sqlite3.connect(self.db_path) as conn:
+        with sqlite3.connect(self.db_path, timeout=10.0) as conn:
             cursor = conn.cursor()
             cursor.execute("SELECT ref FROM tenders")
             return {row[0].strip().upper() for row in cursor.fetchall() if row[0]}
@@ -84,7 +85,7 @@ class DatabaseWriter:
             if ref in existing:
                 return False
 
-        with sqlite3.connect(self.db_path) as conn:
+        with sqlite3.connect(self.db_path, timeout=10.0) as conn:
             cursor = conn.cursor()
             
             columns = [
@@ -92,7 +93,7 @@ class DatabaseWriter:
                 "closing_date", "category", "classification_reason",
                 "fit_score", "industry_score", "mexel_suitability",
                 "composite_score", "priority", "recommendation",
-                "stage", "status", "next_action", "notes"
+                "stage", "status", "next_action", "notes", "matched_keywords"
             ]
             
             placeholders = ", ".join(["?" for _ in columns])
@@ -151,16 +152,116 @@ class DatabaseWriter:
             "priority": scores["priority"],
             "recommendation": scores["recommendation"],
             "next_action": "Review" if scores["priority"] == "LOW" else "Prepare Bid" if scores["priority"] == "MEDIUM" else "URGENT BID",
-            "notes": f"{reason}\n[Score: {scores['composite_score']}/10]\n{scores['recommendation']}"
+            "notes": f"{reason}\n[Score: {scores['composite_score']}/10]\n{scores['recommendation']}",
+            "matched_keywords": ", ".join(classification.get("matched_keywords", []))
         })
 
         # 5. Write
         was_added = self.write_tender(db_record)
+        
+        # 6. Audit Trail (Classifications)
+        if was_added and classification.get("matched_keywords"):
+            try:
+                with sqlite3.connect(self.db_path, timeout=10.0) as conn:
+                    cursor = conn.cursor()
+                    # Get the ID of the tender we just added
+                    cursor.execute("SELECT id FROM tenders WHERE ref = ?", (ref,))
+                    row = cursor.fetchone()
+                    if row:
+                        tender_id = row[0]
+                        keywords_str = ", ".join(classification["matched_keywords"])
+                        cursor.execute(
+                            "INSERT INTO classifications (tender_id, matched_keywords, classification_reason) VALUES (?, ?, ?)",
+                            (tender_id, keywords_str, reason)
+                        )
+            except Exception as e:
+                self._log(f"Failed to write classification audit: {e}", "WARNING")
+
         return was_added, scores, classification
+
+    def save_pdf_analysis(self, tender_ref: str, analysis: Dict[str, Any]) -> bool:
+        """Save PDF analysis results to the database."""
+        try:
+            import json
+            with sqlite3.connect(self.db_path, timeout=10.0) as conn:
+                cursor = conn.cursor()
+                cursor.execute("""
+                    INSERT OR REPLACE INTO pdf_analysis 
+                    (tender_ref, page_count, word_count, requirements, deadlines, values_extracted, contact_info, full_text)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                """, (
+                    tender_ref,
+                    analysis.get("page_count"),
+                    analysis.get("word_count"),
+                    json.dumps(analysis.get("requirements", [])),
+                    json.dumps(analysis.get("deadlines", [])),
+                    json.dumps(analysis.get("values", [])),
+                    json.dumps(analysis.get("contact", {})),
+                    analysis.get("text", "")
+                ))
+                return True
+        except Exception as e:
+            self._log(f"Failed to save PDF analysis for {tender_ref}: {e}", "ERROR")
+            return False
+
+    def record_bid_outcome(self, tender_ref: str, company: str, submitted: bool, outcome: str, **kwargs) -> bool:
+        """Record a bid outcome (won, lost, etc.)"""
+        try:
+            with sqlite3.connect(self.db_path, timeout=10.0) as conn:
+                cursor = conn.cursor()
+                cursor.execute("""
+                    INSERT OR REPLACE INTO bid_outcomes 
+                    (tender_ref, company, bid_submitted, bid_amount, outcome, winner_name, winning_amount, bid_date)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                """, (
+                    tender_ref,
+                    company,
+                    submitted,
+                    kwargs.get("bid_amount"),
+                    outcome,
+                    kwargs.get("winner_name"),
+                    kwargs.get("winning_amount"),
+                    kwargs.get("bid_date") or datetime.now().strftime("%Y-%m-%d")
+                ))
+                return True
+        except Exception as e:
+            self._log(f"Failed to record bid outcome for {tender_ref}: {e}", "ERROR")
+            return False
+
+    def add_bid_note(self, tender_ref: str, company: str, note: str) -> bool:
+        """Add a note to a bid's history."""
+        try:
+            with sqlite3.connect(self.db_path, timeout=10.0) as conn:
+                cursor = conn.cursor()
+                cursor.execute(
+                    "INSERT INTO bid_notes (tender_ref, company, note) VALUES (?, ?, ?)",
+                    (tender_ref, company, note)
+                )
+                return True
+        except Exception as e:
+            self._log(f"Failed to add bid note for {tender_ref}: {e}", "ERROR")
+            return False
+
+    def get_recent_tenders(self, limit: int = 200) -> List[Dict[str, Any]]:
+        """Fetch the N most recent tenders from the database for deduplication."""
+        try:
+            with sqlite3.connect(self.db_path, timeout=10.0) as conn:
+                conn.row_factory = sqlite3.Row
+                cursor = conn.cursor()
+                cursor.execute("""
+                    SELECT ref, title, description, client, source, url, closing_date, category
+                    FROM tenders
+                    ORDER BY created_at DESC
+                    LIMIT ?
+                """, (limit,))
+                return [dict(row) for row in cursor.fetchall()]
+        except Exception as e:
+            self._log(f"Failed to fetch recent tenders: {e}", "ERROR")
+            return []
 
     def get_stats(self) -> Dict[str, Any]:
         """Get aggregate statistics from the database."""
-        with sqlite3.connect(self.db_path) as conn:
+        with sqlite3.connect(self.db_path, timeout=10.0) as conn:
             cursor = conn.cursor()
             
             stats = {
@@ -194,7 +295,7 @@ class DatabaseWriter:
 
     def get_active_mexel_tenders(self, limit: int = 100) -> List[Dict[str, Any]]:
         """Query MEXEL tenders for the dashboard."""
-        with sqlite3.connect(self.db_path) as conn:
+        with sqlite3.connect(self.db_path, timeout=10.0) as conn:
             conn.row_factory = sqlite3.Row
             cursor = conn.cursor()
             cursor.execute("""

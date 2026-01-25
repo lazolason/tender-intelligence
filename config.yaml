@@ -102,3 +102,11 @@ alerts:
 
   scraper_failures:
     enabled: false  # Alert when 3 consecutive scraper failures
+
+# Advanced Deduplication Settings
+deduplication:
+  semantic_threshold: 0.75
+  fuzzy_threshold: 85
+  date_window_days: 7
+  require_same_source: false # Set to false to allow cross-source deduplication
+  limit_db_check: 200        # Number of recent tenders to check against

@@ -16,6 +16,22 @@ This automatically:
 - Installs to `tools/chromedriver/` (isolated, not system-wide)
 - Verifies alignment
 
+### Environment Configuration
+
+Configure your environment variables before running any scripts:
+
+1. **Copy the template**:
+   ```bash
+   cp .env.example .env
+   ```
+
+2. **Configure required variables** in `.env`:
+   - `SMTP_USER`: Your Gmail address
+   - `SMTP_PASSWORD`: Gmail App Password
+   - `DB_PATH`: Path to SQLite database (default: `data/tenders.db`)
+
+The system uses `python-dotenv` to automatically load these values. Validation is performed on startup.
+
 ### Pre-Scrape Verification
 
 Before running scrapers, verify driver readiness:
@@ -181,6 +197,19 @@ curl -X POST https://your-app.onrender.com/api/score \
     "closing_date": "2025-12-15"
   }'
 ```
+
+---
+
+## CI/CD Pipeline
+
+The project uses GitHub Actions for automated quality control:
+
+- **Test and Lint**: Every push or pull request to `main` triggers a workflow that:
+  - Runs `ruff` for code style and linting (line length limit: 120).
+  - Runs `pytest` to execute all unit tests.
+  - Checks code coverage and uploads reports to Codecov.
+
+The workflow file is located at `.github/workflows/test-and-lint.yml`.
 
 ---
 

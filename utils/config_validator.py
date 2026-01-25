@@ -138,47 +138,82 @@ def load_and_validate_config(config_path: str = None) -> Dict[str, Any]:
     return config
 
 
-def validate_environment_variables() -> Tuple[bool, List[str]]:
+def validate_environment_variables(config: Dict[str, Any] = None) -> Tuple[bool, List[str], List[str]]:
     """
     Validate required environment variables are set
     
+    Args:
+        config: Optional configuration dictionary. If not provided, it will be loaded from config.yaml.
+    
     Returns:
-        Tuple of (all_present, list_of_missing_vars)
+        Tuple of (all_present, list_of_missing_required, list_of_missing_optional)
     """
-    missing = []
+    required_missing = []
+    optional_missing = []
+    
+    # Check DB_PATH (default fallback exists, but good to have in .env)
+    if not os.getenv('DB_PATH'):
+        optional_missing.append('DB_PATH')
     
     # Check email-related environment variables if email is enabled
     try:
-        config = load_and_validate_config()
+        if config is None:
+            config = load_and_validate_config()
         
         if config.get('email', {}).get('enabled', False):
             email_vars = ['SMTP_USER', 'SMTP_PASSWORD']
             for var in email_vars:
                 if not os.getenv(var):
-                    missing.append(var)
+                    required_missing.append(var)
         
         if config.get('email_alerts', {}).get('enabled', False):
             email_alert_vars = ['SMTP_USER', 'SMTP_PASSWORD']
             for var in email_alert_vars:
                 if not os.getenv(var):
-                    missing.append(var)
+                    if var not in required_missing:
+                        required_missing.append(var)
         
         # Check optional alert environment variables
         if config.get('alerts', {}).get('slack', {}).get('enabled', False):
             if not os.getenv('SLACK_WEBHOOK_URL'):
-                missing.append('SLACK_WEBHOOK_URL (optional)')
+                optional_missing.append('SLACK_WEBHOOK_URL')
         
         if config.get('alerts', {}).get('sms', {}).get('enabled', False):
             sms_vars = ['TWILIO_ACCOUNT_SID', 'TWILIO_AUTH_TOKEN', 'TWILIO_FROM_NUMBER']
             for var in sms_vars:
                 if not os.getenv(var):
-                    missing.append(f"{var} (optional)")
+                    optional_missing.append(var)
     
     except (FileNotFoundError, ConfigValidationError):
-        # Can't validate env vars without config
-        return False, []
+        # Can't validate optional env vars without config, but check basic SMTP if possible
+        pass
     
-    return len(missing) == 0, missing
+    return len(required_missing) == 0, required_missing, optional_missing
+
+
+def validate_env_on_startup():
+    """
+    Load .env and validate configuration. Raises ConfigValidationError on failure.
+    Should be called at the beginning of main scripts.
+    """
+    try:
+        from dotenv import load_dotenv
+        load_dotenv()
+    except ImportError:
+        logger.warning("python-dotenv not installed. Environment variables must be set manually.")
+
+    is_valid, missing_required, missing_optional = validate_environment_variables()
+    
+    if not is_valid:
+        msg = "Missing REQUIRED environment variables:\n"
+        msg += "\n".join([f"  - {v}" for v in missing_required])
+        msg += "\n\nPlease copy .env.example to .env and configure these values."
+        raise ConfigValidationError(msg)
+    
+    if missing_optional:
+        logger.info(f"Note: Some optional environment variables are not set: {', '.join(missing_optional)}")
+    
+    logger.info("Environment validation successful.")
 
 
 def get_config_summary(config: Dict[str, Any]) -> str:
@@ -235,11 +270,14 @@ if __name__ == "__main__":
         print(get_config_summary(config))
         
         # Validate environment variables
-        env_valid, missing = validate_environment_variables()
+        env_valid, missing_required, missing_optional = validate_environment_variables()
         if env_valid:
             print("\n✅ All required environment variables are set")
-        elif missing:
-            print(f"\n⚠️  Missing environment variables: {', '.join(missing)}")
+        else:
+            print(f"\n❌ Missing REQUIRED environment variables: {', '.join(missing_required)}")
+            
+        if missing_optional:
+            print(f"\n⚠️  Missing optional environment variables: {', '.join(missing_optional)}")
     
     except FileNotFoundError as e:
         print(f"❌ {e}")

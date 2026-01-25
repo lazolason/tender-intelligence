@@ -10,6 +10,8 @@ import os
 import json
 import requests
 from flask_cors import CORS
+import sqlite3
+from utils.db_writer import DatabaseWriter
 
 app = Flask(__name__)
 CORS(app) # Enable CORS for all routes
@@ -17,6 +19,8 @@ CORS(app) # Enable CORS for all routes
 # ----------------------------------------------------------
 # CONFIGURATION
 # ----------------------------------------------------------
+DB_PATH = os.environ.get("DB_PATH", os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "tenders.db"))
+db_writer = DatabaseWriter(DB_PATH)
 ENABLE_SELENIUM = os.environ.get("ENABLE_SELENIUM", "false").lower() == "true"
 OUTPUT_DIR = os.environ.get("OUTPUT_DIR", "./output")
 API_KEY = os.environ.get("API_KEY", "").strip()  # Set in environment or .env file
@@ -63,9 +67,10 @@ def health():
     return jsonify({
         "status": "healthy",
         "service": "tender-intelligence",
-        "version": "2.0",
+        "version": "2.1",
         "timestamp": datetime.now().isoformat(),
-        "selenium_enabled": ENABLE_SELENIUM
+        "selenium_enabled": ENABLE_SELENIUM,
+        "db_path": DB_PATH
     })
 
 @app.route("/api/summarize", methods=["POST", "OPTIONS"])
@@ -190,9 +195,89 @@ def api_tenders():
         return jsonify([])
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+@app.route("/api/bids", methods=["POST"])
+@require_api_key
+def api_record_bid():
+    """Record a bid outcome (won, lost, etc.)"""
+    try:
+        data = request.get_json()
+        ref = data.get("ref")
+        company = data.get("company", "MEXEL")
+        submitted = data.get("submitted", False)
+        outcome = data.get("outcome") # won, lost, withdrawn, no_bid
+        
+        if not ref or not outcome:
+            return jsonify({"error": "Missing ref or outcome"}), 400
+            
+        success = db_writer.record_bid_outcome(
+            ref, company, submitted, outcome,
+            bid_amount=data.get("bid_amount"),
+            winner_name=data.get("winner_name"),
+            winning_amount=data.get("winning_amount"),
+            bid_date=data.get("bid_date")
+        )
+        
+        if data.get("note"):
+            db_writer.add_bid_note(ref, company, data.get("note"))
+            
+        return jsonify({"status": "success" if success else "error"})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route("/api/stats/bids")
+def api_bid_stats():
+    """Get bid win/loss statistics"""
+    try:
+        with sqlite3.connect(DB_PATH) as conn:
+            cursor = conn.cursor()
+            cursor.execute("""
+                SELECT outcome, COUNT(*) as count 
+                FROM bid_outcomes 
+                GROUP BY outcome
+            """)
+            stats = dict(cursor.fetchall())
+            
+            cursor.execute("SELECT COUNT(*) FROM bid_outcomes WHERE outcome = 'won'")
+            wins = cursor.fetchone()[0]
+            
+            cursor.execute("SELECT COUNT(*) FROM bid_outcomes WHERE bid_submitted = 1")
+            total_bids = cursor.fetchone()[0]
+            
+            win_rate = (wins / total_bids * 100) if total_bids > 0 else 0
+            
+            return jsonify({
+                "by_outcome": stats,
+                "win_rate": round(win_rate, 1),
+                "total_bids": total_bids,
+                "total_wins": wins
+            })
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route("/api/tenders/<path:ref>/analysis")
+def api_tender_analysis(ref):
+    """Get PDF analysis for a specific tender"""
+    try:
+        with sqlite3.connect(DB_PATH) as conn:
+            conn.row_factory = sqlite3.Row
+            cursor = conn.cursor()
+            cursor.execute("SELECT * FROM pdf_analysis WHERE tender_ref = ?", (ref,))
+            row = cursor.fetchone()
+            
+            if row:
+                result = dict(row)
+                # Parse JSON fields
+                for field in ["requirements", "deadlines", "values_extracted", "contact_info"]:
+                    if result.get(field):
+                        result[field] = json.loads(result[field])
+                return jsonify(result)
+            return jsonify({"error": "Analysis not found"}), 404
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 # ----------------------------------------------------------
 # MAIN
 # ----------------------------------------------------------
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
+    port = int(os.environ.get("PORT", 5001))
     app.run(host="0.0.0.0", port=port, debug=False)

@@ -20,6 +20,7 @@ openpyxl==3.1.2
 
 # Configuration
 PyYAML==6.0.1
+python-dotenv==1.0.0
 
 # Utilities
 python-dateutil==2.8.2

@@ -57,6 +57,9 @@ source .venv/bin/activate  # macOS/Linux
 
 # Install dependencies
 pip install -r requirements.txt
+
+### Quick Launch (macOS)
+Double-click **Launch Dashboard.command** in the project root to automatically refresh data and open the dashboard in your browser.
 ```
 
 ### Running the System
@@ -114,6 +117,39 @@ Primary configuration file: [config.yaml](config.yaml)
 **Scoring Thresholds**:
 - `scoring.high_threshold: 7.0` - Composite score ≥ 7.0 → HIGH priority
 - `scoring.medium_threshold: 4.5` - Composite score ≥ 4.5 → MEDIUM priority
+
+## Environment Configuration
+
+### Setup Process
+
+1. **Copy the template**:
+   ```bash
+   cp .env.example .env
+   ```
+
+2. **Configure required variables** in `.env`:
+   - `SMTP_USER`: Your Gmail address for sending emails
+   - `SMTP_PASSWORD`: Gmail App Password (not your regular password)
+   - `DB_PATH`: Path to SQLite database (default: `data/tenders.db`)
+
+3. **Optional variables** (only needed if features are enabled):
+   - `API_KEY`: For protecting API endpoints
+   - `OPENAI_API_KEY`: For AI-powered summarization
+   - `SLACK_WEBHOOK_URL`: For Slack notifications
+   - `TWILIO_*`: For SMS alerts
+
+### Validation
+
+All scripts validate environment variables on startup:
+- Missing required variables will cause immediate failure with clear error messages
+- The system will indicate which variables are missing and how to set them
+- Optional variables are only required if their corresponding features are enabled in `config.yaml`
+
+### Security
+
+- **Never commit `.env`** to version control (already in `.gitignore`)
+- Use Gmail App Passwords, not your regular password
+- Rotate credentials periodically
 
 ## Code Organization
 

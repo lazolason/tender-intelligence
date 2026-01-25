@@ -39,14 +39,16 @@ def _log_before_sleep(retry_state):
 
 @retry(
     stop=stop_after_attempt(3),
-    wait=wait_exponential(multiplier=1, min=4, max=10),
+    wait=wait_exponential(multiplier=1, min=2, max=60),
     retry=retry_if_exception_type((requests.RequestException, ConnectionError)),
     before_sleep=_log_before_sleep,
     reraise=True,
 )
 def _requests_get_with_retry(url: str, **kwargs):
     response = requests.get(url, **kwargs)
-    response.raise_for_status()
+    # Retry on 5xx server errors
+    if response.status_code in [502, 503, 504]:
+        response.raise_for_status()
     return response
 
 

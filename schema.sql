@@ -26,8 +26,47 @@ CREATE TABLE IF NOT EXISTS tenders (
     status TEXT DEFAULT 'Open',
     next_action TEXT,
     notes TEXT,
+    matched_keywords TEXT, -- Store keywords directly for faster access
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Bid Outcomes Table
+CREATE TABLE IF NOT EXISTS bid_outcomes (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    tender_ref TEXT NOT NULL,
+    company TEXT NOT NULL,
+    bid_submitted BOOLEAN DEFAULT 0,
+    bid_amount REAL,
+    outcome TEXT NOT NULL, -- won, lost, withdrawn, no_bid
+    winner_name TEXT,
+    winning_amount REAL,
+    bid_date TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(tender_ref, company)
+);
+
+-- Bid Notes Table
+CREATE TABLE IF NOT EXISTS bid_notes (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    tender_ref TEXT NOT NULL,
+    company TEXT NOT NULL,
+    note TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- PDF Analysis Table
+CREATE TABLE IF NOT EXISTS pdf_analysis (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    tender_ref TEXT UNIQUE NOT NULL,
+    page_count INTEGER,
+    word_count INTEGER,
+    requirements TEXT, -- JSON array
+    deadlines TEXT,    -- JSON array
+    values_extracted TEXT, -- JSON array
+    contact_info TEXT, -- JSON object
+    full_text TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Classifications table (audit trail)

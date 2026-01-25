@@ -1,0 +1,52 @@
+name: Test and Lint
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install Linting Tools
+        run: |
+          pip install ruff
+      - name: Run Ruff
+        run: ruff check . --line-length 120
+
+  test:
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install Dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install pytest pytest-cov
+      - name: Create Dummy .env
+        run: |
+          cp .env.example .env
+          # Use sed without -i extension as it differs between GNU and BSD, 
+          # but on Ubuntu (runs-on: ubuntu-latest) GNU sed works fine with -i
+          sed -i 's/your-email@gmail.com/test@example.com/g' .env
+          sed -i 's/your-app-password/test-password/g' .env
+      - name: Run Tests
+        run: |
+          pytest tests/ --cov=. --cov-report=xml
+      - name: Upload Coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: ./coverage.xml
+          fail_ci_if_error: false

@@ -12,6 +12,9 @@ from datetime import datetime
 # Add current directory to path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
+from dotenv import load_dotenv
+from utils.config_validator import validate_env_on_startup
+
 def run_daily():
     """Run complete daily tender workflow"""
     results = {
@@ -36,9 +39,32 @@ def run_daily():
         rotate_log_if_needed(LOG_FILE)
         
         # Scrape all sources
-        all_tenders = run_all_scrapers()
+        from utils.scraper_monitor import ScraperMonitor
+        monitor = ScraperMonitor(output_dir=os.path.join(os.path.dirname(__file__), "output"))
+        
+        all_tenders = run_all_scrapers(monitor=monitor)
         print(f"   Scraped: {len(all_tenders)} tenders")
         
+        # Check for scraper failures and send alerts
+        has_critical_failures, failures = monitor.should_alert_on_failures(threshold=3)
+        if has_critical_failures:
+            print(f"   🚨 {len(failures)} critical scraper failures detected!")
+            from utils.multi_channel_alerts import AlertConfig, send_scraper_health_alert
+            # Try to load config for real alerts if available
+            try:
+                # This is a bit of a hack since DailyRunner doesn't have a full config object yet
+                # but we can initialize a default AlertConfig and let it try to find env vars
+                alert_config = AlertConfig(
+                    slack_webhook=os.getenv("SLACK_WEBHOOK_URL"),
+                    enabled_channels=['slack'] if os.getenv("SLACK_WEBHOOK_URL") else []
+                )
+                for source, metrics in failures.items():
+                    if send_scraper_health_alert(alert_config, source, metrics):
+                        print(f"      ✅ Alert sent for {source}")
+                monitor.mark_alerted(failures, threshold=3)
+            except Exception as alert_exc:
+                print(f"      ⚠️ Failed to send health alerts: {alert_exc}")
+
         # Process and score
         added_count, new_items = process_tenders(all_tenders)
         print(f"   New tenders added: {added_count}")
@@ -50,6 +76,7 @@ def run_daily():
             "status": "success",
             "total_scraped": len(all_tenders),
             "new_added": added_count,
+            "critical_failures": len(failures) if has_critical_failures else 0,
             "high_priority": sum(1 for t in new_items if t.get("scores", {}).get("priority") == "HIGH"),
             "medium_priority": sum(1 for t in new_items if t.get("scores", {}).get("priority") == "MEDIUM"),
             "low_priority": sum(1 for t in new_items if t.get("scores", {}).get("priority") == "LOW")
@@ -211,4 +238,12 @@ def generate_email_summary(results):
     return html
 
 if __name__ == "__main__":
+    # Load environment variables and validate configuration
+    load_dotenv()
+    try:
+        validate_env_on_startup()
+    except Exception as e:
+        print(f"❌ Configuration validation failed: {e}")
+        sys.exit(1)
+        
     run_daily()

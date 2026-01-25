@@ -12,6 +12,9 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
+from dotenv import load_dotenv
+load_dotenv()
+
 # Import scrapers
 from scrapers.municipalities import scrape_all_municipalities
 from scrapers.soes import scrape_all_soes
@@ -28,6 +31,7 @@ from utils.folder_tools import create_tender_folder
 from utils.logging_tools import write_log, log_error, rotate_log_if_needed
 from utils.data_validator import TenderValidator, format_validation_report
 from utils.scraper_monitor import ScraperMonitor
+from utils.config_validator import validate_env_on_startup
 
 # Import scoring engine
 from scoring_engine import score_tender
@@ -40,7 +44,7 @@ with open(config_path, "r") as f:
     CONFIG = yaml.safe_load(f)
 
 # Paths
-DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "tenders.db")
+DB_PATH = os.getenv("DB_PATH", os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "tenders.db"))
 ACTIVE_TENDERS_DIR = CONFIG["paths"]["active_tenders"]
 OUTPUT_DIR = CONFIG["paths"]["output_dir"]
 LOG_FILE = CONFIG["paths"]["log_file"]
@@ -51,6 +55,15 @@ ENABLE_SELENIUM = CONFIG.get("scrapers", {}).get("enable_selenium", True)
 
 # Dashboard retains the last N tenders to avoid an empty UI when no new items are added
 MAX_DASHBOARD_TENDERS = 200
+
+# Deduplication Settings
+DEDUPE_CONFIG = CONFIG.get("deduplication", {
+    "semantic_threshold": 0.75,
+    "fuzzy_threshold": 85,
+    "date_window_days": 7,
+    "require_same_source": False,
+    "limit_db_check": 200
+})
 
 # Ensure directories exist
 os.makedirs(OUTPUT_DIR, exist_ok=True)
@@ -68,7 +81,7 @@ except ImportError:
     log_error(LOG_FILE, "PDF analyzer not available - install with: pip install pdfplumber PyPDF2")
 
 try:
-    from utils.semantic_duplicate_detector import filter_duplicates
+    from utils.semantic_duplicate_detector import filter_duplicates, find_semantic_duplicate
     SEMANTIC_DEDUP_AVAILABLE = True
 except ImportError:
     SEMANTIC_DEDUP_AVAILABLE = False
@@ -94,115 +107,110 @@ except ImportError:
 db_writer = DatabaseWriter(DB_PATH, log_file_path=LOG_FILE)
 
 # ----------------------------------------------------------
-# RUN ALL SCRAPERS
+# RUN ALL SCRAPERS (PARALLEL)
 # ----------------------------------------------------------
-def run_all_scrapers(monitor: ScraperMonitor = None):
+def run_all_scrapers(monitor: ScraperMonitor = None, max_workers: int = 5, timeout: int = 300):
+    """
+    Run all scrapers in parallel using ThreadPoolExecutor.
+    
+    Args:
+        monitor: ScraperMonitor instance for tracking scraper health
+        max_workers: Maximum number of concurrent scrapers (default: 5)
+        timeout: Global timeout in seconds for all scrapers (default: 300)
+    
+    Returns:
+        List of all tenders found across all scrapers
+    """
+    from concurrent.futures import ThreadPoolExecutor, as_completed, TimeoutError
+    
     all_tenders = []
     failed_sources = []
     monitor = monitor or ScraperMonitor(output_dir=OUTPUT_DIR)
     
-    # Municipalities
-    write_log(LOG_FILE, "=== Scraping Municipalities ===")
-    try:
-        with monitor.track("Municipalities") as run:
-            muni_tenders = scrape_all_municipalities()
-            run.tenders_found = len(muni_tenders)
-        all_tenders.extend(muni_tenders)
-        write_log(LOG_FILE, f"Municipalities: {len(muni_tenders)} tenders found")
-    except Exception as e:
-        log_error(LOG_FILE, f"Municipality scraper failed: {e}")
-        failed_sources.append("Municipalities")
+    # Define scraper tasks as (name, function) tuples
+    scraper_tasks = [
+        ("Municipalities", lambda: scrape_all_municipalities()),
+        ("SOEs", lambda: scrape_all_soes()),
+        ("Water Boards", lambda: scrape_all_water_boards()),
+    ]
     
-    # SOEs
-    write_log(LOG_FILE, "=== Scraping SOEs ===")
-    try:
-        with monitor.track("SOEs") as run:
-            soe_tenders = scrape_all_soes()
-            run.tenders_found = len(soe_tenders)
-        all_tenders.extend(soe_tenders)
-        write_log(LOG_FILE, f"SOEs: {len(soe_tenders)} tenders found")
-    except Exception as e:
-        log_error(LOG_FILE, f"SOE scraper failed: {e}")
-        failed_sources.append("SOEs")
-    
-    # National Treasury (Selenium) - Optional
+    # Add Selenium-based scrapers if enabled
     if ENABLE_SELENIUM:
-        write_log(LOG_FILE, "=== Scraping National Treasury (Selenium) ===")
-        try:
-            with monitor.track("National Treasury") as run:
-                from scrapers.national_treasury_selenium import scrape_national_treasury
-                nt_tenders = scrape_national_treasury()
-                run.tenders_found = len(nt_tenders)
-            all_tenders.extend(nt_tenders)
-            write_log(LOG_FILE, f"National Treasury: {len(nt_tenders)} tenders found")
-        except ImportError:
-            log_error(LOG_FILE, "Selenium not available - skipping National Treasury")
-            failed_sources.append("National Treasury (Selenium import)")
-        except Exception as e:
-            log_error(LOG_FILE, f"National Treasury scraper failed: {e}")
-            failed_sources.append("National Treasury")
+        scraper_tasks.extend([
+            ("National Treasury", lambda: __import__('scrapers.national_treasury_selenium', fromlist=['scrape_national_treasury']).scrape_national_treasury()),
+            ("Johannesburg Water", lambda: __import__('scrapers.joburg_water_selenium', fromlist=['scrape_joburg_water_selenium']).scrape_joburg_water_selenium()),
+            ("Eskom Tender Bulletin", lambda: __import__('scrapers.eskom_direct', fromlist=['scrape_eskom_tenders']).scrape_eskom_tenders()),
+        ])
     
-    # Johannesburg Water (Selenium) - Optional
-    if ENABLE_SELENIUM:
-        write_log(LOG_FILE, "=== Scraping Johannesburg Water (Selenium) ===")
+    def run_scraper(name: str, scraper_func):
+        """Worker function to run a single scraper with monitoring."""
+        from utils.scraper_monitor import CircuitOpenError
         try:
-            with monitor.track("Johannesburg Water") as run:
-                from scrapers.joburg_water_selenium import scrape_joburg_water_selenium
-                jw_tenders = scrape_joburg_water_selenium()
-                run.tenders_found = len(jw_tenders)
-            all_tenders.extend(jw_tenders)
-            write_log(LOG_FILE, f"Johannesburg Water: {len(jw_tenders)} tenders found")
+            with monitor.track(name) as run:
+                write_log(LOG_FILE, f"=== Scraping {name} ===")
+                tenders = scraper_func()
+                run.tenders_found = len(tenders)
+            write_log(LOG_FILE, f"{name}: {len(tenders)} tenders found")
+            return name, tenders, None
+        except CircuitOpenError:
+            msg = f"Skipping {name} (Circuit Open)"
+            write_log(LOG_FILE, msg, "INFO")
+            return name, [], msg
+        except ImportError as e:
+            error_msg = f"Import failed for {name}: {e}"
+            log_error(LOG_FILE, error_msg)
+            return name, [], error_msg
         except Exception as e:
-            log_error(LOG_FILE, f"Johannesburg Water scraper failed: {e}")
-            failed_sources.append("Johannesburg Water")
+            error_msg = f"{name} scraper failed: {e}"
+            log_error(LOG_FILE, error_msg)
+            return name, [], error_msg
     
-    # NOTE: Disabled non-functional scrapers (405 errors on etenders.gov.za API)
-    # TODO: Research correct etenders.gov.za API endpoints for:
-    # - Eskom
-    # - SANRAL
-    # - Transnet
+    write_log(LOG_FILE, f"🚀 Starting parallel scraping with {max_workers} workers...")
     
-    # Eskom (Direct Tender Bulletin)
-    if ENABLE_SELENIUM:
-        write_log(LOG_FILE, "=== Scraping Eskom Tender Bulletin ===")
+    # Execute scrapers in parallel
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        # Submit all tasks
+        future_to_scraper = {
+            executor.submit(run_scraper, name, func): name 
+            for name, func in scraper_tasks
+        }
+        
         try:
-            with monitor.track("Eskom Tender Bulletin") as run:
-                from scrapers.eskom_direct import scrape_eskom_tenders
-                eskom_tenders = scrape_eskom_tenders()
-                run.tenders_found = len(eskom_tenders)
-            all_tenders.extend(eskom_tenders)
-            write_log(LOG_FILE, f"Eskom: {len(eskom_tenders)} tenders found")
-        except Exception as e:
-            log_error(LOG_FILE, f"Eskom tender bulletin scraper failed: {e}")
-            failed_sources.append("Eskom Tender Bulletin")
-
-    # Water Boards (Umgeni, Magalies, Lepelle)
-    write_log(LOG_FILE, "=== Scraping Water Boards ===")
-    try:
-        with monitor.track("Water Boards") as run:
-            wb_tenders = scrape_all_water_boards()
-            run.tenders_found = len(wb_tenders)
-        all_tenders.extend(wb_tenders)
-        write_log(LOG_FILE, f"Water Boards: {len(wb_tenders)} tenders found")
-    except Exception as e:
-        log_error(LOG_FILE, f"Water Board scraper failed: {e}")
-        failed_sources.append("Water Boards")
-
-    # SADC Region (Botswana, Namibia)
-    # write_log(LOG_FILE, "=== Scraping SADC Region ===")
-    # try:
-    #     with monitor.track("SADC Region") as run:
-    #         sadc_tenders = scrape_all_sadc()
-    #         run.tenders_found = len(sadc_tenders)
-    #     all_tenders.extend(sadc_tenders)
-    #     write_log(LOG_FILE, f"SADC Region: {len(sadc_tenders)} tenders found")
-    # except Exception as e:
-    #     log_error(LOG_FILE, f"SADC Region scraper failed: {e}")
-    #     failed_sources.append("SADC Region")
+            # Collect results as they complete
+            for future in as_completed(future_to_scraper, timeout=timeout):
+                scraper_name = future_to_scraper[future]
+                try:
+                    name, tenders, error = future.result()
+                    if error:
+                        failed_sources.append(name)
+                    else:
+                        all_tenders.extend(tenders)
+                except Exception as e:
+                    log_error(LOG_FILE, f"Unexpected error processing {scraper_name}: {e}")
+                    failed_sources.append(scraper_name)
+        except TimeoutError:
+            write_log(LOG_FILE, f"⚠️  Global scraping timeout ({timeout}s) reached", "WARNING")
+            # Cancel remaining futures
+            for future in future_to_scraper:
+                future.cancel()
     
     if failed_sources:
         write_log(LOG_FILE, f"Failed sources this run: {', '.join(sorted(set(failed_sources)))}", "WARNING")
-
+    
+    # NEW: Cross-Source Semantic Deduplication
+    if SEMANTIC_DEDUP_AVAILABLE and all_tenders:
+        before_count = len(all_tenders)
+        all_tenders, duplicate_info = filter_duplicates(
+            all_tenders,
+            semantic_threshold=DEDUPE_CONFIG["semantic_threshold"],
+            fuzzy_threshold=DEDUPE_CONFIG["fuzzy_threshold"],
+            date_window_days=DEDUPE_CONFIG["date_window_days"],
+            require_same_source=DEDUPE_CONFIG["require_same_source"]
+        )
+        if len(all_tenders) < before_count:
+            write_log(LOG_FILE, f"✂️  Removed {before_count - len(all_tenders)} semantic duplicates across sources")
+    
+    write_log(LOG_FILE, f"✅ Parallel scraping complete. Total tenders: {len(all_tenders)}")
     return all_tenders
 
 # ----------------------------------------------------------
@@ -213,10 +221,34 @@ def process_tenders(tenders):
     new_items = []
     excluded_count = 0
     
+    # Fetch recent tenders from DB for semantic comparison (avoid re-adding)
+    recent_db_tenders = db_writer.get_recent_tenders(limit=DEDUPE_CONFIG.get("limit_db_check", 200))
+    
     for t in tenders:
         try:
-            ref = t.get("ref", "NA")
+            ref = str(t.get("ref", "NA")).strip().upper()
             title = t.get("title", "")
+            
+            # 1. Exact Ref Check (DB Writer handles this, but we log it here)
+            if ref != "NA" and ref in [str(rt.get("ref")).upper() for rt in recent_db_tenders]:
+                write_log(LOG_FILE, f"[SKIP] {ref}: Already in database (exact ref)")
+                continue
+
+            # 2. Semantic Duplicate Check against Database
+            if SEMANTIC_DEDUP_AVAILABLE:
+                match = find_semantic_duplicate(
+                    t,
+                    recent_db_tenders,
+                    semantic_threshold=DEDUPE_CONFIG["semantic_threshold"],
+                    fuzzy_threshold=DEDUPE_CONFIG["fuzzy_threshold"],
+                    date_window_days=DEDUPE_CONFIG["date_window_days"],
+                    require_same_source=DEDUPE_CONFIG["require_same_source"]
+                )
+                if match and match.is_duplicate:
+                    write_log(LOG_FILE, f"[SKIP] {ref}: Semantic duplicate of {match.existing_ref} ({match.reason})")
+                    continue
+
+            description = t.get("description", title)
             description = t.get("description", title)
             client = t.get("client", "")
             category = t.get("category", "Unknown")
@@ -246,7 +278,21 @@ def process_tenders(tenders):
                 if PDF_ANALYZER_AVAILABLE and url and url.lower().endswith('.pdf'):
                     try:
                         t = add_pdf_analysis_to_tender(t)
-                        write_log(LOG_FILE, f"[PDF] Analyzed: {ref} - {len(t.get('pdf_analysis', {}).get('requirements', []))} requirements found")
+                        # NEW: Save analysis to DB
+                        if "pdf_analysis" in t:
+                            # Re-map the flat fields back to the structure save_pdf_analysis expects
+                            analysis_data = {
+                                "page_count": t.get("pdf_analysis", {}).get("page_count"),
+                                "word_count": t.get("pdf_analysis", {}).get("word_count"),
+                                "requirements": t.get("pdf_requirements", []),
+                                "deadlines": t.get("pdf_deadlines", []),
+                                "values": t.get("pdf_values", []),
+                                "contact": t.get("pdf_contact", {}),
+                                "text": t.get("pdf_text", "") # Assuming we might want to store more text later
+                            }
+                            db_writer.save_pdf_analysis(ref, analysis_data)
+                        
+                        write_log(LOG_FILE, f"[PDF] Analyzed: {ref} - {len(t.get('pdf_requirements', []))} requirements found")
                     except Exception as e:
                         log_error(LOG_FILE, f"PDF analysis failed for {ref}: {e}")
     
@@ -413,6 +459,13 @@ def save_outputs(new_items):
 # MAIN ENTRY POINT
 # ----------------------------------------------------------
 if __name__ == "__main__":
+    # Validate environment and configuration on startup
+    try:
+        validate_env_on_startup()
+    except Exception as e:
+        print(f"❌ Configuration error: {e}")
+        sys.exit(1)
+
     rotate_log_if_needed(LOG_FILE)
     
     write_log(LOG_FILE, "=" * 50)

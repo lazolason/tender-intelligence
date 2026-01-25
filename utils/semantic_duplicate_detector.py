@@ -390,7 +390,7 @@ def filter_duplicates(
     date_window_days: int = 7,
     require_same_source: bool = True,
     keep_first: bool = True,
-) -> Tuple[List[Dict], List[SemanticDuplicateMatch]]:
+) -> Tuple[List[Dict], List[Tuple[Dict, Dict, SemanticDuplicateMatch]]]:
     """
     Filter out duplicate tenders from a list
     
@@ -437,6 +437,12 @@ def filter_duplicates(
                     ref = tender.get('ref', '')
                     if ref:
                         seen_refs.add(ref)
+            else:
+                # No match found, this is a new tender
+                filtered.append(tender)
+                ref = tender.get('ref', '')
+                if ref:
+                    seen_refs.add(ref)
         
         return filtered, duplicates
     else:
