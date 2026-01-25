@@ -118,6 +118,7 @@ def _scrape_eskom_tenders_selenium(max_tenders):
 
         # Navigate to Eskom tender bulletin - use search page which has all opportunities
         # Use large page size to get all tenders at once (they have ~60-80 active tenders)
+        # Deep pagination strategy instead of search
         url = "https://tenderbulletin.eskom.co.za/search?pageSize=100&page=1"
         if not safe_driver_get(driver, url, driver_get_with_retry=driver_get_with_retry, log=logger):
             raise RuntimeError("Eskom Tender Bulletin: failed to load initial page")
@@ -137,7 +138,7 @@ def _scrape_eskom_tenders_selenium(max_tenders):
 
         # Scrape multiple pages
         page_num = 1
-        max_pages = 5  # Limit to prevent infinite loops
+        max_pages = 10  # Deep scrape
 
         while page_num <= max_pages and len(tenders) < max_tenders:
             print(f"   📄 Scraping page {page_num}...")
@@ -155,11 +156,7 @@ def _scrape_eskom_tenders_selenium(max_tenders):
                     page_source = driver.page_source
                     if "Current Tender" in page_source or "opportunity" in page_source.lower():
                         print(f"   Page contains tender information in HTML but not easily selectable")
-                        # Try extracting from page source with regex
-                        refs = re.findall(r'[A-Z]{2,}/\d{4}/[A-Z0-9]{2,}', page_source)
-                        if refs:
-                            print(f"   Found {len(set(refs))} reference numbers in page source: {set(refs)}")
-
+                    break
             except Exception as e:
                 print(f"   Error finding tender elements: {e}")
                 break
@@ -188,8 +185,6 @@ def _scrape_eskom_tenders_selenium(max_tenders):
                     # Skip if already have this tender
                     if any(t["ref"] == ref for t in tenders):
                         continue
-
-                    print(f"   Found ref: {ref}")
 
                     # Get title - usually first substantial text line
                     lines = element_text.split('\n')
@@ -254,7 +249,7 @@ def _scrape_eskom_tenders_selenium(max_tenders):
             if len(tenders) < max_tenders:
                 try:
                     page_num += 1
-                    next_url = f"https://tenderbulletin.eskom.co.za/search?pageSize=20&page={page_num}"
+                    next_url = f"https://tenderbulletin.eskom.co.za/search?pageSize=100&page={page_num}"
                     print(f"   Loading page {page_num}...")
                     if not safe_driver_get(driver, next_url, driver_get_with_retry=driver_get_with_retry, log=logger):
                         print(f"   ⚠️ Failed to load page {page_num}; stopping pagination")
@@ -290,6 +285,7 @@ def scrape_eskom_tenders(max_tenders=50, use_selenium_fallback=False, api_timeou
     """
     try:
         print(f"\n🔍 Scraping Eskom tenders from Eskom Tender Bulletin (API)...")
+        # Try API first as it's faster
         tenders = _scrape_eskom_tenders_api(max_tenders, timeout=api_timeout)
         print(f"✅ Eskom: {len(tenders)} tenders found\n")
         return tenders

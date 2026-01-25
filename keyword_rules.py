@@ -1,69 +1,142 @@
 """
-STRICT COMPETENCE RULES (PHASE 2)
-Aligned with Mexel competencies: Water Treatment & Thermal Efficiency.
+MEXEL THERMAL EFFICIENCY SERVICES (TES) - KEYWORD RULES
+Aligned with Mexel's core business: Thermal efficiency optimization through
+Mexel®432 application, IoT dosing, thermal monitoring, and M&V protocols.
+
+Target Industries:
+1. Power Generation (500MW+ condenser circuits)
+2. Mining & Smelters (furnace cooling, compressor loops)
+3. Critical HVAC (data centers, large commercial cooling)
 """
 
-# PROFILE A: THE PRODUCT (Automatic Match)
-# Specific chemical technologies or brand names.
+# PROFILE A: THE SERVICE (Automatic Match)
+# Mexel brand, core technologies, and unique service offerings
 STRONG_MATCH_KEYWORDS = [
+    # Brand & Product
     "mexel", "mexel 432", "mexel432", "mexsteam", "mexsteam 100",
     "film forming amine", "filming amine", "film forming agent", "ffa",
-    "scale inhibitor", "antiscalant", "anti-scalant",
-    "corrosion inhibitor", "corrosion barrier",
-    "oxygen scavenger",
-    "non-oxidizing biocide", "biodispersant",
-    "condensate polisher", "condensate polishing",
-    # Highly specific technical terms
-    "surfactant", "legionella", "asme ptc 12.2"
+    
+    # Core Service Metrics (unique to TES)
+    "condenser performance", "condenser efficiency",
+    "thermal efficiency", "heat rate",
+    "back pressure", "vacuum recovery",
+    "megawatt gain", "mw gain", "power gain",
+    
+    # Service Delivery
+    "iot dosing", "automated dosing", "precision dosing",
+    
+    # Validation & Standards
+    "asme ptc 12.2", "measurement and verification", "m&v protocol",
+    
+    # Data Center Specific
+    "pue", "power usage effectiveness",
+    "legionella control", "legionella compliance"
 ]
 
 # PROFILE B1: THE SYSTEM (Must be paired with an Action)
-# Specific industrial water systems.
+# Industrial cooling systems where Mexel provides efficiency services
 SYSTEM_KEYWORDS = [
-    "cooling tower", "cooling water", "cooling system", "closed loop",
-    "condenser", "condensor",
-    "boiler", "steam generator", "steam drum",
+    # Power Generation
+    "power plant", "power station", "generating unit", "generation facility",
+    "turbine condenser", "condenser", "condensor",
+    "cooling tower", "cooling water", "cooling system", "wet cooling", "wet-cooled",
+    "cooling tower", "cooling water", "cooling system", "wet cooling", "wet-cooled",
+    "closed loop", "circulating water",
+    
+    # Specific Sites (Critical for Matches without "Power Station")
+    "medupi", "matla", "grootvlei", "kusile", "kendal", "majuba", "tutuka", 
+    "arnot", "hendrina", "camden", "komati", "lethabo", "duvha",
+    
+    # Steam Systems
+    "boiler", "steam generator", "steam drum", "steam system",
     "feedwater", "feed water",
-    "heat exchanger", "chiller",
-    "clarifier", "raw water treatment", "effluent treatment",
-    "demineralisation", "demineralization", "reverse osmosis", "ro plant",
-    # Data center / critical infrastructure cooling
+    
+    # Heat Transfer Equipment
+    "heat exchanger", "chiller", "cooling coil",
+    
+    # Mining & Smelters
+    "smelter", "furnace", "furnace cooling",
+    "compressor", "compressor cooling",
+    
+    # Data Center / Critical HVAC
     "crac", "crah", "chr",  # Computer Room Air Conditioning/Handler
     "data center", "data centre",
     "computer room", "server room",
-    "precision cooling", "close control cooling"
+    "precision cooling", "close control cooling",
+    "mission critical cooling",
+    
+    # Generic Industrial (New)
+    "industrial system", "facility", "infrastructure"
 ]
 
 # PROFILE B2: THE ACTION (Must be paired with a System)
-# Relevant services or chemical applications.
+# Services and outcomes that Mexel delivers
 ACTION_KEYWORDS = [
-    "treatment", "chemical", "dosing", "cleaning", "descaling",
-    "efficiency", "fouling", "passivation", "preservation",
-    "water quality", "chemistry", "purification", "optimisation",
-    "optimization", "additive",
-    # Data center efficiency metrics
-    "pue", "power usage effectiveness",
-    "vacuum recovery", "thermal efficiency",
-    "condenser efficiency",
-    # Maintenance actions (Safe because they require a System pairing)
-    "maintenance", "repair", "servicing", "overhaul", "refurbishment"
+    # Efficiency & Performance
+    "efficiency", "thermal efficiency", "optimization", "optimisation",
+    "performance improvement", "performance restoration",
+    "efficiency improvement", "efficiency restoration",
+    
+    # Service Delivery
+    "dosing", "treatment", "application",
+    "monitoring", "performance tracking",
+    "service", "servicing",  # Added: captures service contracts
+    "maintenance", "operation",  # Added: power station O&M contracts
+    
+    # Supply & Installation (for dosing systems)
+    "supply", "delivery", "installation",
+    
+    # Problems Mexel Solves
+    "fouling", "scaling", "deposition",
+    "fouling prevention", "scale prevention",
+    "corrosion", "corrosion prevention",  # Added: relevant to cooling systems
+    
+    # Service Process
+    "baseline", "intervention", "restoration", "restore",
+    "verification", "validation",
+    "chemistry", "analysis",
+    
+    # Outcomes
+    "thermal performance", "heat transfer",
+    "capacity restoration", "capacity recovery",
+    "water quality", "water treatment",  # Added: cooling water quality
+    
+    # New Growth Actions
+    "retrofit", "refurbishment", "epc", "engineering", "chemical", "chemicals", "resin", "desulphurization", "fgd"
 ]
 
-# EXCLUSIONS (Refined)
-# Targeted exclusions for things that often get confused with water treatment.
-# NOTE: "hvac" removed - too broad, excludes data center CRAC/CRAH systems
+# EXCLUSIONS (Refined for TES Business)
+# Exclude tenders that are clearly outside Mexel's service scope
 NEGATIVE_KEYWORDS = [
+    # Construction & Infrastructure (not efficiency services)
     "construction of", "building of", "civil works",
     "structural steel", "paving", "road",
-    # Building HVAC (NOT data center precision cooling)
+    "dam construction", "hydroelectric",
+    
+    # Building HVAC (NOT industrial/data center cooling)
     "split unit", "office air conditioning", "building hvac", 
-    "building air conditioning", "ventilation",
-    "security service", "cleaning service", "garden service", "hygiene",
+    "building air conditioning", "residential hvac", "domestic",
+    
+    # Non-cooling Services
+    "security service", "cleaning service", "garden service",
+    "hygiene service",  # Keep this, but removed "general maintenance"
     "consulting engineer", "transaction advisor", "panel of",
     "vehicle", "fleet", "transport", "shuttle",
-    "hydroelectric", "dam construction",
-    "commissioning support", "resourcing", "personnel",
+    
+    # Electrical/Power Distribution (not thermal efficiency)
     "switchgear", "transformer", "substation", "transmission",
+    "electrical installation", "power distribution",
+    
+    # Water/Wastewater Treatment (not cooling efficiency)
+    "potable water", "drinking water", "water supply",
+    "sewage", "wastewater treatment",
     "waste removal", "refuse", "sludge removal",
-    "general building maintenance"
+    
+    # Staffing/HR (removed "commissioning support" - too broad)
+    "resourcing", "personnel",
+    "appointment of", "panel of service providers",
+    
+    # Office/Building Maintenance (not industrial)
+    "office furniture", "office equipment",
+    "painting", "plumbing", "carpentry"
 ]

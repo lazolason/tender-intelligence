@@ -3,7 +3,7 @@
 # ==========================================================
 
 import logging
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Any
 from datetime import datetime
 
 logger = logging.getLogger(__name__)
@@ -308,6 +308,46 @@ def send_push_notification(config: AlertConfig, tender: Dict, priority: str,
     # Placeholder for future implementation
     logger.info(f"Push notification for {tender.get('ref', 'N/A')}: Not yet implemented")
     return False
+
+
+# ==========================================================
+# SCRAPER HEALTH ALERTS
+# ==========================================================
+
+def send_scraper_health_alert(config: AlertConfig, source: str, metrics: Dict[str, Any]) -> bool:
+    """
+    Send alert about a failing scraper
+    """
+    if not config.is_enabled('slack'):
+        return False
+        
+    try:
+        from slack_sdk import WebClient
+        client = WebClient(token=config.slack_webhook)
+        
+        consecutive = metrics.get('consecutive_failures', 0)
+        last_error = metrics.get('error_message', 'No error message provided')
+        
+        message = {
+            'text': f"🚨 *Scraper Failure: {source}*",
+            'attachments': [
+                {
+                    'color': '#ff4757',
+                    'title': f"Circuit Open: {source}",
+                    'text': f"*Consecutive Failures:* {consecutive}\n"
+                             f"*Last Run:* {metrics.get('last_run', 'Unknown')}\n"
+                             f"*Error:* {last_error}",
+                    'footer': "Tender Intelligence Monitoring"
+                }
+            ],
+            'channel': config.slack_channels.get('all', '#tenders')
+        }
+        
+        response = client.chat_postMessage(**message)
+        return response['ok']
+    except Exception as e:
+        logger.error(f"Failed to send health alert for {source}: {e}")
+        return False
 
 
 # ==========================================================
