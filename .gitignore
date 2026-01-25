@@ -47,3 +47,6 @@ tools/chromedriver/
 
 # Config overrides
 mexel_config.json
+
+# Agent Internal Data
+.agent/
