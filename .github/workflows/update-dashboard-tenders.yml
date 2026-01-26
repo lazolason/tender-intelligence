@@ -119,23 +119,29 @@ jobs:
           fi
           .venv/bin/python tools/validate_dashboard_tenders_json.py --path vercel-dashboard/tenders.json --summary-path vercel-dashboard/public/summary.json
 
-          # Extract failures (if any) for notifications
-          .venv/bin/python - <<'PY'
-          import glob, json, os
-          failing = []
-          for p in glob.glob('artifacts/**/*.json', recursive=True):
-              try:
-                  with open(p,'r',encoding='utf-8') as f:
-                      payload = json.load(f)
-                  if isinstance(payload, dict) and payload.get('status') != 'success':
-                      failing.append(payload.get('scraper') or os.path.basename(p))
-              except Exception:
-                  continue
-          with open(os.environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as f:
-              f.write(f\"has_failures={'true' if failing else 'false'}\\n\")
-              f.write(f\"failing={','.join(failing)}\\n\")
-          PY
 
+    # Extract failures (if any) for notifications
+        python3 << 'EOF'
+        import glob
+        import json
+        import os
+
+        failing = []
+        for p in glob.glob('artifacts/**/*.json', recursive=True):
+            try:
+                    with open(p, 'r', encoding='utf-8') as f:
+                                payload = json.load(f)
+                                            if isinstance(payload, dict) and payload.get('status') != 'success':
+                                                            failing.append(payload.get('scraper') or os.path.basename(p))
+                                                                except Exception:
+                                                                        continue
+
+                                                                        output_file = os.environ.get('GITHUB_OUTPUT', '')
+                                                                        if output_file:
+                                                                            with open(output_file, 'a', encoding='utf-8') as f:
+                                                                                    f.write(f"has_failures={'true' if failing else 'false'}\n")
+                                                                                            f.write(f"failing={','.join(failing)}\n")
+                                                                                            EOF
       - name: Commit and push if changed
         run: |
           if git diff --quiet -- vercel-dashboard/tenders.json vercel-dashboard/public/; then
