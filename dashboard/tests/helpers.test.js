@@ -8,7 +8,7 @@ import { escapeHtml, normalizeText, debounce, throttle, delay } from '../js/util
 describe('Helper Functions', () => {
   describe('escapeHtml', () => {
     it('should escape HTML special characters', () => {
-      expect(escapeHtml('<script>alert("xss")</script>')).toBe('<script>alert("xss")</script>');
+      expect(escapeHtml('<script>alert("xss")</script>')).toBe('&lt;script&gt;alert(&quot;xss&quot;)&lt;/script&gt;');
     });
 
     it('should handle null and undefined', () => {

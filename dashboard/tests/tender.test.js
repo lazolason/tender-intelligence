@@ -52,22 +52,42 @@ describe('Tender Functions', () => {
   describe('computeDecision', () => {
     it('should return BID for high-scoring tenders', () => {
       const tender = {
+        priority: 'HIGH',
         scores: {
           composite: 8.5
         }
       };
       const decision = computeDecision(tender);
-      expect(decision).toBe('BID');
+      expect(decision.label).toBe('Bid');
     });
 
-    it('should return SKIP for low-scoring tenders', () => {
+    it('should return No-Bid for low-scoring tenders', () => {
       const tender = {
+        priority: 'LOW',
         scores: {
           composite: 2.5
         }
       };
       const decision = computeDecision(tender);
-      expect(decision).toBe('SKIP');
+      expect(decision.label).toBe('No-Bid');
+    });
+
+    it('should use top-level score when nested scores are missing', () => {
+      const tender = {
+        priority: 'HIGH',
+        score: 8.2
+      };
+      const decision = computeDecision(tender);
+      expect(decision.label).toBe('Bid');
+    });
+
+    it('should use top-level composite_score when nested scores are missing', () => {
+      const tender = {
+        priority: 'HIGH',
+        composite_score: 8.1
+      };
+      const decision = computeDecision(tender);
+      expect(decision.label).toBe('Bid');
     });
   });
 

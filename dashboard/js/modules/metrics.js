@@ -2,8 +2,7 @@
  * Dashboard metrics and statistics
  */
 
-import { state } from './config.js';
-import { getCompany, isTenderActive, getPriority, getTenderCompanyScope } from './tender.js';
+import { isTenderActive, getPriority, getTenderCompanyScope } from './tender.js';
 import { setTextById } from '../utils/helpers.js';
 
 /**

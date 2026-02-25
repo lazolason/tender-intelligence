@@ -2,7 +2,7 @@
  * Analytics and charting for Tender Intelligence Dashboard
  */
 
-import { state, setAnalyticsInitialized, getAnalyticsInitTimer, setAnalyticsInitTimer } from './config.js';
+import { state, setAnalyticsInitialized } from './config.js';
 import { setTextOrDash, setNumberOrDash } from '../utils/helpers.js';
 
 /**

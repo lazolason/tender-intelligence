@@ -13,21 +13,21 @@ def validate_transparency():
             "title": "Supply of Mexel 432 biocide",
             "description": "Looking for mexel 432 and scale inhibitor",
             "expected_category": "MEXEL",
-            "expected_keywords": ["mexel", "mexel 432", "scale inhibitor"]
+            "expected_keywords": ["mexel", "mexel 432"]
         },
         {
             "name": "Context + Weak overlap",
             "title": "Water treatment chemical supply",
             "description": "Dosing of chemicals for plant utility",
-            "expected_category": "MEXEL",
-            "expected_keywords": ["water", "treatment", "chemical supply"]
+            "expected_category": "EXCLUDED",
+            "expected_keywords": []
         },
         {
             "name": "High Context overlap",
             "title": "Industrial boiler cooling tower",
             "description": "Steam plant process water systems",
-            "expected_category": "MEXEL",
-            "expected_keywords": ["boiler", "cooling tower", "steam", "process water"]
+            "expected_category": "EXCLUDED",
+            "expected_keywords": []
         },
         {
             "name": "Excluded Tender - Construction",

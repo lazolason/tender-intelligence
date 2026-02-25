@@ -539,7 +539,6 @@ export function toggleWatchlist(ref) {
         return ok;
     }
 
-    const mode = getWatchlistMode();
     let actor = getCurrentUsername();
     if (!actor) actor = ensureUsername();
     if (!actor) return false;

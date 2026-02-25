@@ -1,11 +1,354 @@
 {
   "meta": {
-    "last_sync": "2026-01-24 19:43",
+    "last_sync": "2026-02-25 13:33",
     "next_run": "Daily 08:00",
-    "tender_count": 2,
-    "last_update": "2026-01-24T19:43:31.644953"
+    "tender_count": 20,
+    "last_update": "2026-02-25T13:33:50.577595",
+    "bid_statistics": {
+      "total_bids": 0,
+      "wins": 0,
+      "win_rate": 0
+    }
   },
   "tenders": [
+    {
+      "ref": "RFQJW017KM26",
+      "title": "Piston Compressor Dewatering",
+      "description": "Category: Services: General. Piston Compressor Dewatering",
+      "client": "Johannesburg Water",
+      "priority": "MEDIUM",
+      "score": 6.2,
+      "category": "Mexel",
+      "source": "Johannesburg Water",
+      "url": "https://www.johannesburgwater.co.za/tenders/",
+      "company": "Mexel",
+      "closing_date": "2026-03-02",
+      "matched_keywords": [
+        "compressor",
+        "service"
+      ]
+    },
+    {
+      "ref": "E1357GXMPLETcancel",
+      "title": "CANCELLATION - CALIBRATION, SERVICE AND AD HOC MAINTENANCE OF CHEMICAL SERVICES LABORATORY EQUIPMENT",
+      "description": "CANCELLATION - CALIBRATION, SERVICE AND AD HOC MAINTENANCE OF CHEMICAL SERVICES LABORATORY EQUIPMENT FOR A PERIOD OF FIVE (5) YEARS AT LETHABO POWER STATION",
+      "client": "Eskom",
+      "priority": "HIGH",
+      "score": 8.2,
+      "category": "Mexel",
+      "source": "Eskom",
+      "url": "https://tenderbulletin.eskom.co.za/tender/93725",
+      "company": "Mexel",
+      "closing_date": "2026-12-03T11:00:00",
+      "matched_keywords": [
+        "power station",
+        "chemical",
+        "service",
+        "maintenance",
+        "lethabo"
+      ]
+    },
+    {
+      "ref": "E2204GXGPLET",
+      "title": "RE-ISSUE - Supply and delivery of bearings on an as and when required basis for a period of 5 years ",
+      "description": "Supply and delivery of bearings on an as and when required basis for a period of 5 years at Lethabo power station",
+      "client": "Eskom",
+      "priority": "HIGH",
+      "score": 8.2,
+      "category": "Mexel",
+      "source": "Eskom",
+      "url": "https://tenderbulletin.eskom.co.za/tender/93633",
+      "company": "Mexel",
+      "closing_date": "2026-02-17T10:00:00",
+      "matched_keywords": [
+        "supply",
+        "lethabo",
+        "delivery",
+        "power station"
+      ]
+    },
+    {
+      "ref": "E2228GXGPLET",
+      "title": "Supply and Delivery of Steel to Lethabo Power Station for a five (5) year period on an \u201cas and when ",
+      "description": "Supply and Delivery of Steel to Lethabo Power Station for a five (5) year period on an \u201cas and when required\u201d basis.",
+      "client": "Eskom",
+      "priority": "HIGH",
+      "score": 8.2,
+      "category": "Mexel",
+      "source": "Eskom",
+      "url": "https://tenderbulletin.eskom.co.za/tender/93638",
+      "company": "Mexel",
+      "closing_date": "2026-03-17T10:00:00",
+      "matched_keywords": [
+        "supply",
+        "lethabo",
+        "delivery",
+        "power station"
+      ]
+    },
+    {
+      "ref": "CANCELMWP2754GX",
+      "title": "Cancellation - Calibration, Service and ad hoc Maintenance of Chemical Services laboratory equipment",
+      "description": "Cancellation - Calibration, Service and ad hoc Maintenance of Chemical Services laboratory equipment at Lethabo Power Station",
+      "client": "Eskom",
+      "priority": "HIGH",
+      "score": 8.2,
+      "category": "Mexel",
+      "source": "Eskom",
+      "url": "https://tenderbulletin.eskom.co.za/tender/91555",
+      "company": "Mexel",
+      "closing_date": "2026-03-31T10:00:00",
+      "matched_keywords": [
+        "lethabo",
+        "chemical",
+        "maintenance",
+        "service",
+        "power station"
+      ]
+    },
+    {
+      "ref": "MPKUS10765GXRL",
+      "title": "The Provision of Facilities Maintenance Services at Kusile Power Station for a period of 5 years, \u201ca",
+      "description": "The Provision of Facilities Maintenance Services at Kusile Power Station for a period of 5 years, \u201cas and when required",
+      "client": "Eskom",
+      "priority": "HIGH",
+      "score": 8.2,
+      "category": "Mexel",
+      "source": "Eskom",
+      "url": "https://tenderbulletin.eskom.co.za/tender/91755",
+      "company": "Mexel",
+      "closing_date": "2029-11-10T10:00:00",
+      "matched_keywords": [
+        "kusile",
+        "maintenance",
+        "service",
+        "power station"
+      ]
+    },
+    {
+      "ref": "tE1051GCDMPKEN02",
+      "title": "Tender validity for Enquiry Number E1051GCDMPKEN for Kendal Power Station Continuous Ash Disposal Fa",
+      "description": "Tender validity for Enquiry Number E1051GCDMPKEN for Kendal Power Station Continuous Ash Disposal Facility (ADF) Project for Dust and Noise Monitoring has been extended.",
+      "client": "Eskom",
+      "priority": "HIGH",
+      "score": 8.8,
+      "category": "Mexel",
+      "source": "Eskom",
+      "url": "https://tenderbulletin.eskom.co.za/tender/92241",
+      "company": "Mexel",
+      "closing_date": "2026-03-02T00:00:00",
+      "matched_keywords": [
+        "facility",
+        "kendal",
+        "monitoring",
+        "power station"
+      ]
+    },
+    {
+      "ref": "MWP2760GXREGRET",
+      "title": "Regret letter - Supply and delivery of 1500CFM Mobile Diesel\nCompressor at Lethabo Power Station",
+      "description": "Regret letter - Supply and delivery of 1500CFM Mobile Diesel\nCompressor at Lethabo Power Station",
+      "client": "Eskom",
+      "priority": "HIGH",
+      "score": 8.2,
+      "category": "Mexel",
+      "source": "Eskom",
+      "url": "https://tenderbulletin.eskom.co.za/tender/92381",
+      "company": "Mexel",
+      "closing_date": "2026-12-31T10:00:00",
+      "matched_keywords": [
+        "lethabo",
+        "compressor",
+        "power station",
+        "supply",
+        "delivery"
+      ]
+    },
+    {
+      "ref": "BidsE1322GXPOU",
+      "title": "Names of Bidders - Routine service, Load testing and Ad Hoc repairs / Replacement of Lifting Machine",
+      "description": "Names of Bidders - Routine service, Load testing and Ad Hoc repairs / Replacement of Lifting Machinery and Lifting Equipment at Acacia, Ankerlig, Gariep, Palmiet, Port Rex and Vanderkloof Power Stations.",
+      "client": "Eskom",
+      "priority": "HIGH",
+      "score": 8.2,
+      "category": "Mexel",
+      "source": "Eskom",
+      "url": "https://tenderbulletin.eskom.co.za/tender/92485",
+      "company": "Mexel",
+      "closing_date": "2026-07-30T10:00:00",
+      "matched_keywords": [
+        "service",
+        "power station"
+      ]
+    },
+    {
+      "ref": "MPTUT11149GCancelled",
+      "title": "Refurbishment of Fuel Oil Pumps on an \u2018as and when required\u2019 basis at Tutuka Power Station for a per",
+      "description": "Refurbishment of Fuel Oil Pumps on an \u2018as and when required\u2019 basis at Tutuka Power Station for a period of 7 years - Tender Cancelled",
+      "client": "Eskom",
+      "priority": "HIGH",
+      "score": 8.2,
+      "category": "Mexel",
+      "source": "Eskom",
+      "url": "https://tenderbulletin.eskom.co.za/tender/92760",
+      "company": "Mexel",
+      "closing_date": "2026-09-30T10:00:00",
+      "matched_keywords": [
+        "refurbishment",
+        "tutuka",
+        "power station"
+      ]
+    },
+    {
+      "ref": "MPKEN11232PSRegret",
+      "title": "Kendal Power Station Continuous Ash Disposal Facility (ADF) Project for\nGround and Surface Water Mon",
+      "description": "Kendal Power Station Continuous Ash Disposal Facility (ADF) Project for\nGround and Surface Water Monitoring Services",
+      "client": "Eskom",
+      "priority": "HIGH",
+      "score": 8.8,
+      "category": "Mexel",
+      "source": "Eskom",
+      "url": "https://tenderbulletin.eskom.co.za/tender/93144",
+      "company": "Mexel",
+      "closing_date": "2026-06-30T10:00:00",
+      "matched_keywords": [
+        "monitoring",
+        "service",
+        "power station",
+        "kendal",
+        "facility"
+      ]
+    },
+    {
+      "ref": "E1725GXMPARNbidders",
+      "title": "Publication of names of bidders in respect of advertised competitive bids for supply and delivery of",
+      "description": "Publication of names of bidders in respect of advertised competitive bids for supply and delivery of pipes and fittings on an as and when required basis at Arnot Power Station for the period of 3 years.",
+      "client": "Eskom",
+      "priority": "HIGH",
+      "score": 8.2,
+      "category": "Mexel",
+      "source": "Eskom",
+      "url": "https://tenderbulletin.eskom.co.za/tender/93202",
+      "company": "Mexel",
+      "closing_date": "2026-02-28T23:30:00",
+      "matched_keywords": [
+        "supply",
+        "arnot",
+        "delivery",
+        "power station"
+      ]
+    },
+    {
+      "ref": "E2496GXMPMAJ",
+      "title": "Service and Calibration of Viscometer at Majuba Power Station",
+      "description": "Service and Calibration of Viscometer at Majuba Power Station",
+      "client": "Eskom",
+      "priority": "HIGH",
+      "score": 8.2,
+      "category": "Mexel",
+      "source": "Eskom",
+      "url": "https://tenderbulletin.eskom.co.za/tender/93209",
+      "company": "Mexel",
+      "closing_date": "2026-03-06T10:00:00",
+      "matched_keywords": [
+        "majuba",
+        "service",
+        "power station"
+      ]
+    },
+    {
+      "ref": "E2493GXMPMAJ",
+      "title": "The service of Maintenance of shredder machine at Majuba Power Station",
+      "description": "The service of Maintenance of shredder machine at Majuba Power Station",
+      "client": "Eskom",
+      "priority": "HIGH",
+      "score": 8.2,
+      "category": "Mexel",
+      "source": "Eskom",
+      "url": "https://tenderbulletin.eskom.co.za/tender/93221",
+      "company": "Mexel",
+      "closing_date": "2026-02-27T10:00:00",
+      "matched_keywords": [
+        "majuba",
+        "maintenance",
+        "service",
+        "power station"
+      ]
+    },
+    {
+      "ref": "E1284CTRTDR01",
+      "title": "FOR THE DESIGN, SUPPLY, DELIVERY, INSTALLATION AND COMMISSIONING OF A\nHYBRID WIND AND SOLAR PV MICRO",
+      "description": "FOR THE DESIGN, SUPPLY, DELIVERY, INSTALLATION AND COMMISSIONING OF A\nHYBRID WIND AND SOLAR PV MICROGRID RESEARCH FACILITY AT ESKOM\nRESEARCH, TESTING AND DEVELOPMENT (RT&D) FOR A PERIOD OF THREE (3)\nYEARS",
+      "client": "Eskom",
+      "priority": "HIGH",
+      "score": 8.2,
+      "category": "Mexel",
+      "source": "Eskom",
+      "url": "https://tenderbulletin.eskom.co.za/tender/93253",
+      "company": "Mexel",
+      "closing_date": "2026-03-20T10:00:00",
+      "matched_keywords": [
+        "supply",
+        "facility",
+        "delivery",
+        "installation"
+      ]
+    },
+    {
+      "ref": "E1819GXMPARNBIDDERS",
+      "title": "E1819GXMPARN NAMES OF BIDDERS FOR SUPPLY AND DELIVERY OF PLATER SHOP AND MACHINE SHOP SPARES AT ARNO",
+      "description": "E1819GXMPARN NAMES OF BIDDERS FOR SUPPLY AND DELIVERY OF PLATER SHOP AND MACHINE SHOP SPARES AT ARNOT POWER STATION AS AND WHEN REQUIRED FOR A PERIOD OF FIVE (5) YEARS",
+      "client": "Eskom",
+      "priority": "HIGH",
+      "score": 8.2,
+      "category": "Mexel",
+      "source": "Eskom",
+      "url": "https://tenderbulletin.eskom.co.za/tender/93430",
+      "company": "Mexel",
+      "closing_date": "2026-06-30T10:00:00",
+      "matched_keywords": [
+        "supply",
+        "arnot",
+        "delivery",
+        "power station"
+      ]
+    },
+    {
+      "ref": "E2226GXMPKUS",
+      "title": "Provision of C&I Cable pulling, installation, commissioning including Fibre Optic\nsplicing and Outag",
+      "description": "Provision of C&I Cable pulling, installation, commissioning including Fibre Optic\nsplicing and Outage scope of work on \u201cas and when required\u201d basis for the period of\n60 Months at Kusile Power Station",
+      "client": "Eskom",
+      "priority": "HIGH",
+      "score": 8.2,
+      "category": "Mexel",
+      "source": "Eskom",
+      "url": "https://tenderbulletin.eskom.co.za/tender/93620",
+      "company": "Mexel",
+      "closing_date": "2026-03-10T10:00:00",
+      "matched_keywords": [
+        "kusile",
+        "installation",
+        "power station"
+      ]
+    },
+    {
+      "ref": "E2220GCDLPMED",
+      "title": "Medupi Nitrogen Generating Plant, Integration of Hydrogen and Nitrogen Plants Scope of Work",
+      "description": "HYDROGEN PLANT\nHydrogen gas is used as a cooling medium in the turbine generators. This gas is used because of its\nthermal conductivity and very low-density properties. To meet the hydrogen requirements at Medupi Power\nStation, hydrogen shall be produced and stored on site. The gas produced shall be of high purity to ensure\nsafety and generator long term plant health.\nSafe plant operation must be",
+      "client": "Eskom",
+      "priority": "HIGH",
+      "score": 8.8,
+      "category": "Mexel",
+      "source": "Eskom",
+      "url": "https://tenderbulletin.eskom.co.za/tender/93625",
+      "company": "Mexel",
+      "closing_date": "2026-02-24T10:00:00",
+      "matched_keywords": [
+        "operation",
+        "medupi",
+        "power station"
+      ]
+    },
     {
       "ref": "NT001",
       "title": "Supply of Cooling Water Treatment Chemicals",

@@ -51,11 +51,20 @@ export function throttle(func, limitMs) {
 export function escapeHtml(value) {
     const s = (value ?? '').toString();
     return s
-        .replace(/&/g, '&')
-        .replace(/</g, '<')
-        .replace(/>/g, '>')
-        .replace(/"/g, '"')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
         .replace(/'/g, '&#039;');
+}
+
+/**
+ * Normalize text for matching/search
+ * @param {string} value - Input value
+ * @returns {string}
+ */
+export function normalizeText(value) {
+    return (value ?? '').toString().trim().toLowerCase().replace(/\s+/g, ' ');
 }
 
 /**

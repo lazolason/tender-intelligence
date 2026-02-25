@@ -22,6 +22,10 @@ def scrape_transnet():
     """
     Scrape tenders from Transnet
     Source: Transnet's official tender/RFQ portal
+    
+    NOTE: This is the PRIMARY implementation for Transnet scraping.
+    A secondary implementation exists in scrapers/soes.py:scrape_transnet()
+    for aggregation purposes. Use this file for direct Transnet scraping.
     """
     tenders = []
     

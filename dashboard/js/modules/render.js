@@ -2,7 +2,7 @@
  * Tender rendering and virtual scrolling
  */
 
-import { state, ITEM_HEIGHT, CHUNK_SIZE, BUFFER, VIEW_MODES } from './config.js';
+import { state, ITEM_HEIGHT, CHUNK_SIZE, BUFFER } from './config.js';
 import {
     getVirtualScrollContainer,
     getVirtualScrollTbody,
@@ -20,20 +20,20 @@ import {
     computeDecision,
     getStatusMeta
 } from './tender.js';
-import { escapeHtml, formatNiceDateTime } from '../utils/helpers.js';
+import { escapeHtml } from '../utils/helpers.js';
 import { getTenderAssignment, getTenderCurrentStatus, isTenderWatchlisted, toggleWatchlist, getCurrentUsername, getUnreadMentionCount, clearTenderAssignment, setTenderAssignment } from './storage.js';
-import { teamMembers, tenderLifecycleStatuses } from './config.js';
+import { teamMembers } from './config.js';
 
 /**
  * Create tender row element
  * @param {Object} item - Item with tender and classification
- * @param {number} idx - Index
+ * @param {number} _idx - Index
  * @returns {HTMLElement}
  */
-export function createTenderRow(item, idx) {
+export function createTenderRow(item, _idx) {
     const t = item.tender;
     const scores = t.scores || {};
-    const { relevance, categories, bidDecision } = item.classification;
+    const { relevance, categories } = item.classification;
     const title = t.title || '-';
     const source = t.source || '-';
     const company = getCompany(t) || '-';
@@ -142,10 +142,10 @@ export function createTenderRow(item, idx) {
 /**
  * Create tender card element
  * @param {Object} item - Item with tender and classification
- * @param {number} idx - Index
+ * @param {number} _idx - Index
  * @returns {HTMLElement}
  */
-export function createTenderCard(item, idx) {
+export function createTenderCard(item, _idx) {
     const t = item.tender;
     const scores = t.scores || {};
     const title = t.title || '-';
@@ -217,9 +217,9 @@ export function createTenderCard(item, idx) {
 /**
  * Render tender cards
  * @param {Array} classified - Classified tenders
- * @param {number} totalCount - Total count
+ * @param {number} _totalCount - Total count
  */
-export function renderTenderCards(classified, totalCount) {
+export function renderTenderCards(classified, _totalCount) {
     const grid = document.getElementById('tenderCardGrid');
     if (!grid) return;
     grid.innerHTML = '';

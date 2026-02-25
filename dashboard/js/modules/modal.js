@@ -18,23 +18,18 @@ import {
     setTenderAssignment,
     clearTenderAssignment,
     getTenderStatusHistory,
-    addTenderStatusHistory,
     getTenderCurrentStatus,
     setTenderLifecycleStatus,
     getTenderComments,
     saveTenderComments,
     getCurrentUsername,
     ensureUsername,
-    getMentionsStore,
     addMentionsForUsers,
     clearMentionsForTender,
     getUnreadMentionCount
 } from './storage.js';
 import {
     getCompany,
-    getPriority,
-    classifyTender,
-    computeDecision,
     getCountdownHtml,
     normalizeAttachments,
     getAttachmentIcon,

@@ -1,5 +1,5 @@
 import pytest
-from keyword_rules import STRONG_MATCH_KEYWORDS, SYSTEM_KEYWORDS, ACTION_KEYWORDS, NEGATIVE_KEYWORDS
+from keyword_rules import STRONG_MATCH_KEYWORDS, SYSTEM_KEYWORDS, ACTION_KEYWORDS, NEGATIVE_KEYWORDS, EXCLUDE_KEYWORDS
 
 def has_any(text, keywords):
     """Utility to check if any keyword appears in text (case-insensitive)."""
@@ -73,6 +73,7 @@ def test_hvac_removal_rationale():
 
 def test_data_center_keywords_present():
     """Verify that the new data center keywords are in the correct profiles."""
+    strong = [kw.lower() for kw in STRONG_MATCH_KEYWORDS]
     # Systems
     systems = [kw.lower() for kw in SYSTEM_KEYWORDS]
     assert "crac" in systems
@@ -80,8 +81,14 @@ def test_data_center_keywords_present():
     assert "data center" in systems
     assert "precision cooling" in systems
     
+    # Strong matches
+    assert "pue" in strong
+    assert "condenser efficiency" in strong
+
     # Actions
     actions = [kw.lower() for kw in ACTION_KEYWORDS]
-    assert "pue" in actions
     assert "thermal efficiency" in actions
-    assert "condenser efficiency" in actions
+
+def test_legacy_exclude_keywords_alias():
+    """Legacy imports should still resolve to the negative keyword list."""
+    assert EXCLUDE_KEYWORDS is NEGATIVE_KEYWORDS

@@ -2,16 +2,13 @@
  * UI initialization and event handling
  */
 
-import { config, state, VIEW_MODES, getInitialMeta } from './config.js';
+import { state, VIEW_MODES } from './config.js';
 import { debounce, throttle } from '../utils/helpers.js';
 import { getPreferredViewMode, setPreferredViewMode, getWatchlistMode, setWatchlistMode } from './storage.js';
 import {
-    getVirtualScrollContainer,
     setVirtualScrollContainer,
-    getVirtualScrollTbody,
     setVirtualScrollTbody,
     updateVisibleItems,
-    getVirtualLastKey,
     setVirtualLastKey
 } from './config.js';
 import {
@@ -20,10 +17,8 @@ import {
     resetTenderInfiniteList,
     showTenderSkeleton
 } from './render.js';
-import { getActiveWatchlist, updateWatchlistBadges, exportWatchlistCsv, addAllHighPriorityToWatchlist } from './storage.js';
-import { getFilteredTendersForExport } from './tender.js';
+import { updateWatchlistBadges, exportWatchlistCsv, addAllHighPriorityToWatchlist } from './storage.js';
 import { applyTenderPayload, refreshDashboardData } from './data.js';
-import { computeDashboardMetrics, updateDashboardStatsUI, renderDashboardSourceHealth, renderAutomationLogs, updateFooter } from './metrics.js';
 
 /**
  * Initialize theme toggle
@@ -222,7 +217,7 @@ export function initMobileGestures() {
                 try {
                     if (typeof refreshDashboardData === 'function') await refreshDashboardData();
                     else location.reload();
-                } catch (e) {
+                } catch {
                     // ignore
                 } finally {
                     refreshing = false;
@@ -618,8 +613,8 @@ async function syncPendingChanges() {
     for (const action of queue) {
         try {
             await executeAction(action);
-        } catch (e) {
-            console.warn('Failed to replay queued action:', action, e);
+        } catch (err) {
+            console.warn('Failed to replay queued action:', action, err);
         }
     }
 

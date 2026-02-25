@@ -29,6 +29,11 @@ def scrape_eskom():
     """
     Scrape tenders from Eskom
     Source: Eskom's official tender portal
+    
+    NOTE: This is the PRIMARY implementation for Eskom scraping.
+    A secondary implementation exists in scrapers/soes.py:scrape_eskom()
+    for aggregation purposes. Use this file for direct Eskom scraping.
+    For Eskom Direct API scraping, see scrapers/eskom_direct.py.
     """
     tenders = []
     

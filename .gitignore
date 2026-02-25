@@ -50,3 +50,23 @@ mexel_config.json
 
 # Agent Internal Data
 .agent/
+
+# Coverage reports
+.coverage
+.coverage.*
+htmlcov/
+*.cover
+
+# Pytest cache
+.pytest_cache/
+
+# Database (user data)
+data/tenders.db
+
+# Screenshots and temporary images
+dashboard_full.png
+dashboard_screenshot.png
+dashboard_preview_*.png
+
+# Temporary CSV exports
+eskom_tenders.csv

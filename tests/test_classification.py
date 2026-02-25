@@ -5,7 +5,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from classify_engine import classify_tender
 
-def test_classification():
+def run_classification_checks():
     test_cases = [
         {
             "title": "Supply of Mexel 432 oxidizing biocide",
@@ -86,6 +86,9 @@ def test_classification():
     
     return passed == len(test_cases)
 
+def test_classification():
+    assert run_classification_checks()
+
 if __name__ == "__main__":
-    success = test_classification()
+    success = run_classification_checks()
     sys.exit(0 if success else 1)

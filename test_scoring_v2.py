@@ -1,9 +1,37 @@
 import json
-import re
+from pathlib import Path
 
-# 1. Load the Configuration
-with open('mexel_config.json', 'r') as f:
-    config = json.load(f)
+
+def _load_config():
+    """Load optional local config, otherwise use safe built-in defaults."""
+    config_path = Path(__file__).with_name("mexel_config.json")
+    if config_path.exists():
+        with config_path.open("r", encoding="utf-8") as f:
+            return json.load(f)
+
+    return {
+        "keywords": {
+            "exclusions": [
+                "construction of", "civil works", "office furniture",
+                "security service", "cleaning service", "water supply"
+            ],
+            "tier_1_strong": [
+                "mexel", "mexel 432", "film forming amine",
+                "thermal efficiency", "pue"
+            ],
+            "tier_2_weak": [
+                "dosing", "treatment", "cooling tower", "boiler",
+                "condenser", "crac", "crah"
+            ],
+            "tier_3_context": [
+                "power station", "data center", "data centre",
+                "industrial", "cooling"
+            ],
+        }
+    }
+
+
+config = _load_config()
 
 def score_tender(title, description):
     """
@@ -36,10 +64,11 @@ def score_tender(title, description):
 
     return 0, "NO MATCH"
 
-# --- TEST BLOCK ---
-# Paste a fake SITA tender here to test
-test_title = "Refurbishment of HVAC and CRAC Units at SITA Centurion"
-test_desc = "Scope includes replacement of chilled water pumps and dosing systems."
+if __name__ == "__main__":
+    # --- TEST BLOCK ---
+    # Paste a fake SITA tender here to test
+    test_title = "Refurbishment of HVAC and CRAC Units at SITA Centurion"
+    test_desc = "Scope includes replacement of chilled water pumps and dosing systems."
 
-score, reason = score_tender(test_title, test_desc)
-print(f"Result: {score}/100 - {reason}")
+    score, reason = score_tender(test_title, test_desc)
+    print(f"Result: {score}/100 - {reason}")

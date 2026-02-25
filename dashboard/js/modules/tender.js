@@ -2,9 +2,9 @@
  * Tender classification, filtering, and rendering
  */
 
-import { state, teamMembers, tenderLifecycleStatuses, tenderFinalStatuses, ITEM_HEIGHT, CHUNK_SIZE, BUFFER } from './config.js';
-import { escapeHtml, formatNiceDateTime, parseFlexibleDate, formatBytes } from '../utils/helpers.js';
-import { getTenderAssignment, getTenderCurrentStatus, isTenderWatchlisted, toggleWatchlist, getTenderStatusHistory } from './storage.js';
+import { state, tenderLifecycleStatuses, CHUNK_SIZE } from './config.js';
+import { parseFlexibleDate } from '../utils/helpers.js';
+import { getTenderAssignment, getTenderCurrentStatus } from './storage.js';
 
 /**
  * Get company from tender
@@ -21,7 +21,14 @@ export function getCompany(t) {
  * @returns {string}
  */
 export function getPriority(t) {
-    return (t.priority || t.scores?.priority || "").toUpperCase();
+    const explicit = (t.priority || t.scores?.priority || "").toUpperCase();
+    if (explicit) return explicit;
+
+    const days = getDaysUntil(t?.closing_date);
+    if (days === null) return "";
+    if (days <= 3) return "HIGH";
+    if (days <= 7) return "MEDIUM";
+    return "LOW";
 }
 
 /**
@@ -38,7 +45,9 @@ export function getTenderCompanyScope(tender) {
     try {
         const relevance = classifyTender(t)?.relevance;
         if (relevance === 'Mexel') return relevance;
-    } catch (e) {}
+    } catch {
+        // Ignore classification errors and fall back to score-based scope.
+    }
 
     const scores = t.scores || {};
     const mexelSuit = Number(scores.mexel_suitability);
@@ -179,12 +188,15 @@ export function classifyTender(tender) {
  */
 export function computeDecision(tender) {
     const scores = tender.scores || {};
-    const fit = typeof scores.fit === 'number' ? scores.fit : 0;
-    const suitability = typeof scores.suitability === 'number'
-        ? scores.suitability
-        : (typeof scores.industry === 'number'
-            ? scores.industry
-            : (typeof scores.composite === 'number' ? scores.composite : 0));
+    const pickNumber = (...vals) => {
+        for (const v of vals) {
+            if (typeof v === 'number' && Number.isFinite(v)) return v;
+        }
+        return null;
+    };
+    const baseScore = pickNumber(scores.composite, tender.composite_score, tender.score);
+    const fit = pickNumber(scores.fit, tender.fit_score, baseScore, 0);
+    const suitability = pickNumber(scores.suitability, scores.industry, tender.industry_score, baseScore, 0);
 
     const priority = (tender.priority || scores.priority || 'LOW').toUpperCase();
     const scopeLabel = (tender.scope || tender.company_scope || tender.category || '').toString().toLowerCase();
@@ -373,7 +385,7 @@ export function getFilteredTendersForExport() {
         filtered = filtered.filter((t) => {
             try {
                 return classifyTender(t)?.relevance !== 'OutOfScope';
-            } catch (e) {
+            } catch {
                 return true;
             }
         });
@@ -498,7 +510,9 @@ export function smartSearchTenders(query, tenders) {
  */
 export function normalizeAttachments(tender) {
     const items = [];
-    const rawList = tender?.attachments || tender?.files || tender?.documents || [];
+    const rawList = Array.isArray(tender)
+        ? tender
+        : (tender?.attachments || tender?.files || tender?.documents || []);
 
     const pushItem = (name, url, size) => {
         if (!url) return;
@@ -530,7 +544,7 @@ export function normalizeAttachments(tender) {
     }
 
     // If tender.url is a direct document link (commonly PDF), include as main document
-    const url = tender?.url;
+    const url = Array.isArray(tender) ? null : tender?.url;
     if (url && typeof url === 'string') {
         const isDoc = /\.(pdf|doc|docx|xls|xlsx|zip)(\?|#|$)/i.test(url);
         const already = items.some((it) => it.url === url);

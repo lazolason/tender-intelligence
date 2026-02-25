@@ -1,1 +1,787 @@
-[]
+{
+    "meta": {
+        "last_sync": "2026-02-25 13:33",
+        "next_run": "Daily 08:00"
+    },
+    "tenders": [
+        {
+            "ref": "E1357GXMPLETcancel",
+            "source": "Eskom",
+            "url": "https://tenderbulletin.eskom.co.za/tender/93725",
+            "title": "CANCELLATION - CALIBRATION, SERVICE AND AD HOC MAINTENANCE OF CHEMICAL SERVICES LABORATORY EQUIPMENT",
+            "short_title": "CANCELLATION - CALIBRATION, SERVICE AND AD HOC MAI",
+            "description": "CANCELLATION - CALIBRATION, SERVICE AND AD HOC MAINTENANCE OF CHEMICAL SERVICES LABORATORY EQUIPMENT FOR A PERIOD OF FIVE (5) YEARS AT LETHABO POWER STATION",
+            "client": "Eskom",
+            "category": "MEXEL",
+            "closing_date": "2026-12-03T11:00:00",
+            "scraped_date": "2026-02-25T13:25:48.657553",
+            "reason": "Competence Match (Profile B): power station + service",
+            "matched_keywords": [
+                "power station",
+                "chemical",
+                "service",
+                "maintenance",
+                "lethabo"
+            ],
+            "scores": {
+                "fit_score": 7,
+                "fit_reasons": [
+                    "Mexel category match"
+                ],
+                "fit_grade": "B",
+                "industry_score": 10,
+                "industry_matched": "Power",
+                "industry_grade": "A",
+                "mexel_suitability": 1,
+                "mexel_fit": "Weak",
+                "composite": 8.2,
+                "composite_score": 8.2,
+                "priority": "HIGH",
+                "recommendation": "\ud83d\udd25 PRIORITY BID - Strong fit, pursue immediately"
+            }
+        },
+        {
+            "ref": "RFQJW017KM26",
+            "title": "Piston Compressor Dewatering",
+            "description": "Category: Services: General. Piston Compressor Dewatering",
+            "client": "Johannesburg Water",
+            "closing_date": "2026-03-02",
+            "advertised": "02/23/2026",
+            "category": "MEXEL",
+            "short_title": "Piston_Compressor_Dewatering",
+            "reason": "Competence Match (Profile B): compressor + service",
+            "source": "Johannesburg Water",
+            "url": "https://www.johannesburgwater.co.za/tenders/",
+            "duplicate_refs": [
+                "RFQJW017KM26"
+            ],
+            "duplicate_match_info": {
+                "similarity": 1.0,
+                "match_type": "exact",
+                "reason": "Exact ref match",
+                "duplicate_source": "Johannesburg Water"
+            },
+            "matched_keywords": [
+                "compressor",
+                "service"
+            ],
+            "scores": {
+                "fit_score": 7,
+                "fit_reasons": [
+                    "Mexel category match"
+                ],
+                "fit_grade": "B",
+                "industry_score": 5,
+                "industry_matched": "General",
+                "industry_grade": "C",
+                "mexel_suitability": 1,
+                "mexel_fit": "Weak",
+                "composite": 6.2,
+                "composite_score": 6.2,
+                "priority": "MEDIUM",
+                "recommendation": "\u2705 RECOMMENDED - Good opportunity, prepare bid"
+            }
+        },
+        {
+            "ref": "CANCELMWP2754GX",
+            "source": "Eskom",
+            "url": "https://tenderbulletin.eskom.co.za/tender/91555",
+            "title": "Cancellation - Calibration, Service and ad hoc Maintenance of Chemical Services laboratory equipment",
+            "short_title": "Cancellation - Calibration, Service and ad hoc Mai",
+            "description": "Cancellation - Calibration, Service and ad hoc Maintenance of Chemical Services laboratory equipment at Lethabo Power Station",
+            "client": "Eskom",
+            "category": "MEXEL",
+            "closing_date": "2026-03-31T10:00:00",
+            "scraped_date": "2026-02-13T14:37:55.457773",
+            "reason": "Competence Match (Profile B): power station + service",
+            "duplicate_refs": [
+                "CANCELMWP2754GX"
+            ],
+            "duplicate_match_info": {
+                "similarity": 1.0,
+                "match_type": "exact",
+                "reason": "Exact ref match",
+                "duplicate_source": "Eskom"
+            },
+            "matched_keywords": [
+                "lethabo",
+                "chemical",
+                "maintenance",
+                "service",
+                "power station"
+            ],
+            "scores": {
+                "fit_score": 7,
+                "fit_reasons": [
+                    "Mexel category match"
+                ],
+                "fit_grade": "B",
+                "industry_score": 10,
+                "industry_matched": "Power",
+                "industry_grade": "A",
+                "mexel_suitability": 1,
+                "mexel_fit": "Weak",
+                "composite": 8.2,
+                "composite_score": 8.2,
+                "priority": "HIGH",
+                "recommendation": "\ud83d\udd25 PRIORITY BID - Strong fit, pursue immediately"
+            }
+        },
+        {
+            "ref": "MPKUS10765GXRL",
+            "source": "Eskom",
+            "url": "https://tenderbulletin.eskom.co.za/tender/91755",
+            "title": "The Provision of Facilities Maintenance Services at Kusile Power Station for a period of 5 years, \u201ca",
+            "short_title": "The Provision of Facilities Maintenance Services a",
+            "description": "The Provision of Facilities Maintenance Services at Kusile Power Station for a period of 5 years, \u201cas and when required",
+            "client": "Eskom",
+            "category": "MEXEL",
+            "closing_date": "2029-11-10T10:00:00",
+            "scraped_date": "2026-02-13T14:37:55.457862",
+            "reason": "Competence Match (Profile B): power station + service",
+            "duplicate_refs": [
+                "MPKUS10765GXRL"
+            ],
+            "duplicate_match_info": {
+                "similarity": 1.0,
+                "match_type": "exact",
+                "reason": "Exact ref match",
+                "duplicate_source": "Eskom"
+            },
+            "matched_keywords": [
+                "kusile",
+                "maintenance",
+                "service",
+                "power station"
+            ],
+            "scores": {
+                "fit_score": 7,
+                "fit_reasons": [
+                    "Mexel category match"
+                ],
+                "fit_grade": "B",
+                "industry_score": 10,
+                "industry_matched": "Power",
+                "industry_grade": "A",
+                "mexel_suitability": 0,
+                "mexel_fit": "Weak",
+                "composite": 8.2,
+                "composite_score": 8.2,
+                "priority": "HIGH",
+                "recommendation": "\ud83d\udd25 PRIORITY BID - Strong fit, pursue immediately"
+            }
+        },
+        {
+            "ref": "tE1051GCDMPKEN02",
+            "source": "Eskom",
+            "url": "https://tenderbulletin.eskom.co.za/tender/92241",
+            "title": "Tender validity for Enquiry Number E1051GCDMPKEN for Kendal Power Station Continuous Ash Disposal Fa",
+            "short_title": "Tender validity for Enquiry Number E1051GCDMPKEN f",
+            "description": "Tender validity for Enquiry Number E1051GCDMPKEN for Kendal Power Station Continuous Ash Disposal Facility (ADF) Project for Dust and Noise Monitoring has been extended.",
+            "client": "Eskom",
+            "category": "MEXEL",
+            "closing_date": "2026-03-02T00:00:00",
+            "scraped_date": "2026-02-13T14:37:55.457996",
+            "reason": "Competence Match (Profile B): power station + monitoring",
+            "matched_keywords": [
+                "facility",
+                "kendal",
+                "monitoring",
+                "power station"
+            ],
+            "scores": {
+                "fit_score": 8,
+                "fit_reasons": [
+                    "Mexel category match",
+                    "Mexel alignment (1 keywords)"
+                ],
+                "fit_grade": "A",
+                "industry_score": 10,
+                "industry_matched": "Power",
+                "industry_grade": "A",
+                "mexel_suitability": 2,
+                "mexel_fit": "Weak",
+                "composite": 8.8,
+                "composite_score": 8.8,
+                "priority": "HIGH",
+                "recommendation": "\ud83d\udd25 PRIORITY BID - Strong fit, pursue immediately"
+            }
+        },
+        {
+            "ref": "MWP2760GXREGRET",
+            "source": "Eskom",
+            "url": "https://tenderbulletin.eskom.co.za/tender/92381",
+            "title": "Regret letter - Supply and delivery of 1500CFM Mobile Diesel\nCompressor at Lethabo Power Station",
+            "short_title": "Regret letter - Supply and delivery of 1500CFM Mob",
+            "description": "Regret letter - Supply and delivery of 1500CFM Mobile Diesel\nCompressor at Lethabo Power Station",
+            "client": "Eskom",
+            "category": "MEXEL",
+            "closing_date": "2026-12-31T10:00:00",
+            "scraped_date": "2026-02-13T14:37:55.458164",
+            "reason": "Competence Match (Profile B): power station + supply",
+            "duplicate_refs": [
+                "MWP2760GXREGRET"
+            ],
+            "duplicate_match_info": {
+                "similarity": 1.0,
+                "match_type": "exact",
+                "reason": "Exact ref match",
+                "duplicate_source": "Eskom"
+            },
+            "matched_keywords": [
+                "lethabo",
+                "compressor",
+                "power station",
+                "supply",
+                "delivery"
+            ],
+            "scores": {
+                "fit_score": 7,
+                "fit_reasons": [
+                    "Mexel category match"
+                ],
+                "fit_grade": "B",
+                "industry_score": 10,
+                "industry_matched": "Power",
+                "industry_grade": "A",
+                "mexel_suitability": 0,
+                "mexel_fit": "Weak",
+                "composite": 8.2,
+                "composite_score": 8.2,
+                "priority": "HIGH",
+                "recommendation": "\ud83d\udd25 PRIORITY BID - Strong fit, pursue immediately"
+            }
+        },
+        {
+            "ref": "BidsE1322GXPOU",
+            "source": "Eskom",
+            "url": "https://tenderbulletin.eskom.co.za/tender/92485",
+            "title": "Names of Bidders - Routine service, Load testing and Ad Hoc repairs / Replacement of Lifting Machine",
+            "short_title": "Names of Bidders - Routine service, Load testing a",
+            "description": "Names of Bidders - Routine service, Load testing and Ad Hoc repairs / Replacement of Lifting Machinery and Lifting Equipment at Acacia, Ankerlig, Gariep, Palmiet, Port Rex and Vanderkloof Power Stations.",
+            "client": "Eskom",
+            "category": "MEXEL",
+            "closing_date": "2026-07-30T10:00:00",
+            "scraped_date": "2026-02-13T14:37:55.458212",
+            "reason": "Competence Match (Profile B): power station + service",
+            "matched_keywords": [
+                "service",
+                "power station"
+            ],
+            "scores": {
+                "fit_score": 7,
+                "fit_reasons": [
+                    "Mexel category match"
+                ],
+                "fit_grade": "B",
+                "industry_score": 10,
+                "industry_matched": "Power",
+                "industry_grade": "A",
+                "mexel_suitability": 0,
+                "mexel_fit": "Weak",
+                "composite": 8.2,
+                "composite_score": 8.2,
+                "priority": "HIGH",
+                "recommendation": "\ud83d\udd25 PRIORITY BID - Strong fit, pursue immediately"
+            }
+        },
+        {
+            "ref": "MPTUT11149GCancelled",
+            "source": "Eskom",
+            "url": "https://tenderbulletin.eskom.co.za/tender/92760",
+            "title": "Refurbishment of Fuel Oil Pumps on an \u2018as and when required\u2019 basis at Tutuka Power Station for a per",
+            "short_title": "Refurbishment of Fuel Oil Pumps on an \u2018as and when",
+            "description": "Refurbishment of Fuel Oil Pumps on an \u2018as and when required\u2019 basis at Tutuka Power Station for a period of 7 years - Tender Cancelled",
+            "client": "Eskom",
+            "category": "MEXEL",
+            "closing_date": "2026-09-30T10:00:00",
+            "scraped_date": "2026-02-13T14:37:55.458304",
+            "reason": "Competence Match (Profile B): power station + refurbishment",
+            "matched_keywords": [
+                "refurbishment",
+                "tutuka",
+                "power station"
+            ],
+            "scores": {
+                "fit_score": 7,
+                "fit_reasons": [
+                    "Mexel category match"
+                ],
+                "fit_grade": "B",
+                "industry_score": 10,
+                "industry_matched": "Power",
+                "industry_grade": "A",
+                "mexel_suitability": 0,
+                "mexel_fit": "Weak",
+                "composite": 8.2,
+                "composite_score": 8.2,
+                "priority": "HIGH",
+                "recommendation": "\ud83d\udd25 PRIORITY BID - Strong fit, pursue immediately"
+            }
+        },
+        {
+            "ref": "MPKEN11232PSRegret",
+            "source": "Eskom",
+            "url": "https://tenderbulletin.eskom.co.za/tender/93144",
+            "title": "Kendal Power Station Continuous Ash Disposal Facility (ADF) Project for\nGround and Surface Water Mon",
+            "short_title": "Kendal Power Station Continuous Ash Disposal Facil",
+            "description": "Kendal Power Station Continuous Ash Disposal Facility (ADF) Project for\nGround and Surface Water Monitoring Services",
+            "client": "Eskom",
+            "category": "MEXEL",
+            "closing_date": "2026-06-30T10:00:00",
+            "scraped_date": "2026-02-13T14:37:55.458391",
+            "reason": "Competence Match (Profile B): power station + monitoring",
+            "matched_keywords": [
+                "monitoring",
+                "service",
+                "power station",
+                "kendal",
+                "facility"
+            ],
+            "scores": {
+                "fit_score": 8,
+                "fit_reasons": [
+                    "Mexel category match",
+                    "Mexel alignment (1 keywords)"
+                ],
+                "fit_grade": "A",
+                "industry_score": 10,
+                "industry_matched": "Power",
+                "industry_grade": "A",
+                "mexel_suitability": 3,
+                "mexel_fit": "Moderate",
+                "composite": 8.8,
+                "composite_score": 8.8,
+                "priority": "HIGH",
+                "recommendation": "\ud83d\udd25 PRIORITY BID - Strong fit, pursue immediately"
+            }
+        },
+        {
+            "ref": "E1725GXMPARNbidders",
+            "source": "Eskom",
+            "url": "https://tenderbulletin.eskom.co.za/tender/93202",
+            "title": "Publication of names of bidders in respect of advertised competitive bids for supply and delivery of",
+            "short_title": "Publication of names of bidders in respect of adve",
+            "description": "Publication of names of bidders in respect of advertised competitive bids for supply and delivery of pipes and fittings on an as and when required basis at Arnot Power Station for the period of 3 years.",
+            "client": "Eskom",
+            "category": "MEXEL",
+            "closing_date": "2026-02-28T23:30:00",
+            "scraped_date": "2026-02-13T14:37:55.458434",
+            "reason": "Competence Match (Profile B): power station + supply",
+            "matched_keywords": [
+                "supply",
+                "arnot",
+                "delivery",
+                "power station"
+            ],
+            "scores": {
+                "fit_score": 7,
+                "fit_reasons": [
+                    "Mexel category match"
+                ],
+                "fit_grade": "B",
+                "industry_score": 10,
+                "industry_matched": "Power",
+                "industry_grade": "A",
+                "mexel_suitability": 0,
+                "mexel_fit": "Weak",
+                "composite": 8.2,
+                "composite_score": 8.2,
+                "priority": "HIGH",
+                "recommendation": "\ud83d\udd25 PRIORITY BID - Strong fit, pursue immediately"
+            }
+        },
+        {
+            "ref": "E2496GXMPMAJ",
+            "source": "Eskom",
+            "url": "https://tenderbulletin.eskom.co.za/tender/93209",
+            "title": "Service and Calibration of Viscometer at Majuba Power Station",
+            "short_title": "Service and Calibration of Viscometer at Majuba Po",
+            "description": "Service and Calibration of Viscometer at Majuba Power Station",
+            "client": "Eskom",
+            "category": "MEXEL",
+            "closing_date": "2026-03-06T10:00:00",
+            "scraped_date": "2026-02-13T14:37:55.458483",
+            "reason": "Competence Match (Profile B): power station + service",
+            "duplicate_refs": [
+                "E2496GXMPMAJ"
+            ],
+            "duplicate_match_info": {
+                "similarity": 1.0,
+                "match_type": "exact",
+                "reason": "Exact ref match",
+                "duplicate_source": "Eskom"
+            },
+            "matched_keywords": [
+                "majuba",
+                "service",
+                "power station"
+            ],
+            "scores": {
+                "fit_score": 7,
+                "fit_reasons": [
+                    "Mexel category match"
+                ],
+                "fit_grade": "B",
+                "industry_score": 10,
+                "industry_matched": "Power",
+                "industry_grade": "A",
+                "mexel_suitability": 0,
+                "mexel_fit": "Weak",
+                "composite": 8.2,
+                "composite_score": 8.2,
+                "priority": "HIGH",
+                "recommendation": "\ud83d\udd25 PRIORITY BID - Strong fit, pursue immediately"
+            }
+        },
+        {
+            "ref": "E2493GXMPMAJ",
+            "source": "Eskom",
+            "url": "https://tenderbulletin.eskom.co.za/tender/93221",
+            "title": "The service of Maintenance of shredder machine at Majuba Power Station",
+            "short_title": "The service of Maintenance of shredder machine at ",
+            "description": "The service of Maintenance of shredder machine at Majuba Power Station",
+            "client": "Eskom",
+            "category": "MEXEL",
+            "closing_date": "2026-02-27T10:00:00",
+            "scraped_date": "2026-02-13T14:37:55.458573",
+            "reason": "Competence Match (Profile B): power station + service",
+            "duplicate_refs": [
+                "E2493GXMPMAJ"
+            ],
+            "duplicate_match_info": {
+                "similarity": 1.0,
+                "match_type": "exact",
+                "reason": "Exact ref match",
+                "duplicate_source": "Eskom"
+            },
+            "matched_keywords": [
+                "majuba",
+                "maintenance",
+                "service",
+                "power station"
+            ],
+            "scores": {
+                "fit_score": 7,
+                "fit_reasons": [
+                    "Mexel category match"
+                ],
+                "fit_grade": "B",
+                "industry_score": 10,
+                "industry_matched": "Power",
+                "industry_grade": "A",
+                "mexel_suitability": 0,
+                "mexel_fit": "Weak",
+                "composite": 8.2,
+                "composite_score": 8.2,
+                "priority": "HIGH",
+                "recommendation": "\ud83d\udd25 PRIORITY BID - Strong fit, pursue immediately"
+            }
+        },
+        {
+            "ref": "E1284CTRTDR01",
+            "source": "Eskom",
+            "url": "https://tenderbulletin.eskom.co.za/tender/93253",
+            "title": "FOR THE DESIGN, SUPPLY, DELIVERY, INSTALLATION AND COMMISSIONING OF A\nHYBRID WIND AND SOLAR PV MICRO",
+            "short_title": "FOR THE DESIGN, SUPPLY, DELIVERY, INSTALLATION AND",
+            "description": "FOR THE DESIGN, SUPPLY, DELIVERY, INSTALLATION AND COMMISSIONING OF A\nHYBRID WIND AND SOLAR PV MICROGRID RESEARCH FACILITY AT ESKOM\nRESEARCH, TESTING AND DEVELOPMENT (RT&D) FOR A PERIOD OF THREE (3)\nYEARS",
+            "client": "Eskom",
+            "category": "MEXEL",
+            "closing_date": "2026-03-20T10:00:00",
+            "scraped_date": "2026-02-13T14:37:55.458613",
+            "reason": "Competence Match (Profile B): facility + supply",
+            "duplicate_refs": [
+                "E1284CTRTDR01"
+            ],
+            "duplicate_match_info": {
+                "similarity": 1.0,
+                "match_type": "exact",
+                "reason": "Exact ref match",
+                "duplicate_source": "Eskom"
+            },
+            "matched_keywords": [
+                "supply",
+                "facility",
+                "delivery",
+                "installation"
+            ],
+            "scores": {
+                "fit_score": 7,
+                "fit_reasons": [
+                    "Mexel category match"
+                ],
+                "fit_grade": "B",
+                "industry_score": 10,
+                "industry_matched": "Eskom",
+                "industry_grade": "A",
+                "mexel_suitability": 0,
+                "mexel_fit": "Weak",
+                "composite": 8.2,
+                "composite_score": 8.2,
+                "priority": "HIGH",
+                "recommendation": "\ud83d\udd25 PRIORITY BID - Strong fit, pursue immediately"
+            }
+        },
+        {
+            "ref": "E1819GXMPARNBIDDERS",
+            "source": "Eskom",
+            "url": "https://tenderbulletin.eskom.co.za/tender/93430",
+            "title": "E1819GXMPARN NAMES OF BIDDERS FOR SUPPLY AND DELIVERY OF PLATER SHOP AND MACHINE SHOP SPARES AT ARNO",
+            "short_title": "E1819GXMPARN NAMES OF BIDDERS FOR SUPPLY AND DELIV",
+            "description": "E1819GXMPARN NAMES OF BIDDERS FOR SUPPLY AND DELIVERY OF PLATER SHOP AND MACHINE SHOP SPARES AT ARNOT POWER STATION AS AND WHEN REQUIRED FOR A PERIOD OF FIVE (5) YEARS",
+            "client": "Eskom",
+            "category": "MEXEL",
+            "closing_date": "2026-06-30T10:00:00",
+            "scraped_date": "2026-02-13T14:37:55.458742",
+            "reason": "Competence Match (Profile B): power station + supply",
+            "duplicate_refs": [
+                "E1819GXMPARNBIDDERS"
+            ],
+            "duplicate_match_info": {
+                "similarity": 1.0,
+                "match_type": "exact",
+                "reason": "Exact ref match",
+                "duplicate_source": "Eskom"
+            },
+            "matched_keywords": [
+                "supply",
+                "arnot",
+                "delivery",
+                "power station"
+            ],
+            "scores": {
+                "fit_score": 7,
+                "fit_reasons": [
+                    "Mexel category match"
+                ],
+                "fit_grade": "B",
+                "industry_score": 10,
+                "industry_matched": "Power",
+                "industry_grade": "A",
+                "mexel_suitability": 0,
+                "mexel_fit": "Weak",
+                "composite": 8.2,
+                "composite_score": 8.2,
+                "priority": "HIGH",
+                "recommendation": "\ud83d\udd25 PRIORITY BID - Strong fit, pursue immediately"
+            }
+        },
+        {
+            "ref": "E2136DXLP",
+            "source": "Eskom",
+            "url": "https://tenderbulletin.eskom.co.za/tender/93501",
+            "title": "Advanced Metering Infrastructure (AMI) Programme over a period of 2 years:  To appoint a service pro",
+            "short_title": "Advanced Metering Infrastructure (AMI) Programme o",
+            "description": "Advanced Metering Infrastructure (AMI) Programme over a period of 2 years: The appointment of a panel of Engineering Procurement and Construction Service providers to manufacture, supply, deliver, and install smart meters, Data Concentrator Units, ready board retrofit, access covers, insulation piercing connectors, pole top split metering kiosks, secure pole mount DC kiosks & related accessories",
+            "client": "Eskom",
+            "category": "MEXEL",
+            "closing_date": "2026-02-16T10:00:00",
+            "scraped_date": "2026-02-13T14:37:55.458877",
+            "reason": "Competence Match (Profile B): infrastructure + service",
+            "duplicate_refs": [
+                "E2139DXLP",
+                "E2136DXLP"
+            ],
+            "description_enhanced": true,
+            "additional_urls": [
+                "https://tenderbulletin.eskom.co.za/tender/93561"
+            ],
+            "duplicate_match_info": {
+                "similarity": 0.9543615415159384,
+                "match_type": "semantic",
+                "reason": "Semantic similarity (0.95 >= 0.75)",
+                "duplicate_source": "Eskom"
+            },
+            "matched_keywords": [],
+            "scores": {
+                "fit_score": 5,
+                "fit_reasons": [],
+                "fit_grade": "C",
+                "industry_score": 10,
+                "industry_matched": "Eskom",
+                "industry_grade": "A",
+                "mexel_suitability": 0,
+                "mexel_fit": "Weak",
+                "composite": 7.0,
+                "composite_score": 7.0,
+                "priority": "HIGH",
+                "recommendation": "\u2705 RECOMMENDED - Good opportunity, prepare bid"
+            }
+        },
+        {
+            "ref": "E2226GXMPKUS",
+            "source": "Eskom",
+            "url": "https://tenderbulletin.eskom.co.za/tender/93620",
+            "title": "Provision of C&I Cable pulling, installation, commissioning including Fibre Optic\nsplicing and Outag",
+            "short_title": "Provision of C&I Cable pulling, installation, comm",
+            "description": "Provision of C&I Cable pulling, installation, commissioning including Fibre Optic\nsplicing and Outage scope of work on \u201cas and when required\u201d basis for the period of\n60 Months at Kusile Power Station",
+            "client": "Eskom",
+            "category": "MEXEL",
+            "closing_date": "2026-03-10T10:00:00",
+            "scraped_date": "2026-02-13T14:37:55.459435",
+            "reason": "Competence Match (Profile B): power station + installation",
+            "duplicate_refs": [
+                "E2226GXMPKUS"
+            ],
+            "duplicate_match_info": {
+                "similarity": 1.0,
+                "match_type": "exact",
+                "reason": "Exact ref match",
+                "duplicate_source": "Eskom"
+            },
+            "matched_keywords": [
+                "kusile",
+                "installation",
+                "power station"
+            ],
+            "scores": {
+                "fit_score": 7,
+                "fit_reasons": [
+                    "Mexel category match"
+                ],
+                "fit_grade": "B",
+                "industry_score": 10,
+                "industry_matched": "Power",
+                "industry_grade": "A",
+                "mexel_suitability": 0,
+                "mexel_fit": "Weak",
+                "composite": 8.2,
+                "composite_score": 8.2,
+                "priority": "HIGH",
+                "recommendation": "\ud83d\udd25 PRIORITY BID - Strong fit, pursue immediately"
+            }
+        },
+        {
+            "ref": "E2220GCDLPMED",
+            "source": "Eskom",
+            "url": "https://tenderbulletin.eskom.co.za/tender/93625",
+            "title": "Medupi Nitrogen Generating Plant, Integration of Hydrogen and Nitrogen Plants Scope of Work",
+            "short_title": "Medupi Nitrogen Generating Plant, Integration of H",
+            "description": "HYDROGEN PLANT\nHydrogen gas is used as a cooling medium in the turbine generators. This gas is used because of its\nthermal conductivity and very low-density properties. To meet the hydrogen requirements at Medupi Power\nStation, hydrogen shall be produced and stored on site. The gas produced shall be of high purity to ensure\nsafety and generator long term plant health.\nSafe plant operation must be",
+            "client": "Eskom",
+            "category": "MEXEL",
+            "closing_date": "2026-02-24T10:00:00",
+            "scraped_date": "2026-02-13T14:37:55.459512",
+            "reason": "Competence Match (Profile B): power station + operation",
+            "duplicate_refs": [
+                "E2220GCDLPMED"
+            ],
+            "duplicate_match_info": {
+                "similarity": 1.0,
+                "match_type": "exact",
+                "reason": "Exact ref match",
+                "duplicate_source": "Eskom"
+            },
+            "matched_keywords": [
+                "operation",
+                "medupi",
+                "power station"
+            ],
+            "scores": {
+                "fit_score": 8,
+                "fit_reasons": [
+                    "Mexel category match",
+                    "Mexel alignment (1 keywords)"
+                ],
+                "fit_grade": "A",
+                "industry_score": 10,
+                "industry_matched": "Power",
+                "industry_grade": "A",
+                "mexel_suitability": 3,
+                "mexel_fit": "Moderate",
+                "composite": 8.8,
+                "composite_score": 8.8,
+                "priority": "HIGH",
+                "recommendation": "\ud83d\udd25 PRIORITY BID - Strong fit, pursue immediately"
+            }
+        },
+        {
+            "ref": "E2204GXGPLET",
+            "source": "Eskom",
+            "url": "https://tenderbulletin.eskom.co.za/tender/93633",
+            "title": "RE-ISSUE - Supply and delivery of bearings on an as and when required basis for a period of 5 years ",
+            "short_title": "RE-ISSUE - Supply and delivery of bearings on an a",
+            "description": "Supply and delivery of bearings on an as and when required basis for a period of 5 years at Lethabo power station",
+            "client": "Eskom",
+            "category": "MEXEL",
+            "closing_date": "2026-02-17T10:00:00",
+            "scraped_date": "2026-02-13T14:37:55.459782",
+            "reason": "Competence Match (Profile B): power station + supply",
+            "duplicate_refs": [
+                "E2204GXGPLET"
+            ],
+            "duplicate_match_info": {
+                "similarity": 1.0,
+                "match_type": "exact",
+                "reason": "Exact ref match",
+                "duplicate_source": "Eskom"
+            },
+            "matched_keywords": [
+                "supply",
+                "lethabo",
+                "delivery",
+                "power station"
+            ],
+            "scores": {
+                "fit_score": 7,
+                "fit_reasons": [
+                    "Mexel category match"
+                ],
+                "fit_grade": "B",
+                "industry_score": 10,
+                "industry_matched": "Power",
+                "industry_grade": "A",
+                "mexel_suitability": 0,
+                "mexel_fit": "Weak",
+                "composite": 8.2,
+                "composite_score": 8.2,
+                "priority": "HIGH",
+                "recommendation": "\ud83d\udd25 PRIORITY BID - Strong fit, pursue immediately"
+            }
+        },
+        {
+            "ref": "E2228GXGPLET",
+            "source": "Eskom",
+            "url": "https://tenderbulletin.eskom.co.za/tender/93638",
+            "title": "Supply and Delivery of Steel to Lethabo Power Station for a five (5) year period on an \u201cas and when ",
+            "short_title": "Supply and Delivery of Steel to Lethabo Power Stat",
+            "description": "Supply and Delivery of Steel to Lethabo Power Station for a five (5) year period on an \u201cas and when required\u201d basis.",
+            "client": "Eskom",
+            "category": "MEXEL",
+            "closing_date": "2026-03-17T10:00:00",
+            "scraped_date": "2026-02-13T14:37:55.459870",
+            "reason": "Competence Match (Profile B): power station + supply",
+            "duplicate_refs": [
+                "E2228GXGPLET"
+            ],
+            "duplicate_match_info": {
+                "similarity": 1.0,
+                "match_type": "exact",
+                "reason": "Exact ref match",
+                "duplicate_source": "Eskom"
+            },
+            "matched_keywords": [
+                "supply",
+                "lethabo",
+                "delivery",
+                "power station"
+            ],
+            "scores": {
+                "fit_score": 7,
+                "fit_reasons": [
+                    "Mexel category match"
+                ],
+                "fit_grade": "B",
+                "industry_score": 10,
+                "industry_matched": "Power",
+                "industry_grade": "A",
+                "mexel_suitability": 0,
+                "mexel_fit": "Weak",
+                "composite": 8.2,
+                "composite_score": 8.2,
+                "priority": "HIGH",
+                "recommendation": "\ud83d\udd25 PRIORITY BID - Strong fit, pursue immediately"
+            }
+        }
+    ]
+}

@@ -15,6 +15,7 @@ STRONG_MATCH_KEYWORDS = [
     # Brand & Product
     "mexel", "mexel 432", "mexel432", "mexsteam", "mexsteam 100",
     "film forming amine", "filming amine", "film forming agent", "ffa",
+    "antiscalant", "oxidizing biocide", "surfactant",
     
     # Core Service Metrics (unique to TES)
     "condenser performance", "condenser efficiency",
@@ -53,6 +54,7 @@ SYSTEM_KEYWORDS = [
     
     # Heat Transfer Equipment
     "heat exchanger", "chiller", "cooling coil",
+    "reverse osmosis", "ro system",
     
     # Mining & Smelters
     "smelter", "furnace", "furnace cooling",
@@ -138,5 +140,10 @@ NEGATIVE_KEYWORDS = [
     
     # Office/Building Maintenance (not industrial)
     "office furniture", "office equipment",
-    "painting", "plumbing", "carpentry"
+    "painting", "plumbing", "carpentry",
+    # Generic maintenance-only boiler work tends to be mechanical, not TES chemistry scope
+    "boiler maintenance"
 ]
+
+# Backward compatibility for legacy scripts/tests.
+EXCLUDE_KEYWORDS = NEGATIVE_KEYWORDS

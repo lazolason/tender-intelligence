@@ -276,9 +276,15 @@ def scrape_joburg_water():
 
 # ----------------------------------------------------------
 # TRANSNET - Uses eTenders (etenders.gov.za)
+# NOTE: This is an AGGREGATION implementation. For direct scraping,
+# use scrapers/transnet.py:scrape_transnet() instead.
 # ----------------------------------------------------------
 def scrape_transnet():
-    """Scrape Transnet tenders from eTenders portal"""
+    """Scrape Transnet tenders from eTenders portal
+    
+    NOTE: This is an AGGREGATION implementation for SOE aggregation.
+    Primary implementation: scrapers/transnet.py:scrape_transnet()
+    """
     tenders = []
     
     # Transnet uses the National Treasury eTenders portal
@@ -339,9 +345,19 @@ def scrape_transnet():
 
 # ----------------------------------------------------------
 # ESKOM - Multiple URL strategies
+# NOTE: This is an AGGREGATION implementation that delegates to
+# scrapers/eskom_direct.py. For direct scraping, use:
+# - scrapers/eskom.py:scrape_eskom() for eTenders-based scraping
+# - scrapers/eskom_direct.py:scrape_eskom_tenders() for API scraping
 # ----------------------------------------------------------
 def scrape_eskom():
-    """Scrape Eskom tenders"""
+    """Scrape Eskom tenders
+    
+    NOTE: This is an AGGREGATION implementation for SOE aggregation.
+    Primary implementations:
+    - scrapers/eskom.py:scrape_eskom() for eTenders portal
+    - scrapers/eskom_direct.py:scrape_eskom_tenders() for direct API
+    """
     try:
         from scrapers.eskom_direct import scrape_eskom_tenders
         return scrape_eskom_tenders(use_selenium_fallback=False, api_timeout=30)
