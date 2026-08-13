@@ -22,17 +22,17 @@ jobs:
         scraper: [municipalities, soes, national_treasury, joburg_water, eskom]
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.11"
 
       - name: Cache pip dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v5
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
@@ -40,7 +40,7 @@ jobs:
             ${{ runner.os }}-pip-
 
       - name: Cache venv
-        uses: actions/cache@v3
+        uses: actions/cache@v5
         with:
           path: .venv
           key: ${{ runner.os }}-venv-${{ hashFiles('**/requirements.txt') }}
@@ -61,7 +61,7 @@ jobs:
 
       - name: Upload scraper artifact
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: scrape-${{ matrix.scraper }}
           path: artifacts/${{ matrix.scraper }}.json
@@ -72,17 +72,17 @@ jobs:
     if: always()
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.11"
 
       - name: Cache pip dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v5
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
@@ -90,7 +90,7 @@ jobs:
             ${{ runner.os }}-pip-
 
       - name: Cache venv
-        uses: actions/cache@v3
+        uses: actions/cache@v5
         with:
           path: .venv
           key: ${{ runner.os }}-venv-${{ hashFiles('**/requirements.txt') }}
@@ -103,7 +103,7 @@ jobs:
           pip install -r requirements.txt
 
       - name: Download scrape artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           path: artifacts
 
