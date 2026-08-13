@@ -171,9 +171,13 @@ def _expected_dashboard_record_count(conn: sqlite3.Connection) -> Optional[int]:
         WHERE status IN ('Open', 'Active', 'In Progress')
     """
     params = []
-    if mexel_only and not DASHBOARD_SHOW_ALL:
-        query += " AND category = ?"
-        params.append("MEXEL")
+    if not DASHBOARD_SHOW_ALL:
+        if mexel_only:
+            query += " AND category = ?"
+            params.append("MEXEL")
+        else:
+            query += " AND category IN (?, ?)"
+            params.extend(("MEXEL", "PHAKATHI"))
 
     cursor = conn.cursor()
     cursor.execute(query, params)

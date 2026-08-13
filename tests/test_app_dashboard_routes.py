@@ -4,6 +4,7 @@ import pytest
 
 pytest.importorskip("flask")
 
+import app as app_module
 from app import app
 
 
@@ -36,3 +37,30 @@ def test_flask_returns_404_for_unknown_api_like_dashboard_path():
     response = client.get("/api/does-not-exist")
 
     assert response.status_code == 404
+
+
+def test_expected_dashboard_count_matches_profile_filter(tmp_path, monkeypatch):
+    import sqlite3
+
+    db_path = tmp_path / "tenders.db"
+    with sqlite3.connect(db_path) as conn:
+        conn.execute("CREATE TABLE tenders (status TEXT, category TEXT)")
+        conn.executemany(
+            "INSERT INTO tenders VALUES (?, ?)",
+            [
+                ("Open", "MEXEL"),
+                ("Active", "PHAKATHI"),
+                ("Open", "EXCLUDED"),
+                ("Closed", "MEXEL"),
+            ],
+        )
+
+        monkeypatch.setattr(app_module, "DASHBOARD_SHOW_ALL", False)
+        monkeypatch.setitem(app_module.APP_CONFIG, "classification", {"mexel_only": False})
+        assert app_module._expected_dashboard_record_count(conn) == 2
+
+        monkeypatch.setitem(app_module.APP_CONFIG, "classification", {"mexel_only": True})
+        assert app_module._expected_dashboard_record_count(conn) == 1
+
+        monkeypatch.setattr(app_module, "DASHBOARD_SHOW_ALL", True)
+        assert app_module._expected_dashboard_record_count(conn) == 3
