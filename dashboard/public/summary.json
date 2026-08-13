@@ -1,41 +1,102 @@
 {
-    "generated_at": "2026-08-13 16:46",
-    "build_id": "2026-08-13 16:46",
-    "build_sha": null,
+    "generated_at": "2026-08-13 21:01",
+    "build_id": "2026-08-13 21:01 · 9cad24d",
+    "build_sha": "9cad24d",
     "next_run": "Daily 08:00",
     "counts": {
-        "total": 2,
+        "total": 8,
         "by_company": {
-            "Mexel": 2
+            "MEXEL": 7,
+            "PHAKATHI": 1
         },
         "by_priority": {
-            "HIGH": 2
+            "HIGH": 4,
+            "MEDIUM": 4
         },
         "by_source": {
-            "Petrochemical": 1,
-            "Power": 1
+            "National Treasury": 8
         }
     },
     "top": [
         {
-            "title": "Supply of Cooling Water Treatment Chemicals",
-            "source": "Power",
-            "company": "Mexel",
+            "title": "Cooling Tower 1 Refurbishment at Grootvlei Power station.",
+            "source": "National Treasury",
+            "company": "MEXEL",
             "priority": "HIGH",
-            "close_date": "2025-12-15",
+            "close_date": "2026-10-16",
             "fit": null,
-            "suitability": null,
-            "url": "https://www.google.com/search?q=NT001%20Supply%20of%20Cooling%20Water%20Treatment%20Chemic%20tender%20site%3Agov.za"
+            "suitability": 8.8,
+            "url": "https://www.etenders.gov.za/Home/opportunities"
         },
         {
-            "title": "Boiler Water Treatment Services",
-            "source": "Petrochemical",
-            "company": "Mexel",
+            "title": "THE SUPPLY AND DELIVERY OF SODIUM BICARBONATE FOR DSI FGD PHASE 2 TESTING AT MAJUBA AND LETHABO POWER STATIONS FOR A PERIOD OF THREE (3) MONTHS.",
+            "source": "National Treasury",
+            "company": "MEXEL",
             "priority": "HIGH",
-            "close_date": "2025-12-22",
+            "close_date": "2026-08-14",
             "fit": null,
-            "suitability": null,
-            "url": "https://www.google.com/search?q=NT004%20Boiler%20Water%20Treatment%20Services%20tender%20site%3Agov.za"
+            "suitability": 8.2,
+            "url": "https://www.etenders.gov.za/Home/opportunities"
+        },
+        {
+            "title": "CENTLEC (SOC) Ltd (hereafter referred to as CENTLEC), a Municipal Entity distributing electricity within Mangaung Metro Municipality invites service providers as a Managing Agent for Data Centre support, marketing and sourcing customers on behalf of CENTLEC for a period of thirty-six (36) months.",
+            "source": "National Treasury",
+            "company": "MEXEL",
+            "priority": "HIGH",
+            "close_date": "2026-09-09",
+            "fit": null,
+            "suitability": 7.0,
+            "url": "https://www.etenders.gov.za/Home/opportunities"
+        },
+        {
+            "title": "Upgrade and maintenance of Data Centre for a period of three (03) years. (Re-advert)",
+            "source": "National Treasury",
+            "company": "MEXEL",
+            "priority": "HIGH",
+            "close_date": "2026-09-17",
+            "fit": null,
+            "suitability": 7.0,
+            "url": "https://www.etenders.gov.za/Home/opportunities"
+        },
+        {
+            "title": "SUPPLY, DELIVERY AND INSTALLATION OF A MODERN TELEMETRY SYSTEM, UPGRADE OF SUPERVISORY CONTROL AND DATA ACQUISITION (SCADA) SYSTEM FROM ADROIT CLASSIC TO ADROIT SMART UI/EQUIVALENT AND MAINTENANCE OF THE SYSTEM FOR THIRTY-SIX MONTHS (36) FOR OVERBERG WATER (OWB) IN THE WESTERN CAPE",
+            "source": "National Treasury",
+            "company": "PHAKATHI",
+            "priority": "MEDIUM",
+            "close_date": "2026-08-27",
+            "fit": null,
+            "suitability": 6.8,
+            "url": "https://www.etenders.gov.za/Home/opportunities"
+        },
+        {
+            "title": "FOR THE SUPPLY, DELIVERY AND INSTALLATION OF A WATER TREATMENT PLANT [REVERSE OSMOSIS] AT LOOP 10 ON THE IRON ORE LINE. (HALFWEG BOOK OFF FACILITY)",
+            "source": "National Treasury",
+            "company": "MEXEL",
+            "priority": "MEDIUM",
+            "close_date": "2026-09-07",
+            "fit": null,
+            "suitability": 6.8,
+            "url": "https://www.etenders.gov.za/Home/opportunities"
+        },
+        {
+            "title": "FOSRBY-RFP-10-26/27 REQUEST FOR PROPOSAL [RFP] PROVISION OF DESIGN, FABRICATION AND INSTALLATION OF COLD HEAT EXCHANGER FOR (CHEX) – C PLANT",
+            "source": "National Treasury",
+            "company": "MEXEL",
+            "priority": "MEDIUM",
+            "close_date": "2026-09-08",
+            "fit": null,
+            "suitability": 6.6,
+            "url": "https://www.etenders.gov.za/Home/opportunities"
+        },
+        {
+            "title": "FOSRBY-RFP-05-26/27 REQUEST FOR PROPOSAL [RFP] PROVISION OF DESIGN, MANUFACTURE AND SUPPLY OF COLD HEAT EXCHANGER FOR SULPHURIC ACID – A PLANT",
+            "source": "National Treasury",
+            "company": "MEXEL",
+            "priority": "MEDIUM",
+            "close_date": "2026-08-25",
+            "fit": null,
+            "suitability": 6.6,
+            "url": "https://www.etenders.gov.za/Home/opportunities"
         }
     ]
 }
