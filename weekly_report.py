@@ -8,6 +8,7 @@ import os
 import sys
 import sqlite3
 import smtplib
+from html import escape
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from datetime import datetime, timedelta
@@ -50,6 +51,8 @@ def _get_list_env(*names):
 
 
 DB_PATH = _get_env("DB_PATH", default=os.path.join(PROJECT_DIR, "data", "tenders.db"))
+MEXEL_ONLY = bool((CONFIG.get("classification", {}) or {}).get("mexel_only", False))
+DASHBOARD_SHOW_ALL = _get_bool_env("DASHBOARD_SHOW_ALL", default=False)
 
 
 # Email settings
@@ -137,7 +140,7 @@ def _default_weekly_stats():
     return {
         "total": 0,
         "this_week": 0,
-        "by_type": {"MEXEL": 0, "Unknown": 0},
+        "by_type": {"MEXEL": 0, "PHAKATHI": 0},
         "by_priority": {"HIGH": 0, "MEDIUM": 0, "LOW": 0},
         "by_status": {},
         "closing_soon": [],
@@ -160,14 +163,21 @@ def get_weekly_stats():
         with sqlite3.connect(DB_PATH) as conn:
             conn.row_factory = sqlite3.Row
             cursor = conn.cursor()
-            cursor.execute(
-                """
+            query = """
                 SELECT ref, title, client, category, source, composite_score,
                        priority, closing_date, status, created_at
                 FROM tenders
-                ORDER BY created_at DESC
-                """
-            )
+            """
+            params = []
+            if not DASHBOARD_SHOW_ALL:
+                if MEXEL_ONLY:
+                    query += " WHERE category = ?"
+                    params.append("MEXEL")
+                else:
+                    query += " WHERE category IN (?, ?)"
+                    params.extend(("MEXEL", "PHAKATHI"))
+            query += " ORDER BY created_at DESC"
+            cursor.execute(query, params)
             rows = [dict(row) for row in cursor.fetchall()]
     except sqlite3.Error as exc:
         print(f"❌ Failed to read SQLite weekly stats: {exc}")
@@ -327,7 +337,7 @@ def generate_weekly_html(stats: dict) -> str:
     max_type = max(stats['by_type'].values()) if stats['by_type'] else 1
     for t_type, count in stats['by_type'].items():
         width = int((count / max_type) * 100) if max_type > 0 else 0
-        html += f'<div class="bar" style="width: {max(width, 10)}%">{t_type}: {count}</div>'
+        html += f'<div class="bar" style="width: {max(width, 10)}%">{escape(str(t_type))}: {count}</div>'
     
     html += """
         </div>
@@ -345,11 +355,11 @@ def generate_weekly_html(stats: dict) -> str:
             badge = "badge-high" if t['priority'] == "HIGH" else "badge-medium"
             html += f"""
             <tr class="{urgent}">
-                <td>{t['ref']}</td>
-                <td>{t['title']}...</td>
-                <td>{t['client']}</td>
+                <td>{escape(str(t['ref']))}</td>
+                <td>{escape(str(t['title']))}...</td>
+                <td>{escape(str(t['client']))}</td>
                 <td><strong>{t['days_left']} days</strong></td>
-                <td><span class="badge {badge}">{t['priority']}</span></td>
+                <td><span class="badge {badge}">{escape(str(t['priority']))}</span></td>
             </tr>
             """
         html += "</table>"
@@ -369,10 +379,10 @@ def generate_weekly_html(stats: dict) -> str:
             type_badge = "badge-mexel"
             html += f"""
             <tr>
-                <td>{t['ref']}</td>
-                <td>{t['title']}...</td>
-                <td>{t['client']}</td>
-                <td><span class="badge {type_badge}">{t['type']}</span></td>
+                <td>{escape(str(t['ref']))}</td>
+                <td>{escape(str(t['title']))}...</td>
+                <td>{escape(str(t['client']))}</td>
+                <td><span class="badge {type_badge}">{escape(str(t['type']))}</span></td>
                 <td><strong>{t['score']}/10</strong></td>
             </tr>
             """
@@ -419,8 +429,8 @@ def generate_weekly_html(stats: dict) -> str:
             row_style = " style=\"background: #FFEBEE;\"" if cf >= 3 else ""
             html += f"""
             <tr{row_style}>
-                <td>{source}</td>
-                <td>{status}</td>
+                <td>{escape(str(source))}</td>
+                <td>{escape(str(status))}</td>
                 <td>{sr:.0%}</td>
                 <td>{avg_tenders}</td>
                 <td>{avg_dur}s</td>
@@ -432,7 +442,8 @@ def generate_weekly_html(stats: dict) -> str:
 
         problem_sources = [s for s, d in health.items() if int((d or {}).get("consecutive_failures") or 0) >= 3]
         if problem_sources:
-            html += "<p><strong>Recommendation:</strong> Consider disabling or investigating: " + ", ".join(problem_sources) + "</p>"
+            escaped_sources = ", ".join(escape(str(source)) for source in problem_sources)
+            html += "<p><strong>Recommendation:</strong> Consider disabling or investigating: " + escaped_sources + "</p>"
     else:
         html += "<p>No scraper health data found.</p>"
 
@@ -444,7 +455,7 @@ def generate_weekly_html(stats: dict) -> str:
     max_ind = max(stats['top_sources'].values()) if stats['top_sources'] else 1
     for ind, count in stats['top_sources'].items():
         width = int((count / max_ind) * 100) if max_ind > 0 else 0
-        html += f'<div class="bar" style="width: {max(width, 10)}%">{ind}: {count}</div>'
+        html += f'<div class="bar" style="width: {max(width, 10)}%">{escape(str(ind))}: {count}</div>'
     
     html += f"""
         </div>
