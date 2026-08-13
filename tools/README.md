@@ -2,8 +2,25 @@
 
 This directory contains utilities for managing the Selenium chromedriver binary with version alignment checks.
 
+## Authorized private-feed imports
+
+Private/vendor data may only be imported from a licensed or explicitly approved export. The importer is disabled by default and never logs into or scrapes a private platform.
+
+1. Add an approved source to `authorized_feeds.sources` in `config.yaml` and set `authorized_feeds.enabled: true`.
+2. Place its UTF-8 JSON or CSV export inside `data/authorized_feeds/inbox/`.
+3. Validate first:
+
+```bash
+python tools/import_authorized_feed.py --source approved_source_id --file export.json --dry-run
+```
+
+4. Import the identical file without `--dry-run` after reviewing the counts.
+
+Files outside the configured inbox, symlinks, oversized files, unknown sources, malformed records, and repeat imports are rejected. Feed contents and credentials are not written to the import audit table.
+
 ## Files
 
+- **`import_authorized_feed.py`** – Confined importer for allowlisted JSON/CSV exports
 - **`chromedriver_manager.py`** – Core driver management library
   - Version detection (Chrome & Chromedriver)
   - Alignment verification

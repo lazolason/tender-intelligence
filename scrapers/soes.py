@@ -9,11 +9,7 @@ from datetime import datetime
 import re
 import sys
 import os
-import urllib3
 import logging
-
-# Suppress SSL warnings
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from classify_engine import classify_tender
@@ -21,16 +17,12 @@ from utils.retry_tools import safe_get
 
 logger = logging.getLogger(__name__)
 
-# Import Selenium version for Johannesburg Water
+# Optional Selenium scraper for Johannesburg Water.
 try:
     from scrapers.joburg_water_selenium import scrape_joburg_water_selenium
 except ImportError:
     def scrape_joburg_water_selenium():
         return []
-try:
-    from scrapers.joburg_water_selenium import scrape_joburg_water_selenium
-except ImportError:
-    scrape_joburg_water_selenium = lambda: []
 
 
 HEADERS = {
@@ -39,12 +31,17 @@ HEADERS = {
     "Accept-Language": "en-US,en;q=0.5",
 }
 
+
+def _is_excluded_category(value):
+    """Return True when a classifier result should be skipped by the scraper."""
+    return str(value or "").strip().upper() in {"EXCLUDED", "EXCLUDE"}
+
 def _scrape_soe_generic(client_name, urls, row_selector, ref_pattern, ref_prefix):
     tenders = []
     had_successful_fetch = False
     for url in urls:
         try:
-            resp = safe_get(url, headers=HEADERS, timeout=20, verify=False, log=logger)
+            resp = safe_get(url, headers=HEADERS, timeout=20, log=logger)
             if resp is None:
                 continue
             had_successful_fetch = True
@@ -59,7 +56,7 @@ def _scrape_soe_generic(client_name, urls, row_selector, ref_pattern, ref_prefix
                 if ref_match:
                     date_match = re.search(r'(\d{1,2}[-/]\d{1,2}[-/]\d{2,4})', text)
                     classification = classify_tender(text[:150], text)
-                    if classification["category"] != "Exclude":
+                    if not _is_excluded_category(classification["category"]):
                         tenders.append({
                             "ref": ref_match.group(1) if ref_match else f"{ref_prefix}-{datetime.now().strftime('%Y%m%d')}-{len(tenders)+1}",
                             "title": text[:150],
@@ -74,7 +71,8 @@ def _scrape_soe_generic(client_name, urls, row_selector, ref_pattern, ref_prefix
                         })
             if tenders:
                 break
-        except Exception:
+        except Exception as exc:
+            logger.warning("%s scraping failed for %s: %s", client_name, url, exc)
             continue
 
     if not had_successful_fetch and urls:
@@ -92,7 +90,7 @@ def scrape_rand_water():
     url = "https://www.randwater.co.za/availabletenders.php"
     
     try:
-        resp = safe_get(url, headers=HEADERS, timeout=20, verify=False, log=logger)
+        resp = safe_get(url, headers=HEADERS, timeout=20, log=logger)
         if resp is None:
             raise RuntimeError("Failed to fetch Rand Water page")
         
@@ -137,7 +135,7 @@ def scrape_rand_water():
                     # Classify
                     classification = classify_tender(title, description)
                     
-                    if classification["category"] != "Exclude":
+                    if not _is_excluded_category(classification["category"]):
                         tenders.append({
                             "ref": ref,
                             "title": f"{title} - {description[:100]}",
@@ -160,7 +158,7 @@ def scrape_rand_water():
                     if not page_url.startswith("http"):
                         page_url = f"https://www.randwater.co.za/{page_url}"
                     try:
-                        page_resp = safe_get(page_url, headers=HEADERS, timeout=15, verify=False, log=logger)
+                        page_resp = safe_get(page_url, headers=HEADERS, timeout=15, log=logger)
                         if page_resp is None:
                             continue
 
@@ -185,7 +183,7 @@ def scrape_rand_water():
                                     closing = date_cell.get_text(strip=True) if date_cell else ""
                                     
                                     classification = classify_tender(title, description)
-                                    if classification["category"] != "Exclude" and ref not in [t["ref"] for t in tenders]:
+                                    if not _is_excluded_category(classification["category"]) and ref not in [t["ref"] for t in tenders]:
                                         tenders.append({
                                             "ref": ref,
                                             "title": f"{title} - {description[:100]}",
@@ -198,11 +196,11 @@ def scrape_rand_water():
                                             "source": "Rand Water",
                                             "url": page_url
                                         })
-                    except:
-                        pass
+                    except Exception as exc:
+                        logger.debug("Rand Water pagination scrape failed: %s", exc)
                         
     except Exception as e:
-        print(f"    Rand Water error: {e}")
+        logger.warning("Rand Water error: %s", e)
     
     return tenders
 
@@ -218,7 +216,7 @@ def scrape_joburg_water():
     url = "https://www.johannesburgwater.co.za/tenders/"
     
     try:
-        resp = safe_get(url, headers=HEADERS, timeout=20, verify=False, log=logger)
+        resp = safe_get(url, headers=HEADERS, timeout=20, log=logger)
         if resp is None:
             raise RuntimeError("Failed to fetch Johannesburg Water page")
         
@@ -254,7 +252,7 @@ def scrape_joburg_water():
                     # Classify
                     classification = classify_tender(description, f"{category} {description}")
                     
-                    if classification["category"] != "Exclude":
+                    if not _is_excluded_category(classification["category"]):
                         tenders.append({
                             "ref": ref,
                             "title": description[:150],
@@ -270,7 +268,7 @@ def scrape_joburg_water():
                         })
                             
     except Exception as e:
-        print(f"    Johannesburg Water error: {e}")
+        logger.warning("Johannesburg Water error: %s", e)
     
     return tenders
 
@@ -291,7 +289,7 @@ def scrape_transnet():
     url = "https://www.etenders.gov.za/Home/opportunities?TextSearch=transnet"
     
     try:
-        resp = safe_get(url, headers=HEADERS, timeout=20, verify=False, log=logger)
+        resp = safe_get(url, headers=HEADERS, timeout=20, log=logger)
         if resp is None:
             raise RuntimeError("Failed to fetch Transnet listing page")
         
@@ -316,7 +314,7 @@ def scrape_transnet():
             title = text[:200]
             
             classification = classify_tender(title, text)
-            if classification["category"] != "Exclude":
+            if not _is_excluded_category(classification["category"]):
                 tenders.append({
                     "ref": ref,
                     "title": title,
@@ -331,7 +329,7 @@ def scrape_transnet():
                 })
                     
     except Exception as e:
-        print(f"    Transnet error: {e}")
+        logger.warning("Transnet error: %s", e)
     
     # Deduplicate
     seen = set()
@@ -362,7 +360,9 @@ def scrape_eskom():
         from scrapers.eskom_direct import scrape_eskom_tenders
         return scrape_eskom_tenders(use_selenium_fallback=False, api_timeout=30)
     except Exception as e:
-        print(f"    Eskom direct scraper failed, falling back to HTML scrape: {e}")
+        logger.warning(
+            "Eskom direct scraper failed, falling back to HTML scrape: %s", e
+        )
 
     tenders = []
     had_successful_fetch = False
@@ -374,7 +374,7 @@ def scrape_eskom():
     
     for url in urls:
         try:
-            resp = safe_get(url, headers=HEADERS, timeout=20, verify=False, log=logger)
+            resp = safe_get(url, headers=HEADERS, timeout=20, log=logger)
             if resp is None:
                 continue
             had_successful_fetch = True
@@ -398,7 +398,7 @@ def scrape_eskom():
                     full_url = href if href.startswith("http") else f"https://www.eskom.co.za{href}"
                     
                     classification = classify_tender(title, title)
-                    if classification["category"] != "Exclude":
+                    if not _is_excluded_category(classification["category"]):
                         tenders.append({
                             "ref": ref,
                             "title": title[:150],
@@ -426,7 +426,7 @@ def scrape_eskom():
                     closing = date_match.group(1) if date_match else ""
                     
                     classification = classify_tender(text[:150], text)
-                    if classification["category"] != "Exclude":
+                    if not _is_excluded_category(classification["category"]):
                         tenders.append({
                             "ref": ref,
                             "title": text[:150],
@@ -444,7 +444,7 @@ def scrape_eskom():
                 break
                     
         except Exception as e:
-            print(f"    Eskom error: {e}")
+            logger.warning("Eskom fallback HTML scrape error for %s: %s", url, e)
 
     if not had_successful_fetch:
         raise RuntimeError("Eskom: failed to fetch any URLs")
@@ -514,20 +514,20 @@ def scrape_all_soes():
     ]
     
     for name, scraper in scrapers:
-        print(f"  📡 Scraping {name}...")
+        logger.info("Scraping %s...", name)
         try:
             results = scraper()
             all_tenders.extend(results)
             if results:
-                print(f"    ✅ Found {len(results)} tenders")
+                logger.info("%s: found %d tenders", name, len(results))
             else:
-                print(f"    ⚠️ No tenders found")
+                logger.info("%s: no tenders found", name)
         except Exception as e:
-            print(f"    ❌ Error: {e}")
+            logger.warning("%s failed: %s", name, e)
             failed_sources.append(name)
     
     if failed_sources:
-        print(f"  ❌ Failed SOE sources: {', '.join(sorted(set(failed_sources)))}")
+        logger.warning("Failed SOE sources: %s", ", ".join(sorted(set(failed_sources))))
 
     return all_tenders
 
@@ -549,11 +549,3 @@ if __name__ == "__main__":
             print(f"  [{t['source']}] {t['ref']}: {t['title'][:50]}...")
             if t.get('closing_date'):
                 print(f"       Closing: {t['closing_date']}")
-
-# Import and use Selenium version for Johannesburg Water
-try:
-    from scrapers.joburg_water_selenium import scrape_joburg_water_selenium
-    # Override the basic scraper with Selenium version
-    scrape_joburg_water = scrape_joburg_water_selenium
-except ImportError:
-    pass  # Use the basic version if Selenium import fails

@@ -48,7 +48,6 @@ class BaseMunicipalityScraper:
                 self.url,
                 headers=self.headers,
                 timeout=self.timeout,
-                verify=False,
                 log=logger,
             )
             if response is None:
@@ -84,7 +83,7 @@ class BaseMunicipalityScraper:
         except Exception as e:
             # Gracefully ignore availability errors (e.g., 404s) and return empty
             self.last_error = str(e)
-            print(f"  Error: {e}")
+            logger.warning("%s scraper error: %s", self.name, e)
             return []
 
 
@@ -137,7 +136,8 @@ class CapeTownScraper(BaseMunicipalityScraper):
                     "source": self.name
                 })
                 
-            except Exception:
+            except Exception as exc:
+                logger.debug("Skipping Cape Town row due to parse error: %s", exc)
                 continue
         
         return tenders
@@ -164,19 +164,21 @@ def scrape_all_municipalities(timeout: int = 15) -> List[Dict[str, any]]:
     
     for scraper in scrapers:
         try:
-            print(f"Scraping {scraper.name}...")
+            logger.info("Scraping %s...", scraper.name)
             tenders = scraper.run()
             all_tenders.extend(tenders)
-            print(f"  Found {len(tenders)} tenders")
+            logger.info("%s: found %d tenders", scraper.name, len(tenders))
             if scraper.last_error:
                 failed_sources.append(scraper.name)
         except Exception as e:
-            print(f"  Error: {e}")
+            logger.warning("%s failed: %s", scraper.name, e)
             failed_sources.append(scraper.name)
             continue
     
     if failed_sources:
-        print(f"  ❌ Failed municipality sources: {', '.join(sorted(set(failed_sources)))}")
+        logger.warning(
+            "Failed municipality sources: %s", ", ".join(sorted(set(failed_sources)))
+        )
     
     return all_tenders
 

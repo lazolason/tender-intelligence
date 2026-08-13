@@ -1,5 +1,7 @@
+import ipaddress
 import logging
 from typing import Optional
+from urllib.parse import urlparse
 
 import requests
 
@@ -12,6 +14,43 @@ except ImportError as exc:  # pragma: no cover
 
 
 logger = logging.getLogger(__name__)
+
+
+def validate_outbound_url(url: str, *, allow_local_http: bool = False) -> str:
+    """Require authenticated transport for outbound requests.
+
+    Plain HTTP is allowed only for explicit loopback development endpoints when
+    ``allow_local_http`` is requested. Scrapers never enable that exception.
+    """
+    parsed = urlparse(str(url or ""))
+    hostname = (parsed.hostname or "").lower()
+    if (
+        allow_local_http
+        and parsed.scheme == "http"
+        and hostname in {"localhost", "127.0.0.1", "::1"}
+    ):
+        return url
+    if hostname == "localhost" or hostname.endswith(".localhost"):
+        raise ValueError(f"Refusing local outbound URL: {url}")
+    try:
+        address = ipaddress.ip_address(hostname)
+    except ValueError:
+        address = None
+    if address and not address.is_global:
+        raise ValueError(f"Refusing non-public outbound IP: {url}")
+    if parsed.scheme == "https" and hostname:
+        return url
+    raise ValueError(f"Refusing insecure or invalid outbound URL: {url}")
+
+
+def secure_request_kwargs(kwargs):
+    """Apply secure TLS defaults and reject attempts to disable verification."""
+    prepared = dict(kwargs)
+    if prepared.get("verify") is False:
+        raise ValueError("TLS certificate verification cannot be disabled")
+    prepared.setdefault("verify", True)
+    prepared.setdefault("timeout", 30)
+    return prepared
 
 
 def _log_before_sleep(retry_state):
@@ -45,7 +84,13 @@ def _log_before_sleep(retry_state):
     reraise=True,
 )
 def _requests_get_with_retry(url: str, **kwargs):
-    response = requests.get(url, **kwargs)
+    validate_outbound_url(url)
+    response = requests.get(url, **secure_request_kwargs(kwargs))
+    try:
+        validate_outbound_url(response.url)
+    except ValueError:
+        response.close()
+        raise
     # Retry on 5xx server errors
     if response.status_code in [502, 503, 504]:
         response.raise_for_status()

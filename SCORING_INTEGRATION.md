@@ -219,10 +219,10 @@ Allow users to choose between different algorithm options for summarization.
 ### Components
 
 1. **Frontend (Local Dashboard)**
-   - Static PWA served locally
+   - Dashboard served by Flask locally or Gunicorn in production
    - Vanilla JavaScript (no frameworks)
    - localStorage for caching
-   - Fetch API for backend calls
+   - ES-module bridge plus modular helpers for backend calls
 
 2. **Backend (Flask API)**
    - Flask web server
@@ -233,7 +233,7 @@ Allow users to choose between different algorithm options for summarization.
 3. **External Services**
    - Summarization API (configurable)
    - GitHub (for auto-deployment)
-   - Local static server (python http.server)
+   - Optional local launchd service via `serve_app.sh`
 
 ### File Structure
 
@@ -242,10 +242,11 @@ tender-intelligence/
 ├── app.py                      # Flask backend with /api/summarize
 ├── config.yaml                 # Scoring weights and configuration
 ├── .env.example                # Environment variable template
-├── DEPLOYMENT.md               # Production deployment guide
+├── serve_app.sh                # Unified local/prod app entrypoint
+├── DEPLOY_GUIDE.md             # Production deployment guide
 ├── dashboard/
-│   ├── index.html              # Dashboard UI with modal
-│   ├── js/                     # Modular JavaScript structure (not yet integrated)
+│   ├── index.html              # Dashboard UI shell
+│   ├── js/                     # Integrated modular JavaScript + bridge
 │   ├── style.css               # Styling
 │   ├── service-worker.js       # PWA offline support
 │   └── manifest.json           # PWA manifest

@@ -1,6 +1,6 @@
 # ==========================================================
 # CSV TENDER IMPORTER WITH SCORING
-# Import tenders from CSV file with automatic scoring
+# Import tenders from CSV into SQLite with automatic scoring
 # ==========================================================
 
 import csv
@@ -10,19 +10,17 @@ import yaml
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-from utils.excel_writer import ExcelWriter
+from utils.db_writer import DatabaseWriter
 from utils.folder_tools import create_tender_folder
-from classify_engine import classify_tender
-from scoring_engine import score_tender
+from utils.pipeline_validation import validate_tender_batch
 
 # Load config
 config_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "config.yaml")
 with open(config_path, "r") as f:
     CONFIG = yaml.safe_load(f)
 
-EXCEL_PATH = CONFIG["paths"]["tender_log_excel"]
+DB_PATH = os.getenv("DB_PATH", os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "tenders.db"))
 ACTIVE_TENDERS_DIR = CONFIG["paths"]["active_tenders"]
-SHEET_NAME = CONFIG["excel"]["tender_log_sheet"]
 
 
 def import_from_csv(csv_file: str) -> tuple:
@@ -36,67 +34,74 @@ def import_from_csv(csv_file: str) -> tuple:
         print(f"❌ File not found: {csv_file}")
         return 0, 0, []
     
-    excel_writer = ExcelWriter(EXCEL_PATH, SHEET_NAME)
+    db_writer = DatabaseWriter(DB_PATH)
     
     added = 0
     skipped = 0
     results = []
-    
+    candidates = []
+
     with open(csv_file, "r", encoding="utf-8") as f:
         reader = csv.DictReader(f)
-        
         for row in reader:
-            ref = row.get("ref", "NA").strip()
-            title = row.get("title", "").strip()
-            description = row.get("description", title).strip()
-            client = row.get("client", "").strip()
-            closing_date = row.get("closing_date", "").strip()
-            source = row.get("source", "CSV Import").strip()
-            
-            if not title:
-                skipped += 1
-                continue
-            
-            tender_data = {
+            title = (row.get("title") or "").strip()
+            candidates.append({
+                "ref": (row.get("ref") or "").strip(),
+                "title": title,
+                "description": (row.get("description") or title).strip(),
+                "client": (row.get("client") or "").strip(),
+                "closing_date": (row.get("closing_date") or "").strip(),
+                "source": (row.get("source") or "CSV Import").strip(),
+            })
+
+    validation = validate_tender_batch(
+        candidates,
+        on_invalid=lambda message: print(f"  ❌ {message}"),
+    )
+    skipped += validation.invalid_count
+
+    for tender_data in validation.valid_tenders:
+        ref = tender_data["ref"]
+        title = tender_data["title"]
+        client = tender_data["client"]
+        action, scores, classification = db_writer.upsert_tender_with_scoring(tender_data)
+
+        if action == "inserted":
+            added += 1
+            create_tender_folder(
+                base_dir=ACTIVE_TENDERS_DIR,
+                ref=ref,
+                client=client,
+                short_title=classification["short_title"],
+            )
+            results.append({
                 "ref": ref,
                 "title": title,
-                "description": description,
-                "client": client,
-                "closing_date": closing_date,
-                "source": source
-            }
-            
-            was_added, scores, classification = excel_writer.add_tender_with_scoring(tender_data)
-            
-            if was_added:
-                added += 1
-                
-                # Create folder
-                folder_path = create_tender_folder(
-                    base_dir=ACTIVE_TENDERS_DIR,
-                    ref=ref,
-                    client=client,
-                    short_title=classification["short_title"]
-                )
-                
-                results.append({
-                    "ref": ref,
-                    "title": title,
-                    "category": classification["category"],
-                    "priority": scores["priority"],
-                    "composite_score": scores["composite_score"],
-                    "status": "Added"
-                })
-                
-                print(f"  [{scores['priority']}] ✅ {ref}: {title[:50]}... → {classification['category']} (Score: {scores['composite_score']})")
-            else:
-                skipped += 1
-                results.append({
-                    "ref": ref,
-                    "title": title,
-                    "status": "Skipped (duplicate)"
-                })
-                print(f"  ⏭️ Skipped (duplicate): {ref}")
+                "category": classification["category"],
+                "priority": scores["priority"],
+                "composite_score": scores["composite_score"],
+                "status": "Added",
+            })
+            print(
+                f"  [{scores['priority']}] ✅ {ref}: {title[:50]}... → "
+                f"{classification['category']} (Score: {scores['composite_score']})"
+            )
+        elif action == "updated":
+            results.append({
+                "ref": ref,
+                "title": title,
+                "priority": scores["priority"],
+                "status": "Updated",
+            })
+            print(f"  🔄 Updated: {ref}")
+        else:
+            skipped += 1
+            results.append({
+                "ref": ref,
+                "title": title,
+                "status": "Unchanged",
+            })
+            print(f"  ⏭️ Unchanged: {ref}")
     
     return added, skipped, results
 
@@ -115,7 +120,7 @@ if __name__ == "__main__":
         sys.exit(1)
     
     csv_file = sys.argv[1]
-    print(f"\n�� Importing tenders from: {csv_file}")
+    print(f"\nImporting tenders from: {csv_file}")
     print("=" * 50)
     
     added, skipped, results = import_from_csv(csv_file)
@@ -136,4 +141,4 @@ if __name__ == "__main__":
         print(f"   ✅ MEDIUM Priority: {medium}")
         print(f"   📝 LOW Priority:    {low}")
     
-    print(f"\n📁 Excel: {EXCEL_PATH}")
+    print(f"\n🗄️ Database: {DB_PATH}")

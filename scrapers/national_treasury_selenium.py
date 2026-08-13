@@ -8,6 +8,7 @@ import os
 import sys
 import time
 import re
+import hashlib
 import subprocess
 import logging
 from datetime import datetime
@@ -15,13 +16,27 @@ from pathlib import Path
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import TimeoutException, NoSuchElementException, WebDriverException
+SELENIUM_IMPORT_ERROR = None
+
+try:
+    from selenium import webdriver
+    from selenium.webdriver.chrome.options import Options
+    from selenium.webdriver.chrome.service import Service
+    from selenium.webdriver.common.by import By
+    from selenium.webdriver.support.ui import WebDriverWait
+    from selenium.webdriver.support import expected_conditions as EC
+    from selenium.common.exceptions import TimeoutException, NoSuchElementException, WebDriverException
+except Exception as exc:  # pragma: no cover - depends on optional local dependency
+    webdriver = None
+    Options = None
+    Service = None
+    By = None
+    WebDriverWait = None
+    EC = None
+    TimeoutException = Exception
+    NoSuchElementException = Exception
+    WebDriverException = Exception
+    SELENIUM_IMPORT_ERROR = exc
 
 from classify_engine import classify_tender
 from utils.retry_tools import safe_driver_get, build_selenium_get_with_retry
@@ -53,23 +68,21 @@ class NationalTreasuryScraper:
     
     def _setup_driver(self):
         """Initialize Chrome WebDriver with version verification"""
+        if webdriver is None or Options is None:
+            raise RuntimeError(
+                f"Selenium is not installed: {SELENIUM_IMPORT_ERROR}. Install with: pip install selenium"
+            )
+
         # Verify versions before starting
         aligned, chrome_major, driver_major, msg = verify_driver_alignment()
-        if not aligned:
+        if driver_major and not aligned:
             print(f"⚠️  WARNING: {msg}")
-            print("   This may cause Selenium flakiness. Run: python tools/setup_chromedriver.py")
+            print("   Falling back to Selenium Manager instead of the mismatched local driver.")
             time.sleep(2)
         
         # Set up environment to find isolated driver
         setup_environment()
-        
-        # Get driver path
-        driver_path = get_driver_path()
-        if not driver_path:
-            raise RuntimeError(
-                "Chromedriver not found. Run: python tools/setup_chromedriver.py"
-            )
-        
+
         options = Options()
         
         if self.headless:
@@ -83,12 +96,15 @@ class NationalTreasuryScraper:
         options.add_argument("--disable-notifications")
         options.add_argument("--remote-debugging-port=9222")
         options.add_argument("user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36")
-        
-        # Use isolated driver with Service
-        service = Service(driver_path)
-        env = os.environ.copy()
-        env["DBUS_SESSION_BUS_ADDRESS"] = "/dev/null"
-        self.driver = webdriver.Chrome(service=service, options=options)
+
+        driver_path = get_driver_path()
+        if driver_path and aligned:
+            service = Service(driver_path)
+            self.driver = webdriver.Chrome(service=service, options=options)
+        else:
+            if not driver_path:
+                print("ℹ️  Local chromedriver not found. Using Selenium Manager.")
+            self.driver = webdriver.Chrome(options=options)
         self.driver.set_page_load_timeout(30)
     
     def _close_driver(self):
@@ -121,6 +137,49 @@ class NationalTreasuryScraper:
             return date_str
         except:
             return ""
+
+    def _normalize_reference(self, value: str) -> str:
+        """Normalize a discovered reference into a compact stable token."""
+        compact = re.sub(r"\s+", "", str(value or "").strip().upper())
+        compact = re.sub(r"[^A-Z0-9/-]", "", compact)
+        return compact[:80]
+
+    def _extract_reference(self, *values: str) -> str:
+        """Extract an explicit bid/tender reference when one is present."""
+        patterns = [
+            r"\b([A-Z]{2,10}\s*\d{1,6}(?:[/-]\d{1,6})+)\b",
+            r"\b((?:RFQ|RFP|BID|TN)\s*[A-Z0-9]+(?:[/-][A-Z0-9]+)+)\b",
+            r"\b([A-Z]{2,10}[/-]\d{1,6}[/-]\d{1,6}[A-Z0-9/-]*)\b",
+        ]
+
+        for value in values:
+            text = str(value or "").strip()
+            if not text:
+                continue
+            for pattern in patterns:
+                match = re.search(pattern, text, flags=re.IGNORECASE)
+                if match:
+                    ref = self._normalize_reference(match.group(1))
+                    if ref:
+                        return ref
+        return ""
+
+    def _build_fallback_ref(self, *parts: str) -> str:
+        """Create a stable fallback ref from row/link content."""
+        normalized_parts = [
+            re.sub(r"\s+", " ", str(part or "").strip()).lower()
+            for part in parts
+            if str(part or "").strip()
+        ]
+        digest = hashlib.sha1(" | ".join(normalized_parts).encode("utf-8")).hexdigest()[:12].upper()
+        return f"NT-{digest}"
+
+    def _make_tender_ref(self, *candidates: str, fallback_parts: tuple[str, ...] = ()) -> str:
+        """Return an explicit source ref when available, else a deterministic NT fallback."""
+        explicit = self._extract_reference(*candidates)
+        if explicit:
+            return explicit
+        return self._build_fallback_ref(*fallback_parts)
     
     def _scrape_opportunities_page(self) -> list:
         """Scrape the opportunities listing page"""
@@ -172,11 +231,20 @@ class NationalTreasuryScraper:
                                 if parsed:
                                     closing = parsed
                                     break
+
+                            row_text = " | ".join(texts)
+                            tender_url = "https://www.etenders.gov.za/Home/opportunities"
+                            ref = self._make_tender_ref(
+                                ref,
+                                title,
+                                row_text,
+                                fallback_parts=(title, client, closing, row_text, tender_url),
+                            )
                             
                             classification = classify_tender(title, title)
                             
                             tenders.append({
-                                "ref": ref or f"NT-{datetime.now().strftime('%H%M%S')}",
+                                "ref": ref,
                                 "title": title[:200],
                                 "description": title,
                                 "client": client or "National Treasury",
@@ -185,7 +253,7 @@ class NationalTreasuryScraper:
                                 "reason": classification["reason"],
                                 "short_title": classification["short_title"],
                                 "source": "National Treasury",
-                                "url": "https://www.etenders.gov.za/Home/opportunities"
+                                "url": tender_url
                             })
                 except:
                     continue
@@ -200,9 +268,15 @@ class NationalTreasuryScraper:
                     # Look for tender-related links
                     if len(text) > 30 and ("tender" in href.lower() or "bid" in href.lower() or "rfq" in href.lower()):
                         classification = classify_tender(text, text)
+                        tender_url = href or "https://www.etenders.gov.za/Home/opportunities"
+                        ref = self._make_tender_ref(
+                            text,
+                            href,
+                            fallback_parts=(text, href, tender_url),
+                        )
                         
                         tenders.append({
-                            "ref": f"NT-{datetime.now().strftime('%H%M%S')}",
+                            "ref": ref,
                             "title": text[:200],
                             "description": text,
                             "client": "National Treasury",
@@ -211,7 +285,7 @@ class NationalTreasuryScraper:
                             "reason": classification["reason"],
                             "short_title": classification["short_title"],
                             "source": "National Treasury",
-                                "url": "https://www.etenders.gov.za/Home/opportunities"
+                            "url": tender_url
                         })
                 except:
                     continue

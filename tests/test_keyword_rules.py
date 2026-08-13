@@ -35,9 +35,10 @@ def classify_logic(text):
     ("Asme ptc 12.2 performance test", "INCLUDE"),
     ("Surfactant supply for cooling", "INCLUDE"),
     
-    # SYSTEM + ACTION tests
+    # SYSTEM + ACTION tests (MEXEL scope: cooling water, condensers, thermal efficiency)
     ("Cooling tower treatment", "INCLUDE"),
-    ("Boiler chemical dosing", "INCLUDE"),
+    # Note: "Boiler chemical dosing" now routes to PHAKATHI (boiler chemistry scope),
+    # not detectable via simplified SYSTEM+ACTION logic here — covered in test_classify_engine.py
     ("Condenser efficiency optimization", "INCLUDE"),
     ("CRAC unit water treatment", "INCLUDE"),
     ("Data center precision cooling maintenance", "INCLUDE"),
@@ -92,3 +93,12 @@ def test_data_center_keywords_present():
 def test_legacy_exclude_keywords_alias():
     """Legacy imports should still resolve to the negative keyword list."""
     assert EXCLUDE_KEYWORDS is NEGATIVE_KEYWORDS
+
+
+@pytest.mark.parametrize(
+    "keyword_list",
+    [STRONG_MATCH_KEYWORDS, SYSTEM_KEYWORDS, ACTION_KEYWORDS, NEGATIVE_KEYWORDS],
+)
+def test_keyword_lists_do_not_contain_exact_duplicates(keyword_list):
+    """Keyword lists should stay deduplicated for maintainability."""
+    assert len(keyword_list) == len(set(keyword_list))

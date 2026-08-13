@@ -59,6 +59,38 @@ export function escapeHtml(value) {
 }
 
 /**
+ * Return an absolute HTTP(S) URL, or an empty string for unsafe input.
+ * @param {string} value - Candidate URL
+ * @param {string} base - Optional base URL
+ * @returns {string}
+ */
+export function safeHttpUrl(value, base) {
+    const raw = (value ?? '').toString().trim();
+    if (!raw) return '';
+    try {
+        const fallbackBase = base || (typeof window !== 'undefined' ? window.location.origin : 'http://localhost');
+        const parsed = new URL(raw, fallbackBase);
+        return parsed.protocol === 'http:' || parsed.protocol === 'https:' ? parsed.href : '';
+    } catch {
+        return '';
+    }
+}
+
+/**
+ * Permit generated downloads while rejecting executable HTML/SVG data URLs.
+ * @param {string} value - Candidate download URL
+ * @returns {string}
+ */
+export function safeDownloadUrl(value) {
+    const raw = (value ?? '').toString().trim();
+    if (!raw) return '';
+    const httpUrl = safeHttpUrl(raw);
+    if (httpUrl) return httpUrl;
+    const safeDataType = /^(?:data:)(?:application\/pdf|application\/zip|application\/octet-stream|image\/(?:png|jpeg|gif|webp)|text\/(?:plain|csv));base64,/i;
+    return safeDataType.test(raw) ? raw : '';
+}
+
+/**
  * Normalize text for matching/search
  * @param {string} value - Input value
  * @returns {string}

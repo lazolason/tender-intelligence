@@ -22,8 +22,8 @@ def run_classification_checks():
         {
             "title": "Boiler water treatment plant",
             "description": "Maintenance of industrial utility",
-            "expected_category": "MEXEL",
-            "expected_keywords": ["boiler water treatment", "industrial", "utility", "plant"]
+            "expected_category": "PHAKATHI",
+            "expected_keywords": ["boiler water treatment", "boiler water"]
         },
         {
             "title": "Construction of boundary wall",

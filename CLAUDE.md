@@ -11,14 +11,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ### Three-Component System
 
 1. **Scraping & Processing Pipeline** (Python)
-   - [tenderscan.py](tenderscan.py) - Main automation engine that orchestrates all scrapers, validates data, classifies tenders, scores them, logs to Excel, and generates output files
+   - [tenderscan.py](tenderscan.py) - Main automation engine that orchestrates all scrapers, validates data, classifies tenders, scores them, persists them to SQLite, and generates output files
    - [scrapers/](scrapers/) - Individual scraper modules for each data source (municipalities, SOEs, National Treasury, Eskom, etc.)
-   - [utils/](utils/) - Shared utilities (Excel writer, validators, duplicate detection, PDF analysis, alerts)
-- [scoring_engine.py](scoring_engine.py) - Composite scoring algorithm (fit, industry, Mexel suitability)
+   - [utils/](utils/) - Shared utilities (database writer, validators, duplicate detection, PDF analysis, alerts)
+   - [scoring_engine.py](scoring_engine.py) - Composite scoring algorithm (fit, industry, Mexel suitability)
    - [keyword_rules.py](keyword_rules.py) - Classification rules defining what qualifies as Mexel vs EXCLUDED
 
 2. **Dashboard Sync** (Python → Static PWA)
-   - [sync_dashboard.py](sync_dashboard.py) - Generates static HTML dashboard from scraped data for local use
+   - [sync_dashboard.py](sync_dashboard.py) - Writes `dashboard/tenders.json` from SQLite for the local static PWA
    - [dashboard/](dashboard/) - Static PWA with offline support, virtual scrolling, filters, calendar view
 
 3. **Flask API** (Optional, for automation triggers)
@@ -28,22 +28,24 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ### Data Flow
 
 ```
-Scrapers → tenderscan.py → Validation → Classification → Scoring → Excel Log
-                                                                    ↓
-                                                              output/new_tenders.json
-                                                                    ↓
-                                                            sync_dashboard.py
-                                                                    ↓
-                                                          dashboard/index.html
-                                                                    ↓
-                                                            Local static server
+Scrapers → tenderscan.py → Validation → Classification → Scoring → SQLite
+                                                                   ↓
+                                                             output/new_tenders.json
+                                                                   ↓
+                                                           sync_dashboard.py
+                                                                   ↓
+                                                         dashboard/tenders.json
+                                                                   ↓
+                                                         dashboard/index.html
+                                                                   ↓
+                                                           Local static server
 ```
 
 ### Key Design Decisions
 
 - **Scoring vs Classification**: Classification ([keyword_rules.py](keyword_rules.py)) determines Mexel/EXCLUDED using keyword matching. Scoring ([scoring_engine.py](scoring_engine.py)) evaluates priority (HIGH/MEDIUM/LOW) using composite metrics (fit, industry).
 - **Suitability**: Each tender gets a `mexel_suitability` score (Mexel product fit). The dashboard treats all classified tenders as Mexel.
-- **Dashboard Persistence**: [sync_dashboard.py](sync_dashboard.py) merges new tenders with existing ones (up to 200 max) to prevent empty UI when no new tenders are found.
+- **Dashboard Sync Source of Truth**: [sync_dashboard.py](sync_dashboard.py) rebuilds `dashboard/tenders.json` from open tenders in SQLite on each run.
 - **Selenium Toggle**: Controlled by `config.yaml` → `scrapers.enable_selenium`. Some scrapers (National Treasury, Joburg Water, Eskom Direct) require Selenium. Disabled in production to avoid Chrome dependencies.
 
 ## Common Development Commands
@@ -65,10 +67,10 @@ Double-click **Launch Dashboard.command** in the project root to automatically r
 ### Running the System
 
 ```bash
-# Run full tender scan (scrapes all sources, scores, logs to Excel)
+# Run full tender scan (scrapes all sources, scores, writes to SQLite)
 python tenderscan.py
 
-# Sync results to local dashboard (generates HTML + tenders.json)
+# Sync results to local dashboard (updates dashboard/tenders.json)
 python sync_dashboard.py
 
 # Run weekly report generation
@@ -77,7 +79,7 @@ python weekly_report.py
 # Start Flask API (optional, for remote triggers)
 python app.py
 # or with Gunicorn:
-gunicorn app:app --bind 0.0.0.0:5000 --workers 2 --timeout 120
+gunicorn app:app --bind 0.0.0.0:5001 --workers 2 --timeout 120
 ```
 
 ### Testing Components
@@ -96,8 +98,8 @@ python tools/validate_dashboard_tenders_json.py
 # Build dashboard snapshot locally
 python tools/build_dashboard_snapshot.py
 
-# Test dashboard locally (serves on http://localhost:8000)
-cd dashboard && python3 -m http.server 8000
+# Start the unified app locally (dashboard + API on http://localhost:5001)
+./serve_app.sh
 ```
 
 ### Configuration
@@ -105,7 +107,7 @@ cd dashboard && python3 -m http.server 8000
 Primary configuration file: [config.yaml](config.yaml)
 
 **Critical Paths** (absolute paths on macOS - adjust for your system):
-- `paths.tender_log_excel` - Master Excel log where ALL tenders are recorded
+- `paths.tender_log_excel` - Legacy Excel workbook path for old maintenance scripts only
 - `paths.active_tenders` - Folder creation root (tender folders: `{ref} - {client} - {short_title}`)
 - `paths.output_dir` - JSON outputs (`new_tenders.json`, `summary.txt`, `scraper_health.json`)
 - `paths.log_file` - Scraper execution logs
@@ -162,18 +164,20 @@ Each scraper module follows this pattern:
 - Log errors using `utils.logging_tools.log_error()`
 
 **Active Scrapers**:
+- [registry.py](scrapers/registry.py) - Explicit registry of active scraper entrypoints used by `tenderscan.py`
 - [municipalities.py](scrapers/municipalities.py) - Cape Town
 - [soes.py](scrapers/soes.py) - Rand Water, Johannesburg Water, Transnet, Eskom, Anglo American, Harmony Gold, Seriti
 - [national_treasury_selenium.py](scrapers/national_treasury_selenium.py) - eTenders portal (Selenium-based)
 - [joburg_water_selenium.py](scrapers/joburg_water_selenium.py) - Johannesburg Water (Selenium-based)
 - [eskom_direct.py](scrapers/eskom_direct.py) - Eskom tender bulletin (Selenium-based)
 
-**Disabled Scrapers** (etenders.gov.za API returns 405 errors):
-- [eskom.py](scrapers/eskom.py), [sanral.py](scrapers/sanral.py), [transnet.py](scrapers/transnet.py)
+**Archived Scrapers**:
+- [eskom.py](scrapers/archived/eskom.py) - Deprecated in favor of `eskom_direct.py`
+- [transnet.py](scrapers/archived/transnet.py) - Archived after repeated 405 responses from eTenders
 
 ### Utils ([utils/](utils/))
 
-- [excel_writer.py](utils/excel_writer.py) - Handles Excel logging with duplicate detection, scoring integration, and auto-column sizing
+- [excel_writer.py](utils/excel_writer.py) - Legacy Excel utility kept for older maintenance workflows
 - [data_validator.py](utils/data_validator.py) - Validates tender schema (required fields, date formats, ref patterns)
 - [duplicate_detector.py](utils/duplicate_detector.py) - Fuzzy string matching for duplicate detection (Levenshtein distance)
 - [semantic_duplicate_detector.py](utils/semantic_duplicate_detector.py) - ML-based semantic deduplication using sentence transformers
@@ -234,11 +238,11 @@ Composite scoring algorithm with two dimensions:
 ### Dashboard Sync ([sync_dashboard.py](sync_dashboard.py))
 
 Process:
-1. Load active tenders from the Excel log + overlay new tenders from `output/new_tenders.json`
-2. Generate static HTML with embedded JS/CSS (no external dependencies)
+1. Load active tenders from SQLite and enrich them with any stored PDF analysis
+2. Normalize tender records for dashboard consumption
 3. Create `dashboard/tenders.json` for client-side loading
-4. Serve locally with `python3 -m http.server 8000`
-5. QA checks ensure scraped count matches displayed count
+4. Serve locally with `./serve_app.sh`
+5. QA checks ensure the dashboard payload is fresh and readable by the PWA
 
 **Features**:
 - Virtual scrolling (loads 20 tenders at a time)
@@ -263,8 +267,8 @@ Enable in [config.yaml](config.yaml) under `alerts` section.
 
 ### Local Dashboard Usage
 
-1. Run `python sync_dashboard.py` to generate static files
-2. Serve locally: `cd dashboard && python3 -m http.server 8000`
+1. Run `python sync_dashboard.py` to refresh `dashboard/tenders.json`
+2. Serve locally: `./serve_app.sh`
 
 See [DEPLOYMENT.md](DEPLOYMENT.md) for full deployment guide.
 
@@ -293,12 +297,12 @@ See [com.tenderscan.daily.plist](com.tenderscan.daily.plist) and [com.tenderscan
 - For local development, run `python tools/setup_chromedriver.py` (see [CHROMEDRIVER_SETUP.md](CHROMEDRIVER_SETUP.md))
 
 **Dashboard shows 0 tenders**
-- Check `output/new_tenders.json` exists and has data
+- Check the SQLite database contains open tenders
+- Check `dashboard/tenders.json` exists and has data
 - Verify `sync_dashboard.py` completed without errors
-- QA checks in sync script will log count mismatches
 
 **Excel "Permission Denied" errors**
-- Close Excel file before running tenderscan.py
+- Close Excel file before running any legacy Excel maintenance script
 - Check file path in `config.yaml` is correct and accessible
 
 **405 Errors from etenders.gov.za API**
@@ -310,8 +314,8 @@ See [com.tenderscan.daily.plist](com.tenderscan.daily.plist) and [com.tenderscan
 
 1. **Never hardcode API keys** - Use environment variables or [.env](.env) file (see [.env.example](.env.example))
 2. **Always validate tender data** - Use `TenderValidator` from [utils/data_validator.py](utils/data_validator.py) before processing
-3. **Preserve Excel data** - [excel_writer.py](utils/excel_writer.py) uses append-only operations with duplicate detection to prevent data loss
-4. **Maintain dashboard persistence** - [sync_dashboard.py](sync_dashboard.py) merges new tenders with existing ones (max 200) to avoid empty UI
+3. **Preserve database integrity** - [utils/db_writer.py](utils/db_writer.py) is the live persistence path and should remain the source of truth
+4. **Refresh dashboard data after scans** - [sync_dashboard.py](sync_dashboard.py) rewrites the dashboard payload from SQLite so the PWA reflects current open tenders
 5. **Classification before scoring** - tenderscan.py first excludes unwanted tenders via [keyword_rules.py](keyword_rules.py), then scores remaining tenders
 6. **Scraper isolation** - Each scraper handles only data extraction; [tenderscan.py](tenderscan.py) handles all classification, scoring, and logging
 

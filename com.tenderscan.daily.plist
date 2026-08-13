@@ -7,10 +7,10 @@
     <key>ProgramArguments</key>
     <array>
         <string>/opt/homebrew/bin/python3.11</string>
-        <string>/Users/lazolasonqishe/Documents/tender-intelligence/daily_runner.py</string>
+        <string>/Users/lazolasonqishe/tender-intelligence/daily_runner.py</string>
     </array>
     <key>WorkingDirectory</key>
-    <string>/Users/lazolasonqishe/Documents/tender-intelligence</string>
+    <string>/Users/lazolasonqishe/tender-intelligence</string>
     <key>StartCalendarInterval</key>
     <dict>
         <key>Hour</key>
@@ -19,9 +19,9 @@
         <integer>0</integer>
     </dict>
     <key>StandardOutPath</key>
-    <string>/Users/lazolasonqishe/Documents/tender-intelligence/logs/daily_scan.log</string>
+    <string>/Users/lazolasonqishe/tender-intelligence/logs/daily_scan.log</string>
     <key>StandardErrorPath</key>
-    <string>/Users/lazolasonqishe/Documents/tender-intelligence/logs/daily_scan_error.log</string>
+    <string>/Users/lazolasonqishe/tender-intelligence/logs/daily_scan_error.log</string>
     <key>EnvironmentVariables</key>
     <dict>
         <key>PATH</key>

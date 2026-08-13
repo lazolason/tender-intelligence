@@ -3,7 +3,7 @@
  */
 
 import { state, tenderLifecycleStatuses, CHUNK_SIZE } from './config.js';
-import { parseFlexibleDate } from '../utils/helpers.js';
+import { parseFlexibleDate, safeHttpUrl } from '../utils/helpers.js';
 import { getTenderAssignment, getTenderCurrentStatus } from './storage.js';
 
 /**
@@ -41,10 +41,12 @@ export function getTenderCompanyScope(tender) {
     const raw = (t.company || t.company_scope || t.scope || t.category || '').toString().trim();
     const norm = raw.toLowerCase();
     if (norm === 'mexel' || norm === 'mexel energy sustain') return 'Mexel';
+    if (norm === 'phakathi' || norm === 'phakathi industrial solutions') return 'Phakathi';
 
     try {
         const relevance = classifyTender(t)?.relevance;
-        if (relevance === 'Mexel') return relevance;
+        if (relevance === 'Mexel') return 'Mexel';
+        if (relevance === 'Phakathi') return 'Phakathi';
     } catch {
         // Ignore classification errors and fall back to score-based scope.
     }
@@ -127,6 +129,15 @@ export function classifyTender(tender) {
         "fouling factor", "approach temperature", "corrosion rate monitoring"
     ];
 
+    const phakathiKeywords = [
+        "huawei", "reicon", "odacon", "boiler", "boiler chemistry", "boiler water",
+        "boiler protection", "boiler treatment", "boiler preservation", "lay-up", "layup",
+        "asset preservation", "fac", "flow-accelerated corrosion", "steam generator",
+        "steam drum", "steam circuit", "ot networking", "ot network", "ot networks",
+        "operational technology", "scada", "telemetry", "telemetry design",
+        "industrial networking", "plc", "hmi", "automation"
+    ];
+
     const weakKeywords = [
         "chemical supply", "chemical dosing", "surfactant", "surfactant-based",
         "system conditioner", "antimicrobial", "biological control",
@@ -152,20 +163,26 @@ export function classifyTender(tender) {
     const hasCivil = civilKeywords.some(k => desc.includes(k));
     const fullText = `${tender.title || ''} ${desc}`;
     const hasStrong = strongKeywords.some(k => fullText.includes(k));
+    const hasPhakathi = phakathiKeywords.some(k => fullText.includes(k));
     const hasWeak = weakKeywords.some(k => fullText.includes(k));
     const hasContext = contextKeywords.some(k => fullText.includes(k));
     const hasNegative = negativeKeywords.some(k => fullText.includes(k));
 
     let relevance = "Unknown";
-    if (hasNegative && !hasStrong) {
+    if (hasNegative && !hasStrong && !hasPhakathi) {
         relevance = "OutOfScope";
+    } else if (fullText.includes("huawei") || fullText.includes("reicon") || fullText.includes("odacon")) {
+        relevance = "Phakathi";
     } else if (hasStrong || (hasWeak && hasContext)) {
         relevance = "Mexel";
+    } else if (hasPhakathi) {
+        relevance = "Phakathi";
     } else if (hasCivil) {
         relevance = "OutOfScope";
     }
 
     if (relevance === "Mexel") categories.push("Mexel");
+    if (relevance === "Phakathi") categories.push("Phakathi");
     if (relevance === "OutOfScope" && hasCivil) categories.push("Civil/Infrastructure");
 
     const priority = (tender.priority || "").toUpperCase();
@@ -174,7 +191,7 @@ export function classifyTender(tender) {
     let bidDecision = "REVIEW";
     if (relevance === "OutOfScope") {
         bidDecision = "NO_BID";
-    } else if (relevance === "Mexel" && fit !== null && fit >= 5 && priority !== "LOW") {
+    } else if ((relevance === "Mexel" || relevance === "Phakathi") && fit !== null && fit >= 5 && priority !== "LOW") {
         bidDecision = "BID";
     }
 
@@ -249,7 +266,7 @@ export function computeDecision(tender) {
     const avgScore = (fit + suitability) / 2;
 
     if (isOutOfScope) {
-        return makeDecision('No-Bid', 'nobid', 'Outside Mexel scope (civil / infrastructure)', 96);
+        return makeDecision('No-Bid', 'nobid', 'Outside target scope (civil / infrastructure)', 96);
     }
     if (fit >= 7 && suitability >= 6 && (isHighPriority || isMediumPriority)) {
         let conf = Math.round(70 + avgScore * 3);
@@ -516,12 +533,8 @@ export function normalizeAttachments(tender) {
 
     const pushItem = (name, url, size) => {
         if (!url) return;
-        let safeUrl = url.toString();
-        try {
-            safeUrl = encodeURI(safeUrl);
-        } catch {
-            // ignore
-        }
+        const safeUrl = safeHttpUrl(url);
+        if (!safeUrl) return;
         const fileName =
             name ||
             safeUrl.split('?')[0].split('#')[0].split('/').filter(Boolean).slice(-1)[0] ||

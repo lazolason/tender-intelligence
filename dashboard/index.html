@@ -4,8 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' http://127.0.0.1:5001 http://localhost:5001; object-src 'none'; base-uri 'self'; form-action 'self';">
+    <meta name="referrer" content="no-referrer">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="icon" type="image/png" href="icons/icon-192x192.png">
     <link rel="manifest" href="manifest.json">
     <title>Tender Intelligence Dashboard</title>
     <style>
@@ -126,6 +129,25 @@
             display: block;
         }
 
+        .pipeline-grid {
+            display: grid;
+            gap: 14px;
+        }
+
+        .pipeline-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-left: 4px solid #667eea;
+            border-radius: 14px;
+            padding: 18px;
+        }
+
+        .pipeline-card.due-soon { border-left-color: #feca57; }
+        .pipeline-card.overdue { border-left-color: #ff6b6b; }
+        .pipeline-card h3 { font-size: 1rem; line-height: 1.4; margin-bottom: 8px; }
+        .pipeline-meta { color: #aab3d9; display: flex; flex-wrap: wrap; gap: 12px; font-size: 0.85rem; }
+        .pipeline-actions { margin-top: 12px; display: flex; gap: 10px; align-items: center; }
+
         /* Stats */
         .stats {
             display: grid;
@@ -199,6 +221,53 @@
         /* Tender List */
         .tender-list {
             list-style: none;
+        }
+
+        .empty-state-panel {
+            padding: 18px 20px;
+            margin-top: 18px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.12), rgba(72, 219, 251, 0.08));
+            border: 1px solid rgba(102, 126, 234, 0.24);
+        }
+
+        .empty-state-title {
+            color: #eef2ff;
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .empty-state-copy {
+            color: #aab3d9;
+            font-size: 0.92rem;
+            line-height: 1.5;
+        }
+
+        .subsection-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin: 28px 0 10px;
+        }
+
+        .subsection-title {
+            color: #eef2ff;
+            font-size: 1.05rem;
+            font-weight: 700;
+        }
+
+        .subsection-meta {
+            color: #8fa5ff;
+            font-size: 0.82rem;
+        }
+
+        .subsection-copy {
+            color: #8993ba;
+            font-size: 0.88rem;
+            margin-bottom: 12px;
         }
 
         .tender-item {
@@ -291,6 +360,12 @@
             background: rgba(72, 219, 251, 0.2);
             color: #48dbfb;
             border: 1px solid rgba(72, 219, 251, 0.4);
+        }
+
+        .company-PHAKATHI {
+            background: rgba(162, 155, 254, 0.2);
+            color: #a29bfe;
+            border: 1px solid rgba(162, 155, 254, 0.4);
         }
 
         .priority-badge {
@@ -708,8 +783,9 @@
         </header>
 
         <nav class="tab-nav">
-            <button class="tab-btn active" onclick="showTab('dashboard')">📊 Dashboard</button>
-            <button class="tab-btn" onclick="showTab('calendar')">📅 Bid Calendar</button>
+            <button class="tab-btn active" type="button" data-tab="dashboard">📊 Dashboard</button>
+            <button class="tab-btn" type="button" data-tab="pipeline">🗓️ Planned Pipeline</button>
+            <button class="tab-btn" type="button" data-tab="calendar">📅 Bid Calendar</button>
         </nav>
 
         <div id="dashboard" class="tab-content active">
@@ -734,29 +810,63 @@
                     <div class="stat-value mexel-color" id="statMexel">--</div>
                     <div class="stat-label">⚗️ Mexel</div>
                 </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="statPhakathi" style="color: #a29bfe;">--</div>
+                    <div class="stat-label">🏢 Phakathi</div>
+                </div>
             </div>
 
             <div class="section">
-                <h2>📋 Active Tenders (<span id="displayedCount">0</span> of <span id="totalCount">0</span>)</h2>
+                <h2>📋 Active Tenders (<span id="displayedCount">0</span> active of <span id="totalCount">0</span> snapshot matches)</h2>
                 <div style="margin-bottom: 20px;">
                     <input type="text" id="searchBox" placeholder="🔍 Search by ref, title, description, client..."
-                        style="width: 100%; padding: 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); color: #fff; font-size: 1rem;"
-                        oninput="searchTenders()">
+                        style="width: 100%; padding: 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); color: #fff; font-size: 1rem;">
                 </div>
 
                 <div class="filter-tabs">
-                    <button class="filter-tab active" onclick="filterTenders('all')">All</button>
-                    <button class="filter-tab" onclick="filterTenders('Mexel')">⚗️ Mexel</button>
-                    <button class="filter-tab high" onclick="filterTenders('HIGH')">🔥 HIGH</button>
-                    <button class="filter-tab medium" onclick="filterTenders('MEDIUM')">⚡ MEDIUM</button>
-                    <button class="filter-tab low" onclick="filterTenders('LOW')">📝 LOW</button>
+                    <button class="filter-tab active" type="button" data-filter="all">All</button>
+                    <button class="filter-tab" type="button" data-filter="Mexel">⚗️ Mexel</button>
+                    <button class="filter-tab" type="button" data-filter="Phakathi">🏢 Phakathi</button>
+                    <button class="filter-tab high" type="button" data-filter="HIGH">🔥 HIGH</button>
+                    <button class="filter-tab medium" type="button" data-filter="MEDIUM">⚡ MEDIUM</button>
+                    <button class="filter-tab low" type="button" data-filter="LOW">📝 LOW</button>
                 </div>
                 <ul class="tender-list" id="tenderList"></ul>
+                <div id="activeEmptyState" class="empty-state-panel" hidden>
+                    <div id="activeEmptyStateTitle" class="empty-state-title"></div>
+                    <p id="activeEmptyStateMessage" class="empty-state-copy"></p>
+                </div>
                 <div id="loadMoreContainer" style="text-align: center; margin-top: 20px; display: none;">
-                    <button onclick="loadMore()"
+                    <button id="loadMoreBtn" type="button"
                         style="padding: 12px 30px; border-radius: 25px; border: 1px solid rgba(102,126,234,0.5); background: rgba(102,126,234,0.2); color: #667eea; cursor: pointer; font-size: 1rem; font-weight: 600;">
                         Load More (<span id="remainingCount">0</span> remaining)
                     </button>
+                </div>
+                <div id="recentMatchesSection" hidden>
+                    <div class="subsection-header">
+                        <div class="subsection-title">🕘 Recent Matches</div>
+                        <div class="subsection-meta"><span id="recentMatchesCount">0</span> shown</div>
+                    </div>
+                    <p class="subsection-copy">Latest matched tenders from the current snapshot, including recently closed items for context.</p>
+                    <ul class="tender-list" id="recentTenderList"></ul>
+                </div>
+            </div>
+        </div>
+
+        <div id="pipeline" class="tab-content">
+            <div class="section">
+                <h2>🗓️ Treasury Planned Opportunities (<span id="plannedCount">0</span>)</h2>
+                <p class="subsection-copy">Early-warning opportunities published in National Treasury procurement plans. Dates are planned and may change.</p>
+                <div class="filter-tabs">
+                    <button class="filter-tab active" type="button" data-plan-filter="all">All</button>
+                    <button class="filter-tab" type="button" data-plan-filter="DUE_SOON">Due within 90 days</button>
+                    <button class="filter-tab" type="button" data-plan-filter="MEXEL">⚗️ Mexel</button>
+                    <button class="filter-tab" type="button" data-plan-filter="PHAKATHI">🏢 Phakathi</button>
+                </div>
+                <div id="plannedOpportunityList" class="pipeline-grid"></div>
+                <div id="plannedEmptyState" class="empty-state-panel" hidden>
+                    <div class="empty-state-title">No planned opportunities loaded</div>
+                    <p class="empty-state-copy">Run <code>python sync_procurement_plans.py</code>, then refresh the dashboard.</p>
                 </div>
             </div>
         </div>
@@ -764,9 +874,9 @@
         <div id="calendar" class="tab-content">
             <div class="section">
                 <div class="calendar-nav">
-                    <button onclick="changeMonth(-1)">← Prev</button>
+                    <button id="prevMonthBtn" type="button">← Prev</button>
                     <span class="calendar-month" id="calendarMonth"></span>
-                    <button onclick="changeMonth(1)">Next →</button>
+                    <button id="nextMonthBtn" type="button">Next →</button>
                 </div>
                 <div class="calendar">
                     <div class="calendar-header">Sun</div>
@@ -786,7 +896,7 @@
     <!-- Modal -->
     <div id="summaryModal" class="modal-overlay">
         <div class="modal-content">
-            <button class="modal-close" onclick="closeSummaryModal()">✕</button>
+            <button id="summaryModalClose" class="modal-close" type="button">✕</button>
             <h2 id="modalTitle" class="modal-title">Tender Title</h2>
             <div id="modalSubtitle" class="modal-subtitle">Reference | Client</div>
             <div id="summaryText" class="summary-text">Loading...</div>
@@ -799,255 +909,14 @@
                         <option value="won">🏆 Won</option>
                         <option value="lost">❌ Lost</option>
                     </select>
-                    <button class="ai-btn" onclick="updateTenderOutcome()" style="margin-left:0;">Update</button>
-                    <button class="copy-btn" onclick="copySummary()">📋 Copy</button>
+                    <button id="updateOutcomeBtn" class="ai-btn" type="button" style="margin-left:0;">Update</button>
+                    <button id="copySummaryBtn" class="copy-btn" type="button">📋 Copy</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <script>
-        let allTenders = [];
-        let currentFilter = 'all';
-        let currentMonth = new Date();
-        let currentSearchTerm = '';
-        let displayedCount = 0;
-        const itemsPerPage = 20;
-
-        async function init() {
-            try {
-                const res = await fetch('tenders.json');
-                const data = await res.json();
-
-                if (data.meta) {
-                    const meta = data.meta;
-                    document.getElementById('lastSync').textContent = `🔄 Last synced: ${meta.last_sync || '--'}`;
-                    if (meta.bid_statistics) {
-                        const s = meta.bid_statistics;
-                        const b = document.getElementById('winRateBadge');
-                        b.textContent = `🏆 Win Rate: ${s.win_rate}% (${s.wins}/${s.total_bids} bids)`;
-                        b.style.display = 'inline-block';
-                    }
-                    document.getElementById('sourceStats').textContent = `📊 Total Active Tenders: ${data.tenders.length}`;
-                }
-
-                allTenders = data.tenders || data;
-                document.getElementById('totalCount').textContent = allTenders.length;
-                updateStats();
-                renderTenders('all');
-            } catch (err) {
-                console.error('Error loading tenders:', err);
-                document.getElementById('tenderList').innerHTML = '<li class="empty-state">Error loading data. Run sync_dashboard.py first.</li>';
-            }
-        }
-
-        function updateStats() {
-            const active = allTenders.filter(t => getDaysUntil(t.closing_date) === null || getDaysUntil(t.closing_date) >= 0);
-            document.getElementById('statTotal').textContent = active.length;
-            document.getElementById('statHigh').textContent = active.filter(t => t.priority === 'HIGH').length;
-            document.getElementById('statMedium').textContent = active.filter(t => t.priority === 'MEDIUM').length;
-            document.getElementById('statLow').textContent = active.filter(t => t.priority === 'LOW').length;
-            document.getElementById('statMexel').textContent = active.filter(t => t.category === 'Mexel').length;
-        }
-
-        function getDaysUntil(dateStr) {
-            if (!dateStr || dateStr === "New") return null;
-            const closing = new Date(dateStr);
-            if (isNaN(closing.getTime())) return null;
-            const today = new Date();
-            today.setHours(0, 0, 0, 0);
-            closing.setHours(0, 0, 0, 0);
-            return Math.ceil((closing - today) / (1000 * 60 * 60 * 24));
-        }
-
-        function getCountdownHtml(dateStr) {
-            const days = getDaysUntil(dateStr);
-            if (days === null) return '<span class="countdown normal">📅 TBC</span>';
-            if (days < 0) return '<span class="countdown closed">CLOSED</span>';
-            if (days === 0) return '<span class="countdown urgent">🔴 TODAY!</span>';
-            if (days === 1) return '<span class="countdown urgent">🔴 TOMO!</span>';
-            if (days <= 3) return `<span class="countdown urgent">⚠️ ${days} days</span>`;
-            if (days <= 7) return `<span class="countdown warning">📅 ${days} days</span>`;
-            return `<span class="countdown normal">📅 ${days}d</span>`;
-        }
-
-        function searchTenders() {
-            currentSearchTerm = document.getElementById('searchBox').value.toLowerCase();
-            renderTenders(currentFilter);
-        }
-
-        function filterTenders(f) {
-            currentFilter = f;
-            document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
-            event.target.classList.add('active');
-            renderTenders(f);
-        }
-
-        function renderTenders(filter, append = false) {
-            const list = document.getElementById('tenderList');
-            if (!append) { list.innerHTML = ''; displayedCount = 0; }
-
-            let filtered = allTenders.filter(t => getDaysUntil(t.closing_date) === null || getDaysUntil(t.closing_date) >= 0);
-
-            if (filter === 'Mexel') filtered = filtered.filter(t => t.category === 'Mexel');
-            else if (['HIGH', 'MEDIUM', 'LOW'].includes(filter)) filtered = filtered.filter(t => t.priority === filter);
-
-            if (currentSearchTerm) {
-                filtered = filtered.filter(t =>
-                    (t.ref || '').toLowerCase().includes(currentSearchTerm) ||
-                    (t.title || '').toLowerCase().includes(currentSearchTerm) ||
-                    (t.client || '').toLowerCase().includes(currentSearchTerm)
-                );
-            }
-
-            filtered.sort((a, b) => (getDaysUntil(a.closing_date) ?? 999) - (getDaysUntil(b.closing_date) ?? 999));
-
-            const start = append ? displayedCount : 0;
-            const end = Math.min(start + itemsPerPage, filtered.length);
-            const toDisplay = filtered.slice(start, end);
-
-            toDisplay.forEach((t, i) => {
-                const li = document.createElement('li');
-                const days = getDaysUntil(t.closing_date);
-                const urgency = days !== null && days <= 3 ? 'urgent' : (days !== null && days <= 7 ? 'warning' : '');
-                li.className = `tender-item ${urgency}`;
-
-                const keywords = (t.matched_keywords || []).map(k => `<span class="keyword-tag">${k}</span>`).join('');
-                const hasIntel = !!t.pdf_analysis;
-                const isDuplicate = t.duplicate_refs && t.duplicate_refs.length > 0;
-
-                li.innerHTML = `
-                    <div class="tender-content">
-                        <div class="tender-info">
-                            <div class="tender-header">
-                                <span class="tender-ref">${t.ref}</span>
-                                <span class="company-badge company-MEXEL">Mexel</span>
-                                ${getCountdownHtml(t.closing_date)}
-                                ${hasIntel ? '<span class="intel-badge">📄 Intel</span>' : ''}
-                                ${isDuplicate ? '<span class="intel-badge" style="color:#feca57; border-color:#feca57;">🔗 Duplicate</span>' : ''}
-                            </div>
-                            <div class="tender-title">${t.title}</div>
-                            <div class="keyword-container">${keywords}</div>
-                            <div class="tender-meta">
-                                <span>📍 ${t.client}</span>
-                                <span>📁 ${t.category}</span>
-                                <span>🔗 ${t.source}</span>
-                            </div>
-                        </div>
-                        <div class="tender-right">
-                            <span class="priority-badge priority-${t.priority}">${t.priority}</span>
-                            <div class="score">${t.score}</div>
-                            <div style="display:flex; gap:8px;">
-                                <button class="ai-btn" onclick="event.stopPropagation(); window.__currentTenderIndex=${start + i}; openSummaryModal()">📄 Summary</button>
-                                <a href="${t.url}" target="_blank" class="view-btn" onclick="event.stopPropagation()">View ↗</a>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                li.onclick = () => window.open(t.url, '_blank');
-                list.appendChild(li);
-            });
-
-            displayedCount = end;
-            document.getElementById('displayedCount').textContent = filtered.length;
-            document.getElementById('loadMoreContainer').style.display = end < filtered.length ? 'block' : 'none';
-            document.getElementById('remainingCount').textContent = filtered.length - end;
-            window.lastFiltered = filtered;
-        }
-
-        function openSummaryModal() {
-            const t = window.lastFiltered[window.__currentTenderIndex];
-            window.__currentTender = t;
-            document.getElementById('modalTitle').textContent = t.title;
-            document.getElementById('modalSubtitle').textContent = `${t.ref} | ${t.client}`;
-
-            const cont = document.getElementById('summaryText');
-            if (t.pdf_analysis) {
-                renderIntel(t.pdf_analysis);
-            } else {
-                cont.textContent = t.description || "No detailed summary available yet. Run PDF analysis to extract more intelligence.";
-            }
-
-            document.getElementById('summaryModal').classList.add('active');
-        }
-
-        function renderIntel(intel) {
-            let html = `<p style="color:#8fa5ff; font-size:0.9rem; margin-bottom:15px;">Analyzed ${intel.page_count} pages (${intel.word_count} words)</p>`;
-            if (intel.requirements?.length) {
-                html += `<h4 style="color:#fff; margin:10px 0;">📋 Requirements</h4><ul class="req-list">${intel.requirements.map(r => `<li class="req-item">${r}</li>`).join('')}</ul>`;
-            }
-            if (intel.values?.length) {
-                html += `<h4 style="color:#fff; margin:10px 0;">💰 Estimates</h4><ul class="req-list">${intel.values.map(v => `<li class="req-item"><strong>${v.formatted}</strong>: ${v.context}</li>`).join('')}</ul>`;
-            }
-            if (intel.contact) {
-                html += `<div style="background:rgba(102,126,234,0.1); padding:15px; border-radius:12px; margin-top:15px;">
-                    <h4 style="color:#48dbfb;">📞 Contact</h4>
-                    <p>${intel.contact.email || '--'} | ${intel.contact.phone || '--'}</p>
-                </div>`;
-            }
-            document.getElementById('summaryText').innerHTML = html;
-        }
-
-        function closeSummaryModal() { document.getElementById('summaryModal').classList.remove('active'); }
-
-        async function updateTenderOutcome() {
-            const outcome = document.getElementById('outcomeSelect').value;
-            if (!outcome) return alert('Select an outcome');
-            const btn = event.target;
-            btn.disabled = true;
-            try {
-                await fetch('http://localhost:5001/api/bids', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ ref: window.__currentTender.ref, outcome: outcome, submitted: true })
-                });
-                btn.textContent = '✅ Updated';
-                setTimeout(() => { btn.disabled = false; btn.textContent = 'Update'; closeSummaryModal(); }, 1500);
-            } catch (err) { alert('API Error'); btn.disabled = false; }
-        }
-
-        function copySummary() {
-            navigator.clipboard.writeText(document.getElementById('summaryText').textContent);
-            const b = event.target; b.innerHTML = '✅ Copied'; setTimeout(() => b.innerHTML = '📋 Copy', 2000);
-        }
-
-        function showTab(id) {
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            event.target.classList.add('active');
-            if (id === 'calendar') renderCalendar();
-        }
-
-        function renderCalendar() {
-            const grid = document.getElementById('calendarGrid');
-            const year = currentMonth.getFullYear(), month = currentMonth.getMonth();
-            document.getElementById('calendarMonth').textContent = currentMonth.toLocaleDateString('en-ZA', { month: 'long', year: 'numeric' });
-
-            const first = new Date(year, month, 1).getDay();
-            const last = new Date(year, month + 1, 0).getDate();
-            const tendersByDate = {};
-            allTenders.forEach(t => { if (t.closing_date) { (tendersByDate[t.closing_date] = tendersByDate[t.closing_date] || []).push(t); } });
-
-            let html = '';
-            for (let i = 0; i < first; i++) html += '<div class="calendar-day other-month"></div>';
-            for (let d = 1; d <= last; d++) {
-                const ds = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
-                const count = (tendersByDate[ds] || []).length;
-                html += `<div class="calendar-day ${count ? 'has-tenders' : ''}" onclick="showDay('${ds}')">${d}${count ? `<span class="tender-count">${count}</span>` : ''}</div>`;
-            }
-            grid.innerHTML = html;
-        }
-
-        function showDay(ds) {
-            const t = allTenders.filter(t => t.closing_date === ds);
-            document.getElementById('dayTenders').innerHTML = t.length ? `<h3>Closing ${ds}</h3>` + t.map(x => `<div style="padding:10px; background:rgba(255,255,255,0.05); margin-top:10px; border-radius:8px;">${x.ref}: ${x.title}</div>`).join('') : '';
-        }
-
-        function changeMonth(d) { currentMonth.setMonth(currentMonth.getMonth() + d); renderCalendar(); }
-
-        init();
-    </script>
+    <script type="module" src="./js/bridge.js"></script>
 </body>
 
 </html>

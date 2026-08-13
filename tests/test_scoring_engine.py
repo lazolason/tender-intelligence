@@ -75,3 +75,16 @@ def test_priority_thresholds():
     # For now, we verify that the threshold logic works correctly
     # by checking that composite < 5 would map to LOW (even though unreachable)
     pass
+
+
+def test_score_tender_excluded_forces_low_priority():
+    result = score_tender(
+        "Tender Cancellation for C&I Refurbishment at Majuba Power Station",
+        "Tender cancellation notice for refurbishment works at Majuba Power Station",
+        client="Eskom",
+        category="EXCLUDED",
+    )
+
+    assert result["priority"] == "LOW"
+    assert result["composite_score"] == 1.0
+    assert result["industry_matched"] == "Excluded"

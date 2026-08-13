@@ -6,36 +6,84 @@
 paths:
   master_root: "/Users/lazolasonqishe/Documents/MASTER/"
   tenders_root: "/Users/lazolasonqishe/Documents/MASTER/TENDERS/"
-  tender_log_excel: "/Users/lazolasonqishe/Documents/MASTER/TENDERS/01_Tender_Log/Tender_Dashboard_v2.xlsx"
+  tender_log_excel: "/Users/lazolasonqishe/Documents/MASTER/TENDERS/01_Tender_Log/Tender_Dashboard_v2.xlsx"  # Legacy only
   active_tenders: "/Users/lazolasonqishe/Documents/MASTER/TENDERS/02_Active_Tenders/"
   output_dir: "/Users/lazolasonqishe/Documents/tender-intelligence/output/"
   log_file: "/Users/lazolasonqishe/Documents/tender-intelligence/logs/scraper.log"
 
 # Scraper settings
 scrapers:
-  enable_selenium: true    # Enable Selenium-based scrapers (National Treasury)
-  timeout: 15
+  enable_selenium: false      # Selenium is disabled by default; API-based scrapers preferred
+  enable_selenium_fallback: true  # Fall back to Selenium when API fails
+  timeout: 20
   user_agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)"
   
-  # Search terms for National Treasury
+  # Search terms for National Treasury eTenders API
   search_terms:
+    # Mexel
     - "mexel"
     - "mexel 432"
     - "mexel432"
     - "mexsteam"
     - "mexsteam 100"
-    - "mexel energy sustain"
-    - "mexel energy"
+    - "condenser efficiency"
+    - "thermal efficiency"
+    - "cooling water treatment"
+    - "m&v protocol"
+    # Phakathi
+    - "boiler"
+    - "boiler chemistry"
+    - "ot networking"
+    - "scada"
+    - "huawei"
+    - "reicon"
+    - "odacon"
   
   # URLs
   urls:
     national_treasury: "https://www.etenders.gov.za/"
+    national_treasury_api: "https://www.etenders.gov.za/Home/TenderOpportunities"
+    # Primary Transnet eSupplier portal (replaces old eTenders filter)
+    transnet_esupplier: "https://esupplier.transnet.net/"
+    transnet_etender: "https://www.transnet.net/TransnetTenders"
+    # Johannesburg Water SCM subdomain (newer portal)
+    joburg_water_scm: "https://scm.johannesburgwater.co.za/"
+
+# Treasury procurement plans (pre-tender early-warning pipeline)
+procurement_plans:
+  enabled: true
+  relevant_only: true
+  timeout: 60
+  # Refuse to reconcile/retire records from a truncated Treasury response.
+  minimum_snapshot_rows: 100
+  # Conservative plan-to-live linkage; ambiguous candidates remain unlinked.
+  link_minimum_score: 0.86
+  link_ambiguity_margin: 0.08
+
+# Authorized private-sector exports. Disabled until a licensed/approved source
+# is explicitly allowlisted. Files must be placed inside inbox_dir manually or
+# by an organization-approved mailbox/export workflow.
+authorized_feeds:
+  enabled: false
+  inbox_dir: "data/authorized_feeds/inbox"
+  max_file_bytes: 10485760
+  max_records: 10000
+  sources: []
+  # Example (do not enable without authorization):
+  # - id: licensed_vendor_export
+  #   label: "Licensed Vendor Export"
+  #   enabled: true
+  #   format: json          # json or csv
+  #   kind: live_tenders   # only supported kind in Stage 2C
+  #   default_client: ""
 
 # Classification settings
 classification:
-  mexel_only: true          # Mexel Energy Sustain only
+  # Multi-company mode (FLOWTECH, PHAKATHI, MEXEL all classified independently)
+  mexel_only: false            # Set to true to show only MEXEL tenders in dashboard
+  include_excluded: false      # Whether to store/store EXCLUDED tenders in DB
 
-# Excel sheet names
+# Legacy Excel settings retained for old maintenance scripts only
 excel:
   tender_log_sheet: "Tender_Log"
 
@@ -55,22 +103,20 @@ email:
   smtp_server: "smtp.gmail.com"
   smtp_port: 587
   smtp_use_tls: true
-  from_address: ""  # Override with EMAIL_FROM env var
-  to_addresses: []  # Override with EMAIL_TO env var (comma-separated)
+  from_address: ""
+  to_addresses: []
 
 # Email alerts for urgent tenders
-# Secrets loaded from environment variables: SMTP_USER, SMTP_PASSWORD
 email_alerts:
-  enabled: false  # Set to true to enable urgent tender notifications
+  enabled: false
   smtp:
     server: "smtp.gmail.com"
     port: 587
     use_tls: true
-    sender_email: ""  # Loaded from SMTP_USER env var
-    sender_password: ""  # Loaded from SMTP_PASSWORD env var (app-specific password)
-    recipients:
-      # - "team@mexel.co.za"
-  urgent_threshold_days: 3  # Alert for HIGH priority tenders closing within N days
+    sender_email: ""
+    sender_password: ""
+    recipients: []
+  urgent_threshold_days: 3
   
 # Logging settings
 logging:
@@ -78,35 +124,32 @@ logging:
   max_entries: 5000
 
 # Version
-engine_version: "v2.0"
+engine_version: "v3.0"
 
-# Phase 1: Multi-channel Alerts (Slack, SMS, Push)
+# Multi-channel Alerts
 alerts:
   slack:
     enabled: false
-    webhook_url: ""  # Add your Slack webhook URL
+    webhook_url: ""
     channels:
       high_priority: "#tenders-high"
       medium_priority: "#tenders-medium"
-
   sms:
     enabled: false
-    twilio_account_sid: ""  # Add your Twilio Account SID
-    twilio_auth_token: ""  # Add your Twilio Auth Token
-    from_number: ""  # Add your Twilio phone number
+    twilio_account_sid: ""
+    twilio_auth_token: ""
+    from_number: ""
     recipients:
-      urgent: []  # Add phone numbers for urgent alerts
-
+      urgent: []
   smart_alerts:
-    enabled: false  # Auto-selects best channel based on tender priority
-
+    enabled: false
   scraper_failures:
-    enabled: false  # Alert when 3 consecutive scraper failures
+    enabled: false
 
 # Advanced Deduplication Settings
 deduplication:
   semantic_threshold: 0.75
   fuzzy_threshold: 85
   date_window_days: 7
-  require_same_source: false # Set to false to allow cross-source deduplication
-  limit_db_check: 200        # Number of recent tenders to check against
+  require_same_source: false
+  limit_db_check: 200

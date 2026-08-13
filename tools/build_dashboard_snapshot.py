@@ -11,6 +11,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from classify_engine import classify_tender
 from scoring_engine import score_tender
+from utils.pipeline_validation import validate_tender_batch
 from scrapers.municipalities import scrape_all_municipalities
 from scrapers.soes import (
     scrape_rand_water,
@@ -29,6 +30,7 @@ from scrapers.sadc import (
     scrape_botswana,
     scrape_namibia,
 )
+from scrapers.treasury_procurement_plans import scrape_treasury_procurement_plans
 
 
 def _now_sast_str() -> str:
@@ -97,6 +99,10 @@ def validate_payload(payload: Any) -> Tuple[List[dict], Dict[str, Any]]:
         raise ValueError("tenders must be an array")
     if meta and not isinstance(meta, dict):
         raise ValueError("meta must be an object when present")
+
+    planned = [] if isinstance(payload, list) else payload.get("planned_opportunities", [])
+    if not isinstance(planned, list):
+        raise ValueError("planned_opportunities must be an array when present")
 
     for i, t in enumerate(tenders[:200]):
         if not isinstance(t, dict):
@@ -186,6 +192,15 @@ def build_summary(meta: Dict[str, Any], tenders: List[dict]) -> Dict[str, Any]:
     }
 
 
+def _load_planned_opportunities() -> List[dict]:
+    """Best-effort early-warning feed for static dashboard builds."""
+    try:
+        return scrape_treasury_procurement_plans(relevant_only=True)
+    except Exception as exc:
+        print(f"Warning: Treasury procurement plans unavailable: {exc}", file=sys.stderr)
+        return []
+
+
 def build_snapshot(limit: int) -> dict:
     all_tenders = []
 
@@ -241,9 +256,9 @@ def build_snapshot(limit: int) -> dict:
         )
 
         merged.append(tender)
-        if len(merged) >= limit:
-            break
 
+    validation = validate_tender_batch(merged)
+    merged = validation.valid_tenders[:limit]
     last_sync = _now_sast_str()
     build_sha = _get_build_sha()
 
@@ -252,9 +267,12 @@ def build_snapshot(limit: int) -> dict:
         "next_run": "Daily 08:00",
         "build_sha": build_sha,
         "build_id": f"{last_sync} · {build_sha}" if build_sha else last_sync,
+        "validation": validation.metrics(),
     }
 
-    return {"meta": meta, "tenders": merged}
+    planned = _load_planned_opportunities()
+    meta["planned_opportunity_count"] = len(planned)
+    return {"meta": meta, "tenders": merged, "planned_opportunities": planned}
 
 
 def _load_scrape_inputs(paths: List[str]) -> List[dict]:
@@ -316,9 +334,9 @@ def build_snapshot_from_inputs(paths: List[str], limit: int) -> dict:
         )
 
         merged.append(tender)
-        if len(merged) >= limit:
-            break
 
+    validation = validate_tender_batch(merged)
+    merged = validation.valid_tenders[:limit]
     last_sync = _now_sast_str()
     build_sha = _get_build_sha()
     meta: Dict[str, Any] = {
@@ -327,9 +345,12 @@ def build_snapshot_from_inputs(paths: List[str], limit: int) -> dict:
         "build_sha": build_sha,
         "build_id": f"{last_sync} · {build_sha}" if build_sha else last_sync,
         "inputs": [os.path.basename(p) for p in paths],
+        "validation": validation.metrics(),
     }
 
-    return {"meta": meta, "tenders": merged}
+    planned = _load_planned_opportunities()
+    meta["planned_opportunity_count"] = len(planned)
+    return {"meta": meta, "tenders": merged, "planned_opportunities": planned}
 
 
 def render_daily_email_html(payload: Dict[str, Any], summary: Dict[str, Any], dashboard_url: str) -> str:
@@ -477,13 +498,24 @@ def main() -> None:
     )
     parser.add_argument(
         "--dashboard-url",
-        default=os.environ.get("DASHBOARD_URL") or "http://localhost:8000/",
+        default=os.environ.get("DASHBOARD_URL") or "http://localhost:5001/",
         help="Dashboard URL to embed in generated email artifact",
     )
     args = parser.parse_args()
 
     payload = build_snapshot_from_inputs(paths=args.inputs, limit=args.limit) if args.inputs else build_snapshot(limit=args.limit)
     tenders, meta = validate_payload(payload)
+
+    if not payload.get("planned_opportunities") and os.path.exists(args.out):
+        try:
+            with open(args.out, "r", encoding="utf-8") as file_obj:
+                previous_payload = json.load(file_obj)
+            previous_plans = previous_payload.get("planned_opportunities") or []
+            if isinstance(previous_plans, list):
+                payload["planned_opportunities"] = previous_plans
+                meta["planned_opportunity_count"] = len(previous_plans)
+        except (OSError, ValueError, TypeError):
+            pass
 
     should_write_main = True
     if not tenders and os.path.exists(args.out):

@@ -11,7 +11,6 @@ import platform
 import subprocess
 import zipfile
 import urllib.request
-import ssl
 from pathlib import Path
 
 # Add tools dir to path
@@ -24,8 +23,17 @@ from chromedriver_manager import (
 
 # Chrome for Testing (official Google binary)
 CHROME_FOR_TESTING_URL = "https://googlechromelabs.github.io/chrome-for-testing"
-DOWNLOAD_BASE = "https://edgedl.me.chromium.org/chrome/chrome-for-testing"
-SSL_CONTEXT = ssl._create_unverified_context()
+DOWNLOAD_BASE = "https://storage.googleapis.com/chrome-for-testing-public"
+
+
+def _load_json(url):
+    with urllib.request.urlopen(url, timeout=30) as resp:
+        return json.loads(resp.read())
+
+
+def _has_platform_download(entry, *, binary="chromedriver"):
+    downloads = (entry.get("downloads") or {}).get(binary, [])
+    return any(item.get("platform") == PLATFORM for item in downloads)
 
 
 def download_chromedriver(version):
@@ -33,6 +41,7 @@ def download_chromedriver(version):
     Download chromedriver for given version from Chrome for Testing
     """
     print(f"\n📥 Downloading chromedriver {version} for {PLATFORM}...")
+    DRIVER_DIR.mkdir(parents=True, exist_ok=True)
     
     # Download URL format
     download_url = f"{DOWNLOAD_BASE}/{version}/{PLATFORM}/chromedriver-{PLATFORM}.zip"
@@ -42,7 +51,7 @@ def download_chromedriver(version):
     
     try:
         print(f"   URL: {download_url}")
-        with urllib.request.urlopen(download_url, context=SSL_CONTEXT) as resp:
+        with urllib.request.urlopen(download_url, timeout=60) as resp:
             data = resp.read()
         with open(temp_zip, "wb") as f:
             f.write(data)
@@ -90,48 +99,58 @@ def find_matching_version():
         print("❌ Chrome not found. Cannot determine driver version.")
         return None
     
-    print(f"\n🔍 Looking for chromedriver matching Chrome {chrome_major}.x...")
+    chrome_build = ".".join(str(chrome_full).split(".")[:3]) if chrome_full else ""
+    print(f"\n🔍 Looking for chromedriver matching Chrome {chrome_full}...")
     
     try:
-        # Fetch available versions
-        response = urllib.request.urlopen(
-            f"{CHROME_FOR_TESTING_URL}/api/v1/latest-versions-per-milestone",
-            context=SSL_CONTEXT,
+        data = _load_json(
+            f"{CHROME_FOR_TESTING_URL}/latest-patch-versions-per-build-with-downloads.json"
         )
-        data = json.loads(response.read())
-        
-        for milestone in data.get("milestones", []):
-            if str(milestone["milestone"]) == chrome_major:
-                version = milestone["version"]
-                print(f"   ✅ Found version {version}")
-                return version
-        
-        print(f"   ⚠️  No exact match for Chrome {chrome_major}")
-        
+        build_entry = (data.get("builds") or {}).get(chrome_build)
+        if build_entry and build_entry.get("version") and _has_platform_download(build_entry):
+            version = build_entry["version"]
+            print(f"   ✅ Exact build match found: {version}")
+            return version
     except Exception as e:
-        print(f"   ❌ Failed to fetch versions: {e}")
+        print(f"   ❌ Failed to fetch build-specific versions: {e}")
+
+    try:
+        data = _load_json(
+            f"{CHROME_FOR_TESTING_URL}/latest-versions-per-milestone-with-downloads.json"
+        )
+        milestone = (data.get("milestones") or {}).get(str(chrome_major))
+        if milestone and milestone.get("version") and _has_platform_download(milestone):
+            version = milestone["version"]
+            print(f"   ✅ Milestone match found: {version}")
+            return version
+        print(f"   ⚠️  No exact milestone match for Chrome {chrome_major}")
+    except Exception as e:
+        print(f"   ❌ Failed to fetch milestone versions: {e}")
 
     # Fallback to known good versions list
     try:
-        response = urllib.request.urlopen(
+        data = _load_json(
             f"{CHROME_FOR_TESTING_URL}/known-good-versions-with-downloads.json",
-            context=SSL_CONTEXT,
         )
-        data = json.loads(response.read())
         versions = data.get("versions", [])
+
+        # Try to match the full build first.
+        for entry in reversed(versions):
+            if entry.get("version", "").startswith(f"{chrome_build}.") and _has_platform_download(entry):
+                print(f"   ✅ Fallback matched build {chrome_build}: {entry['version']}")
+                return entry["version"]
 
         # Try to match milestone exactly
         for entry in versions:
-            if str(entry.get("milestone")) == chrome_major and entry.get("version"):
+            if str(entry.get("version", "")).startswith(f"{chrome_major}.") and entry.get("version") and _has_platform_download(entry):
                 print(f"   ✅ Fallback matched milestone {chrome_major}: {entry['version']}")
                 return entry["version"]
 
         # Otherwise use most recent version that has our platform binary
         for entry in reversed(versions):
-            for dl in entry.get("downloads", {}).get("chromedriver", []):
-                if dl.get("platform") == PLATFORM and entry.get("version"):
-                    print(f"   ✅ Fallback using available version: {entry['version']}")
-                    return entry["version"]
+            if _has_platform_download(entry) and entry.get("version"):
+                print(f"   ✅ Fallback using available version: {entry['version']}")
+                return entry["version"]
     except Exception as e:
         print(f"   ❌ Fallback fetch failed: {e}")
 

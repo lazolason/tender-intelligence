@@ -1,0 +1,18 @@
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+exclude = [
+  ".git",
+  ".kilo",
+  ".playwright-cli",
+  ".venv",
+  ".venv-verify",
+  "backups",
+  "dashboard/node_modules",
+  "tools/chromedriver",
+]
+
+[tool.ruff.lint]
+# Gate correctness and syntax in the legacy codebase. Style modernization is
+# intentionally incremental rather than an unsafe repository-wide rewrite.
+select = ["E9", "F63", "F7", "F82"]

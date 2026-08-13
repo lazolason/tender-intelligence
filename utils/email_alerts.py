@@ -15,6 +15,16 @@ import yaml
 from pathlib import Path
 
 logger = logging.getLogger(__name__)
+DASHBOARD_URL = (os.getenv("DASHBOARD_URL") or "http://localhost:5001/").strip() or "http://localhost:5001/"
+
+
+def _get_env(*names, default=""):
+    """Return the first non-empty environment variable from `names`."""
+    for name in names:
+        value = os.getenv(name)
+        if value not in (None, ""):
+            return value
+    return default
 
 
 def load_email_config():
@@ -38,16 +48,42 @@ def load_email_config():
     email_config = config.get('email', {})
     
     # Build configuration dict
+    smtp_user = _get_env(
+        "SMTP_USER",
+        "TENDERSCAN_SMTP_USER",
+        default=email_config.get("smtp_user", ""),
+    )
+    sender_email = _get_env(
+        "EMAIL_FROM",
+        "TENDERSCAN_EMAIL_FROM",
+        default=email_config.get("from_address", smtp_user),
+    )
+
     result = {
-        "smtp_server": os.getenv('SMTP_SERVER', email_config.get('smtp_server', 'smtp.gmail.com')),
-        "smtp_port": int(os.getenv('SMTP_PORT', str(email_config.get('smtp_port', 587)))),
-        "sender_email": os.getenv('SMTP_USER', os.getenv('EMAIL_FROM', email_config.get('from_address', ''))),
-        "sender_password": os.getenv('SMTP_PASSWORD', ''),
+        "smtp_server": _get_env(
+            "SMTP_SERVER",
+            "TENDERSCAN_SMTP_SERVER",
+            default=email_config.get("smtp_server", "smtp.gmail.com"),
+        ),
+        "smtp_port": int(
+            _get_env(
+                "SMTP_PORT",
+                "TENDERSCAN_SMTP_PORT",
+                default=str(email_config.get("smtp_port", 587)),
+            )
+        ),
+        "smtp_user": smtp_user or sender_email,
+        "sender_email": sender_email or smtp_user,
+        "sender_password": _get_env(
+            "SMTP_PASSWORD",
+            "TENDERSCAN_SMTP_PASSWORD",
+            default=email_config.get("smtp_password", ""),
+        ),
         "recipient_emails": [],
     }
     
     # Parse recipients from env var if provided
-    email_to = os.getenv('EMAIL_TO', '')
+    email_to = _get_env("EMAIL_TO", "TENDERSCAN_EMAIL_TO", default="")
     if email_to:
         result["recipient_emails"] = [addr.strip() for addr in email_to.split(',')]
     elif email_config.get('to_addresses'):
@@ -75,6 +111,7 @@ class EmailAlerter:
         
         self.smtp_server = smtp_config.get("smtp_server", "smtp.gmail.com")
         self.smtp_port = smtp_config.get("smtp_port", 587)
+        self.smtp_user = smtp_config.get("smtp_user", "") or smtp_config.get("sender_email", "")
         self.sender_email = smtp_config.get("sender_email", "")
         self.sender_password = smtp_config.get("sender_password", "")
         self.recipients = smtp_config.get("recipient_emails", []) or []
@@ -128,7 +165,7 @@ class EmailAlerter:
         try:
             with smtplib.SMTP(self.smtp_server, self.smtp_port) as server:
                 server.starttls()
-                server.login(self.sender_email, self.sender_password)
+                server.login(self.smtp_user, self.sender_password)
                 server.sendmail(self.sender_email, self.recipients, msg.as_string())
             logger.info(f"✅ Email alert sent to {len(self.recipients)} recipient(s)")
             return True
@@ -234,7 +271,7 @@ class EmailAlerter:
         try:
             with smtplib.SMTP(self.smtp_server, self.smtp_port) as server:
                 server.starttls()
-                server.login(self.sender_email, self.sender_password)
+                server.login(self.smtp_user, self.sender_password)
                 server.sendmail(self.sender_email, self.recipients, msg.as_string())
             logger.info(f"✅ Scraper failure alert sent to {len(self.recipients)} recipient(s)")
             return True
@@ -263,7 +300,7 @@ class EmailAlerter:
             lines.append("-" * 50)
         
         lines.append("")
-        lines.append("View full dashboard: http://localhost:8000")
+        lines.append(f"View full dashboard: {DASHBOARD_URL}")
         return "\n".join(lines)
     
     def _generate_html_email(self, tenders):
@@ -458,7 +495,7 @@ class EmailAlerter:
                         font-size: 14px;">
                         View the full dashboard for more details:
                     </p>
-                    <a href="http://localhost:8000" style="
+                    <a href="{DASHBOARD_URL}" style="
                         display: inline-block;
                         padding: 10px 24px;
                         background: #667eea;
@@ -627,7 +664,7 @@ def generate_email_html(tenders, meta=None):
 
     html += f"""
             <div class="footer">
-                <p>View full dashboard: <a href="http://localhost:8000/">http://localhost:8000/</a></p>
+                <p>View full dashboard: <a href="{DASHBOARD_URL}">{DASHBOARD_URL}</a></p>
                 <p>Tender Intelligence System | Mexel Energy Sustain</p>
             </div>
         </div>
@@ -640,7 +677,7 @@ def generate_email_html(tenders, meta=None):
 
 def send_email(subject, html_content):
     """Send email via SMTP"""
-    if not EMAIL_CONFIG["sender_email"] or not EMAIL_CONFIG["recipient_emails"]:
+    if not EMAIL_CONFIG["sender_email"] or not EMAIL_CONFIG["recipient_emails"] or not EMAIL_CONFIG["sender_password"]:
         logger.warning("⚠️ Email not configured. Update EMAIL_CONFIG in utils/email_alerts.py")
         return False
 
@@ -654,7 +691,10 @@ def send_email(subject, html_content):
 
         with smtplib.SMTP(EMAIL_CONFIG["smtp_server"], EMAIL_CONFIG["smtp_port"]) as server:
             server.starttls()
-            server.login(EMAIL_CONFIG["sender_email"], EMAIL_CONFIG["sender_password"])
+            server.login(
+                EMAIL_CONFIG.get("smtp_user") or EMAIL_CONFIG["sender_email"],
+                EMAIL_CONFIG["sender_password"],
+            )
             server.sendmail(
                 EMAIL_CONFIG["sender_email"],
                 EMAIL_CONFIG["recipient_emails"],

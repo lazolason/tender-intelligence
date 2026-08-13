@@ -9,6 +9,7 @@ from classify_engine import classify_tender, should_exclude, clean
     ("Office cleaning service", "Daily cleaning of municipal offices", "EXCLUDED"),
     ("CRAC unit maintenance", "Data center precision cooling services", "MEXEL"),
     ("Boiler maintenance and repair", "Routine service of steam plant", "EXCLUDED"),
+    ("Boiler water treatment plant", "Maintenance of industrial utility", "PHAKATHI"),
     ("Supply of laptops", "High performance computers for staff", "EXCLUDED"),
     ("Mexel 432 delivery", "3 tons of film forming amine", "MEXEL"),
 ])
@@ -48,13 +49,57 @@ def test_classify_keyword_aliases():
     assert "chemical dosing" in dosing_case.get("matched_keywords", [])
 
     context_case = classify_tender("Boiler water treatment plant", "Maintenance of industrial utility")
-    assert context_case["category"] == "MEXEL"
-    assert "industrial" in context_case.get("matched_keywords", [])
-    assert "utility" in context_case.get("matched_keywords", [])
-    assert "plant" in context_case.get("matched_keywords", [])
+    assert context_case["category"] == "PHAKATHI"
+    assert "boiler water" in context_case.get("matched_keywords", [])
 
 def test_should_exclude_backward_compatible_call():
     """Legacy callers passing only text + strong_hits should still work."""
     excluded, reason = should_exclude(clean("Construction of boundary wall"), [])
     assert excluded is True
     assert "construction of" in reason
+
+
+@pytest.mark.parametrize(
+    "title,description",
+    [
+        (
+            "Bidders - Security Guarding Services for Peaking Operating Unit",
+            "Security guarding services for Drakensberg Pumped Storage Scheme and power stations",
+        ),
+        (
+            "SUPPLY AND DELIVERY OF LED LIGHT FIXTURES AT TUTUKA POWER STATION",
+            "Supply and delivery of LED light fixtures at Tutuka Power Station once off",
+        ),
+        (
+            "Tender Cancellation for C&I Refurbishment at Majuba Power Station",
+            "Tender cancellation notice for refurbishment works at Majuba Power Station",
+        ),
+        (
+            "Notification of Tender validity extension for supply and delivery of pipes and fittings",
+            "Validity extension notice for supply and delivery at Majuba Power Station",
+        ),
+        (
+            "Cancellation - Calibration, Service and ad hoc Maintenance of Chemical Services laboratory equipment",
+            "Cancellation notice for laboratory equipment at Lethabo Power Station",
+        ),
+        (
+            "Tender validity for Kendal Power Station Continuous Ash Disposal Facility",
+            "Ground and surface water monitoring services at Kendal ash disposal facility",
+        ),
+        (
+            "Piston Compressor Dewatering",
+            "Services: General. Piston Compressor Dewatering",
+        ),
+    ],
+)
+def test_classify_excludes_broad_site_plus_generic_action_false_positives(title, description):
+    result = classify_tender(title, description)
+    assert result["category"] == "EXCLUDED"
+
+
+def test_classify_allows_specific_thermal_scope_at_power_station():
+    result = classify_tender(
+        "Arnot Power Station condenser performance restoration",
+        "Cooling water treatment and efficiency restoration for the turbine condenser",
+    )
+    assert result["category"] == "MEXEL"

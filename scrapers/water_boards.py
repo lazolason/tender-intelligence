@@ -9,11 +9,7 @@ from datetime import datetime
 import re
 import sys
 import os
-import urllib3
 import logging
-
-# Suppress SSL warnings
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from classify_engine import classify_tender
@@ -27,12 +23,17 @@ HEADERS = {
     "Accept-Language": "en-US,en;q=0.5",
 }
 
+
+def _is_excluded_category(value):
+    """Return True when a classifier result should be skipped by the scraper."""
+    return str(value or "").strip().upper() in {"EXCLUDED", "EXCLUDE"}
+
 def _scrape_generic_water_board(client_name, url, row_selector, ref_prefix):
     """Generic scraper for Water Boards with standard HTML tables"""
     tenders = []
     
     try:
-        resp = safe_get(url, headers=HEADERS, timeout=30, verify=False, log=logger)
+        resp = safe_get(url, headers=HEADERS, timeout=30, log=logger)
         if resp is None:
             raise RuntimeError(f"{client_name}: Failed to fetch page")
 
@@ -66,7 +67,7 @@ def _scrape_generic_water_board(client_name, url, row_selector, ref_prefix):
             
             # 1. Tender Reference extraction
             # Look for typical formats: XXX/2025, REF-123, etc.
-            ref_pattern = r'([A-Z0-9]{2,}-?[\d/]{3,}\w*)'
+            ref_pattern = r'([A-Z0-9]{2,}(?:[-/][A-Z0-9]+)+)'
             ref_match = re.search(ref_pattern, text)
             
             # If explicit prefix required/found
@@ -92,7 +93,7 @@ def _scrape_generic_water_board(client_name, url, row_selector, ref_prefix):
             
             # Classify
             classification = classify_tender(title, description)
-            if classification["category"] != "Exclude":
+            if not _is_excluded_category(classification["category"]):
                 tenders.append({
                     "ref": ref,
                     "title": title,
@@ -107,7 +108,7 @@ def _scrape_generic_water_board(client_name, url, row_selector, ref_prefix):
                 })
                 
     except Exception as e:
-        print(f"    ❌ {client_name} error: {e}")
+        logger.warning("%s scrape failed: %s", client_name, e)
         
     return tenders
 
@@ -160,19 +161,19 @@ def scrape_all_water_boards():
         ("Lepelle Northern Water", scrape_lepelle_water),
     ]
     
-    print("\n💧 Scraping Water Boards...")
+    logger.info("Scraping water boards")
     
     for name, scraper in scrapers:
-        print(f"  ... {name}")
+        logger.info("Running %s scraper", name)
         try:
             results = scraper()
             all_tenders.extend(results)
             if results:
-                print(f"    ✅ Found {len(results)} tenders")
+                logger.info("%s: found %d tenders", name, len(results))
             else:
-                print(f"    ⚠️ No tenders/connection")
+                logger.info("%s: no tenders found", name)
         except Exception as e:
-            print(f"    ❌ Failed: {e}")
+            logger.warning("%s failed: %s", name, e)
             
     return all_tenders
 

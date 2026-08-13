@@ -11,7 +11,9 @@ import {
     relativeTime,
     hashColorForUser,
     initials,
-    renderMarkdownLite
+    renderMarkdownLite,
+    safeHttpUrl,
+    safeDownloadUrl
 } from '../utils/helpers.js';
 import {
     getTenderAssignment,
@@ -251,14 +253,7 @@ export function openTenderModal(tender) {
             compulsory === true ? 'Compulsory' : compulsory === false ? 'Non-compulsory' : compulsory ? String(compulsory) : '–';
 
         const row = (k, v) => kv(k, escapeHtml(v ?? '–'));
-        let sourceUrl = tender.url || '';
-        if (sourceUrl) {
-            try {
-                sourceUrl = encodeURI(sourceUrl);
-            } catch {
-                // ignore
-            }
-        }
+        const sourceUrl = safeHttpUrl(tender.url);
         detailsEl.innerHTML = `
             <div class="tender-detail-kv-grid">
                 ${row('Reference Number', tender.ref || '–')}
@@ -272,7 +267,7 @@ export function openTenderModal(tender) {
                 ${kv(
                     'Source link',
                     sourceUrl
-                        ? `<a href="${escapeHtml(sourceUrl)}" target="_blank" rel="noopener" style="color:#48dbfb;">Open ↗</a>`
+                        ? `<a href="${escapeHtml(sourceUrl)}" target="_blank" rel="noopener noreferrer" style="color:#48dbfb;">Open ↗</a>`
                         : '–'
                 )}
             </div>
@@ -345,12 +340,8 @@ export function openTenderModal(tender) {
     const viewBtn = document.getElementById('tenderDetailViewSource');
     if (viewBtn) {
         viewBtn.onclick = () => {
-            if (!tender.url) return;
-            try {
-                window.open(encodeURI(tender.url), '_blank', 'noopener');
-            } catch {
-                window.open(tender.url, '_blank', 'noopener');
-            }
+            const sourceUrl = safeHttpUrl(tender.url);
+            if (sourceUrl) window.open(sourceUrl, '_blank', 'noopener,noreferrer');
         };
     }
 
@@ -520,10 +511,11 @@ function renderDiscussionTab(tender) {
                         const name = escapeHtml(f?.name || 'File');
                         const type = escapeHtml(f?.type || '');
                         const size = f?.size ? formatBytes(f.size) : '';
-                        const url = escapeHtml(f?.dataUrl || '');
+                        const url = safeDownloadUrl(f?.dataUrl || '');
                         const label = [type, size].filter(Boolean).join(' · ');
+                        if (!url) return '';
                         return `
-                            <a class="comment-attachment" href="${url}" download="${name}">
+                            <a class="comment-attachment" href="${escapeHtml(url)}" download="${name}">
                                 📎 ${name}${label ? `<span class="comment-attachment-meta">(${escapeHtml(label)})</span>` : ''}
                             </a>
                         `;

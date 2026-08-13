@@ -20,7 +20,7 @@ def live_audit():
     # Direct API hit to Eskom to get fresh samples
     url = "https://tenderbulletin.eskom.co.za/webapi/api/Lookup/GetTender?TENDER_ID="
     try:
-        response = requests.get(url, timeout=30, verify=False)
+        response = requests.get(url, timeout=30)
         data = response.json()
         
         count = 0

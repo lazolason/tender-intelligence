@@ -1,16 +1,15 @@
 #!/usr/bin/env python3
 # ==========================================================
 # SYNC TENDER DATA TO LOCAL DASHBOARD
-# Updates HTML for local, static dashboard use
+# Writes dashboard JSON consumed by the local static PWA
 # ==========================================================
 
 import json
 import os
 import sqlite3
-from datetime import datetime, timedelta, date
+from datetime import datetime
 from urllib.parse import quote
 import yaml
-from utils.db_writer import DatabaseWriter
 from dotenv import load_dotenv
 
 # Load environment variables
@@ -20,8 +19,8 @@ load_dotenv()
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 DB_PATH = os.getenv("DB_PATH", os.path.join(PROJECT_DIR, "data", "tenders.db"))
 DASHBOARD_DIR = os.path.join(PROJECT_DIR, "dashboard")
-DASHBOARD_HTML = os.path.join(DASHBOARD_DIR, "index.html")
 TENDERS_DATA_JSON = os.path.join(DASHBOARD_DIR, "tenders.json")  # Full dataset for client-side
+PUBLIC_TENDERS_JSON = os.path.join(DASHBOARD_DIR, "public", "tenders-latest.json")
 CONFIG_PATH = os.path.join(PROJECT_DIR, "config.yaml")
 
 def load_config():
@@ -37,6 +36,7 @@ def load_config():
 
 CONFIG = load_config()
 MEXEL_ONLY = bool((CONFIG.get("classification", {}) or {}).get("mexel_only", False))
+COMPANIES = ["MEXEL", "PHAKATHI"]
 DASHBOARD_SHOW_ALL = os.environ.get("DASHBOARD_SHOW_ALL", "").strip().lower() in ("1", "true", "yes")
 
 # Source URLs for tender portals
@@ -46,6 +46,8 @@ SOURCE_URLS = {
     "Eskom": "https://www.eskom.co.za/eskom-tenders/",
     "Cape Town": "https://web1.capetown.gov.za/web1/TenderPortal/",
     "Transnet": "https://www.transnet.net/TenderPortal/",
+    "Transnet eSupplier": "https://transnet.ebug.co.za/eBusiness/Login/",
+    "Johannesburg Water SCM": "https://joburgwater.metacure.co.za/scm/tenders/",
     "Johannesburg Water": "https://www.johannesburgwater.co.za/tenders/",
     "Anglo American": "https://www.angloamerican.com/suppliers",
     "Harmony Gold": "https://www.harmony.co.za/business/procurement",
@@ -84,6 +86,46 @@ def get_bid_statistics():
         print(f"⚠️ Failed to get bid statistics: {e}")
         return {"total_bids": 0, "wins": 0, "win_rate": 0}
 
+def load_planned_opportunities():
+    """Load relevant Treasury procurement plans for the dashboard pipeline view."""
+    with sqlite3.connect(DB_PATH) as conn:
+        conn.row_factory = sqlite3.Row
+        table_exists = conn.execute(
+            "SELECT 1 FROM sqlite_master WHERE type='table' AND name='planned_opportunities'"
+        ).fetchone()
+        if not table_exists:
+            return []
+        rows = conn.execute(
+            """
+            SELECT external_id, institution, description, planned_advert_date,
+                   planned_closing_date, planned_award_date, category,
+                   classification_reason, matched_keywords, lifecycle_stage,
+                   source, source_url, matched_tender_ref, is_active, retired_at,
+                   first_seen_at, last_seen_at
+            FROM planned_opportunities
+            WHERE is_active = 1
+              AND category IN ('MEXEL', 'PHAKATHI')
+              AND lifecycle_stage IN ('PLANNED', 'DUE_SOON', 'OVERDUE')
+            ORDER BY
+                CASE WHEN planned_advert_date IS NULL THEN 1 ELSE 0 END,
+                planned_advert_date ASC
+            """
+        ).fetchall()
+
+    plans = []
+    for row in rows:
+        plan = dict(row)
+        try:
+            plan["matched_keywords"] = json.loads(plan.get("matched_keywords") or "[]")
+        except (TypeError, ValueError, json.JSONDecodeError):
+            plan["matched_keywords"] = []
+        plan["company"] = {"MEXEL": "Mexel", "PHAKATHI": "Phakathi"}.get(
+            plan.get("category"), "Unknown"
+        )
+        plans.append(plan)
+    return plans
+
+
 def load_tenders():
     """Load tenders from SQLite database with PDF analysis."""
     tenders = []
@@ -103,6 +145,8 @@ def load_tenders():
         """
         if MEXEL_ONLY and not DASHBOARD_SHOW_ALL:
             query += " AND t.category = 'MEXEL'"
+        elif not DASHBOARD_SHOW_ALL:
+            query += " AND t.category IN ('MEXEL', 'PHAKATHI')"
         
         query += " ORDER BY t.created_at DESC"
         
@@ -148,10 +192,10 @@ def load_tenders():
     return tenders, {"db_count": len(tenders)}
 
 def is_mexel_tender(tender):
-    """Filter to Mexel-only tenders using multi-signal checks."""
+    """Filter to relevant tenders using multi-signal checks."""
     category = (tender.get("category") or "").strip().upper()
     tender_type = (tender.get("type") or tender.get("tender_type") or "").strip().upper()
-    if category == "MEXEL" or tender_type == "MEXEL":
+    if category in ("MEXEL", "PHAKATHI") or tender_type in ("MEXEL", "PHAKATHI"):
         return True
     scores = tender.get("scores", {}) or {}
     for value in (
@@ -185,97 +229,35 @@ def get_search_url(tender):
     search_query = f"{ref} {title[:40]} tender site:gov.za"
     return f"https://www.google.com/search?q={quote(search_query)}"
 
-def generate_dashboard_html(tenders):
-    """Generate updated dashboard HTML with real tender data"""
 
-    if MEXEL_ONLY and not DASHBOARD_SHOW_ALL:
-        tenders = [t for t in tenders if is_mexel_tender(t)]
-    total = len(tenders)
-    high = sum(1 for t in tenders if t.get("scores", {}).get("priority") == "HIGH")
-    medium = sum(1 for t in tenders if t.get("scores", {}).get("priority") == "MEDIUM")
-    low = sum(1 for t in tenders if t.get("scores", {}).get("priority") == "LOW")
-    
-    mexel_count = total
-    
-    # Priority counts
-    high_count = sum(1 for t in tenders if t.get("scores", {}).get("priority") == "HIGH")
-    medium_count = sum(1 for t in tenders if t.get("scores", {}).get("priority") == "MEDIUM")
-    low_count = sum(1 for t in tenders if t.get("scores", {}).get("priority") == "LOW")
-    
-    # Source breakdown for freshness stats
-    from collections import Counter
-    source_counts = Counter(t.get("source", "Unknown") for t in tenders)
-    source_breakdown = " | ".join([f"{src}: {count}" for src, count in sorted(source_counts.items(), key=lambda x: -x[1])[:5]])
-    
-    js_tenders = []
-    for t in tenders:
-        scores = t.get("scores", {})
-        mexel_score = scores.get("mexel_suitability", 0)
-        company = "Mexel"
-        
-        url = t.get("url", "") or get_search_url(t)
-        
-        pdf_size = t.get("pdf_size", "")
-        
-        category = t.get("category", "Unknown")
-        if category in ("MEXEL",):
-            category = "Mexel"
-
-        js_tenders.append({
-            "ref": t.get("ref", "N/A"),
-            "title": t.get("title", "Unknown"),
-            "description": t.get("description", t.get("title", "")),
-            "client": t.get("client", "Unknown"),
-            "priority": scores.get("priority", "LOW"),
-            "score": scores.get("composite_score", scores.get("composite", 0)),
-            "category": category,
-            "source": t.get("source", "Unknown"),
-            "url": url,
-            "pdf_size": pdf_size,
-            "company": company,
-            "mexel_score": mexel_score,
-            "closing_date": t.get("closing_date", ""),
-            "contact": t.get("contact", ""),
-            "matched_keywords": t.get("matched_keywords", [])
-        })
-    
-    # Save full dataset for client-side loading
-    metadata = {
-        "meta": {
-            "last_sync": datetime.now().strftime("%Y-%m-%d %H:%M"),
-            "next_run": "Daily 08:00",
-            "tender_count": len(js_tenders),
-            "last_update": datetime.now().isoformat()
-        },
-        "tenders": js_tenders
-    }
-    with open(TENDERS_DATA_JSON, 'w') as f:
-        json.dump(metadata, f, indent=2)
-    
-    tenders_json = json.dumps(js_tenders, indent=8)
-    last_updated = datetime.now().strftime("%d %b %Y, %H:%M")
-    
-    # [DASHBOARD HTML TEMPLATE - Truncated for brevity but it's the same]
-    # Re-reading the original HTML to make sure it's correct
-    return "HTML_PLACEHOLDER" # I'll replace this with the actual HTML in a separate step if needed
+def write_dashboard_payload(payload, *, output_paths=None):
+    """Write the dashboard payload to all configured snapshot locations."""
+    paths = list(output_paths or [TENDERS_DATA_JSON, PUBLIC_TENDERS_JSON])
+    for path in paths:
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        with open(path, "w", encoding="utf-8") as file_obj:
+            json.dump(payload, file_obj, indent=2)
+    return paths
 
 def sync():
-    """Main sync function"""
+    """Write the latest dashboard payload from SQLite to `dashboard/tenders.json`."""
     print("🔄 Syncing tender data to local dashboard...")
     
     tenders, stats = load_tenders()
+    planned_opportunities = load_planned_opportunities()
     scraped_count = len(tenders)
     print(f"   Found {scraped_count} tenders in database")
+    print(f"   Found {len(planned_opportunities)} relevant planned opportunities")
     
-    # For now, I'll just write the tenders.json which is what the dashboard uses mostly
     metadata = {
         "meta": {
             "last_sync": datetime.now().strftime("%Y-%m-%d %H:%M"),
             "next_run": "Daily 08:00",
             "tender_count": len(tenders),
-            "last_update": datetime.now().isoformat()
+            "last_update": datetime.now().isoformat(),
+            "planned_opportunity_count": len(planned_opportunities)
         },
-        "tenders": tenders # Reconstruct the JS tenders if needed, but load_tenders does most of it
+        "tenders": tenders
     }
     
     # Get bid statistics
@@ -292,7 +274,12 @@ def sync():
             matched_keywords = [kw.strip() for kw in matched_keywords.split(",") if kw.strip()]
         elif not matched_keywords:
             matched_keywords = []
-        
+
+        category_display = t.get("category", "Unknown")
+        company_map = {"MEXEL": "Mexel", "PHAKATHI": "Phakathi"}
+        category = company_map.get(category_display, category_display)
+        company = company_map.get(category_display, "Unknown")
+
         tender_data = {
             "ref": t.get("ref", "N/A"),
             "title": t.get("title", "Unknown"),
@@ -300,10 +287,10 @@ def sync():
             "client": t.get("client", "Unknown"),
             "priority": t.get("priority", "LOW"),
             "score": t.get("composite_score", 0),
-            "category": "Mexel" if t.get("category") == "MEXEL" else t.get("category", "Unknown"),
+            "category": category,
             "source": t.get("source", "Unknown"),
             "url": url,
-            "company": "Mexel" if t.get("category") == "MEXEL" else "Unknown",
+            "company": company,
             "closing_date": t.get("closing_date", ""),
             "matched_keywords": matched_keywords
         }
@@ -324,9 +311,15 @@ def sync():
     # Update metadata with bid statistics
     metadata["meta"]["bid_statistics"] = bid_stats
     
-    with open(TENDERS_DATA_JSON, 'w') as f:
-        json.dump({"meta": metadata["meta"], "tenders": js_tenders}, f, indent=2)
+    payload = {
+        "meta": metadata["meta"],
+        "tenders": js_tenders,
+        "planned_opportunities": planned_opportunities,
+    }
+    write_dashboard_payload(payload)
+
     print(f"   ✅ Dashboard data file (tenders.json) updated")
+    print(f"   ✅ Public dashboard snapshot (public/tenders-latest.json) updated")
     print(f"   📊 Bid Statistics: {bid_stats['wins']}/{bid_stats['total_bids']} wins ({bid_stats['win_rate']}%)")
     
     return True

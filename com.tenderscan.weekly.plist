@@ -7,10 +7,10 @@
     <key>ProgramArguments</key>
     <array>
         <string>/opt/homebrew/bin/python3.11</string>
-        <string>/Users/lazolasonqishe/Documents/tender-intelligence/weekly_report.py</string>
+        <string>/Users/lazolasonqishe/tender-intelligence/weekly_report.py</string>
     </array>
     <key>WorkingDirectory</key>
-    <string>/Users/lazolasonqishe/Documents/tender-intelligence</string>
+    <string>/Users/lazolasonqishe/tender-intelligence</string>
     <key>StartCalendarInterval</key>
     <dict>
         <key>Weekday</key>
@@ -21,9 +21,9 @@
         <integer>0</integer>
     </dict>
     <key>StandardOutPath</key>
-    <string>/Users/lazolasonqishe/Documents/tender-intelligence/logs/weekly_report.log</string>
+    <string>/Users/lazolasonqishe/tender-intelligence/logs/weekly_report.log</string>
     <key>StandardErrorPath</key>
-    <string>/Users/lazolasonqishe/Documents/tender-intelligence/logs/weekly_report_error.log</string>
+    <string>/Users/lazolasonqishe/tender-intelligence/logs/weekly_report_error.log</string>
     <key>EnvironmentVariables</key>
     <dict>
         <key>PATH</key>

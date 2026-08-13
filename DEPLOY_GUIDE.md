@@ -107,9 +107,12 @@ In Render dashboard, set these environment variables:
 |----------|-------------|---------|
 | `SMTP_SERVER` | Email server | `smtp.gmail.com` |
 | `SMTP_PORT` | Email port | `587` |
-| `SENDER_EMAIL` | Your email | `tenderscan@gmail.com` |
-| `SENDER_PASSWORD` | App password | (from Gmail settings) |
-| `RECIPIENT_EMAILS` | Recipients | `you@email.com,team@email.com` |
+| `SMTP_USER` | SMTP login username | `tenderscan@gmail.com` |
+| `SMTP_PASSWORD` | App password | (from Gmail settings) |
+| `EMAIL_FROM` | Sender address | `tenderscan@gmail.com` |
+| `EMAIL_TO` | Recipients | `you@email.com,team@email.com` |
+| `DB_PATH` | SQLite database path | `data/tenders.db` |
+| `DASHBOARD_URL` | Public dashboard URL | `http://localhost:5001/` |
 
 ### Gmail App Password Setup
 
@@ -117,7 +120,7 @@ In Render dashboard, set these environment variables:
 2. Enable 2-Factor Authentication
 3. Go to App Passwords
 4. Generate password for "Mail"
-5. Use this password in `SENDER_PASSWORD`
+5. Use this password in `SMTP_PASSWORD`
 
 ---
 
@@ -129,14 +132,31 @@ In Render dashboard, set these environment variables:
 # Edit crontab
 crontab -e
 
-# Add these lines (runs at 6 AM daily, 7 AM Monday)
-0 6 * * * cd ~/Documents/MASTER/TENDERS/00_System/04_Automation && /usr/bin/python3 daily_runner.py >> /tmp/tenderscan.log 2>&1
-0 7 * * 1 cd ~/Documents/MASTER/TENDERS/00_System/04_Automation && /usr/bin/python3 weekly_report.py >> /tmp/tenderscan.log 2>&1
+# Add these lines (runs at 08:00 daily, 09:00 Monday)
+0 8 * * * cd /Users/lazolasonqishe/tender-intelligence && /opt/homebrew/bin/python3.11 daily_runner.py >> /Users/lazolasonqishe/tender-intelligence/logs/daily_scan.log 2>&1
+0 9 * * 1 cd /Users/lazolasonqishe/tender-intelligence && /opt/homebrew/bin/python3.11 weekly_report.py >> /Users/lazolasonqishe/tender-intelligence/logs/weekly_report.log 2>&1
 ```
 
 ### Option B: Using launchd (Recommended for macOS)
 
-Create `~/Library/LaunchAgents/com.tenderscan.daily.plist`:
+Install the bundled launchd plists:
+
+```bash
+mkdir -p ~/Library/LaunchAgents
+cp com.tenderscan.app.plist ~/Library/LaunchAgents/
+cp com.tenderscan.daily.plist ~/Library/LaunchAgents/
+cp com.tenderscan.weekly.plist ~/Library/LaunchAgents/
+plutil -lint ~/Library/LaunchAgents/com.tenderscan.app.plist
+plutil -lint ~/Library/LaunchAgents/com.tenderscan.daily.plist
+plutil -lint ~/Library/LaunchAgents/com.tenderscan.weekly.plist
+launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.tenderscan.app.plist
+launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.tenderscan.daily.plist
+launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.tenderscan.weekly.plist
+```
+
+The app service keeps the dashboard and API live at `http://localhost:5001/`, while the daily and weekly jobs run on schedule.
+
+If you need to create or audit the daily job manually, the expected structure is:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -165,11 +185,6 @@ Create `~/Library/LaunchAgents/com.tenderscan.daily.plist`:
 </plist>
 ```
 
-Load the scheduler:
-```bash
-launchctl load ~/Library/LaunchAgents/com.tenderscan.daily.plist
-```
-
 ---
 
 ## API Endpoints
@@ -178,25 +193,27 @@ launchctl load ~/Library/LaunchAgents/com.tenderscan.daily.plist
 |----------|--------|-------------|
 | `/` | GET | Dashboard home |
 | `/health` | GET | Health check |
-| `/api/stats` | GET | Tender statistics |
-| `/api/tenders` | GET | List recent tenders |
-| `/api/score` | POST | Score a tender |
-| `/run/daily` | GET | Trigger daily scan |
-| `/run/weekly` | GET | Generate weekly report |
-| `/report/weekly` | GET | View weekly dashboard |
+| `/api/tenders` | GET | List recent tender snapshot records |
+| `/api/stats/bids` | GET | Bid outcome statistics |
+| `/api/bids` | POST | Record a bid outcome (API key required) |
+| `/api/summarize` | POST | Summarize a tender (API key and OpenAI key required) |
+| `/api/run/daily` | POST | Trigger daily scan (API key required) |
+| `/api/run/weekly` | POST | Generate weekly report (API key required) |
+| `/cron/daily` | POST | Scheduler daily trigger (API key required) |
+| `/cron/weekly` | POST | Scheduler weekly trigger (API key required) |
 
-### Example: Score a Tender via API
+Protected endpoints fail closed with HTTP 503 when `API_KEY` is not configured. Send the key as `Authorization: Bearer <key>` or `X-API-Key: <key>`. Cross-origin API access is disabled unless `CORS_ORIGINS` explicitly lists trusted origins.
+
+### Example: Trigger an authenticated daily scan
 
 ```bash
-curl -X POST https://your-app.onrender.com/api/score \
-  -H "Content-Type: application/json" \
-  -d '{
-    "title": "Cooling Water Treatment Chemicals",
-    "description": "Supply of scale inhibitors for power station",
-    "client": "Eskom",
-    "closing_date": "2025-12-15"
-  }'
+curl -X POST http://127.0.0.1:5001/api/run/daily \
+  -H "Authorization: Bearer $API_KEY"
 ```
+
+The service binds to `127.0.0.1` by default. Public deployment must terminate TLS at a trusted reverse proxy and should keep Gunicorn on loopback (for example, `GUNICORN_BIND=127.0.0.1:5001`). Expose Gunicorn directly only on a firewall-restricted private network.
+
+Outbound scraper and document requests require HTTPS with certificate verification. Do not add `verify=False` workarounds. If your organization intercepts TLS, install its CA in the operating-system trust store or set `REQUESTS_CA_BUNDLE` to an approved PEM bundle. HTTP redirects to insecure or local/private literal-IP targets are rejected.
 
 ---
 
@@ -220,9 +237,9 @@ The workflow file is located at `.github/workflows/test-and-lint.yml`.
 pip install -r requirements.txt
 
 # Run locally
-python app.py
+./serve_app.sh
 
-# Access at http://localhost:5000
+# Access at http://localhost:5001
 ```
 
 ---
@@ -240,4 +257,13 @@ python app.py
 
 For issues or questions, check the logs:
 - Render: Dashboard → Logs
-- Local: `/tmp/tenderscan.log`
+- Local app: `logs/app_server.log`
+- Local daily job: `logs/daily_scan.log`
+- Local weekly job: `logs/weekly_report.log`
+
+For local app-service validation:
+
+```bash
+python3 utils/launchd_validator.py
+curl http://localhost:5001/health
+```

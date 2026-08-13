@@ -15,8 +15,6 @@ from scrapers.municipalities import scrape_all_municipalities
 from scrapers.soes import (
     scrape_rand_water,
     scrape_transnet,
-    scrape_sanral,
-    scrape_sasol,
     scrape_anglo_american,
     scrape_harmony_gold,
     scrape_seriti,
@@ -79,8 +77,6 @@ def run_scraper(scraper: str, config: Dict[str, Any]) -> List[Dict[str, Any]]:
         for fn in (
             scrape_rand_water,
             scrape_transnet,
-            scrape_sanral,
-            scrape_sasol,
             scrape_anglo_american,
             scrape_harmony_gold,
             scrape_seriti,
@@ -96,6 +92,14 @@ def run_scraper(scraper: str, config: Dict[str, Any]) -> List[Dict[str, Any]]:
 
     if scraper == "eskom":
         return scrape_eskom()
+
+    if scraper == "procurement_plans":
+        from scrapers.treasury_procurement_plans import scrape_treasury_procurement_plans
+
+        return scrape_treasury_procurement_plans(
+            timeout=max(timeout, 60),
+            relevant_only=True,
+        )
 
     if scraper == "national_treasury":
         # Prefer non-Selenium API scraper for CI stability
@@ -116,7 +120,11 @@ def run_scraper(scraper: str, config: Dict[str, Any]) -> List[Dict[str, Any]]:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Run one scraper and write results to JSON")
-    parser.add_argument("--scraper", required=True, help="municipalities|soes|national_treasury|joburg_water|eskom")
+    parser.add_argument(
+        "--scraper",
+        required=True,
+        help="municipalities|soes|national_treasury|procurement_plans|joburg_water|eskom",
+    )
     parser.add_argument("--out", required=True, help="Output JSON path")
     args = parser.parse_args()
 

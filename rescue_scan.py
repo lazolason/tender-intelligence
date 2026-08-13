@@ -8,6 +8,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from scrapers.eskom_direct import scrape_eskom_tenders
 from tenderscan import process_tenders, save_outputs
+from utils.pipeline_validation import validate_tender_batch
 
 print("🚀 STARTING RESCUE SCAN FOR MEXEL TENDERS")
 print("=========================================")
@@ -25,10 +26,18 @@ try:
     for h in hits[:5]:
         print(f"   - {h['ref']}: {h['title'][:60]}...")
 
-    # Process and Save
-    print("\n💾 Processing and saving...")
-    added, new_items = process_tenders(tenders)
-    save_outputs(new_items)
+    # Validate, Process and Save
+    print("\n💾 Validating, processing and saving...")
+    validation = validate_tender_batch(
+        tenders,
+        on_invalid=lambda message: print(f"⚠️ {message}"),
+    )
+    print(
+        f"✅ Validation: {validation.valid_count} valid / "
+        f"{validation.invalid_count} invalid"
+    )
+    added, new_items = process_tenders(validation.valid_tenders)
+    save_outputs(new_items, validation_report_text=validation.report_text)
     print(f"✅ Saved {len(new_items)} new items to dashboard")
 
 except Exception as e:

@@ -6,50 +6,135 @@
 
 import os
 import sys
-import json
+import sqlite3
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-from email.mime.base import MIMEBase
-from email import encoders
 from datetime import datetime, timedelta
-from openpyxl import load_workbook
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 import yaml
+from utils.scraper_monitor import load_scraper_health
 
 # Load config
 config_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "config.yaml")
 with open(config_path, "r") as f:
     CONFIG = yaml.safe_load(f)
 
-EXCEL_PATH = CONFIG["paths"]["tender_log_excel"]
-OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output")
-REPORTS_DIR = os.path.join(os.path.dirname(__file__), "reports")
+PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
+OUTPUT_DIR = (CONFIG.get("paths", {}) or {}).get("output_dir", os.path.join(PROJECT_DIR, "output"))
+REPORTS_DIR = os.path.join(PROJECT_DIR, "reports")
+
+def _get_env(*names, default=""):
+    """Return the first non-empty environment variable from `names`."""
+    for name in names:
+        value = os.environ.get(name)
+        if value not in (None, ""):
+            return value
+    return default
+
+
+def _get_bool_env(*names, default=False):
+    """Read a boolean environment variable using common truthy values."""
+    value = _get_env(*names, default=str(default))
+    return str(value).strip().lower() in {"1", "true", "yes", "on"}
+
+
+def _get_list_env(*names):
+    """Split a comma-separated environment variable into a clean list."""
+    value = _get_env(*names, default="")
+    if not value:
+        return []
+    return [item.strip() for item in value.split(",") if item.strip()]
+
+
+DB_PATH = _get_env("DB_PATH", default=os.path.join(PROJECT_DIR, "data", "tenders.db"))
+
 
 # Email settings
-EMAIL_ENABLED = os.environ.get("TENDERSCAN_EMAIL_ENABLED", "false").lower() == "true"
-SMTP_SERVER = os.environ.get("TENDERSCAN_SMTP_SERVER", "smtp.gmail.com")
-SMTP_PORT = int(os.environ.get("TENDERSCAN_SMTP_PORT", "587"))
-SMTP_USER = os.environ.get("TENDERSCAN_SMTP_USER", "")
-SMTP_PASSWORD = os.environ.get("TENDERSCAN_SMTP_PASSWORD", "")
-EMAIL_TO = os.environ.get("TENDERSCAN_EMAIL_TO", "").split(",")
-EMAIL_FROM = os.environ.get("TENDERSCAN_EMAIL_FROM", SMTP_USER)
+EMAIL_CONFIG = CONFIG.get("email", {}) or {}
+EMAIL_ENABLED = _get_bool_env(
+    "EMAIL_ENABLED",
+    "TENDERSCAN_EMAIL_ENABLED",
+    default=EMAIL_CONFIG.get("enabled", False),
+)
+SMTP_SERVER = _get_env(
+    "SMTP_SERVER",
+    "TENDERSCAN_SMTP_SERVER",
+    default=EMAIL_CONFIG.get("smtp_server", "smtp.gmail.com"),
+)
+SMTP_PORT = int(
+    _get_env(
+        "SMTP_PORT",
+        "TENDERSCAN_SMTP_PORT",
+        default=str(EMAIL_CONFIG.get("smtp_port", 587)),
+    )
+)
+SMTP_USER = _get_env("SMTP_USER", "TENDERSCAN_SMTP_USER", default="")
+SMTP_PASSWORD = _get_env("SMTP_PASSWORD", "TENDERSCAN_SMTP_PASSWORD", default="")
+EMAIL_TO = _get_list_env("EMAIL_TO", "TENDERSCAN_EMAIL_TO") or list(
+    EMAIL_CONFIG.get("to_addresses", [])
+)
+EMAIL_FROM = _get_env(
+    "EMAIL_FROM",
+    "TENDERSCAN_EMAIL_FROM",
+    default=EMAIL_CONFIG.get("from_address", SMTP_USER),
+)
 
 
-def get_weekly_stats():
-    """Extract stats from Excel for the past week"""
-    
-    if not os.path.exists(EXCEL_PATH):
+def _parse_datetime(value):
+    """Parse a SQLite timestamp or ISO-like string into a datetime."""
+    if not value:
         return None
-    
-    wb = load_workbook(EXCEL_PATH)
-    ws = wb.active
-    
-    week_ago = datetime.now() - timedelta(days=7)
-    
-    stats = {
+    if isinstance(value, datetime):
+        return value
+
+    text = str(value).strip()
+    if not text:
+        return None
+
+    normalized = text.replace("Z", "+00:00")
+    try:
+        return datetime.fromisoformat(normalized)
+    except ValueError:
+        pass
+
+    for fmt in (
+        "%Y-%m-%d %H:%M:%S",
+        "%Y-%m-%dT%H:%M:%S",
+        "%Y-%m-%d",
+        "%d/%m/%Y",
+        "%d-%m-%Y",
+        "%d %b %Y",
+        "%d %B %Y",
+    ):
+        try:
+            return datetime.strptime(text, fmt)
+        except ValueError:
+            continue
+    return None
+
+
+def _parse_date(value):
+    """Parse a date-like value into a date object."""
+    parsed = _parse_datetime(value)
+    return parsed.date() if parsed else None
+
+
+def _table_exists(conn: sqlite3.Connection, table_name: str) -> bool:
+    """Return True when a table exists in the connected SQLite database."""
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT 1 FROM sqlite_master WHERE type = 'table' AND name = ?",
+        (table_name,),
+    )
+    return cursor.fetchone() is not None
+
+
+def _default_weekly_stats():
+    """Create the default weekly report payload."""
+    return {
         "total": 0,
         "this_week": 0,
         "by_type": {"MEXEL": 0, "Unknown": 0},
@@ -57,69 +142,103 @@ def get_weekly_stats():
         "by_status": {},
         "closing_soon": [],
         "high_priority": [],
-        "top_industries": {}
+        "top_sources": {},
     }
-    
-    for row in range(2, ws.max_row + 1):
-        stats["total"] += 1
-        
-        tender_name = ws.cell(row=row, column=1).value or ""
-        client = ws.cell(row=row, column=2).value or ""
-        t_type = ws.cell(row=row, column=3).value or "Unknown"
-        industry = ws.cell(row=row, column=4).value or "Unknown"
-        composite = ws.cell(row=row, column=6).value or 5
-        priority = ws.cell(row=row, column=7).value or "MEDIUM"
-        closing = ws.cell(row=row, column=12).value or ""
-        status = ws.cell(row=row, column=13).value or "Open"
-        date_added = ws.cell(row=row, column=17).value or ""
-        ref = ws.cell(row=row, column=16).value or ""
 
-        if t_type in stats["by_type"]:
-            stats["by_type"][t_type] += 1
-        
-        if priority in stats["by_priority"]:
-            stats["by_priority"][priority] += 1
-        
+
+def get_weekly_stats():
+    """Extract weekly reporting stats from SQLite."""
+    if not os.path.exists(DB_PATH):
+        return None
+
+    stats = _default_weekly_stats()
+    now = datetime.now()
+    today = now.date()
+    week_ago = now - timedelta(days=7)
+
+    try:
+        with sqlite3.connect(DB_PATH) as conn:
+            conn.row_factory = sqlite3.Row
+            cursor = conn.cursor()
+            cursor.execute(
+                """
+                SELECT ref, title, client, category, source, composite_score,
+                       priority, closing_date, status, created_at
+                FROM tenders
+                ORDER BY created_at DESC
+                """
+            )
+            rows = [dict(row) for row in cursor.fetchall()]
+    except sqlite3.Error as exc:
+        print(f"❌ Failed to read SQLite weekly stats: {exc}")
+        return None
+
+    for row in rows:
+        stats["total"] += 1
+
+        title = row.get("title") or ""
+        client = row.get("client") or ""
+        tender_type = (row.get("category") or "Unknown").strip() or "Unknown"
+        source = (row.get("source") or "Unknown").strip() or "Unknown"
+        status = (row.get("status") or "Open").strip() or "Open"
+        priority = (row.get("priority") or "LOW").strip().upper() or "LOW"
+        ref = row.get("ref") or ""
+
+        try:
+            score = float(row.get("composite_score") or 0)
+        except (TypeError, ValueError):
+            score = 0.0
+
+        stats["by_type"][tender_type] = stats["by_type"].get(tender_type, 0) + 1
+        stats["by_priority"][priority] = stats["by_priority"].get(priority, 0) + 1
         stats["by_status"][status] = stats["by_status"].get(status, 0) + 1
-        
-        ind_key = str(industry).split("(")[0].strip()[:20]
-        stats["top_industries"][ind_key] = stats["top_industries"].get(ind_key, 0) + 1
-        
-        try:
-            added = datetime.strptime(str(date_added), "%Y-%m-%d")
-            if added >= week_ago:
-                stats["this_week"] += 1
-        except:
-            pass
-        
-        try:
-            close_date = datetime.strptime(str(closing), "%Y-%m-%d")
-            days_left = (close_date - datetime.now()).days
-            if 0 <= days_left <= 7 and status == "Open":
-                stats["closing_soon"].append({
+        stats["top_sources"][source] = stats["top_sources"].get(source, 0) + 1
+
+        created_at = _parse_datetime(row.get("created_at"))
+        if created_at and created_at >= week_ago:
+            stats["this_week"] += 1
+
+        closing_date = _parse_date(row.get("closing_date"))
+        if closing_date:
+            days_left = (closing_date - today).days
+            if 0 <= days_left <= 7 and status.lower() == "open":
+                stats["closing_soon"].append(
+                    {
+                        "ref": ref,
+                        "title": title[:50],
+                        "client": client,
+                        "days_left": days_left,
+                        "priority": priority,
+                    }
+                )
+
+        if priority == "HIGH" and status.lower() == "open":
+            stats["high_priority"].append(
+                {
                     "ref": ref,
-                    "title": tender_name[:50],
+                    "title": title[:50],
                     "client": client,
-                    "days_left": days_left,
-                    "priority": priority
-                })
-        except:
-            pass
-        
-        if priority == "HIGH" and status == "Open":
-            stats["high_priority"].append({
-                "ref": ref,
-                "title": tender_name[:50],
-                "client": client,
-                "type": t_type,
-                "score": composite
-            })
-    
+                    "type": tender_type,
+                    "score": score,
+                }
+            )
+
     stats["closing_soon"] = sorted(stats["closing_soon"], key=lambda x: x["days_left"])[:10]
-    stats["high_priority"] = sorted(stats["high_priority"], key=lambda x: x.get("score", 0), reverse=True)[:10]
-    stats["top_industries"] = dict(sorted(stats["top_industries"].items(), key=lambda x: x[1], reverse=True)[:5])
-    
+    stats["high_priority"] = sorted(
+        stats["high_priority"],
+        key=lambda x: x.get("score", 0),
+        reverse=True,
+    )[:10]
+    stats["top_sources"] = dict(
+        sorted(stats["top_sources"].items(), key=lambda x: x[1], reverse=True)[:5]
+    )
+
     return stats
+
+
+def _load_scraper_health():
+    """Load scraper health, preferring the persisted SQLite run history."""
+    return load_scraper_health(output_dir=OUTPUT_DIR, db_path=DB_PATH, prefer_db=True)
 
 
 def generate_weekly_html(stats: dict) -> str:
@@ -268,24 +387,7 @@ def generate_weekly_html(stats: dict) -> str:
         <h2>🩺 Scraper Health</h2>
     """
 
-    health = None
-    health_paths = []
-    try:
-        cfg_out = (CONFIG.get("paths", {}) or {}).get("output_dir", "")
-        if cfg_out:
-            health_paths.append(os.path.join(cfg_out, "scraper_health.json"))
-    except Exception:
-        pass
-    health_paths.append(os.path.join(OUTPUT_DIR, "scraper_health.json"))
-
-    for hp in health_paths:
-        if hp and os.path.exists(hp):
-            try:
-                with open(hp, "r", encoding="utf-8") as f:
-                    health = json.load(f)
-                break
-            except Exception:
-                health = None
+    health = _load_scraper_health()
 
     if isinstance(health, dict) and health:
         html += """
@@ -335,12 +437,12 @@ def generate_weekly_html(stats: dict) -> str:
         html += "<p>No scraper health data found.</p>"
 
     html += """
-        <h2>🏭 Top Industries</h2>
+        <h2>🏭 Top Sources</h2>
         <div class="chart-container">
     """
     
-    max_ind = max(stats['top_industries'].values()) if stats['top_industries'] else 1
-    for ind, count in stats['top_industries'].items():
+    max_ind = max(stats['top_sources'].values()) if stats['top_sources'] else 1
+    for ind, count in stats['top_sources'].items():
         width = int((count / max_ind) * 100) if max_ind > 0 else 0
         html += f'<div class="bar" style="width: {max(width, 10)}%">{ind}: {count}</div>'
     
@@ -373,7 +475,7 @@ def save_weekly_report(html: str) -> str:
 
 
 def send_weekly_email(html: str, report_path: str) -> bool:
-    """Send weekly report via email with attachment"""
+    """Send the weekly report via email and attach the generated HTML report."""
     
     if not EMAIL_ENABLED:
         print("📧 Email disabled - skipping")
@@ -391,13 +493,15 @@ def send_weekly_email(html: str, report_path: str) -> bool:
         
         msg.attach(MIMEText(html, "html"))
         
-        if os.path.exists(EXCEL_PATH):
-            with open(EXCEL_PATH, "rb") as f:
-                part = MIMEBase("application", "octet-stream")
-                part.set_payload(f.read())
-                encoders.encode_base64(part)
-                part.add_header("Content-Disposition", "attachment; filename=Tender_Dashboard.xlsx")
-                msg.attach(part)
+        if report_path and os.path.exists(report_path):
+            with open(report_path, "r", encoding="utf-8") as file_obj:
+                attachment = MIMEText(file_obj.read(), "html", "utf-8")
+            attachment.add_header(
+                "Content-Disposition",
+                "attachment",
+                filename=os.path.basename(report_path),
+            )
+            msg.attach(attachment)
         
         with smtplib.SMTP(SMTP_SERVER, SMTP_PORT) as server:
             server.starttls()

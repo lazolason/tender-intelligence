@@ -9,14 +9,15 @@ from datetime import datetime
 import re
 import sys
 import os
-import urllib3
 import logging
-
-# Suppress SSL warnings
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from classify_engine import classify_tender
+
+
+def _is_excluded_category(value):
+    """Return True when a classifier result should be skipped by the scraper."""
+    return str(value or "").strip().upper() in {"EXCLUDED", "EXCLUDE"}
 from utils.retry_tools import safe_get
 
 logger = logging.getLogger(__name__)
@@ -31,7 +32,7 @@ def _scrape_sadc_generic(country, url, row_selector, ref_prefix):
     tenders = []
     
     try:
-        resp = safe_get(url, headers=HEADERS, timeout=30, verify=False, log=logger)
+        resp = safe_get(url, headers=HEADERS, timeout=30, log=logger)
         if resp is None:
             raise RuntimeError(f"{country}: Failed to fetch page")
 
@@ -59,7 +60,7 @@ def _scrape_sadc_generic(country, url, row_selector, ref_prefix):
             title = text[:200]
             
             classification = classify_tender(title, text)
-            if classification["category"] != "Exclude":
+            if not _is_excluded_category(classification["category"]):
                 tenders.append({
                     "ref": ref,
                     "title": title,

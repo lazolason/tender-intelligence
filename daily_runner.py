@@ -14,12 +14,30 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from dotenv import load_dotenv
 from utils.config_validator import validate_env_on_startup
+from utils.pipeline_validation import validate_tender_batch
+from utils.scraper_monitor import summarize_scraper_health_status
+
+PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
+OUTPUT_DIR = os.path.join(PROJECT_DIR, "output")
+DAILY_RUN_STATUS_PATH = os.path.join(OUTPUT_DIR, "last_daily_run.json")
+DASHBOARD_URL = (os.getenv("DASHBOARD_URL") or "http://localhost:5001/").strip() or "http://localhost:5001/"
+
+
+def persist_run_results(results, path: str | None = None):
+    """Persist the latest daily runner result for health checks and debugging."""
+    path = path or DAILY_RUN_STATUS_PATH
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, "w", encoding="utf-8") as file_obj:
+        json.dump(results, file_obj, indent=2)
+    return path
+
 
 def run_daily():
     """Run complete daily tender workflow"""
     results = {
         "timestamp": datetime.now().isoformat(),
         "scan": None,
+        "procurement_plans": None,
         "sync": None,
         "email": None
     }
@@ -35,15 +53,24 @@ def run_daily():
         from tenderscan import run_all_scrapers, process_tenders, save_outputs
         from utils.logging_tools import write_log, rotate_log_if_needed
         
-        LOG_FILE = os.path.join(os.path.dirname(__file__), "logs", "scraper.log")
+        LOG_FILE = os.path.join(PROJECT_DIR, "logs", "scraper.log")
+        DB_PATH = os.getenv(
+            "DB_PATH",
+            os.path.join(PROJECT_DIR, "data", "tenders.db"),
+        )
         rotate_log_if_needed(LOG_FILE)
         
         # Scrape all sources
         from utils.scraper_monitor import ScraperMonitor
-        monitor = ScraperMonitor(output_dir=os.path.join(os.path.dirname(__file__), "output"))
+        monitor = ScraperMonitor(
+            output_dir=OUTPUT_DIR,
+            db_path=DB_PATH,
+        )
         
         all_tenders = run_all_scrapers(monitor=monitor)
         print(f"   Scraped: {len(all_tenders)} tenders")
+        monitor.generate_report()
+        scraper_summary = summarize_scraper_health_status(monitor.get_metrics(), problem_threshold=3)
         
         # Check for scraper failures and send alerts
         has_critical_failures, failures = monitor.should_alert_on_failures(threshold=3)
@@ -65,18 +92,37 @@ def run_daily():
             except Exception as alert_exc:
                 print(f"      ⚠️ Failed to send health alerts: {alert_exc}")
 
-        # Process and score
-        added_count, new_items = process_tenders(all_tenders)
-        print(f"   New tenders added: {added_count}")
-        
-        # Save outputs
-        save_outputs(new_items)
+        validation = validate_tender_batch(
+            all_tenders,
+            on_invalid=lambda message: write_log(LOG_FILE, message, "ERROR"),
+        )
+        print(
+            f"   Validated: {validation.valid_count} valid / "
+            f"{validation.invalid_count} invalid"
+        )
+
+        # Process and score only records accepted by the canonical validator
+        added_count, new_items, upsert_stats = process_tenders(
+            validation.valid_tenders, return_stats=True
+        )
+        print(
+            f"   Persistence: {upsert_stats['inserted']} inserted / "
+            f"{upsert_stats['updated']} updated / "
+            f"{upsert_stats['unchanged']} unchanged"
+        )
+
+        # Save outputs with the same validation audit used by the CLI runner
+        save_outputs(new_items, validation_report_text=validation.report_text)
         
         results["scan"] = {
             "status": "success",
             "total_scraped": len(all_tenders),
             "new_added": added_count,
+            "persistence": upsert_stats,
+            "validation": validation.metrics(),
             "critical_failures": len(failures) if has_critical_failures else 0,
+            "failed_sources_count": len(scraper_summary["latest_failed_sources"]),
+            "failed_sources": scraper_summary["latest_failed_sources"],
             "high_priority": sum(1 for t in new_items if t.get("scores", {}).get("priority") == "HIGH"),
             "medium_priority": sum(1 for t in new_items if t.get("scores", {}).get("priority") == "MEDIUM"),
             "low_priority": sum(1 for t in new_items if t.get("scores", {}).get("priority") == "LOW")
@@ -87,8 +133,20 @@ def run_daily():
         results["scan"] = {"status": "error", "message": str(e)}
         print(f"   ❌ Scan failed: {e}")
     
-    # Step 2: Sync local dashboard
-    print("\n🔄 Step 2: Syncing local dashboard...")
+    # Step 2: Refresh Treasury procurement plans
+    print("\n🗓️ Step 2: Refreshing Treasury procurement plans...")
+    try:
+        from sync_procurement_plans import sync_procurement_plans
+
+        plan_result = sync_procurement_plans()
+        results["procurement_plans"] = plan_result
+        print(f"   ✅ Planned opportunities refreshed: {plan_result['persisted']}")
+    except Exception as e:
+        results["procurement_plans"] = {"status": "error", "message": str(e)}
+        print(f"   ⚠️ Procurement plan refresh failed: {e}")
+
+    # Step 3: Sync local dashboard
+    print("\n🔄 Step 3: Syncing local dashboard...")
     try:
         from sync_dashboard import sync
         sync_success = sync()
@@ -101,8 +159,8 @@ def run_daily():
         results["sync"] = {"status": "error", "message": str(e)}
         print(f"   ⚠️ Local dashboard sync skipped: {e}")
     
-    # Step 3: Send email alerts for HIGH priority tenders
-    print("\n📧 Step 3: Sending email alerts...")
+    # Step 4: Send email alerts for HIGH priority tenders
+    print("\n📧 Step 4: Sending email alerts...")
     try:
         from utils.email_alerts import send_daily_digest, EMAIL_CONFIG
 
@@ -153,9 +211,13 @@ def run_daily():
    Dashboard: {'✅' if results.get('sync', {}).get('status') == 'success' else '⚠️'}
    Email:     {'✅' if results.get('email', {}).get('status') == 'sent' else '⚠️'}
    
-   🌐 View Dashboard: http://localhost:8000/
+   🌐 View Dashboard: {DASHBOARD_URL}
 """)
     
+    try:
+        persist_run_results(results)
+    except Exception as e:
+        print(f"   ⚠️ Failed to persist daily run status: {e}")
     return results
 
 def generate_email_summary(results):
@@ -209,7 +271,7 @@ def generate_email_summary(results):
         
         <div style="background: #f8f9fa; padding: 20px; border-radius: 12px; margin: 25px 0; text-align: center;">
             <p style="margin: 0 0 15px 0; color: #666;">View all tenders on your dashboard:</p>
-            <a href="http://localhost:8000/" 
+            <a href="{DASHBOARD_URL}"
                style="display: inline-block; background: linear-gradient(135deg, #667eea, #764ba2); 
                       color: white; padding: 12px 30px; border-radius: 25px; text-decoration: none;
                       font-weight: 600;">
@@ -230,7 +292,7 @@ def generate_email_summary(results):
     """
     
     # Save email HTML
-    email_path = os.path.join(os.path.dirname(__file__), "output", "daily_email.html")
+    email_path = os.path.join(OUTPUT_DIR, "daily_email.html")
     os.makedirs(os.path.dirname(email_path), exist_ok=True)
     with open(email_path, "w") as f:
         f.write(html)

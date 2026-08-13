@@ -20,7 +20,7 @@ import {
     computeDecision,
     getStatusMeta
 } from './tender.js';
-import { escapeHtml } from '../utils/helpers.js';
+import { escapeHtml, safeHttpUrl } from '../utils/helpers.js';
 import { getTenderAssignment, getTenderCurrentStatus, isTenderWatchlisted, toggleWatchlist, getCurrentUsername, getUnreadMentionCount, clearTenderAssignment, setTenderAssignment } from './storage.js';
 import { teamMembers } from './config.js';
 
@@ -40,13 +40,14 @@ export function createTenderRow(item, _idx) {
     const priority = getPriority(t) || '-';
     const closeDate = t.closing_date || '-';
     const fitScore = (t.score ?? scores.fit ?? scores.fit_score ?? '-') || '-';
-    const countdownStatus = t.status || getCountdownHtml(t.closing_date) || '-';
-    const link = t.url ? `<a href="${t.url}" target="_blank" rel="noopener" class="view-btn" style="padding: 6px 15px; font-size: 0.8rem;" onclick="event.stopPropagation()">Open ↗</a>` : '-';
+    const countdownStatus = getCountdownHtml(t.closing_date) || '-';
+    const safeUrl = safeHttpUrl(t.url);
+    const link = safeUrl ? `<a href="${escapeHtml(safeUrl)}" target="_blank" rel="noopener noreferrer" class="view-btn" style="padding: 6px 15px; font-size: 0.8rem;">Open ↗</a>` : '-';
     const decision = computeDecision(t);
     const scopeClass = relevance === 'OutOfScope' ? 'scope-pill-out' : relevance === 'Mexel' ? 'scope-pill-mexel' : 'scope-pill-out';
     const scopeText = relevance === 'OutOfScope' ? 'Not in scope' : relevance === 'Mexel' ? 'Mexel' : 'Review';
     const decisionPill = `<span class="decision-pill ${decision.className}">${decision.label}<span class="reason"> · ${decision.reason}</span><span class="confidence"> · ${decision.confidence}%</span></span>`;
-    const categoryTags = (categories || []).map(c => `<span class="category-tag">${c}</span>`).join('');
+    const categoryTags = (categories || []).map(c => `<span class="category-tag">${escapeHtml(c)}</span>`).join('');
     const assignment = getTenderAssignment(t.ref);
     const assignedLabel = assignment?.assignedTo ? `👤 ${escapeHtml(assignment.assignedTo)}` : '';
     const user = getCurrentUsername();
@@ -82,10 +83,10 @@ export function createTenderRow(item, _idx) {
     row.innerHTML = `
         <td style="padding: 15px;">
             <div class="tender-title-row">
-                <div style="font-weight: 600; color: #fff; margin-bottom: 4px;">${title}</div>
+                <div style="font-weight: 600; color: #fff; margin-bottom: 4px;">${escapeHtml(title)}</div>
                 ${starBtn}
             </div>
-            <div style="font-size: 0.8rem; color: #667eea;">${t.ref || '-'}</div>
+            <div style="font-size: 0.8rem; color: #667eea;">${escapeHtml(t.ref || '-')}</div>
             <div style="margin-top:4px;">${categoryTags}</div>
             <div class="assignment-inline">
                 <span class="assignment-indicator">${assignedLabel}</span>
@@ -95,16 +96,16 @@ export function createTenderRow(item, _idx) {
                 </select>
             </div>
         </td>
-        <td style="padding: 15px; color: #ccc;">${source}</td>
-        <td style="padding: 15px; color: #ccc;">${company}</td>
+        <td style="padding: 15px; color: #ccc;">${escapeHtml(source)}</td>
+        <td style="padding: 15px; color: #ccc;">${escapeHtml(company)}</td>
         <td style="padding: 15px; color: #ccc;">
             <div class="priority-status-cell">
                 ${priorityBadge}
                 ${statusBadge}
             </div>
         </td>
-        <td style="padding: 15px; color: #ccc;">${closeDate}</td>
-        <td style="padding: 15px; font-weight: bold; color: #fff;">${fitScore}</td>
+        <td style="padding: 15px; color: #ccc;">${escapeHtml(closeDate)}</td>
+        <td style="padding: 15px; font-weight: bold; color: #fff;">${escapeHtml(fitScore)}</td>
         <td style="padding: 15px;">${countdownStatus}</td>
         <td style="padding: 15px;"><span class="scope-pill ${scopeClass}">${scopeText}</span></td>
         <td style="padding: 15px;">${decisionPill}</td>
@@ -153,22 +154,22 @@ export function createTenderCard(item, _idx) {
     const company = getCompany(t) || '-';
     const priority = getPriority(t) || '-';
     const closeDate = t.closing_date || '-';
-    const countdownStatus = t.status || getCountdownHtml(t.closing_date) || '-';
+    const countdownStatus = getCountdownHtml(t.closing_date) || '-';
     const decision = computeDecision(t);
-    const url = t.url || '';
+    const url = safeHttpUrl(t.url);
 
     const card = document.createElement('div');
     card.className = 'tender-card';
     card.dataset.ref = (t.ref || '').toString();
     card.addEventListener('click', () => openTenderModal(t));
 
-    const priorityBadge = `<span class="priority priority-${priority}">${priority}</span>`;
+    const priorityBadge = `<span class="priority priority-${escapeHtml(priority)}">${escapeHtml(priority)}</span>`;
     const decisionPill = `<span class="decision-pill ${decision.className}">${decision.label}<span class="reason"> · ${decision.reason}</span><span class="confidence"> · ${decision.confidence}%</span></span>`;
-    const categoryTags = (item.classification?.categories || []).map(c => `<span class="category-tag">${c}</span>`).join('');
+    const categoryTags = (item.classification?.categories || []).map(c => `<span class="category-tag">${escapeHtml(c)}</span>`).join('');
 
     const starActive = isTenderWatchlisted(t.ref);
     const starBtn = `<button class="watchlist-star ${starActive ? 'active' : ''}" data-ref="${escapeHtml(t.ref || '')}" type="button" aria-label="Toggle watchlist">★</button>`;
-    const openLink = url ? `<a class="tender-card-open" href="${url}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">Open ↗</a>` : '';
+    const openLink = url ? `<a class="tender-card-open" href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">Open ↗</a>` : '';
 
     card.innerHTML = `
         <div class="tender-title-row" style="align-items: flex-start;">

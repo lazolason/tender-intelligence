@@ -12,7 +12,7 @@ import { renderTenders, requestRenderTenders, renderVirtualList, createTenderRow
 import { openTenderModal, closeTenderModal, setTenderDetailTab } from './modules/modal.js';
 import { TenderAnalytics, renderTrendChart, renderSourcePieChart, renderPriorityBarChart, renderKeywordCloud, initializeAnalytics } from './modules/analytics.js';
 import { getTenderAssignment, setTenderAssignment, updateTenderAssignmentStatus, clearTenderAssignment, getTenderCurrentStatus, setTenderLifecycleStatus, getTenderStatusHistory, addTenderStatusHistory, getTenderComments, saveTenderComments, getCurrentUsername, ensureUsername, getWatchlistMode, setWatchlistMode, getActiveWatchlist, setActiveWatchlist, getHiddenTenderRefs, setHiddenTenderRefs, isTenderHidden, hideTender, unhideTender, isTenderWatchlisted, toggleWatchlist, addAllHighPriorityToWatchlist, exportWatchlistCsv, updateWatchlistBadges, updateWatchlistToolbar, getCommentsKey, getMentionsKey, getMentionsStore, addMentionsForUsers, getUnreadMentionCount, clearMentionsForTender, getTenderStatusHistoryKey, getAssignmentKey } from './modules/storage.js';
-import { delay, debounce, throttle, escapeHtml, formatBytes, newId, initials, hashColorForUser, relativeTime, parseFlexibleDate, formatNiceDateTime, formatNumberOrDash, setTextOrDash, setNumberOrDash, setTextById, renderMarkdownLite } from './utils/helpers.js';
+import { delay, debounce, throttle, escapeHtml, safeHttpUrl, formatBytes, newId, initials, hashColorForUser, relativeTime, parseFlexibleDate, formatNiceDateTime, formatNumberOrDash, setTextOrDash, setNumberOrDash, setTextById, renderMarkdownLite } from './utils/helpers.js';
 import { computeDashboardMetrics, updateDashboardStatsUI, renderDashboardSourceHealth, renderAutomationLogs, updateFooter } from './modules/metrics.js';
 
 // Export functions for global access (backward compatibility)
@@ -424,14 +424,17 @@ window.renderCalendar = function() {
         const tendersOnDay = tendersByDate[dateStr] || [];
         const hasTenders = tendersOnDay.length > 0;
 
-        html += `<div class="calendar-day ${isToday ? 'today' : ''} ${hasTenders ? 'has-tenders' : ''}" 
-                    onclick="showDayTenders('${dateStr}')" title="${tendersOnDay.length} tender(s)">
+        html += `<button type="button" class="calendar-day ${isToday ? 'today' : ''} ${hasTenders ? 'has-tenders' : ''}"
+                    data-calendar-date="${dateStr}" title="${tendersOnDay.length} tender(s)">
                     ${day}
                     ${hasTenders ? `<span class="tender-count">${tendersOnDay.length}</span>` : ''}
-                </div>`;
+                </button>`;
     }
 
     grid.innerHTML = html;
+    grid.querySelectorAll('[data-calendar-date]').forEach((button) => {
+        button.addEventListener('click', () => window.showDayTenders(button.dataset.calendarDate));
+    });
 };
 
 window.showDayTenders = function(dateStr) {
@@ -439,20 +442,26 @@ window.showDayTenders = function(dateStr) {
     const dayTenders = state.tenders.filter(t => t.closing_date === dateStr);
 
     if (dayTenders.length === 0) {
-        container.innerHTML = `<p style="color: #888; text-align: center;">No tenders closing on ${dateStr}</p>`;
+        container.innerHTML = `<p style="color: #888; text-align: center;">No tenders closing on ${escapeHtml(dateStr)}</p>`;
         return;
     }
 
     container.innerHTML = `
         <h3 style="margin-bottom: 15px;">📅 Closing on ${new Date(dateStr).toLocaleDateString('en-ZA', { weekday: 'long', day: 'numeric', month: 'long' })}</h3>
-        ${dayTenders.map(t => `
-            <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; margin: 10px 0; cursor: pointer;" onclick="window.open('${t.url}', '_blank')">
-                <span style="color: #667eea; font-weight: bold;">${t.ref}</span>
-                <span class="company-badge company-${getCompany(t)}" style="margin-left: 10px;">${getCompany(t)}</span>
-                <div style="color: #ccc; margin-top: 5px;">${t.title}</div>
-                <div style="color: #888; font-size: 0.8rem; margin-top: 5px;">📍 ${t.client}</div>
-            </div>
-        `).join('')}
+        ${dayTenders.map(t => {
+            const company = getCompany(t);
+            const companyClass = company.toUpperCase().replace(/[^A-Z0-9_-]/g, '-');
+            const url = safeHttpUrl(t.url);
+            return `
+                <div class="calendar-tender-card" style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; margin: 10px 0;">
+                    <span style="color: #667eea; font-weight: bold;">${escapeHtml(t.ref)}</span>
+                    <span class="company-badge company-${escapeHtml(companyClass)}" style="margin-left: 10px;">${escapeHtml(company)}</span>
+                    <div style="color: #ccc; margin-top: 5px;">${escapeHtml(t.title)}</div>
+                    <div style="color: #888; font-size: 0.8rem; margin-top: 5px;">📍 ${escapeHtml(t.client)}</div>
+                    ${url ? `<a class="view-btn" href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">Open ↗</a>` : ''}
+                </div>
+            `;
+        }).join('')}
     `;
 };
 
@@ -482,13 +491,13 @@ window.renderScraperHealth = function(scraperData) {
         const shadow = status === 'Success' ? '0 0 12px rgba(0,255,136,0.3)' : status === 'Partial' ? '0 0 12px rgba(254,202,87,0.3)' : '0 0 12px rgba(255,107,107,0.3)';
         return `
             <div class="company-card" style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 20px; box-shadow:${shadow}; transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-3px)';" onmouseout="this.style.transform='none';">
-                <div class="company-name" style="color: #fff;">${name}</div>
-                <div class="company-focus" style="color:${statusColor}; font-weight:700;">${status}</div>
+                <div class="company-name" style="color: #fff;">${escapeHtml(name)}</div>
+                <div class="company-focus" style="color:${statusColor}; font-weight:700;">${escapeHtml(status)}</div>
                 <div class="company-keywords" style="margin-top:12px;">
-                    <span class="keyword">Last run: ${lastRun}</span>
-                    <span class="keyword">Tenders: ${count}</span>
+                    <span class="keyword">Last run: ${escapeHtml(lastRun)}</span>
+                    <span class="keyword">Tenders: ${escapeHtml(count)}</span>
                 </div>
-                ${status === 'Failed' && error ? `<div style="margin-top:12px; color:#ff6b6b; font-size:0.85rem;">${error}</div>` : ''}
+                ${status === 'Failed' && error ? `<div style="margin-top:12px; color:#ff6b6b; font-size:0.85rem;">${escapeHtml(error)}</div>` : ''}
             </div>
         `;
     }).join('');

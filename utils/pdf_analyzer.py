@@ -11,6 +11,8 @@ from typing import Dict, List, Optional, Tuple
 import os
 import tempfile
 
+from utils.retry_tools import secure_request_kwargs, validate_outbound_url
+
 
 def download_pdf(url: str, timeout: int = 30) -> Optional[bytes]:
     """
@@ -27,7 +29,16 @@ def download_pdf(url: str, timeout: int = 30) -> Optional[bytes]:
         headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
         }
-        response = requests.get(url, headers=headers, timeout=timeout, stream=True)
+        validate_outbound_url(url)
+        response = requests.get(
+            url,
+            **secure_request_kwargs({
+                "headers": headers,
+                "timeout": timeout,
+                "stream": True,
+            }),
+        )
+        validate_outbound_url(response.url)
         response.raise_for_status()
         return response.content
     except Exception as e:
@@ -61,11 +72,11 @@ def extract_text_from_pdf(pdf_content: bytes) -> str:
             os.unlink(tmp.name)
             return text
     except ImportError:
-        # Fallback to PyPDF2 if pdfplumber not available
+        # Fallback to pypdf if pdfplumber is not available
         try:
-            import PyPDF2
+            import pypdf
             from io import BytesIO
-            pdf_reader = PyPDF2.PdfReader(BytesIO(pdf_content))
+            pdf_reader = pypdf.PdfReader(BytesIO(pdf_content))
             text = ""
             for page in pdf_reader.pages:
                 text += page.extract_text() + "\n"
@@ -365,9 +376,9 @@ def analyze_pdf(url: str) -> Dict[str, any]:
     
     # Try to get page count
     try:
-        import PyPDF2
+        import pypdf
         from io import BytesIO
-        pdf_reader = PyPDF2.PdfReader(BytesIO(pdf_content))
+        pdf_reader = pypdf.PdfReader(BytesIO(pdf_content))
         result['page_count'] = len(pdf_reader.pages)
     except:
         pass

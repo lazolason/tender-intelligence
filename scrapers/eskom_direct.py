@@ -18,7 +18,6 @@ import re
 import os
 import logging
 import requests
-import certifi
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -45,7 +44,7 @@ def _scrape_eskom_tenders_api(max_tenders, timeout=30):
     seen = set()
     url = f"{API_BASE_URL}/Lookup/GetTender?TENDER_ID="
 
-    response = requests.get(url, timeout=timeout, verify=False)
+    response = requests.get(url, timeout=timeout)
     response.raise_for_status()
     data = response.json()
 

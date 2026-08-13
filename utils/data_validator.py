@@ -6,6 +6,7 @@ from typing import Dict, List, Optional, Tuple
 from urllib.parse import urlparse
 
 import requests
+from utils.retry_tools import secure_request_kwargs, validate_outbound_url
 from utils.text_utils import parse_date
 
 
@@ -31,6 +32,7 @@ DEFAULT_ALLOWED_SOURCES = [
 
 DEFAULT_ALLOWED_CATEGORIES = [
     "MEXEL",
+    "PHAKATHI",
     "Exclude",
     "EXCLUDED",
     "Unknown",
@@ -55,8 +57,12 @@ class TenderValidator:
         url_timeout_seconds: int = 8,
         require_url: bool = False,
     ):
-        self.allowed_sources = set(allowed_sources or DEFAULT_ALLOWED_SOURCES)
-        self.allowed_categories = set(allowed_categories or DEFAULT_ALLOWED_CATEGORIES)
+        self.allowed_sources = set(
+            DEFAULT_ALLOWED_SOURCES if allowed_sources is None else allowed_sources
+        )
+        self.allowed_categories = set(
+            DEFAULT_ALLOWED_CATEGORIES if allowed_categories is None else allowed_categories
+        )
         self.closing_date_grace_days = int(closing_date_grace_days)
         self.check_url_reachable = bool(check_url_reachable)
         self.url_timeout_seconds = int(url_timeout_seconds)
@@ -84,7 +90,7 @@ class TenderValidator:
         elif len(title) > 500:
             errors.append("title exceeds 500 chars")
 
-        source = (tender.get("source") or "Unknown").strip()
+        source = (tender.get("source") or "").strip()
         if not source:
             errors.append("Missing source")
         elif self.allowed_sources and source not in self.allowed_sources:
@@ -147,13 +153,16 @@ class TenderValidator:
         headers = {"User-Agent": "TenderIntelligence/1.0"}
 
         try:
+            validate_outbound_url(url)
             resp = requests.head(
                 url,
-                headers=headers,
-                timeout=self.url_timeout_seconds,
-                allow_redirects=True,
-                verify=False,
+                **secure_request_kwargs({
+                    "headers": headers,
+                    "timeout": self.url_timeout_seconds,
+                    "allow_redirects": True,
+                }),
             )
+            validate_outbound_url(resp.url)
             ok = 200 <= resp.status_code < 400
             self._url_reachability_cache[url] = ok
             return ok
@@ -164,12 +173,14 @@ class TenderValidator:
         try:
             resp = requests.get(
                 url,
-                headers=headers,
-                timeout=self.url_timeout_seconds,
-                allow_redirects=True,
-                stream=True,
-                verify=False,
+                **secure_request_kwargs({
+                    "headers": headers,
+                    "timeout": self.url_timeout_seconds,
+                    "allow_redirects": True,
+                    "stream": True,
+                }),
             )
+            validate_outbound_url(resp.url)
             ok = 200 <= resp.status_code < 400
             self._url_reachability_cache[url] = ok
             return ok

@@ -5,6 +5,25 @@
 import { config, state } from './config.js';
 import { delay } from '../utils/helpers.js';
 
+function parsePayloadTimestamp(value) {
+    if (!value) return Number.NaN;
+    if (typeof value === 'number' && Number.isFinite(value)) return value;
+    const raw = String(value).trim();
+    if (!raw) return Number.NaN;
+    const normalized = raw.includes('T') ? raw : raw.replace(' ', 'T');
+    const parsed = Date.parse(normalized);
+    return Number.isFinite(parsed) ? parsed : Number.NaN;
+}
+
+function getPayloadFreshness(meta = {}, storedAt) {
+    return (
+        parsePayloadTimestamp(meta?.last_update) ||
+        parsePayloadTimestamp(meta?.build_id) ||
+        parsePayloadTimestamp(meta?.last_sync) ||
+        parsePayloadTimestamp(storedAt)
+    );
+}
+
 /**
  * Validate payload shape
  * @param {Object|Array} payload - Payload to validate
@@ -12,9 +31,11 @@ import { delay } from '../utils/helpers.js';
  */
 export function validatePayloadShape(payload) {
     const tenderList = Array.isArray(payload) ? payload : (payload?.tenders || payload?.data || []);
+    const planList = Array.isArray(payload) ? [] : (payload?.planned_opportunities || []);
     if (!Array.isArray(tenderList)) throw new Error("Invalid payload: tenders must be an array");
+    if (!Array.isArray(planList)) throw new Error("Invalid payload: planned_opportunities must be an array");
     const meta = (!Array.isArray(payload) && payload?.meta) ? payload.meta : {};
-    return { tenderList, meta };
+    return { tenderList, planList, meta };
 }
 
 /**
@@ -36,9 +57,10 @@ export function readCachedPayload() {
             return null;
         }
         const payload = cached.payload;
-        const { tenderList, meta } = validatePayloadShape(payload);
+        const { tenderList, planList, meta } = validatePayloadShape(payload);
         return {
             tenders: tenderList,
+            plannedOpportunities: planList,
             meta: meta || {},
             storedAt: cached.storedAt || null,
             buildId: cached?.buildId || meta?.build_id || null,
@@ -95,28 +117,54 @@ export async function loadTenderPayload({ forceRefresh } = {}) {
     }
 
     let lastErr;
+    const liveCandidates = [];
     for (const url of config.tenderJsonUrls) {
         try {
             console.info("[Tender Intelligence] Fetching data from:", url);
             const res = await fetch(url + "?ts=" + Date.now(), { cache: "no-store" });
             if (!res.ok) throw new Error(`${url} -> ${res.status}`);
             const payload = await res.json();
-            const { tenderList, meta } = validatePayloadShape(payload);
+            const { tenderList, planList, meta } = validatePayloadShape(payload);
             const swCacheTime = res.headers.get('x-sw-cache-time');
-            writeCachedPayload(payload, swCacheTime || undefined);
-            console.info(
-                "[Tender Intelligence] Using live payload:",
-                url,
-                "records=",
-                tenderList.length,
-                "build=",
-                meta?.build_id || meta?.last_sync || "–"
-            );
-            return { tenders: tenderList, meta: meta || {}, source: swCacheTime ? "serviceWorkerCache" : url, storedAt: swCacheTime || null };
+            liveCandidates.push({
+                payload,
+                tenders: tenderList,
+                plannedOpportunities: planList,
+                meta: meta || {},
+                source: swCacheTime ? "serviceWorkerCache" : url,
+                storedAt: swCacheTime || null,
+                freshness: getPayloadFreshness(meta, swCacheTime),
+            });
         } catch (e) {
             lastErr = e;
             console.warn("[Tender Intelligence] Fetch failed:", url, e?.message || e);
         }
+    }
+
+    if (liveCandidates.length > 0) {
+        liveCandidates.sort((a, b) => {
+            const freshnessDelta = (b.freshness || 0) - (a.freshness || 0);
+            if (freshnessDelta !== 0) return freshnessDelta;
+            return (b.tenders?.length || 0) - (a.tenders?.length || 0);
+        });
+
+        const selected = liveCandidates[0];
+        writeCachedPayload(selected.payload, selected.storedAt || undefined);
+        console.info(
+            "[Tender Intelligence] Using freshest live payload:",
+            selected.source,
+            "records=",
+            selected.tenders.length,
+            "build=",
+            selected.meta?.build_id || selected.meta?.last_sync || "–"
+        );
+        return {
+            tenders: selected.tenders,
+            plannedOpportunities: selected.plannedOpportunities,
+            meta: selected.meta,
+            source: selected.source,
+            storedAt: selected.storedAt,
+        };
     }
 
     if (!forceRefresh) {
@@ -129,13 +177,19 @@ export async function loadTenderPayload({ forceRefresh } = {}) {
                 "build=",
                 cached.buildId || cached.storedAt || "–"
             );
-            return { tenders: cached.tenders, meta: cached.meta, source: "localStorage", storedAt: cached.storedAt };
+            return {
+                tenders: cached.tenders,
+                plannedOpportunities: cached.plannedOpportunities || [],
+                meta: cached.meta,
+                source: "localStorage",
+                storedAt: cached.storedAt,
+            };
         }
     }
 
-    const { tenderList, meta } = validatePayloadShape(config.seedPayload);
+    const { tenderList, planList, meta } = validatePayloadShape(config.seedPayload);
     console.warn("[Tender Intelligence] Using seed payload (no live data and cache missing/expired).", lastErr?.message || lastErr);
-    return { tenders: tenderList, meta, source: "seed", error: lastErr };
+    return { tenders: tenderList, plannedOpportunities: planList, meta, source: "seed", error: lastErr };
 }
 
 /**
@@ -183,12 +237,14 @@ export function normalizeTender(t) {
  * @param {string} params.storedAt - Storage timestamp
  * @param {Error} params.error - Error object
  */
-export function applyTenderPayload({ tenders, loadedTenders, meta, source, storedAt, error }) {
+export function applyTenderPayload({ tenders, loadedTenders, plannedOpportunities, meta, source, storedAt, error }) {
     const effectiveMeta = meta || {};
 
     const list = Array.isArray(loadedTenders) ? loadedTenders : (Array.isArray(tenders) ? tenders : []);
     state.tenders = list.map(normalizeTender);
+    state.plannedOpportunities = Array.isArray(plannedOpportunities) ? plannedOpportunities : [];
     window.tendersData = state.tenders;
+    window.plannedOpportunitiesData = state.plannedOpportunities;
     window.dashboardMeta = effectiveMeta;
 
     // Store allTenders globally for notifications

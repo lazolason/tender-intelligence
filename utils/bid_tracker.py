@@ -528,7 +528,7 @@ if __name__ == "__main__":
     import os
     
     with tempfile.NamedTemporaryFile(delete=False, suffix='.db') as tmp_db:
-        db_path = tmp.name
+        db_path = tmp_db.name
         
         # Initialize database
         if not init_database(db_path):

@@ -51,7 +51,7 @@ def scrape_transnet():
             "departments": "Transnet"
         }
         
-        response = requests.post(url, data=params, headers=headers, timeout=10, verify=False)
+        response = requests.post(url, data=params, headers=headers, timeout=10)
         response.raise_for_status()
         
         soup = BeautifulSoup(response.content, "html.parser")

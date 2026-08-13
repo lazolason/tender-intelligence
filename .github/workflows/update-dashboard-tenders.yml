@@ -110,47 +110,50 @@ jobs:
       - name: Aggregate and build dashboard snapshot
         id: build_snapshot
         run: |
-          set -e
+          set -euo pipefail
           mapfile -t INPUTS < <(find artifacts -type f -name '*.json' 2>/dev/null | sort || true)
           if [ "${#INPUTS[@]}" -gt 0 ]; then
-            .venv/bin/python tools/build_dashboard_snapshot.py --inputs "${INPUTS[@]}" --out vercel-dashboard/tenders.json --limit 200 --public-dir vercel-dashboard/public
+            .venv/bin/python tools/build_dashboard_snapshot.py --inputs "${INPUTS[@]}" --out dashboard/tenders.json --limit 200 --public-dir dashboard/public
           else
-            .venv/bin/python tools/build_dashboard_snapshot.py --out vercel-dashboard/tenders.json --limit 200 --public-dir vercel-dashboard/public
+            .venv/bin/python tools/build_dashboard_snapshot.py --out dashboard/tenders.json --limit 200 --public-dir dashboard/public
           fi
-          .venv/bin/python tools/validate_dashboard_tenders_json.py --path vercel-dashboard/tenders.json --summary-path vercel-dashboard/public/summary.json
+          .venv/bin/python tools/validate_dashboard_tenders_json.py --path dashboard/tenders.json --summary-path dashboard/public/summary.json
 
+          .venv/bin/python - <<'PY'
+          import glob
+          import json
+          import os
 
-    # Extract failures (if any) for notifications
-        python3 << 'EOF'
-        import glob
-        import json
-        import os
+          failing = []
+          successful = 0
+          for path in glob.glob("artifacts/**/*.json", recursive=True):
+              try:
+                  with open(path, "r", encoding="utf-8") as file_obj:
+                      payload = json.load(file_obj)
+                  if isinstance(payload, dict) and payload.get("status") == "success":
+                      successful += 1
+                  else:
+                      failing.append(payload.get("scraper") or os.path.basename(path))
+              except Exception:
+                  failing.append(os.path.basename(path))
 
-        failing = []
-        for p in glob.glob('artifacts/**/*.json', recursive=True):
-            try:
-                    with open(p, 'r', encoding='utf-8') as f:
-                                payload = json.load(f)
-                                            if isinstance(payload, dict) and payload.get('status') != 'success':
-                                                            failing.append(payload.get('scraper') or os.path.basename(p))
-                                                                except Exception:
-                                                                        continue
+          if successful == 0:
+              raise SystemExit("No scraper completed successfully; refusing to publish")
 
-                                                                        output_file = os.environ.get('GITHUB_OUTPUT', '')
-                                                                        if output_file:
-                                                                            with open(output_file, 'a', encoding='utf-8') as f:
-                                                                                    f.write(f"has_failures={'true' if failing else 'false'}\n")
-                                                                                            f.write(f"failing={','.join(failing)}\n")
-                                                                                            EOF
+          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as file_obj:
+              file_obj.write(f"has_failures={'true' if failing else 'false'}\n")
+              file_obj.write(f"failing={','.join(failing)}\n")
+          PY
+
       - name: Commit and push if changed
         run: |
-          if git diff --quiet -- vercel-dashboard/tenders.json vercel-dashboard/public/; then
+          if git diff --quiet -- dashboard/tenders.json dashboard/public/; then
             echo "No changes to dashboard artifacts"
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add vercel-dashboard/tenders.json vercel-dashboard/public/
+          git add dashboard/tenders.json dashboard/public/
           git commit -m "Auto-update dashboard tenders snapshot"
           git push
 

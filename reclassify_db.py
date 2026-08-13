@@ -52,8 +52,20 @@ def reclassify_database():
             category=new_category
         )
         
-        # Check for meaningful change
-        if new_category != old_category or (new_category == 'MEXEL' and scores['priority'] == 'HIGH'):
+        old_priority = tender_data.get('priority')
+        old_composite = tender_data.get('composite_score')
+        old_reason = tender_data.get('classification_reason')
+        old_keywords = tender_data.get('matched_keywords') or ""
+        new_keywords = ", ".join(classification.get("matched_keywords", []))
+
+        # Check for meaningful change in category or derived scoring/classification fields.
+        if (
+            new_category != old_category
+            or scores['priority'] != old_priority
+            or float(scores['composite_score']) != float(old_composite or 0)
+            or new_reason != old_reason
+            or new_keywords != old_keywords
+        ):
             
             # Prepare Update
             cursor.execute("""
@@ -77,8 +89,8 @@ def reclassify_database():
                 scores['composite_score'],
                 scores['priority'],
                 scores['recommendation'],
-                ", ".join(classification.get("matched_keywords", [])),
-                ref
+                    new_keywords,
+                    ref
             ))
             
             updated_count += 1

@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-import os
-import sys
-import subprocess
-import platform
 import json
+import os
+import platform
+import subprocess
+import sys
 from pathlib import Path
 
 TOOLS_DIR = Path(__file__).parent
@@ -71,6 +71,12 @@ def save_version_lock(data):
     with open(VERSION_LOCK_FILE, "w") as f:
         json.dump(data, f, indent=2)
 
+
+def _extract_major(version: str | None) -> str | None:
+    if not version:
+        return None
+    return str(version).split(".")[0]
+
 def get_system_driver_path():
     fallbacks = [
         "/opt/homebrew/bin/chromedriver",
@@ -91,7 +97,45 @@ def get_system_driver_path():
     return None
 
 def verify_driver_alignment():
-    return True, "144", "144", "Forced alignment for system driver"
+    chrome_major, chrome_full, _ = get_chrome_version()
+    driver_major, driver_full = get_installed_chromedriver_version()
+
+    if not chrome_major:
+        return False, None, driver_major, "Google Chrome not found"
+
+    system_driver = get_system_driver_path()
+    if not driver_major and system_driver:
+        try:
+            result = subprocess.run(
+                [system_driver, "--version"],
+                capture_output=True,
+                text=True,
+                timeout=5,
+            )
+            tokens = result.stdout.strip().split()
+            if len(tokens) >= 2:
+                driver_full = tokens[1]
+                driver_major = _extract_major(driver_full)
+        except Exception:
+            driver_major = driver_major or None
+
+    if not driver_major:
+        return (
+            False,
+            chrome_major,
+            None,
+            f"Chrome {chrome_full} detected but no chromedriver is installed",
+        )
+
+    if chrome_major == driver_major:
+        return True, chrome_major, driver_major, "Chrome and Chromedriver are aligned"
+
+    return (
+        False,
+        chrome_major,
+        driver_major,
+        f"Version mismatch: Chrome {chrome_full} vs Chromedriver {driver_full or driver_major}",
+    )
 
 def get_driver_path():
     local_path = DRIVER_DIR / DRIVER_EXE
@@ -109,7 +153,13 @@ def setup_environment():
     os.environ["PATH"] = os.pathsep.join(parts + [path_env])
 
 def print_driver_info():
-    print(f"Driver Path: {get_driver_path()}")
+    chrome_major, chrome_full, chrome_path = get_chrome_version()
+    driver_major, driver_full = get_installed_chromedriver_version()
+    driver_path = get_driver_path()
+    print(f"Chrome Path: {chrome_path or 'Not found'}")
+    print(f"Chrome Version: {chrome_full or 'Unknown'}")
+    print(f"Driver Path: {driver_path or 'Not found'}")
+    print(f"Driver Version: {driver_full or 'Unknown'}")
     return True
 
 if __name__ == "__main__":

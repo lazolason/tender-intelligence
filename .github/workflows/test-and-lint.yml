@@ -7,7 +7,7 @@ on:
     branches: [ main ]
 
 jobs:
-  lint:
+  python-lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -21,9 +21,38 @@ jobs:
       - name: Run Ruff
         run: ruff check . --line-length 120
 
-  test:
+  dashboard-test:
     runs-on: ubuntu-latest
-    needs: lint
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: dashboard/package-lock.json
+      - name: Install Dashboard Dependencies
+        working-directory: dashboard
+        run: npm ci
+      - name: Install Playwright Browser
+        working-directory: dashboard
+        run: npx playwright install --with-deps chromium
+      - name: Run Dashboard Lint
+        working-directory: dashboard
+        run: npm run lint
+      - name: Run Dashboard Tests
+        working-directory: dashboard
+        run: npm run test:run
+      - name: Audit Dashboard Runtime Dependencies
+        working-directory: dashboard
+        run: npm audit --omit=dev
+      - name: Run Dashboard Smoke Test
+        working-directory: dashboard
+        run: npm run test:smoke
+
+  python-test:
+    runs-on: ubuntu-latest
+    needs: python-lint
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python
@@ -41,6 +70,10 @@ jobs:
           # but on Ubuntu (runs-on: ubuntu-latest) GNU sed works fine with -i
           sed -i 's/your-email@gmail.com/test@example.com/g' .env
           sed -i 's/your-app-password/test-password/g' .env
+      - name: Audit Python Dependencies
+        run: |
+          pip install pip-audit
+          pip-audit -r requirements.txt --progress-spinner off
       - name: Run Tests
         run: |
           pytest tests/ --cov=. --cov-report=xml

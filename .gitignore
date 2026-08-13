@@ -7,10 +7,11 @@ __pycache__/
 venv/
 ENV/
 
-# Logs
+# Logs and generated reports
 logs/
 *.log
 backups/
+reports/weekly_report_*.html
 
 # Secrets
 .env
@@ -40,7 +41,9 @@ node_modules/
 # Output files (generated)
 output/*.json
 output/*.txt
+output/*.html
 output/scraper_*.json
+output/playwright/
 
 # ChromeDriver binaries
 tools/chromedriver/
@@ -50,6 +53,8 @@ mexel_config.json
 
 # Agent Internal Data
 .agent/
+.kilo/
+.playwright-cli/
 
 # Coverage reports
 .coverage
@@ -60,8 +65,11 @@ htmlcov/
 # Pytest cache
 .pytest_cache/
 
-# Database (user data)
+# Database and authorized feed exports (user/confidential data)
 data/tenders.db
+data/tenders.db-wal
+data/tenders.db-shm
+data/authorized_feeds/
 
 # Screenshots and temporary images
 dashboard_full.png

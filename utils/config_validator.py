@@ -4,12 +4,18 @@ Validates config.yaml structure and values
 """
 
 import os
+import re
 import yaml
 from pathlib import Path
 from typing import Dict, Any, List, Tuple
 import logging
 
 logger = logging.getLogger(__name__)
+
+
+def _has_any_env(*names: str) -> bool:
+    """Return True when any listed environment variable is set to a non-empty value."""
+    return any(bool(os.getenv(name)) for name in names)
 
 
 class ConfigValidationError(Exception):
@@ -30,7 +36,7 @@ def validate_config(config: Dict[str, Any]) -> Tuple[bool, List[str]]:
     errors = []
     
     # Check required top-level sections
-    required_sections = ['paths', 'scrapers', 'classification', 'scoring', 'excel']
+    required_sections = ['paths', 'scrapers', 'classification', 'scoring']
     for section in required_sections:
         if section not in config:
             errors.append(f"Missing required section: {section}")
@@ -38,7 +44,7 @@ def validate_config(config: Dict[str, Any]) -> Tuple[bool, List[str]]:
     # Validate paths section
     if 'paths' in config:
         paths = config['paths']
-        required_paths = ['tender_log_excel', 'active_tenders', 'output_dir', 'log_file']
+        required_paths = ['active_tenders', 'output_dir', 'log_file']
         for path_key in required_paths:
             if path_key not in paths:
                 errors.append(f"Missing required path: paths.{path_key}")
@@ -55,6 +61,53 @@ def validate_config(config: Dict[str, Any]) -> Tuple[bool, List[str]]:
         elif not isinstance(scrapers.get('timeout'), int) or scrapers.get('timeout') <= 0:
             errors.append("scrapers.timeout must be a positive integer")
     
+    # Validate authorized private-feed boundary when configured.
+    if 'authorized_feeds' in config:
+        feed_config = config['authorized_feeds'] or {}
+        if not isinstance(feed_config, dict):
+            errors.append("authorized_feeds must be a mapping")
+        else:
+            max_bytes = feed_config.get('max_file_bytes', 10 * 1024 * 1024)
+            if not isinstance(max_bytes, int) or max_bytes <= 0:
+                errors.append("authorized_feeds.max_file_bytes must be a positive integer")
+            max_records = feed_config.get('max_records', 10000)
+            if not isinstance(max_records, int) or max_records <= 0:
+                errors.append("authorized_feeds.max_records must be a positive integer")
+            sources = feed_config.get('sources', [])
+            if not isinstance(sources, list):
+                errors.append("authorized_feeds.sources must be a list")
+            else:
+                seen_source_ids = set()
+                for index, source in enumerate(sources):
+                    prefix = f"authorized_feeds.sources[{index}]"
+                    if not isinstance(source, dict):
+                        errors.append(f"{prefix} must be a mapping")
+                        continue
+                    source_id = str(source.get('id') or '').strip()
+                    if not source_id:
+                        errors.append(f"{prefix}.id is required")
+                    elif not re.fullmatch(r"[a-z0-9][a-z0-9_-]{1,63}", source_id):
+                        errors.append(f"{prefix}.id has an invalid format")
+                    elif source_id in seen_source_ids:
+                        errors.append(f"Duplicate authorized feed source id: {source_id}")
+                    seen_source_ids.add(source_id)
+                    if source.get('format') not in {'json', 'csv'}:
+                        errors.append(f"{prefix}.format must be json or csv")
+                    if source.get('kind', 'live_tenders') != 'live_tenders':
+                        errors.append(f"{prefix}.kind must be live_tenders")
+                    if not str(source.get('label') or '').strip():
+                        errors.append(f"{prefix}.label is required")
+                    field_map = source.get('field_map', {})
+                    allowed_fields = {
+                        'ref', 'title', 'description', 'client', 'closing_date', 'url'
+                    }
+                    if not isinstance(field_map, dict):
+                        errors.append(f"{prefix}.field_map must be a mapping")
+                    elif set(field_map) - allowed_fields or any(
+                        not isinstance(value, str) for value in field_map.values()
+                    ):
+                        errors.append(f"{prefix}.field_map contains unsupported mappings")
+
     # Validate scoring section
     if 'scoring' in config:
         scoring = config['scoring']
@@ -163,13 +216,13 @@ def validate_environment_variables(config: Dict[str, Any] = None) -> Tuple[bool,
         if config.get('email', {}).get('enabled', False):
             email_vars = ['SMTP_USER', 'SMTP_PASSWORD']
             for var in email_vars:
-                if not os.getenv(var):
+                if not _has_any_env(var, f"TENDERSCAN_{var}"):
                     required_missing.append(var)
         
         if config.get('email_alerts', {}).get('enabled', False):
             email_alert_vars = ['SMTP_USER', 'SMTP_PASSWORD']
             for var in email_alert_vars:
-                if not os.getenv(var):
+                if not _has_any_env(var, f"TENDERSCAN_{var}"):
                     if var not in required_missing:
                         required_missing.append(var)
         

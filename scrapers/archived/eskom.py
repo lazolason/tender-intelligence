@@ -21,7 +21,7 @@ from utils.retry_tools import retry_request
 # Apply the decorator to your fetch function
 @retry_request(max_attempts=3, delay=2)
 def fetch_eskom_data(url, params, headers):
-    response = requests.post(url, data=params, headers=headers, timeout=30, verify=False)
+    response = requests.post(url, data=params, headers=headers, timeout=30)
     response.raise_for_status()
     return response
 

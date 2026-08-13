@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.tenderscan.app</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/zsh</string>
+        <string>/Users/lazolasonqishe/tender-intelligence/serve_app.sh</string>
+    </array>
+    <key>WorkingDirectory</key>
+    <string>/Users/lazolasonqishe/tender-intelligence</string>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>KeepAlive</key>
+    <true/>
+    <key>StandardOutPath</key>
+    <string>/Users/lazolasonqishe/tender-intelligence/logs/app_server.log</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/lazolasonqishe/tender-intelligence/logs/app_server_error.log</string>
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin</string>
+        <key>PORT</key>
+        <string>5001</string>
+    </dict>
+</dict>
+</plist>

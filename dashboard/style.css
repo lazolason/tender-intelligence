@@ -467,6 +467,7 @@
         /* Badges */
         .company-badge { padding: 4px 12px; border-radius: 15px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
         .company-Mexel { background: rgba(72, 219, 251, 0.2); color: #48dbfb; border: 1px solid rgba(72, 219, 251, 0.4); }
+        .company-Phakathi { background: rgba(162, 155, 254, 0.2); color: #a29bfe; border: 1px solid rgba(162, 155, 254, 0.4); }
         .priority-badge { padding: 8px 16px; border-radius: 25px; font-size: 0.75rem; font-weight: 700; }
         .priority-HIGH { background: rgba(255, 107, 107, 0.2); color: #ff6b6b; }
         .priority-MEDIUM { background: rgba(254, 202, 87, 0.2); color: #feca57; }

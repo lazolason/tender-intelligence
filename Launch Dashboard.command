@@ -26,20 +26,19 @@ fi
 echo "📡 Refreshing dashboard data..."
 python3 sync_dashboard.py
 
-# 4. Check if port 8000 is already in use
-if lsof -Pi :8000 -sTCP:LISTEN -t >/dev/null ; then
-    echo "ℹ️  Dashboard server is already running on port 8000."
+# 4. Check if app server is already running
+if lsof -Pi :5001 -sTCP:LISTEN -t >/dev/null ; then
+    echo "ℹ️  Tender Intelligence app is already running on port 5001."
 else
-    echo "🌐 Starting local web server on port 8000..."
-    # Start server in background
-    cd dashboard && python3 -m http.server 8000 &
+    echo "🌐 Starting Tender Intelligence app on port 5001..."
+    ./serve_app.sh &
     # Allow a moment for server to start
     sleep 2
 fi
 
 # 5. Open browser
 echo "✨ Opening dashboard in your default browser..."
-open "http://localhost:8000"
+open "http://localhost:5001"
 
 echo "----------------------------------------------------"
 echo "✅ Dashboard is live!"

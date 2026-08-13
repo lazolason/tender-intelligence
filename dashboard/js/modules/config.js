@@ -6,13 +6,10 @@ export const config = {
     cacheKey: "ti_dashboard_payload_v1",
     cacheTtlMs: 60 * 60 * 1000, // 1 hour
     tenderJsonUrls: [
-        "/public/tenders-latest.json",
         "/tenders.json",
         "./tenders.json",
-        "./public/tenders-latest.json",
-        "/dashboard/tenders.json",
-        "/dashboard/public/tenders-latest.json",
-        "../tenders.json"
+        "/public/tenders-latest.json",
+        "./public/tenders-latest.json"
     ],
     seedPayload: {
         meta: {
@@ -25,6 +22,7 @@ export const config = {
 
 export const state = {
     tenders: [],
+    plannedOpportunities: [],
     currentTenders: [],
     currentFilter: 'all',
     currentMonth: new Date(),
