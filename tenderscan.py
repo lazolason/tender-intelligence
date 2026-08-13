@@ -38,13 +38,40 @@ with open(config_path, "r") as f:
     CONFIG = yaml.safe_load(f)
 
 # Paths
-DB_PATH = os.getenv(
-    "DB_PATH",
-    os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "tenders.db"),
+PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
+DB_PATH = os.getenv("DB_PATH", os.path.join(PROJECT_DIR, "data", "tenders.db"))
+
+
+def _portable_runtime_path(env_name, configured_path, fallback_path):
+    """Use configured local paths only when their platform root exists."""
+    override = os.getenv(env_name)
+    if override:
+        return override
+    configured = os.path.expanduser(str(configured_path or ""))
+    if not configured:
+        return fallback_path
+    if not os.path.isabs(configured):
+        return os.path.join(PROJECT_DIR, configured)
+    # macOS paths from config.yaml must not be created on Linux/CI hosts.
+    anchor = os.path.join(os.path.sep, *configured.split(os.path.sep)[1:2])
+    return configured if os.path.exists(anchor) else fallback_path
+
+
+ACTIVE_TENDERS_DIR = _portable_runtime_path(
+    "ACTIVE_TENDERS_DIR",
+    CONFIG["paths"]["active_tenders"],
+    os.path.join(PROJECT_DIR, "data", "active_tenders"),
 )
-ACTIVE_TENDERS_DIR = CONFIG["paths"]["active_tenders"]
-OUTPUT_DIR = CONFIG["paths"]["output_dir"]
-LOG_FILE = CONFIG["paths"]["log_file"]
+OUTPUT_DIR = _portable_runtime_path(
+    "OUTPUT_DIR",
+    CONFIG["paths"]["output_dir"],
+    os.path.join(PROJECT_DIR, "output"),
+)
+LOG_FILE = _portable_runtime_path(
+    "LOG_FILE",
+    CONFIG["paths"]["log_file"],
+    os.path.join(PROJECT_DIR, "logs", "scraper.log"),
+)
 
 # Selenium scraper toggle (set to True to enable)
 ENABLE_SELENIUM = CONFIG.get("scrapers", {}).get("enable_selenium", True)
