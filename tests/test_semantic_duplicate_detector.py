@@ -63,7 +63,6 @@ def test_distinct_authoritative_references_are_not_semantically_collapsed(monkey
     )
     existing = {
         "ref": "RFP-HEAT-01",
-        "ref_is_authoritative": True,
         "title": "Design and supply of cold heat exchanger for C plant",
         "description": "Heat exchanger design manufacture and installation",
         "source": "National Treasury",
@@ -72,6 +71,7 @@ def test_distinct_authoritative_references_are_not_semantically_collapsed(monkey
     new = {
         **existing,
         "ref": "RFP-HEAT-02",
+        "ref_is_authoritative": True,
         "title": "Design and supply of cold heat exchanger for B plant",
     }
 

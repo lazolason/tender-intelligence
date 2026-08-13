@@ -292,7 +292,10 @@ def find_semantic_duplicate(
     def has_distinct_authoritative_ref(entry: IndexedTender) -> bool:
         return bool(
             new_tender.get("ref_is_authoritative")
-            and entry.tender.get("ref_is_authoritative")
+            and (
+                entry.tender.get("ref_is_authoritative")
+                or new_source_norm == entry.source_norm
+            )
             and new_ref
             and new_ref != "NA"
             and entry.ref
