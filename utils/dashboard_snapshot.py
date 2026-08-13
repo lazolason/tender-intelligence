@@ -89,6 +89,7 @@ def inspect_dashboard_snapshot(
     info.update(
         {
             "record_count": len(tenders) if isinstance(tenders, list) else None,
+            "snapshot_origin": meta.get("snapshot_origin"),
             "last_sync": last_sync,
             "age_hours": age_hours,
             "stale": bool(age_hours is not None and age_hours > stale_hours),

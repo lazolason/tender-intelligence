@@ -289,6 +289,16 @@ def find_semantic_duplicate(
             match_type="exact",
         )
 
+    def has_distinct_authoritative_ref(entry: IndexedTender) -> bool:
+        return bool(
+            new_tender.get("ref_is_authoritative")
+            and entry.tender.get("ref_is_authoritative")
+            and new_ref
+            and new_ref != "NA"
+            and entry.ref
+            and new_ref != entry.ref
+        )
+
     new_search_text = _create_search_text(new_tender)
     new_embeddings = _compute_embeddings([new_search_text])
     new_embedding = new_embeddings[0] if new_embeddings else None
@@ -296,6 +306,8 @@ def find_semantic_duplicate(
     if new_embedding is not None:
         for entry in existing_index.entries:
             if require_same_source and new_source_norm != entry.source_norm:
+                continue
+            if has_distinct_authoritative_ref(entry):
                 continue
 
             same_source = new_source_norm == entry.source_norm
@@ -329,6 +341,8 @@ def find_semantic_duplicate(
                 continue
 
             if require_same_source and new_source_norm != entry.source_norm:
+                continue
+            if has_distinct_authoritative_ref(entry):
                 continue
 
             same_source = new_source_norm == entry.source_norm

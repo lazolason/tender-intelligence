@@ -16,7 +16,10 @@ def test_inspect_dashboard_snapshot_reports_stale_status(tmp_path):
     snapshot_path.write_text(
         json.dumps(
             {
-                "meta": {"last_sync": "2026-04-01 10:00"},
+                "meta": {
+                    "last_sync": "2026-04-01 10:00",
+                    "snapshot_origin": "static_scrape",
+                },
                 "tenders": [{"ref": "T1"}, {"ref": "T2"}],
             }
         ),
@@ -31,6 +34,7 @@ def test_inspect_dashboard_snapshot_reports_stale_status(tmp_path):
 
     assert info["exists"] is True
     assert info["record_count"] == 2
+    assert info["snapshot_origin"] == "static_scrape"
     assert info["stale"] is True
     assert info["age_hours"] == 122.0
 
@@ -67,6 +71,7 @@ def test_static_snapshot_uses_canonical_validation(tmp_path, monkeypatch):
     payload = build_snapshot_from_inputs([str(input_path)], limit=200)
 
     assert [item["ref"] for item in payload["tenders"]] == ["SNAP-VALID"]
+    assert payload["meta"]["snapshot_origin"] == "static_scrape"
     assert payload["meta"]["validation"]["valid"] == 1
     assert payload["meta"]["validation"]["invalid"] == 1
     assert payload["meta"]["validation"]["error_counts"] == {"Missing source": 1}

@@ -264,6 +264,7 @@ def build_snapshot(limit: int) -> dict:
 
     meta: Dict[str, Any] = {
         "last_sync": last_sync,
+        "snapshot_origin": "static_scrape",
         "next_run": "Daily 08:00",
         "build_sha": build_sha,
         "build_id": f"{last_sync} · {build_sha}" if build_sha else last_sync,
@@ -341,6 +342,7 @@ def build_snapshot_from_inputs(paths: List[str], limit: int) -> dict:
     build_sha = _get_build_sha()
     meta: Dict[str, Any] = {
         "last_sync": last_sync,
+        "snapshot_origin": "static_scrape",
         "next_run": "Daily 08:00",
         "build_sha": build_sha,
         "build_id": f"{last_sync} · {build_sha}" if build_sha else last_sync,

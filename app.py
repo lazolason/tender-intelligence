@@ -425,11 +425,16 @@ def health():
         except sqlite3.Error:
             db_count = None
         snapshot_count = snapshot_info.get("record_count")
-        counts_match = (
-            db_count is not None and snapshot_count is not None and int(db_count) == int(snapshot_count)
-        )
+        is_local_snapshot = snapshot_info.get("snapshot_origin") != "static_scrape"
+        counts_match = None
+        if is_local_snapshot:
+            counts_match = (
+                db_count is not None
+                and snapshot_count is not None
+                and int(db_count) == int(snapshot_count)
+            )
         snapshot_info["counts_match_db"] = counts_match
-        if snapshot_info.get("stale") or counts_match is False:
+        if snapshot_info.get("stale") or (is_local_snapshot and counts_match is False):
             response["status"] = "degraded"
     response["dashboard_snapshot"] = snapshot_info
 

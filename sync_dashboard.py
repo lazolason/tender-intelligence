@@ -252,6 +252,7 @@ def sync():
     metadata = {
         "meta": {
             "last_sync": datetime.now().strftime("%Y-%m-%d %H:%M"),
+            "snapshot_origin": "local_database",
             "next_run": "Daily 08:00",
             "tender_count": len(tenders),
             "last_update": datetime.now().isoformat(),

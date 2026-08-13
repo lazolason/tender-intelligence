@@ -73,6 +73,7 @@ def test_parses_current_portal_field_names_without_classifying():
             ),
             "client": "Example Municipality",
             "source": "National Treasury",
+            "ref_is_authoritative": True,
             "url": "https://www.etenders.gov.za/Home/opportunities",
             "closing_date": "2026-09-18",
             "published_date": "2026-08-13",

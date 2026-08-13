@@ -152,6 +152,7 @@ class NationalTreasuryScraper:
                     "description": " | ".join(part for part in detail_parts if part),
                     "client": client,
                     "source": "National Treasury",
+                    "ref_is_authoritative": True,
                     "url": self.listing_url,
                     "closing_date": self._iso_date(
                         item.get("closing_Date", item.get("closingDate"))
