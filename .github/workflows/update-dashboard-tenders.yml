@@ -61,7 +61,7 @@ jobs:
 
       - name: Upload scraper artifact
         if: always()
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: scrape-${{ matrix.scraper }}
           path: artifacts/${{ matrix.scraper }}.json
@@ -103,7 +103,7 @@ jobs:
           pip install -r requirements.txt
 
       - name: Download scrape artifacts
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v7
         with:
           path: artifacts
 
@@ -157,11 +157,18 @@ jobs:
           git commit -m "Auto-update dashboard tenders snapshot"
           git push
 
-      - name: Notify on failure
+      - name: Notify on partial scraper failure
         if: steps.build_snapshot.outputs.has_failures == 'true'
-        uses: 8398a7/action-slack@v3
-        with:
-          status: ${{ job.status }}
-          text: "🚨 Tender scraper failed! Failing: ${{ steps.build_snapshot.outputs.failing }}"
-          webhook_url: ${{ secrets.SLACK_WEBHOOK }}
-          fields: repo,commit,author,took
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+          FAILING_SOURCES: ${{ steps.build_snapshot.outputs.failing }}
+        run: |
+          if [ -z "$SLACK_WEBHOOK_URL" ]; then
+            echo "Slack webhook is not configured; failing sources: $FAILING_SOURCES"
+            exit 0
+          fi
+          payload=$(python -c 'import json, os; print(json.dumps({"text": "Tender scraper partial failure: " + os.environ["FAILING_SOURCES"]}))')
+          curl --fail --silent --show-error \
+            --header 'Content-Type: application/json' \
+            --data "$payload" \
+            "$SLACK_WEBHOOK_URL"
