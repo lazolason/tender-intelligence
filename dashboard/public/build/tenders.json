@@ -1,12 +1,15 @@
 {
     "meta": {
-        "last_sync": "2026-04-06 14:47",
+        "last_sync": "2026-08-13 16:46",
         "next_run": "Daily 08:00",
-        "build_sha": "009d455",
-        "build_id": "2026-04-06 14:47 · 009d455",
-        "inputs": [
-            "tenders.json"
-        ]
+        "tender_count": 2,
+        "last_update": "2026-08-13T16:46:50.588718",
+        "planned_opportunity_count": 11,
+        "bid_statistics": {
+            "total_bids": 0,
+            "wins": 0,
+            "win_rate": 0
+        }
     },
     "tenders": [
         {
@@ -16,7 +19,7 @@
             "client": "Eskom Holdings",
             "priority": "HIGH",
             "score": 8.8,
-            "category": "MEXEL",
+            "category": "Mexel",
             "source": "Power",
             "url": "https://www.google.com/search?q=NT001%20Supply%20of%20Cooling%20Water%20Treatment%20Chemic%20tender%20site%3Agov.za",
             "company": "Mexel",
@@ -26,26 +29,7 @@
                 "water treatment",
                 "treatment",
                 "cooling water"
-            ],
-            "reason": "Competence Match (Profile B): cooling water + treatment",
-            "short_title": "Cooling_Water_Treatment_Chemicals",
-            "scores": {
-                "fit_score": 8,
-                "fit_reasons": [
-                    "Mexel category match",
-                    "Mexel alignment (2 keywords)"
-                ],
-                "fit_grade": "A",
-                "industry_score": 10,
-                "industry_matched": "Eskom",
-                "industry_grade": "A",
-                "mexel_suitability": 7,
-                "mexel_fit": "Strong",
-                "composite": 8.8,
-                "composite_score": 8.8,
-                "priority": "HIGH",
-                "recommendation": "🔥 PRIORITY BID - Strong fit, pursue immediately"
-            }
+            ]
         },
         {
             "ref": "NT004",
@@ -54,7 +38,7 @@
             "client": "Sasol",
             "priority": "HIGH",
             "score": 8.4,
-            "category": "MEXEL",
+            "category": "Mexel",
             "source": "Petrochemical",
             "url": "https://www.google.com/search?q=NT004%20Boiler%20Water%20Treatment%20Services%20tender%20site%3Agov.za",
             "company": "Mexel",
@@ -65,26 +49,260 @@
                 "treatment",
                 "water treatment",
                 "boiler"
+            ]
+        }
+    ],
+    "planned_opportunities": [
+        {
+            "external_id": "TPP-68A4F16E957F062FFB54A722",
+            "institution": "South African Revenue Service",
+            "description": "Replacement of HVAC system new and old server room",
+            "planned_advert_date": "2026-05-01",
+            "planned_closing_date": "2026-06-01",
+            "planned_award_date": "2026-08-01",
+            "category": "MEXEL",
+            "classification_reason": "Competence Match (Profile B): server room + service",
+            "matched_keywords": [
+                "server room",
+                "service"
             ],
-            "reason": "Competence Match (Profile B): boiler + treatment",
-            "short_title": "Boiler_Water_Treatment",
-            "scores": {
-                "fit_score": 8,
-                "fit_reasons": [
-                    "Mexel category match",
-                    "Mexel alignment (2 keywords)"
-                ],
-                "fit_grade": "A",
-                "industry_score": 9,
-                "industry_matched": "Sasol",
-                "industry_grade": "A",
-                "mexel_suitability": 6,
-                "mexel_fit": "Strong",
-                "composite": 8.4,
-                "composite_score": 8.4,
-                "priority": "HIGH",
-                "recommendation": "🔥 PRIORITY BID - Strong fit, pursue immediately"
-            }
+            "lifecycle_stage": "OVERDUE",
+            "source": "National Treasury Procurement Plans",
+            "source_url": "https://www.etenders.gov.za/Home/ProcurementPlans",
+            "matched_tender_ref": null,
+            "is_active": 1,
+            "retired_at": null,
+            "first_seen_at": "2026-08-13 13:40:23",
+            "last_seen_at": "2026-08-13 14:46:40",
+            "company": "Mexel"
+        },
+        {
+            "external_id": "TPP-465895B05097A87ACEAA07AE",
+            "institution": "State Information Technology Agency",
+            "description": "Ad Hoc Supply of Network Devices on Huawei Framework Agreement for KZN Education over 36 months",
+            "planned_advert_date": "2026-05-04",
+            "planned_closing_date": "2026-05-15",
+            "planned_award_date": "2026-06-30",
+            "category": "PHAKATHI",
+            "classification_reason": "Direct Brand Routing: matched 'huawei'",
+            "matched_keywords": [
+                "huawei"
+            ],
+            "lifecycle_stage": "OVERDUE",
+            "source": "National Treasury Procurement Plans",
+            "source_url": "https://www.etenders.gov.za/Home/ProcurementPlans",
+            "matched_tender_ref": null,
+            "is_active": 1,
+            "retired_at": null,
+            "first_seen_at": "2026-08-13 13:40:23",
+            "last_seen_at": "2026-08-13 14:46:40",
+            "company": "Phakathi"
+        },
+        {
+            "external_id": "TPP-9AF2EDEDB98F42B1E67F1311",
+            "institution": "Justice & Constitutional Development",
+            "description": "Appointment of a service provider for the provision of maintenance & support services for the existing Private Cloud Datacenter Environment (Huawei stack) for a period of 3 years.",
+            "planned_advert_date": "2026-05-25",
+            "planned_closing_date": "2026-06-25",
+            "planned_award_date": "2026-08-25",
+            "category": "PHAKATHI",
+            "classification_reason": "Direct Brand Routing: matched 'huawei'",
+            "matched_keywords": [
+                "huawei"
+            ],
+            "lifecycle_stage": "OVERDUE",
+            "source": "National Treasury Procurement Plans",
+            "source_url": "https://www.etenders.gov.za/Home/ProcurementPlans",
+            "matched_tender_ref": null,
+            "is_active": 1,
+            "retired_at": null,
+            "first_seen_at": "2026-08-13 13:40:23",
+            "last_seen_at": "2026-08-13 14:46:40",
+            "company": "Phakathi"
+        },
+        {
+            "external_id": "TPP-0DBBCD3B59502B1FB6F21D62",
+            "institution": "Water and Sanitation",
+            "description": "Appointment  of Sevice provider to upgradePLC/SCADA  at Usutu Vaal",
+            "planned_advert_date": "2026-05-31",
+            "planned_closing_date": "2026-06-21",
+            "planned_award_date": "2026-08-19",
+            "category": "PHAKATHI",
+            "classification_reason": "Phakathi Match: 1 keyword(s)",
+            "matched_keywords": [
+                "scada"
+            ],
+            "lifecycle_stage": "OVERDUE",
+            "source": "National Treasury Procurement Plans",
+            "source_url": "https://www.etenders.gov.za/Home/ProcurementPlans",
+            "matched_tender_ref": null,
+            "is_active": 1,
+            "retired_at": null,
+            "first_seen_at": "2026-08-13 13:40:23",
+            "last_seen_at": "2026-08-13 14:46:40",
+            "company": "Phakathi"
+        },
+        {
+            "external_id": "TPP-CCF6A928DBD20CF36D1A41C7",
+            "institution": "Passenger Rail Agency of South Africa",
+            "description": "Private Cloud License Renewals (Huawei / CommVault)",
+            "planned_advert_date": "2026-06-12",
+            "planned_closing_date": "2026-06-26",
+            "planned_award_date": "2026-07-31",
+            "category": "PHAKATHI",
+            "classification_reason": "Direct Brand Routing: matched 'huawei'",
+            "matched_keywords": [
+                "huawei"
+            ],
+            "lifecycle_stage": "OVERDUE",
+            "source": "National Treasury Procurement Plans",
+            "source_url": "https://www.etenders.gov.za/Home/ProcurementPlans",
+            "matched_tender_ref": null,
+            "is_active": 1,
+            "retired_at": null,
+            "first_seen_at": "2026-08-13 13:40:23",
+            "last_seen_at": "2026-08-13 14:46:40",
+            "company": "Phakathi"
+        },
+        {
+            "external_id": "TPP-4814262A48473DDB04E358C8",
+            "institution": "Council for Scientific and Industrial Research (CSIR)",
+            "description": "Supply, delivery, installation, and commissioning  of an HVAC system, maintenance, and support in the data centre at the CSIR  Scientia Campus",
+            "planned_advert_date": "2026-06-22",
+            "planned_closing_date": "2026-07-10",
+            "planned_award_date": "2026-07-20",
+            "category": "MEXEL",
+            "classification_reason": "Competence Match (Profile B): data centre + maintenance",
+            "matched_keywords": [
+                "data centre",
+                "delivery",
+                "industrial",
+                "installation",
+                "maintenance",
+                "supply"
+            ],
+            "lifecycle_stage": "OVERDUE",
+            "source": "National Treasury Procurement Plans",
+            "source_url": "https://www.etenders.gov.za/Home/ProcurementPlans",
+            "matched_tender_ref": null,
+            "is_active": 1,
+            "retired_at": null,
+            "first_seen_at": "2026-08-13 13:40:23",
+            "last_seen_at": "2026-08-13 14:46:40",
+            "company": "Mexel"
+        },
+        {
+            "external_id": "TPP-276B685EC62A22356C116CAF",
+            "institution": "State Information Technology Agency",
+            "description": "DSAC_Procurement of two (2) Huawei S8700-4 core switches",
+            "planned_advert_date": "2026-06-26",
+            "planned_closing_date": "2026-07-20",
+            "planned_award_date": "2026-08-25",
+            "category": "PHAKATHI",
+            "classification_reason": "Direct Brand Routing: matched 'huawei'",
+            "matched_keywords": [
+                "huawei"
+            ],
+            "lifecycle_stage": "OVERDUE",
+            "source": "National Treasury Procurement Plans",
+            "source_url": "https://www.etenders.gov.za/Home/ProcurementPlans",
+            "matched_tender_ref": null,
+            "is_active": 1,
+            "retired_at": null,
+            "first_seen_at": "2026-08-13 13:40:23",
+            "last_seen_at": "2026-08-13 14:46:40",
+            "company": "Phakathi"
+        },
+        {
+            "external_id": "TPP-8C6786C43F836E388E7E6834",
+            "institution": "South African Revenue Service",
+            "description": "Chiller & BMS - Alberton Campus & Lehae",
+            "planned_advert_date": "2026-07-01",
+            "planned_closing_date": "2026-08-01",
+            "planned_award_date": "2026-12-20",
+            "category": "MEXEL",
+            "classification_reason": "Competence Match (Profile B): chiller + service",
+            "matched_keywords": [
+                "chiller",
+                "service"
+            ],
+            "lifecycle_stage": "OVERDUE",
+            "source": "National Treasury Procurement Plans",
+            "source_url": "https://www.etenders.gov.za/Home/ProcurementPlans",
+            "matched_tender_ref": null,
+            "is_active": 1,
+            "retired_at": null,
+            "first_seen_at": "2026-08-13 13:40:23",
+            "last_seen_at": "2026-08-13 14:46:40",
+            "company": "Mexel"
+        },
+        {
+            "external_id": "TPP-81EDEFE3ECD3B5B587A0DEDD",
+            "institution": "Umgeni Water",
+            "description": "Control Room SCADA Upgrade",
+            "planned_advert_date": "2026-08-01",
+            "planned_closing_date": "2026-08-26",
+            "planned_award_date": "2026-10-26",
+            "category": "PHAKATHI",
+            "classification_reason": "Phakathi Match: 1 keyword(s)",
+            "matched_keywords": [
+                "scada"
+            ],
+            "lifecycle_stage": "DUE_SOON",
+            "source": "National Treasury Procurement Plans",
+            "source_url": "https://www.etenders.gov.za/Home/ProcurementPlans",
+            "matched_tender_ref": null,
+            "is_active": 1,
+            "retired_at": null,
+            "first_seen_at": "2026-08-13 13:40:23",
+            "last_seen_at": "2026-08-13 14:46:40",
+            "company": "Phakathi"
+        },
+        {
+            "external_id": "TPP-33BE6CDB65395E3E307004E4",
+            "institution": "Air Traffic and Navigation Services Company Limited",
+            "description": "Provision of HVAC, BMS, and chiller plant maintenance support at FALE",
+            "planned_advert_date": "2026-08-21",
+            "planned_closing_date": "2026-09-25",
+            "planned_award_date": "2027-04-02",
+            "category": "MEXEL",
+            "classification_reason": "Competence Match (Profile B): chiller + maintenance",
+            "matched_keywords": [
+                "chiller",
+                "maintenance",
+                "plant"
+            ],
+            "lifecycle_stage": "DUE_SOON",
+            "source": "National Treasury Procurement Plans",
+            "source_url": "https://www.etenders.gov.za/Home/ProcurementPlans",
+            "matched_tender_ref": null,
+            "is_active": 1,
+            "retired_at": null,
+            "first_seen_at": "2026-08-13 13:40:23",
+            "last_seen_at": "2026-08-13 14:46:40",
+            "company": "Mexel"
+        },
+        {
+            "external_id": "TPP-0CAE0F5A87BB5637F1D51783",
+            "institution": "Medical Research Council of South Africa",
+            "description": "SCADA Licenses",
+            "planned_advert_date": "2026-11-30",
+            "planned_closing_date": "2026-12-30",
+            "planned_award_date": "2027-01-29",
+            "category": "PHAKATHI",
+            "classification_reason": "Phakathi Match: 1 keyword(s)",
+            "matched_keywords": [
+                "scada"
+            ],
+            "lifecycle_stage": "PLANNED",
+            "source": "National Treasury Procurement Plans",
+            "source_url": "https://www.etenders.gov.za/Home/ProcurementPlans",
+            "matched_tender_ref": null,
+            "is_active": 1,
+            "retired_at": null,
+            "first_seen_at": "2026-08-13 13:40:23",
+            "last_seen_at": "2026-08-13 14:46:40",
+            "company": "Phakathi"
         }
     ]
 }
