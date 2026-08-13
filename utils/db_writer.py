@@ -139,7 +139,8 @@ class DatabaseWriter:
         """Classify, score, and atomically insert or refresh a tender.
 
         Returns ``(action, scores, classification)`` where action is one of
-        ``inserted``, ``updated``, or ``unchanged``. Scraped and derived fields
+        ``inserted``, ``updated``, ``unchanged``, or ``excluded``. Excluded
+        classifications never reach persistence. Scraped and derived fields
         refresh on an update; user-managed workflow fields (stage, status,
         next_action, and notes) remain untouched.
         """
@@ -162,6 +163,9 @@ class DatabaseWriter:
             category=category,
         )
         matched_keywords = ", ".join(classification.get("matched_keywords", []))
+
+        if category == "EXCLUDED":
+            return "excluded", scores, classification
 
         refreshed = {
             "title": title,

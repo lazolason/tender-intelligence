@@ -106,8 +106,15 @@ def run_scraper(scraper: str, config: Dict[str, Any]) -> List[Dict[str, Any]]:
         from scrapers.national_treasury import NationalTreasuryScraper
 
         user_agent = ((config.get("scrapers") or {}).get("user_agent") or "Mozilla/5.0")
-        url = (((config.get("scrapers") or {}).get("urls") or {}).get("national_treasury") or "https://www.etenders.gov.za/")
-        nt = NationalTreasuryScraper(url=url, user_agent=user_agent, timeout=timeout)
+        urls = ((config.get("scrapers") or {}).get("urls") or {})
+        url = urls.get("national_treasury") or "https://www.etenders.gov.za/Home/opportunities"
+        api_url = urls.get("national_treasury_api") or "https://www.etenders.gov.za/Home/PaginatedTenderOpportunities"
+        nt = NationalTreasuryScraper(
+            url=url,
+            api_url=api_url,
+            user_agent=user_agent,
+            timeout=timeout,
+        )
         tenders = nt.run()
         # Ensure required fields exist
         for t in tenders:

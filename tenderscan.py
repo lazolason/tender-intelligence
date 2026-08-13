@@ -27,8 +27,8 @@ from utils.procurement_plan_linker import link_planned_opportunities
 from utils.scraper_monitor import ScraperMonitor
 from utils.config_validator import validate_env_on_startup
 
-# Import scoring engine
-from scoring_engine import score_tender
+# Import the central classification engine
+from classify_engine import classify_tender
 
 # ----------------------------------------------------------
 # LOAD CONFIG
@@ -312,6 +312,19 @@ def process_tenders(tenders, *, return_stats=False):
         try:
             ref = str(t.get("ref", "NA")).strip().upper()
             title = t.get("title", "")
+            description = t.get("description", title)
+            classification = classify_tender(title, description)
+            t["category"] = classification["category"]
+            t["reason"] = classification["reason"]
+            t["short_title"] = classification["short_title"]
+            t["matched_keywords"] = classification.get("matched_keywords", [])
+
+            # Classification is centralized here; excluded records must not be
+            # deduplicated, scored, persisted, or emitted to dashboard outputs.
+            if classification["category"] == "EXCLUDED":
+                write_log(LOG_FILE, f"[SKIP] {ref}: {classification['reason']}")
+                excluded_count += 1
+                continue
 
             # Exact references are refreshed; semantic matching only guards new refs.
             exact_ref_exists = ref != "NA" and ref in recent_refs
@@ -340,25 +353,13 @@ def process_tenders(tenders, *, return_stats=False):
                     semantic_skips += 1
                     continue
 
-            description = t.get("description", title)
             client = t.get("client", "")
-            category = t.get("category", "Unknown")
-            closing_date = t.get("closing_date", "")
-            short_title = t.get("short_title", "Tender")
-            reason = t.get("reason", "")
-            source = t.get("source", "")
             url = t.get("url", "")
 
-            # SKIP EXCLUDED TENDERS (construction, security, etc.)
-            if category == "EXCLUDED":
-                write_log(LOG_FILE, f"[SKIP] {ref}: {reason}")
+            action, scores, classification = db_writer.upsert_tender_with_scoring(t)
+            if action == "excluded":
                 excluded_count += 1
                 continue
-
-            tender_name = f"{ref} - {title}" if ref and ref != "NA" else title
-
-            action, scores, classification = db_writer.upsert_tender_with_scoring(t)
-            t["matched_keywords"] = classification.get("matched_keywords", [])
 
             if action == "updated":
                 updated_count += 1
@@ -368,6 +369,10 @@ def process_tenders(tenders, *, return_stats=False):
 
             if action == "inserted":
                 total_added += 1
+                t["category"] = classification["category"]
+                t["reason"] = classification["reason"]
+                t["short_title"] = classification["short_title"]
+                t["matched_keywords"] = classification.get("matched_keywords", [])
                 t["scores"] = scores
                 new_items.append(t)
 

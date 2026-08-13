@@ -154,7 +154,8 @@ NEGATIVE_KEYWORDS = [
     # Water/Wastewater Treatment (not cooling efficiency)
     "potable water", "drinking water", "water supply",
     "sewage", "wastewater treatment",
-    "waste removal", "refuse", "sludge removal",
+    "waste removal", "solid waste", "waste treatment facility",
+    "alternative waste treatment", "refuse", "sludge removal",
 
     # Staffing/HR
     "resourcing", "personnel",
@@ -162,7 +163,7 @@ NEGATIVE_KEYWORDS = [
 
     # Procurement notices and non-live opportunity records
     "regret letter", "publication of bidders", "publication of name of bidders",
-    "publish bidder names", "bidder names", "validity extension",
+    "publish bidder names", "bidder names", "bidders names", "validity extension",
     "tender cancellation", "tender cancelled", "cancellation", "regret",
     "tender validity",
 

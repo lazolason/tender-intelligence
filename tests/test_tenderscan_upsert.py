@@ -19,6 +19,38 @@ def _tender(**overrides):
     return item
 
 
+def test_process_tenders_classifies_before_persistence_and_output(tmp_path, monkeypatch):
+    db_path = tmp_path / "tenders.db"
+    writer = DatabaseWriter(str(db_path))
+    monkeypatch.setattr(tenderscan, "db_writer", writer)
+    monkeypatch.setattr(tenderscan, "SEMANTIC_DEDUP_AVAILABLE", False)
+    monkeypatch.setattr(tenderscan, "PDF_ANALYZER_AVAILABLE", False)
+    monkeypatch.setattr(tenderscan, "create_tender_folder", lambda **_kwargs: str(tmp_path))
+
+    relevant = _tender()
+    relevant.pop("category")
+    excluded = _tender(
+        ref="SCAN-OUT-001",
+        title="Supply of office chairs",
+        description="General office furniture",
+    )
+    excluded.pop("category")
+
+    added, new_items, stats = tenderscan.process_tenders(
+        [relevant, excluded], return_stats=True
+    )
+
+    assert added == 1
+    assert stats["inserted"] == 1
+    assert stats["excluded"] == 1
+    assert len(new_items) == 1
+    assert new_items[0]["category"] == "MEXEL"
+    assert new_items[0]["scores"]["priority"] == "HIGH"
+    with sqlite3.connect(db_path) as conn:
+        assert conn.execute("SELECT COUNT(*) FROM tenders").fetchone()[0] == 1
+        assert conn.execute("SELECT category FROM tenders").fetchone()[0] == "MEXEL"
+
+
 def test_process_tenders_refreshes_existing_exact_reference(tmp_path, monkeypatch):
     db_path = tmp_path / "tenders.db"
     writer = DatabaseWriter(str(db_path))

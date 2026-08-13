@@ -41,8 +41,8 @@ scrapers:
   
   # URLs
   urls:
-    national_treasury: "https://www.etenders.gov.za/"
-    national_treasury_api: "https://www.etenders.gov.za/Home/TenderOpportunities"
+    national_treasury: "https://www.etenders.gov.za/Home/opportunities"
+    national_treasury_api: "https://www.etenders.gov.za/Home/PaginatedTenderOpportunities"
     # Primary Transnet eSupplier portal (replaces old eTenders filter)
     transnet_esupplier: "https://esupplier.transnet.net/"
     transnet_etender: "https://www.transnet.net/TransnetTenders"

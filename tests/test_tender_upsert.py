@@ -92,6 +92,27 @@ def test_unchanged_upsert_only_refreshes_last_seen_and_does_not_duplicate_audit(
     assert tender_count == 1
 
 
+def test_excluded_classification_never_reaches_persistence(tmp_path):
+    db_path = tmp_path / "tenders.db"
+    writer = DatabaseWriter(str(db_path))
+
+    action, scores, classification = writer.upsert_tender_with_scoring(
+        _tender(
+            ref="OUT-001",
+            title="Supply of office chairs",
+            description="General office furniture",
+            client="Municipality",
+        )
+    )
+
+    assert action == "excluded"
+    assert classification["category"] == "EXCLUDED"
+    assert scores["priority"] == "LOW"
+    with sqlite3.connect(db_path) as conn:
+        assert conn.execute("SELECT COUNT(*) FROM tenders").fetchone()[0] == 0
+        assert conn.execute("SELECT COUNT(*) FROM classifications").fetchone()[0] == 0
+
+
 def test_concurrent_upserts_create_one_row(tmp_path):
     db_path = tmp_path / "tenders.db"
     writer = DatabaseWriter(str(db_path))

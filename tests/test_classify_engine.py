@@ -90,6 +90,14 @@ def test_should_exclude_backward_compatible_call():
             "Piston Compressor Dewatering",
             "Services: General. Piston Compressor Dewatering",
         ),
+        (
+            "Alternative waste treatment facility",
+            "Development of a municipal solid waste treatment facility",
+        ),
+        (
+            "Approved professional person for power station ash dams",
+            "Reference E1034GXMTL Bidders Names 2",
+        ),
     ],
 )
 def test_classify_excludes_broad_site_plus_generic_action_false_positives(title, description):

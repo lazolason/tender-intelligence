@@ -9,9 +9,9 @@ from scrapers.water_boards import scrape_all_water_boards
 
 
 def _scrape_national_treasury() -> list:
-    from scrapers.national_treasury_selenium import scrape_national_treasury
+    from scrapers.national_treasury import NationalTreasuryScraper
 
-    return scrape_national_treasury()
+    return NationalTreasuryScraper().run()
 
 
 def _scrape_joburg_water() -> list:
@@ -45,8 +45,8 @@ SCRAPER_REGISTRY = [
     ScraperRegistration(
         name="National Treasury",
         scrape_func=_scrape_national_treasury,
-        requires_selenium=True,
-        description="Selenium-driven National Treasury eTender scraping",
+        requires_selenium=False,
+        description="Public National Treasury eTender listing feed",
     ),
     ScraperRegistration(
         name="Johannesburg Water",
