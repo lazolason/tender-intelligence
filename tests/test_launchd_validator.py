@@ -1,6 +1,11 @@
+import sys
+
+import pytest
+
 from utils.launchd_validator import inspect_default_launchd_jobs
 
 
+@pytest.mark.skipif(sys.platform != "darwin", reason="launchd configuration is macOS-specific")
 def test_launchd_jobs_point_to_current_repo():
     jobs = inspect_default_launchd_jobs()
 
