@@ -1,23 +1,43 @@
 {
-    "generated_at": "2026-08-14 09:45",
-    "build_id": "2026-08-14 09:45 · fb86834",
-    "build_sha": "fb86834",
+    "generated_at": "2026-08-15 08:54",
+    "build_id": "2026-08-15 08:54 · 84ef96e",
+    "build_sha": "84ef96e",
     "next_run": "Daily 08:00",
     "counts": {
-        "total": 8,
+        "total": 10,
         "by_company": {
-            "MEXEL": 7,
+            "MEXEL": 9,
             "PHAKATHI": 1
         },
         "by_priority": {
-            "HIGH": 4,
-            "MEDIUM": 4
+            "HIGH": 5,
+            "MEDIUM": 5
         },
         "by_source": {
-            "National Treasury": 8
+            "National Treasury": 10
         }
     },
     "top": [
+        {
+            "title": "Provision of Main Air Ejector Condenser Refurbishment Services, Including Full Retubing, on an ‘As and When Required’ Basis for a Period of 3 Years at Arnot Power Station",
+            "source": "National Treasury",
+            "company": "MEXEL",
+            "priority": "HIGH",
+            "close_date": "2026-09-04",
+            "fit": null,
+            "suitability": 8.8,
+            "url": "https://www.etenders.gov.za/Home/opportunities"
+        },
+        {
+            "title": "Provision of Maintenance Services: Vessels Surface Preparation, Internal & External Corrosion Protection (Coatings and/or Linings), Pressure Testing, Safety Valve Calibration and/or Name Plate Replacement “As-and when required based on Inspection Findings. at Matla Power Station for a period of five (5) years",
+            "source": "National Treasury",
+            "company": "MEXEL",
+            "priority": "HIGH",
+            "close_date": "2026-09-11",
+            "fit": null,
+            "suitability": 8.8,
+            "url": "https://www.etenders.gov.za/Home/opportunities"
+        },
         {
             "title": "Cooling Tower 1 Refurbishment at Grootvlei Power station.",
             "source": "National Treasury",
@@ -26,16 +46,6 @@
             "close_date": "2026-10-16",
             "fit": null,
             "suitability": 8.8,
-            "url": "https://www.etenders.gov.za/Home/opportunities"
-        },
-        {
-            "title": "THE SUPPLY AND DELIVERY OF SODIUM BICARBONATE FOR DSI FGD PHASE 2 TESTING AT MAJUBA AND LETHABO POWER STATIONS FOR A PERIOD OF THREE (3) MONTHS.",
-            "source": "National Treasury",
-            "company": "MEXEL",
-            "priority": "HIGH",
-            "close_date": "2026-08-14",
-            "fit": null,
-            "suitability": 8.2,
             "url": "https://www.etenders.gov.za/Home/opportunities"
         },
         {
@@ -96,6 +106,16 @@
             "close_date": "2026-08-25",
             "fit": null,
             "suitability": 6.6,
+            "url": "https://www.etenders.gov.za/Home/opportunities"
+        },
+        {
+            "title": "FOR THE SUPPLY AND INSTALLATION OF A CHILLER FOR A RENTAL PERIOD OF 6 (SIX) MONTHS.",
+            "source": "National Treasury",
+            "company": "MEXEL",
+            "priority": "MEDIUM",
+            "close_date": "2026-08-31",
+            "fit": null,
+            "suitability": 6.2,
             "url": "https://www.etenders.gov.za/Home/opportunities"
         }
     ]

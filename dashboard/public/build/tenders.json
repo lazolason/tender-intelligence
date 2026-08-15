@@ -1,10 +1,10 @@
 {
     "meta": {
-        "last_sync": "2026-08-14 09:45",
+        "last_sync": "2026-08-15 08:54",
         "snapshot_origin": "static_scrape",
         "next_run": "Daily 08:00",
-        "build_sha": "fb86834",
-        "build_id": "2026-08-14 09:45 · fb86834",
+        "build_sha": "84ef96e",
+        "build_id": "2026-08-15 08:54 · 84ef96e",
         "inputs": [
             "eskom.json",
             "joburg_water.json",
@@ -13,8 +13,8 @@
             "soes.json"
         ],
         "validation": {
-            "total": 8,
-            "valid": 8,
+            "total": 10,
+            "valid": 10,
             "invalid": 0,
             "warnings": 0,
             "error_counts": {},
@@ -23,6 +23,101 @@
         "planned_opportunity_count": 11
     },
     "tenders": [
+        {
+            "ref": "RFQ1940632",
+            "title": "FOR THE SUPPLY AND INSTALLATION OF A CHILLER FOR A RENTAL PERIOD OF 6 (SIX) MONTHS.",
+            "description": "FOR THE SUPPLY AND INSTALLATION OF A CHILLER FOR A RENTAL PERIOD OF 6 (SIX) MONTHS. | Reference: RFQ1940632 | Other service activities | Request for Quotation | 2ME or higher",
+            "client": "National Health Laboratory Service",
+            "source": "National Treasury",
+            "ref_is_authoritative": true,
+            "url": "https://www.etenders.gov.za/Home/opportunities",
+            "closing_date": "2026-08-31",
+            "published_date": "2026-08-14",
+            "category": "MEXEL",
+            "reason": "Competence Match (Profile B): chiller + service",
+            "short_title": "Supply_And_Installation_Of",
+            "scores": {
+                "fit_score": 7,
+                "fit_reasons": [
+                    "Mexel category match"
+                ],
+                "fit_grade": "B",
+                "industry_score": 5,
+                "industry_matched": "General",
+                "industry_grade": "C",
+                "mexel_suitability": 0,
+                "mexel_fit": "Weak",
+                "company_category": "MEXEL",
+                "composite": 6.2,
+                "composite_score": 6.2,
+                "priority": "MEDIUM",
+                "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
+            }
+        },
+        {
+            "ref": "E3374GXMPARN",
+            "title": "Provision of Main Air Ejector Condenser Refurbishment Services, Including Full Retubing, on an ‘As and When Required’ Basis for a Period of 3 Years at Arnot Power Station",
+            "description": "Provision of Main Air Ejector Condenser Refurbishment Services, Including Full Retubing, on an ‘As and When Required’ Basis for a Period of 3 Years at Arnot Power Station | Reference: E3374GXMPARN | Services: General | Request for Bid(Open-Tender) | N/A",
+            "client": "ESKOM",
+            "source": "National Treasury",
+            "ref_is_authoritative": true,
+            "url": "https://www.etenders.gov.za/Home/opportunities",
+            "closing_date": "2026-09-04",
+            "published_date": "2026-08-14",
+            "category": "MEXEL",
+            "reason": "Competence Match (Profile B): power station + refurbishment",
+            "short_title": "Main_Air_Ejector_Condenser",
+            "scores": {
+                "fit_score": 8,
+                "fit_reasons": [
+                    "Mexel category match",
+                    "Mexel alignment (1 keywords)"
+                ],
+                "fit_grade": "A",
+                "industry_score": 10,
+                "industry_matched": "Power",
+                "industry_grade": "A",
+                "mexel_suitability": 2,
+                "mexel_fit": "Weak",
+                "company_category": "MEXEL",
+                "composite": 8.8,
+                "composite_score": 8.8,
+                "priority": "HIGH",
+                "recommendation": "🔥 PRIORITY BID - Strong fit, pursue immediately"
+            }
+        },
+        {
+            "ref": "E3378GXMPMAT",
+            "title": "Provision of Maintenance Services: Vessels Surface Preparation, Internal & External Corrosion Protection (Coatings and/or Linings), Pressure Testing, Safety Valve Calibration and/or Name Plate Replacement “As-and when required based on Inspection Findings. at Matla Power Station for a period of five (5) years",
+            "description": "Provision of Maintenance Services: Vessels Surface Preparation, Internal & External Corrosion Protection (Coatings and/or Linings), Pressure Testing, Safety Valve Calibration and/or Name Plate Replacement “As-and when required based on Inspection Findings. at Matla Power Station for a period of five (5) years | Reference: E3378GXMPMAT | Services: General | Request for Bid(Open-Tender) | N/A",
+            "client": "ESKOM",
+            "source": "National Treasury",
+            "ref_is_authoritative": true,
+            "url": "https://www.etenders.gov.za/Home/opportunities",
+            "closing_date": "2026-09-11",
+            "published_date": "2026-08-14",
+            "category": "MEXEL",
+            "reason": "Competence Match (Profile B): power station + maintenance",
+            "short_title": "Vessels_Surface_Preparation_Internal",
+            "scores": {
+                "fit_score": 8,
+                "fit_reasons": [
+                    "Mexel category match",
+                    "Mexel alignment (1 keywords)"
+                ],
+                "fit_grade": "A",
+                "industry_score": 10,
+                "industry_matched": "Power",
+                "industry_grade": "A",
+                "mexel_suitability": 2,
+                "mexel_fit": "Weak",
+                "company_category": "MEXEL",
+                "composite": 8.8,
+                "composite_score": 8.8,
+                "priority": "HIGH",
+                "recommendation": "🔥 PRIORITY BID - Strong fit, pursue immediately"
+            }
+        },
         {
             "ref": "FOSRBY-RFP-10-26/27",
             "title": "FOSRBY-RFP-10-26/27 REQUEST FOR PROPOSAL [RFP] PROVISION OF DESIGN, FABRICATION AND INSTALLATION OF COLD HEAT EXCHANGER FOR (CHEX) – C PLANT",
@@ -178,37 +273,6 @@
                 "composite_score": 6.8,
                 "priority": "MEDIUM",
                 "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
-            }
-        },
-        {
-            "ref": "E3286CXMWP",
-            "title": "THE SUPPLY AND DELIVERY OF SODIUM BICARBONATE FOR DSI FGD PHASE 2 TESTING AT MAJUBA AND LETHABO POWER STATIONS FOR A PERIOD OF THREE (3) MONTHS.",
-            "description": "THE SUPPLY AND DELIVERY OF SODIUM BICARBONATE FOR DSI FGD PHASE 2 TESTING AT MAJUBA AND LETHABO POWER STATIONS FOR A PERIOD OF THREE (3) MONTHS. | Reference: E3286CXMWP | Manufacture of chemicals and chemical products | Request for Bid(Open-Tender) | N/A",
-            "client": "ESKOM",
-            "source": "National Treasury",
-            "ref_is_authoritative": true,
-            "url": "https://www.etenders.gov.za/Home/opportunities",
-            "closing_date": "2026-08-14",
-            "published_date": "2026-07-24",
-            "category": "MEXEL",
-            "reason": "Competence Match (Profile B): majuba + supply",
-            "short_title": "The_Sodium_Bicarbonate_For",
-            "scores": {
-                "fit_score": 7,
-                "fit_reasons": [
-                    "Mexel category match"
-                ],
-                "fit_grade": "B",
-                "industry_score": 10,
-                "industry_matched": "Power",
-                "industry_grade": "A",
-                "mexel_suitability": 1,
-                "mexel_fit": "Weak",
-                "company_category": "MEXEL",
-                "composite": 8.2,
-                "composite_score": 8.2,
-                "priority": "HIGH",
-                "recommendation": "🔥 PRIORITY BID - Strong fit, pursue immediately"
             }
         },
         {
