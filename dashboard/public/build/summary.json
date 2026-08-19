@@ -1,23 +1,33 @@
 {
-    "generated_at": "2026-08-17 09:12",
-    "build_id": "2026-08-17 09:12 · af5fa33",
-    "build_sha": "af5fa33",
+    "generated_at": "2026-08-19 09:00",
+    "build_id": "2026-08-19 09:00 · 8dad33a",
+    "build_sha": "8dad33a",
     "next_run": "Daily 08:00",
     "counts": {
-        "total": 10,
+        "total": 11,
         "by_company": {
             "MEXEL": 9,
-            "PHAKATHI": 1
+            "PHAKATHI": 2
         },
         "by_priority": {
-            "HIGH": 5,
+            "HIGH": 6,
             "MEDIUM": 5
         },
         "by_source": {
-            "National Treasury": 10
+            "National Treasury": 11
         }
     },
     "top": [
+        {
+            "title": "CENTRALIZED OPERATIONAL TECHNOLOGY (OT) CONFIGURATION MANAGEMENT SYSTEM FOR NTCSA",
+            "source": "National Treasury",
+            "company": "PHAKATHI",
+            "priority": "HIGH",
+            "close_date": "2026-09-21",
+            "fit": null,
+            "suitability": 8.8,
+            "url": "https://www.etenders.gov.za/Home/opportunities"
+        },
         {
             "title": "Provision of Main Air Ejector Condenser Refurbishment Services, Including Full Retubing, on an ‘As and When Required’ Basis for a Period of 3 Years at Arnot Power Station",
             "source": "National Treasury",
@@ -106,16 +116,6 @@
             "close_date": "2026-08-25",
             "fit": null,
             "suitability": 6.6,
-            "url": "https://www.etenders.gov.za/Home/opportunities"
-        },
-        {
-            "title": "FOR THE SUPPLY AND INSTALLATION OF A CHILLER FOR A RENTAL PERIOD OF 6 (SIX) MONTHS.",
-            "source": "National Treasury",
-            "company": "MEXEL",
-            "priority": "MEDIUM",
-            "close_date": "2026-08-31",
-            "fit": null,
-            "suitability": 6.2,
             "url": "https://www.etenders.gov.za/Home/opportunities"
         }
     ]

@@ -1,28 +1,58 @@
 {
     "meta": {
-        "last_sync": "2026-08-17 09:12",
+        "last_sync": "2026-08-19 09:00",
         "snapshot_origin": "static_scrape",
         "next_run": "Daily 08:00",
-        "build_sha": "af5fa33",
-        "build_id": "2026-08-17 09:12 · af5fa33",
+        "build_sha": "8dad33a",
+        "build_id": "2026-08-19 09:00 · 8dad33a",
         "inputs": [
-            "eskom.json",
             "joburg_water.json",
-            "municipalities.json",
             "national_treasury.json",
             "soes.json"
         ],
         "validation": {
-            "total": 10,
-            "valid": 10,
+            "total": 11,
+            "valid": 11,
             "invalid": 0,
             "warnings": 0,
             "error_counts": {},
             "warning_counts": {}
         },
-        "planned_opportunity_count": 11
+        "planned_opportunity_count": 12
     },
     "tenders": [
+        {
+            "ref": "E3364NTCSAMWP",
+            "title": "CENTRALIZED OPERATIONAL TECHNOLOGY (OT) CONFIGURATION MANAGEMENT SYSTEM FOR NTCSA",
+            "description": "CENTRALIZED OPERATIONAL TECHNOLOGY (OT) CONFIGURATION MANAGEMENT SYSTEM FOR NTCSA | Reference: E3364NTCSAMWP | Computer programming, consultancy and related activities | Request for Bid(Open-Tender) | N/A",
+            "client": "ESKOM",
+            "source": "National Treasury",
+            "ref_is_authoritative": true,
+            "url": "https://www.etenders.gov.za/Home/opportunities",
+            "closing_date": "2026-09-21",
+            "published_date": "2026-08-18",
+            "category": "PHAKATHI",
+            "reason": "Phakathi Match: 1 keyword(s)",
+            "short_title": "Centralized_Operational_Technology_Ot",
+            "scores": {
+                "fit_score": 8,
+                "fit_reasons": [
+                    "Phakathi category match",
+                    "Phakathi alignment (1 keywords)"
+                ],
+                "fit_grade": "A",
+                "industry_score": 10,
+                "industry_matched": "Eskom",
+                "industry_grade": "A",
+                "mexel_suitability": 0,
+                "mexel_fit": "Weak",
+                "company_category": "PHAKATHI",
+                "composite": 8.8,
+                "composite_score": 8.8,
+                "priority": "HIGH",
+                "recommendation": "🔥 PRIORITY BID - Strong fit, pursue immediately"
+            }
+        },
         {
             "ref": "RFQ1940632",
             "title": "FOR THE SUPPLY AND INSTALLATION OF A CHILLER FOR A RENTAL PERIOD OF 6 (SIX) MONTHS.",
@@ -341,6 +371,27 @@
     ],
     "planned_opportunities": [
         {
+            "external_id": "TPP-6F81693D079645BACB3EE877",
+            "institution": "Public Works",
+            "description": "SERVICE,MAINTENANCE,REPAIRS AND REPLACEMENT OF AIR CONDITIONING, AIR CONDITIONING, AIR VENTILATION  EQUIPMENT AND (CHILLER) PLANT WATER TREATMENT TO VARIOUS AREAS WITHIN THE JURISDICTION OF JOHANNESBURG REGIONAL OFFICE FOR A PERIOD OF 36 MONTHS",
+            "planned_advert_date": "2026-10-16",
+            "planned_closing_date": "2026-11-16",
+            "planned_award_date": "2027-01-02",
+            "category": "MEXEL",
+            "classification_reason": "Competence Match (Profile B): chiller + treatment",
+            "matched_keywords": [
+                "chiller",
+                "maintenance",
+                "plant",
+                "service",
+                "treatment",
+                "water treatment"
+            ],
+            "lifecycle_stage": "DUE_SOON",
+            "source": "National Treasury Procurement Plans",
+            "source_url": "https://www.etenders.gov.za/Home/ProcurementPlans"
+        },
+        {
             "external_id": "TPP-276B685EC62A22356C116CAF",
             "institution": "State Information Technology Agency",
             "description": "DSAC_Procurement of two (2) Huawei S8700-4 core switches",
@@ -357,8 +408,8 @@
             "source_url": "https://www.etenders.gov.za/Home/ProcurementPlans"
         },
         {
-            "external_id": "TPP-81EDEFE3ECD3B5B587A0DEDD",
-            "institution": "Umgeni Water",
+            "external_id": "TPP-84522B4A604B328E104EA4D5",
+            "institution": "uMngeni-uThukela Water",
             "description": "Control Room SCADA Upgrade",
             "planned_advert_date": "2026-08-01",
             "planned_closing_date": "2026-08-26",
