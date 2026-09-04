@@ -1,39 +1,59 @@
 {
-    "generated_at": "2026-08-19 09:00",
-    "build_id": "2026-08-19 09:00 · 8dad33a",
-    "build_sha": "8dad33a",
+    "generated_at": "2026-09-04 15:02",
+    "build_id": "2026-09-04 15:02 · 663a4ec",
+    "build_sha": "663a4ec",
     "next_run": "Daily 08:00",
     "counts": {
-        "total": 11,
+        "total": 20,
         "by_company": {
-            "MEXEL": 9,
-            "PHAKATHI": 2
+            "MEXEL": 16,
+            "PHAKATHI": 4
         },
         "by_priority": {
-            "HIGH": 6,
-            "MEDIUM": 5
+            "HIGH": 12,
+            "MEDIUM": 8
         },
         "by_source": {
-            "National Treasury": 11
+            "National Treasury": 20
         }
     },
     "top": [
+        {
+            "title": "CENTLEC (SOC) Ltd, hereafter referred to as CENTLEC, a Municipal Entity, distributing electricity in the area of Mangaung Metro and other Municipalities, request for proposals and bids, from registered electrical consulting engineers with their applicable professional teams, for the design and turnkey project management, specification, manufacturing, supply, delivery, installation, testing, commissioning and handing over of two new 33/11kV 20MVA transformers complete with tap change control and ",
+            "source": "National Treasury",
+            "company": "PHAKATHI",
+            "priority": "HIGH",
+            "close_date": "2026-09-29",
+            "fit": null,
+            "suitability": 9.4,
+            "url": "https://www.etenders.gov.za/Home/opportunities"
+        },
+        {
+            "title": "The Provision of Water Quality Monitoring and Water Trucking Services for Kusile Power Station Project",
+            "source": "National Treasury",
+            "company": "MEXEL",
+            "priority": "HIGH",
+            "close_date": "2026-09-22",
+            "fit": null,
+            "suitability": 8.8,
+            "url": "https://www.etenders.gov.za/Home/opportunities"
+        },
+        {
+            "title": "The supply, delivery and dosing of Cooling water chemicals Grootvlei Power Station.",
+            "source": "National Treasury",
+            "company": "MEXEL",
+            "priority": "HIGH",
+            "close_date": "2026-10-05",
+            "fit": null,
+            "suitability": 8.8,
+            "url": "https://www.etenders.gov.za/Home/opportunities"
+        },
         {
             "title": "CENTRALIZED OPERATIONAL TECHNOLOGY (OT) CONFIGURATION MANAGEMENT SYSTEM FOR NTCSA",
             "source": "National Treasury",
             "company": "PHAKATHI",
             "priority": "HIGH",
             "close_date": "2026-09-21",
-            "fit": null,
-            "suitability": 8.8,
-            "url": "https://www.etenders.gov.za/Home/opportunities"
-        },
-        {
-            "title": "Provision of Main Air Ejector Condenser Refurbishment Services, Including Full Retubing, on an ‘As and When Required’ Basis for a Period of 3 Years at Arnot Power Station",
-            "source": "National Treasury",
-            "company": "MEXEL",
-            "priority": "HIGH",
-            "close_date": "2026-09-04",
             "fit": null,
             "suitability": 8.8,
             "url": "https://www.etenders.gov.za/Home/opportunities"
@@ -59,63 +79,43 @@
             "url": "https://www.etenders.gov.za/Home/opportunities"
         },
         {
-            "title": "CENTLEC (SOC) Ltd (hereafter referred to as CENTLEC), a Municipal Entity distributing electricity within Mangaung Metro Municipality invites service providers as a Managing Agent for Data Centre support, marketing and sourcing customers on behalf of CENTLEC for a period of thirty-six (36) months.",
+            "title": "The provision of compressor maintenance at Arnot Power Station for a period of 4 years.",
             "source": "National Treasury",
             "company": "MEXEL",
             "priority": "HIGH",
-            "close_date": "2026-09-09",
+            "close_date": "2026-09-18",
+            "fit": null,
+            "suitability": 8.2,
+            "url": "https://www.etenders.gov.za/Home/opportunities"
+        },
+        {
+            "title": "Refurbishment and Delivery of Turbine Auxiliary Oil Pumps - Seal Oil Pumps, Seal oil Vacuum Pumps, Stator Coolant Pumps and Ammonia Dosing Pumps at Grootvlei Power Station for the period of 5 years",
+            "source": "National Treasury",
+            "company": "MEXEL",
+            "priority": "HIGH",
+            "close_date": "2026-09-14",
+            "fit": null,
+            "suitability": 8.2,
+            "url": "https://www.etenders.gov.za/Home/opportunities"
+        },
+        {
+            "title": "THE PLACEMENT OF NINETY (90) CALF COMPRESSOR DEVICES INCLUDING FULLY COMPREHENSIVE MAINTENANCE CONTRACT AND THE SUPPLY AND DELIVERY OF CONSUMABLES FOR GROOTE SCHUUR HOSPITAL OVER A THREE (3) YEAR PERIOD.",
+            "source": "National Treasury",
+            "company": "MEXEL",
+            "priority": "HIGH",
+            "close_date": "2026-10-02",
             "fit": null,
             "suitability": 7.0,
             "url": "https://www.etenders.gov.za/Home/opportunities"
         },
         {
-            "title": "Upgrade and maintenance of Data Centre for a period of three (03) years. (Re-advert)",
+            "title": "REFURBISHMENT AND MAINTENANCE OF DATA CENTER/SERVER ROOM FOR THREE (3) YEARS",
             "source": "National Treasury",
             "company": "MEXEL",
             "priority": "HIGH",
-            "close_date": "2026-09-17",
+            "close_date": "2026-09-23",
             "fit": null,
             "suitability": 7.0,
-            "url": "https://www.etenders.gov.za/Home/opportunities"
-        },
-        {
-            "title": "SUPPLY, DELIVERY AND INSTALLATION OF A MODERN TELEMETRY SYSTEM, UPGRADE OF SUPERVISORY CONTROL AND DATA ACQUISITION (SCADA) SYSTEM FROM ADROIT CLASSIC TO ADROIT SMART UI/EQUIVALENT AND MAINTENANCE OF THE SYSTEM FOR THIRTY-SIX MONTHS (36) FOR OVERBERG WATER (OWB) IN THE WESTERN CAPE",
-            "source": "National Treasury",
-            "company": "PHAKATHI",
-            "priority": "MEDIUM",
-            "close_date": "2026-08-27",
-            "fit": null,
-            "suitability": 6.8,
-            "url": "https://www.etenders.gov.za/Home/opportunities"
-        },
-        {
-            "title": "FOR THE SUPPLY, DELIVERY AND INSTALLATION OF A WATER TREATMENT PLANT [REVERSE OSMOSIS] AT LOOP 10 ON THE IRON ORE LINE. (HALFWEG BOOK OFF FACILITY)",
-            "source": "National Treasury",
-            "company": "MEXEL",
-            "priority": "MEDIUM",
-            "close_date": "2026-09-07",
-            "fit": null,
-            "suitability": 6.8,
-            "url": "https://www.etenders.gov.za/Home/opportunities"
-        },
-        {
-            "title": "FOSRBY-RFP-10-26/27 REQUEST FOR PROPOSAL [RFP] PROVISION OF DESIGN, FABRICATION AND INSTALLATION OF COLD HEAT EXCHANGER FOR (CHEX) – C PLANT",
-            "source": "National Treasury",
-            "company": "MEXEL",
-            "priority": "MEDIUM",
-            "close_date": "2026-09-08",
-            "fit": null,
-            "suitability": 6.6,
-            "url": "https://www.etenders.gov.za/Home/opportunities"
-        },
-        {
-            "title": "FOSRBY-RFP-05-26/27 REQUEST FOR PROPOSAL [RFP] PROVISION OF DESIGN, MANUFACTURE AND SUPPLY OF COLD HEAT EXCHANGER FOR SULPHURIC ACID – A PLANT",
-            "source": "National Treasury",
-            "company": "MEXEL",
-            "priority": "MEDIUM",
-            "close_date": "2026-08-25",
-            "fit": null,
-            "suitability": 6.6,
             "url": "https://www.etenders.gov.za/Home/opportunities"
         }
     ]
