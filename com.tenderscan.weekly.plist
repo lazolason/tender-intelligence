@@ -6,11 +6,11 @@
     <string>com.tenderscan.weekly</string>
     <key>ProgramArguments</key>
     <array>
-        <string>/Users/lazolasonqishe/tender-intelligence/.venv/bin/python</string>
-        <string>/Users/lazolasonqishe/tender-intelligence/weekly_report.py</string>
+        <string>__TENDERSCAN_PYTHON__</string>
+        <string>__TENDERSCAN_PROJECT_DIR__/weekly_report.py</string>
     </array>
     <key>WorkingDirectory</key>
-    <string>/Users/lazolasonqishe/tender-intelligence</string>
+    <string>__TENDERSCAN_PROJECT_DIR__</string>
     <key>StartCalendarInterval</key>
     <dict>
         <key>Weekday</key>
@@ -21,9 +21,9 @@
         <integer>0</integer>
     </dict>
     <key>StandardOutPath</key>
-    <string>/Users/lazolasonqishe/tender-intelligence/logs/weekly_report.log</string>
+    <string>__TENDERSCAN_PROJECT_DIR__/logs/weekly_report.log</string>
     <key>StandardErrorPath</key>
-    <string>/Users/lazolasonqishe/tender-intelligence/logs/weekly_report_error.log</string>
+    <string>__TENDERSCAN_PROJECT_DIR__/logs/weekly_report_error.log</string>
     <key>EnvironmentVariables</key>
     <dict>
         <key>PATH</key>

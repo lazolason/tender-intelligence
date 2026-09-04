@@ -7,10 +7,15 @@ from __future__ import annotations
 import json
 import os
 import plistlib
+import sys
+import tempfile
 from typing import Any, Dict
 
-
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if PROJECT_DIR not in sys.path:
+    sys.path.insert(0, PROJECT_DIR)
+
+from utils.launchd_jobs import render_default_launchd_jobs
 
 
 def inspect_launchd_job(
@@ -104,13 +109,37 @@ def inspect_launchd_job(
     return info
 
 
-def inspect_default_launchd_jobs(project_dir: str = PROJECT_DIR) -> Dict[str, Dict[str, Any]]:
+def inspect_default_launchd_jobs(
+    project_dir: str = PROJECT_DIR,
+    *,
+    plist_dir: str | None = None,
+    python_executable: str | None = None,
+) -> Dict[str, Dict[str, Any]]:
     """
-    Inspect the repo's bundled launchd jobs.
+    Inspect checkout-specific launchd job definitions.
+
+    Bundled plist files are templates so they never retain another user's
+    checkout path.  Unless a rendered ``plist_dir`` is supplied, render those
+    templates in a temporary directory before validating them.
     """
+    if plist_dir is None:
+        with tempfile.TemporaryDirectory(prefix="tenderscan-launchd-") as temp_dir:
+            render_default_launchd_jobs(
+                temp_dir,
+                project_dir,
+                python_executable=python_executable,
+            )
+            return _inspect_default_launchd_jobs(project_dir, temp_dir)
+    return _inspect_default_launchd_jobs(project_dir, plist_dir)
+
+
+def _inspect_default_launchd_jobs(
+    project_dir: str, plist_dir: str
+) -> Dict[str, Dict[str, Any]]:
+    """Inspect previously rendered launchd jobs from ``plist_dir``."""
     return {
         "app": inspect_launchd_job(
-            os.path.join(project_dir, "com.tenderscan.app.plist"),
+            os.path.join(plist_dir, "com.tenderscan.app.plist"),
             expected_label="com.tenderscan.app",
             expected_target_name="serve_app.sh",
             expected_run_at_load=True,
@@ -118,14 +147,14 @@ def inspect_default_launchd_jobs(project_dir: str = PROJECT_DIR) -> Dict[str, Di
             project_dir=project_dir,
         ),
         "daily": inspect_launchd_job(
-            os.path.join(project_dir, "com.tenderscan.daily.plist"),
+            os.path.join(plist_dir, "com.tenderscan.daily.plist"),
             expected_label="com.tenderscan.daily",
             expected_target_name="daily_runner.py",
             expected_schedule={"Hour": 8, "Minute": 0},
             project_dir=project_dir,
         ),
         "weekly": inspect_launchd_job(
-            os.path.join(project_dir, "com.tenderscan.weekly.plist"),
+            os.path.join(plist_dir, "com.tenderscan.weekly.plist"),
             expected_label="com.tenderscan.weekly",
             expected_target_name="weekly_report.py",
             expected_schedule={"Weekday": 2, "Hour": 9, "Minute": 0},

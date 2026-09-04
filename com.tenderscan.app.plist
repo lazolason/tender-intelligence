@@ -7,18 +7,18 @@
     <key>ProgramArguments</key>
     <array>
         <string>/bin/zsh</string>
-        <string>/Users/lazolasonqishe/tender-intelligence/serve_app.sh</string>
+        <string>__TENDERSCAN_PROJECT_DIR__/serve_app.sh</string>
     </array>
     <key>WorkingDirectory</key>
-    <string>/Users/lazolasonqishe/tender-intelligence</string>
+    <string>__TENDERSCAN_PROJECT_DIR__</string>
     <key>RunAtLoad</key>
     <true/>
     <key>KeepAlive</key>
     <true/>
     <key>StandardOutPath</key>
-    <string>/Users/lazolasonqishe/tender-intelligence/logs/app_server.log</string>
+    <string>__TENDERSCAN_PROJECT_DIR__/logs/app_server.log</string>
     <key>StandardErrorPath</key>
-    <string>/Users/lazolasonqishe/tender-intelligence/logs/app_server_error.log</string>
+    <string>__TENDERSCAN_PROJECT_DIR__/logs/app_server_error.log</string>
     <key>EnvironmentVariables</key>
     <dict>
         <key>PATH</key>

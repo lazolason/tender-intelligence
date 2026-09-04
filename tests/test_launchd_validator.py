@@ -7,7 +7,7 @@ from utils.launchd_validator import inspect_default_launchd_jobs
 
 @pytest.mark.skipif(sys.platform != "darwin", reason="launchd configuration is macOS-specific")
 def test_launchd_jobs_point_to_current_repo():
-    jobs = inspect_default_launchd_jobs()
+    jobs = inspect_default_launchd_jobs(python_executable=sys.executable)
 
     assert jobs["app"]["valid"] is True, jobs["app"]["issues"]
     assert jobs["daily"]["valid"] is True, jobs["daily"]["issues"]

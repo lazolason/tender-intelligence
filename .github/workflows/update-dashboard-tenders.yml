@@ -31,13 +31,15 @@ jobs:
         with:
           python-version: "3.11"
           cache: pip
-          cache-dependency-path: requirements.txt
+          cache-dependency-path: |
+            requirements.txt
+            requirements-ml.txt
 
       - name: Install dependencies
         run: |
           python -m venv .venv
           .venv/bin/python -m pip install --upgrade pip
-          .venv/bin/python -m pip install -r requirements.txt
+          .venv/bin/python -m pip install -r requirements-ml.txt
 
       - name: Run ${{ matrix.scraper }}
         id: run_scraper
@@ -68,13 +70,15 @@ jobs:
         with:
           python-version: "3.11"
           cache: pip
-          cache-dependency-path: requirements.txt
+          cache-dependency-path: |
+            requirements.txt
+            requirements-ml.txt
 
       - name: Install dependencies
         run: |
           python -m venv .venv
           .venv/bin/python -m pip install --upgrade pip
-          .venv/bin/python -m pip install -r requirements.txt
+          .venv/bin/python -m pip install -r requirements-ml.txt
 
       - name: Download scrape artifacts
         uses: actions/download-artifact@v7

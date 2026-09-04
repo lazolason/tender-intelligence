@@ -1,0 +1,14 @@
+# Optional semantic duplicate-detection dependencies.
+#
+# The core tender pipeline falls back to fuzzy matching when these are absent.
+# Install this file only on hosts with a currently supported PyTorch wheel:
+#   python -m pip install -r requirements-ml.txt
+
+-r requirements.txt
+
+sentence-transformers>=2.2.0
+# Keep the optional ML path above known vulnerable PyTorch releases. If the
+# platform has no compatible wheel, leave this optional extra uninstalled.
+torch>=2.7.1
+scikit-learn>=1.3.0
+numpy>=1.24.0

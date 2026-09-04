@@ -132,20 +132,19 @@ In Render dashboard, set these environment variables:
 # Edit crontab
 crontab -e
 
-# Add these lines (runs at 08:00 daily, 09:00 Monday)
-0 8 * * * cd /Users/lazolasonqishe/tender-intelligence && /opt/homebrew/bin/python3.11 daily_runner.py >> /Users/lazolasonqishe/tender-intelligence/logs/daily_scan.log 2>&1
-0 9 * * 1 cd /Users/lazolasonqishe/tender-intelligence && /opt/homebrew/bin/python3.11 weekly_report.py >> /Users/lazolasonqishe/tender-intelligence/logs/weekly_report.log 2>&1
+# Add these lines after creating .venv; replace the checkout path (runs at 08:00 daily, 09:00 Monday)
+0 8 * * * cd "/absolute/path/to/tender-intelligence" && .venv/bin/python daily_runner.py >> logs/daily_scan.log 2>&1
+0 9 * * 1 cd "/absolute/path/to/tender-intelligence" && .venv/bin/python weekly_report.py >> logs/weekly_report.log 2>&1
 ```
 
 ### Option B: Using launchd (Recommended for macOS)
 
-Install the bundled launchd plists:
+The bundled plists are templates. Render them for the current checkout rather
+than copying them directly, then review and bootstrap the rendered files:
 
 ```bash
-mkdir -p ~/Library/LaunchAgents
-cp com.tenderscan.app.plist ~/Library/LaunchAgents/
-cp com.tenderscan.daily.plist ~/Library/LaunchAgents/
-cp com.tenderscan.weekly.plist ~/Library/LaunchAgents/
+.venv/bin/python tools/install_launchd_jobs.py
+.venv/bin/python tools/install_launchd_jobs.py --install
 plutil -lint ~/Library/LaunchAgents/com.tenderscan.app.plist
 plutil -lint ~/Library/LaunchAgents/com.tenderscan.daily.plist
 plutil -lint ~/Library/LaunchAgents/com.tenderscan.weekly.plist
@@ -156,34 +155,10 @@ launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.tenderscan.weekly.pl
 
 The app service keeps the dashboard and API live at `http://localhost:5001/`, while the daily and weekly jobs run on schedule.
 
-If you need to create or audit the daily job manually, the expected structure is:
-
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-    <key>Label</key>
-    <string>com.tenderscan.daily</string>
-    <key>ProgramArguments</key>
-    <array>
-        <string>/usr/bin/python3</string>
-        <string>/Users/lazolasonqishe/Documents/MASTER/TENDERS/00_System/04_Automation/daily_runner.py</string>
-    </array>
-    <key>StartCalendarInterval</key>
-    <dict>
-        <key>Hour</key>
-        <integer>6</integer>
-        <key>Minute</key>
-        <integer>0</integer>
-    </dict>
-    <key>StandardOutPath</key>
-    <string>/tmp/tenderscan-daily.log</string>
-    <key>StandardErrorPath</key>
-    <string>/tmp/tenderscan-daily-error.log</string>
-</dict>
-</plist>
-```
+The installer refuses to overwrite existing jobs unless you rerun it with
+`--install --force`; stop or unload an existing job explicitly before replacing
+it. Validate the templates for this checkout with `.venv/bin/python
+utils/launchd_validator.py`.
 
 ---
 

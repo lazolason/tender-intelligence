@@ -43,7 +43,14 @@ DB_PATH = os.getenv("DB_PATH", os.path.join(PROJECT_DIR, "data", "tenders.db"))
 
 
 def _portable_runtime_path(env_name, configured_path, fallback_path):
-    """Use configured local paths only when their platform root exists."""
+    """Select a safe runtime path without creating another user's home tree.
+
+    ``config.yaml`` may contain a path from a different developer's macOS or
+    Linux home directory.  An existing ``/Users`` or ``/home`` directory alone
+    is not proof that the configured path is usable on this host.  Explicit
+    environment-variable overrides remain authoritative, and mounted/external
+    absolute paths retain the previous platform-root behaviour.
+    """
     override = os.getenv(env_name)
     if override:
         return override
@@ -52,6 +59,23 @@ def _portable_runtime_path(env_name, configured_path, fallback_path):
         return fallback_path
     if not os.path.isabs(configured):
         return os.path.join(PROJECT_DIR, configured)
+
+    configured = os.path.abspath(configured)
+    current_home = os.path.abspath(os.path.expanduser("~"))
+
+    def is_within(path, root):
+        try:
+            return os.path.commonpath([path, root]) == root
+        except ValueError:
+            return False
+
+    # Do not treat a checked-in path from a different local account as a
+    # usable destination merely because /Users or /home happens to exist.
+    if is_within(configured, os.path.join(os.path.sep, "Users")) or is_within(
+        configured, os.path.join(os.path.sep, "home")
+    ):
+        return configured if is_within(configured, current_home) else fallback_path
+
     # macOS paths from config.yaml must not be created on Linux/CI hosts.
     anchor = os.path.join(os.path.sep, *configured.split(os.path.sep)[1:2])
     return configured if os.path.exists(anchor) else fallback_path

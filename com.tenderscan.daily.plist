@@ -6,11 +6,11 @@
     <string>com.tenderscan.daily</string>
     <key>ProgramArguments</key>
     <array>
-        <string>/Users/lazolasonqishe/tender-intelligence/.venv/bin/python</string>
-        <string>/Users/lazolasonqishe/tender-intelligence/daily_runner.py</string>
+        <string>__TENDERSCAN_PYTHON__</string>
+        <string>__TENDERSCAN_PROJECT_DIR__/daily_runner.py</string>
     </array>
     <key>WorkingDirectory</key>
-    <string>/Users/lazolasonqishe/tender-intelligence</string>
+    <string>__TENDERSCAN_PROJECT_DIR__</string>
     <key>StartCalendarInterval</key>
     <dict>
         <key>Hour</key>
@@ -19,9 +19,9 @@
         <integer>0</integer>
     </dict>
     <key>StandardOutPath</key>
-    <string>/Users/lazolasonqishe/tender-intelligence/logs/daily_scan.log</string>
+    <string>__TENDERSCAN_PROJECT_DIR__/logs/daily_scan.log</string>
     <key>StandardErrorPath</key>
-    <string>/Users/lazolasonqishe/tender-intelligence/logs/daily_scan_error.log</string>
+    <string>__TENDERSCAN_PROJECT_DIR__/logs/daily_scan_error.log</string>
     <key>EnvironmentVariables</key>
     <dict>
         <key>PATH</key>
