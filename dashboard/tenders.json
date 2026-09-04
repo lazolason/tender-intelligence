@@ -1,10 +1,10 @@
 {
     "meta": {
-        "last_sync": "2026-09-04 15:02",
+        "last_sync": "2026-09-04 15:58",
         "snapshot_origin": "static_scrape",
         "next_run": "Daily 08:00",
-        "build_sha": "663a4ec",
-        "build_id": "2026-09-04 15:02 · 663a4ec",
+        "build_sha": "5efa507",
+        "build_id": "2026-09-04 15:58 · 5efa507",
         "inputs": [
             "eskom.json",
             "joburg_water.json",
