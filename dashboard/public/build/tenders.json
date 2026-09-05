@@ -1,10 +1,10 @@
 {
     "meta": {
-        "last_sync": "2026-09-04 15:58",
+        "last_sync": "2026-09-05 12:31",
         "snapshot_origin": "static_scrape",
         "next_run": "Daily 08:00",
-        "build_sha": "5efa507",
-        "build_id": "2026-09-04 15:58 · 5efa507",
+        "build_sha": "26793db",
+        "build_id": "2026-09-05 12:31 · 26793db",
         "inputs": [
             "eskom.json",
             "joburg_water.json",
@@ -13,8 +13,8 @@
             "soes.json"
         ],
         "validation": {
-            "total": 20,
-            "valid": 20,
+            "total": 21,
+            "valid": 21,
             "invalid": 0,
             "warnings": 0,
             "error_counts": {},
@@ -23,6 +23,37 @@
         "planned_opportunity_count": 14
     },
     "tenders": [
+        {
+            "ref": "BSM 06/27",
+            "title": "SERVICE, MAINTENANCE AND REPAIRS OF ICT DATA CENTRE AIRCONDITIONING UNITS FOR A PERIOD ENDING 30 JUNE 2027",
+            "description": "SERVICE, MAINTENANCE AND REPAIRS OF ICT DATA CENTRE AIRCONDITIONING UNITS FOR A PERIOD ENDING 30 JUNE 2027 | Reference: BSM 06/27 | Information service activities | Request for Bid(Open-Tender) | If any, will be stipulated within the tender document.",
+            "client": "Stellenbosch Municipality",
+            "source": "National Treasury",
+            "ref_is_authoritative": true,
+            "url": "https://www.etenders.gov.za/Home/opportunities",
+            "closing_date": "2026-10-05",
+            "published_date": "2026-09-05",
+            "category": "MEXEL",
+            "reason": "Competence Match (Profile B): data centre + service",
+            "short_title": "And_Of_Ict_Data",
+            "scores": {
+                "fit_score": 7,
+                "fit_reasons": [
+                    "Mexel category match"
+                ],
+                "fit_grade": "B",
+                "industry_score": 7,
+                "industry_matched": "Municipal",
+                "industry_grade": "B",
+                "mexel_suitability": 0,
+                "mexel_fit": "Weak",
+                "company_category": "MEXEL",
+                "composite": 7.0,
+                "composite_score": 7.0,
+                "priority": "HIGH",
+                "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
+            }
+        },
         {
             "ref": "GSHPT91/2025",
             "title": "THE PLACEMENT OF NINETY (90) CALF COMPRESSOR DEVICES INCLUDING FULLY COMPREHENSIVE MAINTENANCE CONTRACT AND THE SUPPLY AND DELIVERY OF CONSUMABLES FOR GROOTE SCHUUR HOSPITAL OVER A THREE (3) YEAR PERIOD.",
