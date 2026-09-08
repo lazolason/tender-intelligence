@@ -1,10 +1,10 @@
 {
     "meta": {
-        "last_sync": "2026-09-07 14:22",
+        "last_sync": "2026-09-08 13:21",
         "snapshot_origin": "static_scrape",
         "next_run": "Daily 08:00",
-        "build_sha": "3c189e6",
-        "build_id": "2026-09-07 14:22 · 3c189e6",
+        "build_sha": "9d37dd0",
+        "build_id": "2026-09-08 13:21 · 9d37dd0",
         "inputs": [
             "eskom.json",
             "joburg_water.json",
@@ -13,8 +13,8 @@
             "soes.json"
         ],
         "validation": {
-            "total": 20,
-            "valid": 20,
+            "total": 21,
+            "valid": 21,
             "invalid": 0,
             "warnings": 0,
             "error_counts": {},
@@ -23,6 +23,38 @@
         "planned_opportunity_count": 14
     },
     "tenders": [
+        {
+            "ref": "POS9962",
+            "title": "KAESER COMPRESSOR SERVICE (C SERVICE/MAJOR/OVERHAUL) - please email to mapule.msiza@tia.org.za",
+            "description": "KAESER COMPRESSOR SERVICE (C SERVICE/MAJOR/OVERHAUL) - please email to mapule.msiza@tia.org.za | Reference: POS9962 | Electricity, gas, steam and air conditioning | Request for Quotation | email to mapule.msiza@tia.org.za, KAESER COMPRESSOR SERVICE (C SERVICE/MAJOR/OVERHAUL): NO MANDATORY SITE VISIT. PLEASE NOTE: ONLY KAESER OR KAESER AUTHORISED DISTRIBUTOR WITH AN OFFICIAL LETTER IS REQUIRED THIS IS MANDATORY WITHOUT THE LETTER IT IS",
+            "client": "Technology Innovation Agency",
+            "source": "National Treasury",
+            "ref_is_authoritative": true,
+            "url": "https://www.etenders.gov.za/Home/opportunities",
+            "closing_date": "2026-09-14",
+            "published_date": "2026-09-07",
+            "category": "MEXEL",
+            "reason": "Competence Match (Profile B): compressor + service",
+            "short_title": "Kaeser_Compressor_C_Major",
+            "scores": {
+                "fit_score": 8,
+                "fit_reasons": [
+                    "Mexel category match",
+                    "Mexel alignment (1 keywords)"
+                ],
+                "fit_grade": "A",
+                "industry_score": 5,
+                "industry_matched": "General",
+                "industry_grade": "C",
+                "mexel_suitability": 2,
+                "mexel_fit": "Weak",
+                "company_category": "MEXEL",
+                "composite": 6.8,
+                "composite_score": 6.8,
+                "priority": "MEDIUM",
+                "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
+            }
+        },
         {
             "ref": "BSM 06/27",
             "title": "SERVICE, MAINTENANCE AND REPAIRS OF ICT DATA CENTRE AIRCONDITIONING UNITS FOR A PERIOD ENDING 30 JUNE 2027",
@@ -86,38 +118,6 @@
             }
         },
         {
-            "ref": "E3445GCDMWP",
-            "title": "The Provision of Water Quality Monitoring and Water Trucking Services for Kusile Power Station Project",
-            "description": "The Provision of Water Quality Monitoring and Water Trucking Services for Kusile Power Station Project | Reference: E3445GCDMWP | Services: General | Request for Bid(Open-Tender) | N/A",
-            "client": "ESKOM",
-            "source": "National Treasury",
-            "ref_is_authoritative": true,
-            "url": "https://www.etenders.gov.za/Home/opportunities",
-            "closing_date": "2026-09-22",
-            "published_date": "2026-09-02",
-            "category": "MEXEL",
-            "reason": "Competence Match (Profile B): power station + monitoring",
-            "short_title": "The_Water_Quality_Monitoring",
-            "scores": {
-                "fit_score": 8,
-                "fit_reasons": [
-                    "Mexel category match",
-                    "Mexel alignment (1 keywords)"
-                ],
-                "fit_grade": "A",
-                "industry_score": 10,
-                "industry_matched": "Power",
-                "industry_grade": "A",
-                "mexel_suitability": 3,
-                "mexel_fit": "Moderate",
-                "company_category": "MEXEL",
-                "composite": 8.8,
-                "composite_score": 8.8,
-                "priority": "HIGH",
-                "recommendation": "🔥 PRIORITY BID - Strong fit, pursue immediately"
-            }
-        },
-        {
             "ref": "Re-Advert RFP OW-015/2026/27",
             "title": "SUPPLY, DELIVERY AND INSTALLATION OF A MODERN TELEMETRY SYSTEM, UPGRADE OF SUPERVISORY CONTROL AND DATA ACQUISITION (SCADA) SYSTEM FROM ADROIT CLASSIC TO ADROIT SMART UI/EQUIVALENT AND MAINTENANCE OF THE SYSTEM FOR THIRTY-SIX MONTHS (36) FOR OVERBERG WATER (OWB) IN THE WESTERN CAPE.",
             "description": "SUPPLY, DELIVERY AND INSTALLATION OF A MODERN TELEMETRY SYSTEM, UPGRADE OF SUPERVISORY CONTROL AND DATA ACQUISITION (SCADA) SYSTEM FROM ADROIT CLASSIC TO ADROIT SMART UI/EQUIVALENT AND MAINTENANCE OF THE SYSTEM FOR THIRTY-SIX MONTHS (36) FOR OVERBERG WATER (OWB) IN THE WESTERN CAPE. | Reference: Re-Advert RFP OW-015/2026/27 | Services: Professional | Request for Proposal | NON-COMPULSORY BRIEFING SESSION Date: 04 September 2026 Time: 10:00 am Venue: Rûensveld East WTW 34° 4'35.83\"S 20°14'44.63\"E",
@@ -147,6 +147,38 @@
                 "composite_score": 6.8,
                 "priority": "MEDIUM",
                 "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
+            }
+        },
+        {
+            "ref": "E3445GCDMWP",
+            "title": "The Provision of Water Quality Monitoring and Water Trucking Services for Kusile Power Station Project",
+            "description": "The Provision of Water Quality Monitoring and Water Trucking Services for Kusile Power Station Project | Reference: E3445GCDMWP | Services: General | Request for Bid(Open-Tender) | N/A",
+            "client": "ESKOM",
+            "source": "National Treasury",
+            "ref_is_authoritative": true,
+            "url": "https://www.etenders.gov.za/Home/opportunities",
+            "closing_date": "2026-09-22",
+            "published_date": "2026-09-02",
+            "category": "MEXEL",
+            "reason": "Competence Match (Profile B): power station + monitoring",
+            "short_title": "The_Water_Quality_Monitoring",
+            "scores": {
+                "fit_score": 8,
+                "fit_reasons": [
+                    "Mexel category match",
+                    "Mexel alignment (1 keywords)"
+                ],
+                "fit_grade": "A",
+                "industry_score": 10,
+                "industry_matched": "Power",
+                "industry_grade": "A",
+                "mexel_suitability": 3,
+                "mexel_fit": "Moderate",
+                "company_category": "MEXEL",
+                "composite": 8.8,
+                "composite_score": 8.8,
+                "priority": "HIGH",
+                "recommendation": "🔥 PRIORITY BID - Strong fit, pursue immediately"
             }
         },
         {
@@ -245,37 +277,6 @@
             }
         },
         {
-            "ref": "E2182GXMPGROR",
-            "title": "Refurbishment and Delivery of Turbine Auxiliary Oil Pumps - Seal Oil Pumps, Seal oil Vacuum Pumps, Stator Coolant Pumps and Ammonia Dosing Pumps at Grootvlei Power Station for the period of 5 years",
-            "description": "Refurbishment and Delivery of Turbine Auxiliary Oil Pumps - Seal Oil Pumps, Seal oil Vacuum Pumps, Stator Coolant Pumps and Ammonia Dosing Pumps at Grootvlei Power Station for the period of 5 years | Reference: E2182GXMPGROR | Services: General | Request for Bid(Open-Tender) | N/A",
-            "client": "ESKOM",
-            "source": "National Treasury",
-            "ref_is_authoritative": true,
-            "url": "https://www.etenders.gov.za/Home/opportunities",
-            "closing_date": "2026-09-14",
-            "published_date": "2026-08-28",
-            "category": "MEXEL",
-            "reason": "Competence Match (Profile B): power station + dosing",
-            "short_title": "Refurbishment_And_Delivery_Of",
-            "scores": {
-                "fit_score": 7,
-                "fit_reasons": [
-                    "Mexel category match"
-                ],
-                "fit_grade": "B",
-                "industry_score": 10,
-                "industry_matched": "Power",
-                "industry_grade": "A",
-                "mexel_suitability": 1,
-                "mexel_fit": "Weak",
-                "company_category": "MEXEL",
-                "composite": 8.2,
-                "composite_score": 8.2,
-                "priority": "HIGH",
-                "recommendation": "🔥 PRIORITY BID - Strong fit, pursue immediately"
-            }
-        },
-        {
             "ref": "SCMU5-26/27-0006 CHR",
             "title": "MAINTENANCE OF ELECTRICAL SERVICES AT CHRIS HANI DISTRICT FOR A PERIOD OF TWO YEARS (24 MONTHS)-DEPARTMENT OF SOCIAL DEVELOPMENT",
             "description": "MAINTENANCE OF ELECTRICAL SERVICES AT CHRIS HANI DISTRICT FOR A PERIOD OF TWO YEARS (24 MONTHS)-DEPARTMENT OF SOCIAL DEVELOPMENT | Reference: SCMU5-26/27-0006 CHR | Services: Electrical | Request for Bid(Open-Tender) | N/A",
@@ -335,6 +336,37 @@
                 "composite_score": 6.2,
                 "priority": "MEDIUM",
                 "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
+            }
+        },
+        {
+            "ref": "E2182GXMPGROR",
+            "title": "Refurbishment and Delivery of Turbine Auxiliary Oil Pumps - Seal Oil Pumps, Seal oil Vacuum Pumps, Stator Coolant Pumps and Ammonia Dosing Pumps at Grootvlei Power Station for the period of 5 years",
+            "description": "Refurbishment and Delivery of Turbine Auxiliary Oil Pumps - Seal Oil Pumps, Seal oil Vacuum Pumps, Stator Coolant Pumps and Ammonia Dosing Pumps at Grootvlei Power Station for the period of 5 years | Reference: E2182GXMPGROR | Services: General | Request for Bid(Open-Tender) | N/A",
+            "client": "ESKOM",
+            "source": "National Treasury",
+            "ref_is_authoritative": true,
+            "url": "https://www.etenders.gov.za/Home/opportunities",
+            "closing_date": "2026-09-14",
+            "published_date": "2026-08-28",
+            "category": "MEXEL",
+            "reason": "Competence Match (Profile B): power station + dosing",
+            "short_title": "Refurbishment_And_Delivery_Of",
+            "scores": {
+                "fit_score": 7,
+                "fit_reasons": [
+                    "Mexel category match"
+                ],
+                "fit_grade": "B",
+                "industry_score": 10,
+                "industry_matched": "Power",
+                "industry_grade": "A",
+                "mexel_suitability": 1,
+                "mexel_fit": "Weak",
+                "company_category": "MEXEL",
+                "composite": 8.2,
+                "composite_score": 8.2,
+                "priority": "HIGH",
+                "recommendation": "🔥 PRIORITY BID - Strong fit, pursue immediately"
             }
         },
         {
@@ -472,7 +504,7 @@
             "source": "National Treasury",
             "ref_is_authoritative": true,
             "url": "https://www.etenders.gov.za/Home/opportunities",
-            "closing_date": "2026-09-21",
+            "closing_date": "2026-10-05",
             "published_date": "2026-08-18",
             "category": "PHAKATHI",
             "reason": "Phakathi Match: 1 keyword(s)",
@@ -504,7 +536,7 @@
             "source": "National Treasury",
             "ref_is_authoritative": true,
             "url": "https://www.etenders.gov.za/Home/opportunities",
-            "closing_date": "2026-09-11",
+            "closing_date": "2026-10-02",
             "published_date": "2026-08-14",
             "category": "MEXEL",
             "reason": "Competence Match (Profile B): power station + maintenance",
@@ -536,7 +568,7 @@
             "source": "National Treasury",
             "ref_is_authoritative": true,
             "url": "https://www.etenders.gov.za/Home/opportunities",
-            "closing_date": "2026-09-08",
+            "closing_date": "2026-09-15",
             "published_date": "2026-08-13",
             "category": "MEXEL",
             "reason": "Competence Match (Profile B): heat exchanger + installation",

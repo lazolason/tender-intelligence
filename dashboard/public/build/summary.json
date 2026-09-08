@@ -1,20 +1,20 @@
 {
-    "generated_at": "2026-09-07 14:22",
-    "build_id": "2026-09-07 14:22 · 3c189e6",
-    "build_sha": "3c189e6",
+    "generated_at": "2026-09-08 13:21",
+    "build_id": "2026-09-08 13:21 · 9d37dd0",
+    "build_sha": "9d37dd0",
     "next_run": "Daily 08:00",
     "counts": {
-        "total": 20,
+        "total": 21,
         "by_company": {
-            "MEXEL": 16,
+            "MEXEL": 17,
             "PHAKATHI": 4
         },
         "by_priority": {
             "HIGH": 13,
-            "MEDIUM": 7
+            "MEDIUM": 8
         },
         "by_source": {
-            "National Treasury": 20
+            "National Treasury": 21
         }
     },
     "top": [
@@ -53,7 +53,7 @@
             "source": "National Treasury",
             "company": "PHAKATHI",
             "priority": "HIGH",
-            "close_date": "2026-09-21",
+            "close_date": "2026-10-05",
             "fit": null,
             "suitability": 8.8,
             "url": "https://www.etenders.gov.za/Home/opportunities"
@@ -63,7 +63,7 @@
             "source": "National Treasury",
             "company": "MEXEL",
             "priority": "HIGH",
-            "close_date": "2026-09-11",
+            "close_date": "2026-10-02",
             "fit": null,
             "suitability": 8.8,
             "url": "https://www.etenders.gov.za/Home/opportunities"
