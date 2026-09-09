@@ -1,10 +1,10 @@
 {
     "meta": {
-        "last_sync": "2026-09-08 13:21",
+        "last_sync": "2026-09-09 13:14",
         "snapshot_origin": "static_scrape",
         "next_run": "Daily 08:00",
-        "build_sha": "9d37dd0",
-        "build_id": "2026-09-08 13:21 · 9d37dd0",
+        "build_sha": "a5cf4a5",
+        "build_id": "2026-09-09 13:14 · a5cf4a5",
         "inputs": [
             "eskom.json",
             "joburg_water.json",
@@ -23,6 +23,38 @@
         "planned_opportunity_count": 14
     },
     "tenders": [
+        {
+            "ref": "RFQ - 12353",
+            "title": "APPOINTMENT OF A SERVICE PROVIDER FOR THE SUPPLY OF FIFTY-FIVE (55) LICENSES FOR THE HUAWEI AR651-8W-P ROUTERS",
+            "description": "APPOINTMENT OF A SERVICE PROVIDER FOR THE SUPPLY OF FIFTY-FIVE (55) LICENSES FOR THE HUAWEI AR651-8W-P ROUTERS | Reference: RFQ - 12353 | Information and communication | Request for Quotation | • Submission of fully completed SBD1 (Invitation to Bid), • Submission of a quotation on the company letterhead, • Submission of fully completed SBD 4 (Bidder’s disclosure), • Submission of fully completed SBD 6.1 • CSD Report • Valid Tax Pin or Certificate • Certified copy of BBBEE",
+            "client": "Broadband Infraco SOC",
+            "source": "National Treasury",
+            "ref_is_authoritative": true,
+            "url": "https://www.etenders.gov.za/Home/opportunities",
+            "closing_date": "2026-09-16",
+            "published_date": "2026-09-09",
+            "category": "PHAKATHI",
+            "reason": "Direct Brand Routing: matched 'huawei'",
+            "short_title": "A_Provider_Fifty_Five",
+            "scores": {
+                "fit_score": 8,
+                "fit_reasons": [
+                    "Phakathi category match",
+                    "Phakathi alignment (1 keywords)"
+                ],
+                "fit_grade": "A",
+                "industry_score": 5,
+                "industry_matched": "General",
+                "industry_grade": "C",
+                "mexel_suitability": 0,
+                "mexel_fit": "Weak",
+                "company_category": "PHAKATHI",
+                "composite": 6.8,
+                "composite_score": 6.8,
+                "priority": "MEDIUM",
+                "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
+            }
+        },
         {
             "ref": "POS9962",
             "title": "KAESER COMPRESSOR SERVICE (C SERVICE/MAJOR/OVERHAUL) - please email to mapule.msiza@tia.org.za",
@@ -277,6 +309,37 @@
             }
         },
         {
+            "ref": "E2182GXMPGROR",
+            "title": "Refurbishment and Delivery of Turbine Auxiliary Oil Pumps - Seal Oil Pumps, Seal oil Vacuum Pumps, Stator Coolant Pumps and Ammonia Dosing Pumps at Grootvlei Power Station for the period of 5 years",
+            "description": "Refurbishment and Delivery of Turbine Auxiliary Oil Pumps - Seal Oil Pumps, Seal oil Vacuum Pumps, Stator Coolant Pumps and Ammonia Dosing Pumps at Grootvlei Power Station for the period of 5 years | Reference: E2182GXMPGROR | Services: General | Request for Bid(Open-Tender) | N/A",
+            "client": "ESKOM",
+            "source": "National Treasury",
+            "ref_is_authoritative": true,
+            "url": "https://www.etenders.gov.za/Home/opportunities",
+            "closing_date": "2026-09-14",
+            "published_date": "2026-08-28",
+            "category": "MEXEL",
+            "reason": "Competence Match (Profile B): power station + dosing",
+            "short_title": "Refurbishment_And_Delivery_Of",
+            "scores": {
+                "fit_score": 7,
+                "fit_reasons": [
+                    "Mexel category match"
+                ],
+                "fit_grade": "B",
+                "industry_score": 10,
+                "industry_matched": "Power",
+                "industry_grade": "A",
+                "mexel_suitability": 1,
+                "mexel_fit": "Weak",
+                "company_category": "MEXEL",
+                "composite": 8.2,
+                "composite_score": 8.2,
+                "priority": "HIGH",
+                "recommendation": "🔥 PRIORITY BID - Strong fit, pursue immediately"
+            }
+        },
+        {
             "ref": "SCMU5-26/27-0006 CHR",
             "title": "MAINTENANCE OF ELECTRICAL SERVICES AT CHRIS HANI DISTRICT FOR A PERIOD OF TWO YEARS (24 MONTHS)-DEPARTMENT OF SOCIAL DEVELOPMENT",
             "description": "MAINTENANCE OF ELECTRICAL SERVICES AT CHRIS HANI DISTRICT FOR A PERIOD OF TWO YEARS (24 MONTHS)-DEPARTMENT OF SOCIAL DEVELOPMENT | Reference: SCMU5-26/27-0006 CHR | Services: Electrical | Request for Bid(Open-Tender) | N/A",
@@ -336,37 +399,6 @@
                 "composite_score": 6.2,
                 "priority": "MEDIUM",
                 "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
-            }
-        },
-        {
-            "ref": "E2182GXMPGROR",
-            "title": "Refurbishment and Delivery of Turbine Auxiliary Oil Pumps - Seal Oil Pumps, Seal oil Vacuum Pumps, Stator Coolant Pumps and Ammonia Dosing Pumps at Grootvlei Power Station for the period of 5 years",
-            "description": "Refurbishment and Delivery of Turbine Auxiliary Oil Pumps - Seal Oil Pumps, Seal oil Vacuum Pumps, Stator Coolant Pumps and Ammonia Dosing Pumps at Grootvlei Power Station for the period of 5 years | Reference: E2182GXMPGROR | Services: General | Request for Bid(Open-Tender) | N/A",
-            "client": "ESKOM",
-            "source": "National Treasury",
-            "ref_is_authoritative": true,
-            "url": "https://www.etenders.gov.za/Home/opportunities",
-            "closing_date": "2026-09-14",
-            "published_date": "2026-08-28",
-            "category": "MEXEL",
-            "reason": "Competence Match (Profile B): power station + dosing",
-            "short_title": "Refurbishment_And_Delivery_Of",
-            "scores": {
-                "fit_score": 7,
-                "fit_reasons": [
-                    "Mexel category match"
-                ],
-                "fit_grade": "B",
-                "industry_score": 10,
-                "industry_matched": "Power",
-                "industry_grade": "A",
-                "mexel_suitability": 1,
-                "mexel_fit": "Weak",
-                "company_category": "MEXEL",
-                "composite": 8.2,
-                "composite_score": 8.2,
-                "priority": "HIGH",
-                "recommendation": "🔥 PRIORITY BID - Strong fit, pursue immediately"
             }
         },
         {
@@ -588,37 +620,6 @@
                 "composite": 6.6,
                 "composite_score": 6.6,
                 "priority": "MEDIUM",
-                "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
-            }
-        },
-        {
-            "ref": "RFP63/2026",
-            "title": "CENTLEC (SOC) Ltd (hereafter referred to as CENTLEC), a Municipal Entity distributing electricity within Mangaung Metro Municipality invites service providers as a Managing Agent for Data Centre support, marketing and sourcing customers on behalf of CENTLEC for a period of thirty-six (36) months.",
-            "description": "CENTLEC (SOC) Ltd (hereafter referred to as CENTLEC), a Municipal Entity distributing electricity within Mangaung Metro Municipality invites service providers as a Managing Agent for Data Centre support, marketing and sourcing customers on behalf of CENTLEC for a period of thirty-six (36) months. | Reference: RFP63/2026 | Information and communication | Request for Proposal | N/A",
-            "client": "CENTLEC SOC LTD",
-            "source": "National Treasury",
-            "ref_is_authoritative": true,
-            "url": "https://www.etenders.gov.za/Home/opportunities",
-            "closing_date": "2026-09-09",
-            "published_date": "2026-08-07",
-            "category": "MEXEL",
-            "reason": "Competence Match (Profile B): data centre + service",
-            "short_title": "Centlec_Soc_Ltd_Hereafter",
-            "scores": {
-                "fit_score": 7,
-                "fit_reasons": [
-                    "Mexel category match"
-                ],
-                "fit_grade": "B",
-                "industry_score": 7,
-                "industry_matched": "Municipal",
-                "industry_grade": "B",
-                "mexel_suitability": 0,
-                "mexel_fit": "Weak",
-                "company_category": "MEXEL",
-                "composite": 7.0,
-                "composite_score": 7.0,
-                "priority": "HIGH",
                 "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
             }
         },
