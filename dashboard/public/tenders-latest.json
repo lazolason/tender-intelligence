@@ -1,10 +1,10 @@
 {
     "meta": {
-        "last_sync": "2026-09-10 13:10",
+        "last_sync": "2026-09-11 13:09",
         "snapshot_origin": "static_scrape",
         "next_run": "Daily 08:00",
-        "build_sha": "fff80f4",
-        "build_id": "2026-09-10 13:10 · fff80f4",
+        "build_sha": "46fe5e7",
+        "build_id": "2026-09-11 13:09 · 46fe5e7",
         "inputs": [
             "eskom.json",
             "joburg_water.json",
@@ -379,7 +379,7 @@
             "source": "National Treasury",
             "ref_is_authoritative": true,
             "url": "https://www.etenders.gov.za/Home/opportunities",
-            "closing_date": "2026-09-14",
+            "closing_date": "2026-09-21",
             "published_date": "2026-08-28",
             "category": "MEXEL",
             "reason": "Competence Match (Profile B): power station + dosing",

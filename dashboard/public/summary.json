@@ -1,7 +1,7 @@
 {
-    "generated_at": "2026-09-10 13:10",
-    "build_id": "2026-09-10 13:10 · fff80f4",
-    "build_sha": "fff80f4",
+    "generated_at": "2026-09-11 13:09",
+    "build_id": "2026-09-11 13:09 · 46fe5e7",
+    "build_sha": "46fe5e7",
     "next_run": "Daily 08:00",
     "counts": {
         "total": 23,
@@ -93,7 +93,7 @@
             "source": "National Treasury",
             "company": "MEXEL",
             "priority": "HIGH",
-            "close_date": "2026-09-14",
+            "close_date": "2026-09-21",
             "fit": null,
             "suitability": 8.2,
             "url": "https://www.etenders.gov.za/Home/opportunities"
