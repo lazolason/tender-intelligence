@@ -1,10 +1,10 @@
 {
     "meta": {
-        "last_sync": "2026-09-11 13:09",
+        "last_sync": "2026-09-12 12:38",
         "snapshot_origin": "static_scrape",
         "next_run": "Daily 08:00",
-        "build_sha": "46fe5e7",
-        "build_id": "2026-09-11 13:09 · 46fe5e7",
+        "build_sha": "084f25c",
+        "build_id": "2026-09-12 12:38 · 084f25c",
         "inputs": [
             "eskom.json",
             "joburg_water.json",
@@ -13,8 +13,8 @@
             "soes.json"
         ],
         "validation": {
-            "total": 23,
-            "valid": 23,
+            "total": 24,
+            "valid": 24,
             "invalid": 0,
             "warnings": 0,
             "error_counts": {},
@@ -23,6 +23,37 @@
         "planned_opportunity_count": 14
     },
     "tenders": [
+        {
+            "ref": "Erratum- SCMU5-26-27-0008 CHR",
+            "title": "ERRATUM - TWO-YEAR TERM CONTRACT FOR SUPPLY, SERVICING, REPAIRS AND MAINTENANCE OF FIRE EQUIPMENT FOR CHRIS HANI DISTRICT – DEPARTMENT OF SOCIAL DEVELOPMENT",
+            "description": "ERRATUM - TWO-YEAR TERM CONTRACT FOR SUPPLY, SERVICING, REPAIRS AND MAINTENANCE OF FIRE EQUIPMENT FOR CHRIS HANI DISTRICT – DEPARTMENT OF SOCIAL DEVELOPMENT | Reference: Erratum- SCMU5-26-27-0008 CHR | Other service activities | Request for Bid(Open-Tender) | N/A",
+            "client": "Eastern Cape - Roads and Public Works",
+            "source": "National Treasury",
+            "ref_is_authoritative": true,
+            "url": "https://www.etenders.gov.za/Home/opportunities",
+            "closing_date": "2026-09-22",
+            "published_date": "2026-09-11",
+            "category": "MEXEL",
+            "reason": "Competence Match (Profile B): chr + service",
+            "short_title": "Erratum_Two_Year_Term",
+            "scores": {
+                "fit_score": 7,
+                "fit_reasons": [
+                    "Mexel category match"
+                ],
+                "fit_grade": "B",
+                "industry_score": 5,
+                "industry_matched": "General",
+                "industry_grade": "C",
+                "mexel_suitability": 0,
+                "mexel_fit": "Weak",
+                "company_category": "MEXEL",
+                "composite": 6.2,
+                "composite_score": 6.2,
+                "priority": "MEDIUM",
+                "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
+            }
+        },
         {
             "ref": "RFQ - 12353",
             "title": "APPOINTMENT OF A SERVICE PROVIDER FOR THE SUPPLY OF FIFTY-FIVE (55) LICENSES FOR THE HUAWEI AR651-8W-P ROUTERS",
