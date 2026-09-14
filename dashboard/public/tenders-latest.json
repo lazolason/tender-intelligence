@@ -1,10 +1,10 @@
 {
     "meta": {
-        "last_sync": "2026-09-13 13:41",
+        "last_sync": "2026-09-14 14:35",
         "snapshot_origin": "static_scrape",
         "next_run": "Daily 08:00",
-        "build_sha": "f80533a",
-        "build_id": "2026-09-13 13:41 · f80533a",
+        "build_sha": "e00f17c",
+        "build_id": "2026-09-14 14:35 · e00f17c",
         "inputs": [
             "eskom.json",
             "joburg_water.json",
@@ -13,8 +13,8 @@
             "soes.json"
         ],
         "validation": {
-            "total": 24,
-            "valid": 24,
+            "total": 21,
+            "valid": 21,
             "invalid": 0,
             "warnings": 0,
             "error_counts": {},
@@ -36,6 +36,37 @@
             "category": "MEXEL",
             "reason": "Competence Match (Profile B): chr + service",
             "short_title": "Erratum_Two_Year_Term",
+            "scores": {
+                "fit_score": 7,
+                "fit_reasons": [
+                    "Mexel category match"
+                ],
+                "fit_grade": "B",
+                "industry_score": 5,
+                "industry_matched": "General",
+                "industry_grade": "C",
+                "mexel_suitability": 0,
+                "mexel_fit": "Weak",
+                "company_category": "MEXEL",
+                "composite": 6.2,
+                "composite_score": 6.2,
+                "priority": "MEDIUM",
+                "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
+            }
+        },
+        {
+            "ref": "RFB 3287/2026 -(ERP No 499010)",
+            "title": "Provision of Heating, Ventilation, and Air Conditioning (HVAC) Equipment Maintenance Contract for SITA Pietermaritzburg Data Centre for a Period of Thirty-Six (36) Months",
+            "description": "Provision of Heating, Ventilation, and Air Conditioning (HVAC) Equipment Maintenance Contract for SITA Pietermaritzburg Data Centre for a Period of Thirty-Six (36) Months | Reference: RFB 3287/2026 -(ERP No 499010) | Supplies: Electrical Equipment | Request for Bid(Open-Tender) | N/A",
+            "client": "State Information Technology Agency",
+            "source": "National Treasury",
+            "ref_is_authoritative": true,
+            "url": "https://www.etenders.gov.za/Home/opportunities",
+            "closing_date": "2026-10-02",
+            "published_date": "2026-09-09",
+            "category": "MEXEL",
+            "reason": "Competence Match (Profile B): data centre + maintenance",
+            "short_title": "Heating_Ventilation_And_Air",
             "scores": {
                 "fit_score": 7,
                 "fit_reasons": [
@@ -87,37 +118,6 @@
             }
         },
         {
-            "ref": "RFB 3287/2026 -(ERP No 499010)",
-            "title": "Provision of Heating, Ventilation, and Air Conditioning (HVAC) Equipment Maintenance Contract for SITA Pietermaritzburg Data Centre for a Period of Thirty-Six (36) Months",
-            "description": "Provision of Heating, Ventilation, and Air Conditioning (HVAC) Equipment Maintenance Contract for SITA Pietermaritzburg Data Centre for a Period of Thirty-Six (36) Months | Reference: RFB 3287/2026 -(ERP No 499010) | Supplies: Electrical Equipment | Request for Bid(Open-Tender) | N/A",
-            "client": "State Information Technology Agency",
-            "source": "National Treasury",
-            "ref_is_authoritative": true,
-            "url": "https://www.etenders.gov.za/Home/opportunities",
-            "closing_date": "2026-10-02",
-            "published_date": "2026-09-09",
-            "category": "MEXEL",
-            "reason": "Competence Match (Profile B): data centre + maintenance",
-            "short_title": "Heating_Ventilation_And_Air",
-            "scores": {
-                "fit_score": 7,
-                "fit_reasons": [
-                    "Mexel category match"
-                ],
-                "fit_grade": "B",
-                "industry_score": 5,
-                "industry_matched": "General",
-                "industry_grade": "C",
-                "mexel_suitability": 0,
-                "mexel_fit": "Weak",
-                "company_category": "MEXEL",
-                "composite": 6.2,
-                "composite_score": 6.2,
-                "priority": "MEDIUM",
-                "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
-            }
-        },
-        {
             "ref": "REQ0006100- Readvert",
             "title": "Server Room Monitoring System",
             "description": "Server Room Monitoring System | Reference: REQ0006100- Readvert | Services: Professional | Request for Quotation | N/A",
@@ -130,38 +130,6 @@
             "category": "MEXEL",
             "reason": "Competence Match (Profile B): server room + monitoring",
             "short_title": "Server_Room_Monitoring_System",
-            "scores": {
-                "fit_score": 8,
-                "fit_reasons": [
-                    "Mexel category match",
-                    "Mexel alignment (1 keywords)"
-                ],
-                "fit_grade": "A",
-                "industry_score": 5,
-                "industry_matched": "General",
-                "industry_grade": "C",
-                "mexel_suitability": 2,
-                "mexel_fit": "Weak",
-                "company_category": "MEXEL",
-                "composite": 6.8,
-                "composite_score": 6.8,
-                "priority": "MEDIUM",
-                "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
-            }
-        },
-        {
-            "ref": "POS9962",
-            "title": "KAESER COMPRESSOR SERVICE (C SERVICE/MAJOR/OVERHAUL) - please email to mapule.msiza@tia.org.za",
-            "description": "KAESER COMPRESSOR SERVICE (C SERVICE/MAJOR/OVERHAUL) - please email to mapule.msiza@tia.org.za | Reference: POS9962 | Electricity, gas, steam and air conditioning | Request for Quotation | email to mapule.msiza@tia.org.za, KAESER COMPRESSOR SERVICE (C SERVICE/MAJOR/OVERHAUL): NO MANDATORY SITE VISIT. PLEASE NOTE: ONLY KAESER OR KAESER AUTHORISED DISTRIBUTOR WITH AN OFFICIAL LETTER IS REQUIRED THIS IS MANDATORY WITHOUT THE LETTER IT IS",
-            "client": "Technology Innovation Agency",
-            "source": "National Treasury",
-            "ref_is_authoritative": true,
-            "url": "https://www.etenders.gov.za/Home/opportunities",
-            "closing_date": "2026-09-14",
-            "published_date": "2026-09-07",
-            "category": "MEXEL",
-            "reason": "Competence Match (Profile B): compressor + service",
-            "short_title": "Kaeser_Compressor_C_Major",
             "scores": {
                 "fit_score": 8,
                 "fit_reasons": [
@@ -526,69 +494,6 @@
                 "composite_score": 9.4,
                 "priority": "HIGH",
                 "recommendation": "🔥 PRIORITY BID - Strong fit, pursue immediately"
-            }
-        },
-        {
-            "ref": "SCMU5-26/27-0005 CHR",
-            "title": "MAINTENANCE OF AIR-CONDITIONING SERVICES IN CHRIS HANI DISTRICT FOR A PERIOD OF TWO (2) YEARS – DEPARTMENT OF SOCIAL DEVELOPMENT",
-            "description": "MAINTENANCE OF AIR-CONDITIONING SERVICES IN CHRIS HANI DISTRICT FOR A PERIOD OF TWO (2) YEARS – DEPARTMENT OF SOCIAL DEVELOPMENT | Reference: SCMU5-26/27-0005 CHR | Electricity, gas, steam and air conditioning | Request for Bid(Open-Tender) | N/A",
-            "client": "Eastern Cape - Roads and Public Works",
-            "source": "National Treasury",
-            "ref_is_authoritative": true,
-            "url": "https://www.etenders.gov.za/Home/opportunities",
-            "closing_date": "2026-09-14",
-            "published_date": "2026-08-24",
-            "category": "MEXEL",
-            "reason": "Competence Match (Profile B): chr + maintenance",
-            "short_title": "Of_Air_Conditioning_In",
-            "scores": {
-                "fit_score": 8,
-                "fit_reasons": [
-                    "Mexel category match",
-                    "Mexel alignment (1 keywords)"
-                ],
-                "fit_grade": "A",
-                "industry_score": 5,
-                "industry_matched": "General",
-                "industry_grade": "C",
-                "mexel_suitability": 2,
-                "mexel_fit": "Weak",
-                "company_category": "MEXEL",
-                "composite": 6.8,
-                "composite_score": 6.8,
-                "priority": "MEDIUM",
-                "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
-            }
-        },
-        {
-            "ref": "SCMU5-26/27-0007 CHR",
-            "title": "TWO-YEAR TERM CONTRACT FOR SUPPLY, SERVICING, REPAIRS AND MAINTENANCE OF GENERAL BUILDING FOR CHRIS HANI DISTRICT- DEPARTMENT OF SOCIAL DEVELOPMENT",
-            "description": "TWO-YEAR TERM CONTRACT FOR SUPPLY, SERVICING, REPAIRS AND MAINTENANCE OF GENERAL BUILDING FOR CHRIS HANI DISTRICT- DEPARTMENT OF SOCIAL DEVELOPMENT | Reference: SCMU5-26/27-0007 CHR | Services: General | Request for Bid(Open-Tender) | N/A",
-            "client": "Eastern Cape - Roads and Public Works",
-            "source": "National Treasury",
-            "ref_is_authoritative": true,
-            "url": "https://www.etenders.gov.za/Home/opportunities",
-            "closing_date": "2026-09-14",
-            "published_date": "2026-08-24",
-            "category": "MEXEL",
-            "reason": "Competence Match (Profile B): chr + servicing",
-            "short_title": "Two_Year_Term_For",
-            "scores": {
-                "fit_score": 7,
-                "fit_reasons": [
-                    "Mexel category match"
-                ],
-                "fit_grade": "B",
-                "industry_score": 5,
-                "industry_matched": "General",
-                "industry_grade": "C",
-                "mexel_suitability": 0,
-                "mexel_fit": "Weak",
-                "company_category": "MEXEL",
-                "composite": 6.2,
-                "composite_score": 6.2,
-                "priority": "MEDIUM",
-                "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
             }
         },
         {
