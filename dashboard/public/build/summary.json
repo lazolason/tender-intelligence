@@ -1,20 +1,20 @@
 {
-    "generated_at": "2026-09-14 14:35",
-    "build_id": "2026-09-14 14:35 · e00f17c",
-    "build_sha": "e00f17c",
+    "generated_at": "2026-09-15 13:39",
+    "build_id": "2026-09-15 13:39 · 7fb85bb",
+    "build_sha": "7fb85bb",
     "next_run": "Daily 08:00",
     "counts": {
-        "total": 21,
+        "total": 22,
         "by_company": {
             "MEXEL": 16,
-            "PHAKATHI": 5
+            "PHAKATHI": 6
         },
         "by_priority": {
-            "HIGH": 12,
-            "MEDIUM": 9
+            "HIGH": 14,
+            "MEDIUM": 8
         },
         "by_source": {
-            "National Treasury": 21
+            "National Treasury": 22
         }
     },
     "top": [
@@ -79,6 +79,26 @@
             "url": "https://www.etenders.gov.za/Home/opportunities"
         },
         {
+            "title": "Denim Vessel Floor repairs or replacement (cation 2 and Strong Base 1,2 and 3 weak base 1 and laterals repairs and cleaning 2 on a once off basis at for a period 12 Months of Matla Power Station",
+            "source": "National Treasury",
+            "company": "MEXEL",
+            "priority": "HIGH",
+            "close_date": "2026-10-07",
+            "fit": null,
+            "suitability": 8.2,
+            "url": "https://www.etenders.gov.za/Home/opportunities"
+        },
+        {
+            "title": "CENTLEC (SOC) Ltd, hereafter referred to as CENTLEC, a Municipal Entity, distributing electricity in the area of Mangaung Metro Municipality, request proposals and bids, from registered electrical consulting engineers with their applicable professional teams, for the design and turnkey project management, specification, manufacturing, supply, installation, testing, commissioning and handing over of three new 33/11kV 10MVA transformers complete with tap change control and protection facilities, w",
+            "source": "National Treasury",
+            "company": "PHAKATHI",
+            "priority": "HIGH",
+            "close_date": "2026-10-15",
+            "fit": null,
+            "suitability": 8.2,
+            "url": "https://www.etenders.gov.za/Home/opportunities"
+        },
+        {
             "title": "The provision of compressor maintenance at Arnot Power Station for a period of 4 years.",
             "source": "National Treasury",
             "company": "MEXEL",
@@ -96,26 +116,6 @@
             "close_date": "2026-09-21",
             "fit": null,
             "suitability": 8.2,
-            "url": "https://www.etenders.gov.za/Home/opportunities"
-        },
-        {
-            "title": "SERVICE, MAINTENANCE AND REPAIRS OF ICT DATA CENTRE AIRCONDITIONING UNITS FOR A PERIOD ENDING 30 JUNE 2027",
-            "source": "National Treasury",
-            "company": "MEXEL",
-            "priority": "HIGH",
-            "close_date": "2026-10-05",
-            "fit": null,
-            "suitability": 7.0,
-            "url": "https://www.etenders.gov.za/Home/opportunities"
-        },
-        {
-            "title": "THE PLACEMENT OF NINETY (90) CALF COMPRESSOR DEVICES INCLUDING FULLY COMPREHENSIVE MAINTENANCE CONTRACT AND THE SUPPLY AND DELIVERY OF CONSUMABLES FOR GROOTE SCHUUR HOSPITAL OVER A THREE (3) YEAR PERIOD.",
-            "source": "National Treasury",
-            "company": "MEXEL",
-            "priority": "HIGH",
-            "close_date": "2026-10-02",
-            "fit": null,
-            "suitability": 7.0,
             "url": "https://www.etenders.gov.za/Home/opportunities"
         }
     ]
