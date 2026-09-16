@@ -1,10 +1,10 @@
 {
     "meta": {
-        "last_sync": "2026-09-15 13:39",
+        "last_sync": "2026-09-16 13:25",
         "snapshot_origin": "static_scrape",
         "next_run": "Daily 08:00",
-        "build_sha": "7fb85bb",
-        "build_id": "2026-09-15 13:39 · 7fb85bb",
+        "build_sha": "f66bc47",
+        "build_id": "2026-09-16 13:25 · f66bc47",
         "inputs": [
             "eskom.json",
             "joburg_water.json",
@@ -13,8 +13,8 @@
             "soes.json"
         ],
         "validation": {
-            "total": 22,
-            "valid": 22,
+            "total": 20,
+            "valid": 20,
             "invalid": 0,
             "warnings": 0,
             "error_counts": {},
@@ -114,38 +114,6 @@
                 "company_category": "MEXEL",
                 "composite": 6.2,
                 "composite_score": 6.2,
-                "priority": "MEDIUM",
-                "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
-            }
-        },
-        {
-            "ref": "RFQ - 12353",
-            "title": "APPOINTMENT OF A SERVICE PROVIDER FOR THE SUPPLY OF FIFTY-FIVE (55) LICENSES FOR THE HUAWEI AR651-8W-P ROUTERS",
-            "description": "APPOINTMENT OF A SERVICE PROVIDER FOR THE SUPPLY OF FIFTY-FIVE (55) LICENSES FOR THE HUAWEI AR651-8W-P ROUTERS | Reference: RFQ - 12353 | Information and communication | Request for Quotation | • Submission of fully completed SBD1 (Invitation to Bid), • Submission of a quotation on the company letterhead, • Submission of fully completed SBD 4 (Bidder’s disclosure), • Submission of fully completed SBD 6.1 • CSD Report • Valid Tax Pin or Certificate • Certified copy of BBBEE",
-            "client": "Broadband Infraco SOC",
-            "source": "National Treasury",
-            "ref_is_authoritative": true,
-            "url": "https://www.etenders.gov.za/Home/opportunities",
-            "closing_date": "2026-09-16",
-            "published_date": "2026-09-09",
-            "category": "PHAKATHI",
-            "reason": "Direct Brand Routing: matched 'huawei'",
-            "short_title": "A_Provider_Fifty_Five",
-            "scores": {
-                "fit_score": 8,
-                "fit_reasons": [
-                    "Phakathi category match",
-                    "Phakathi alignment (1 keywords)"
-                ],
-                "fit_grade": "A",
-                "industry_score": 5,
-                "industry_matched": "General",
-                "industry_grade": "C",
-                "mexel_suitability": 0,
-                "mexel_fit": "Weak",
-                "company_category": "PHAKATHI",
-                "composite": 6.8,
-                "composite_score": 6.8,
                 "priority": "MEDIUM",
                 "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
             }
@@ -272,38 +240,6 @@
                 "composite": 7.0,
                 "composite_score": 7.0,
                 "priority": "HIGH",
-                "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
-            }
-        },
-        {
-            "ref": "Re-Advert RFP OW-015/2026/27",
-            "title": "SUPPLY, DELIVERY AND INSTALLATION OF A MODERN TELEMETRY SYSTEM, UPGRADE OF SUPERVISORY CONTROL AND DATA ACQUISITION (SCADA) SYSTEM FROM ADROIT CLASSIC TO ADROIT SMART UI/EQUIVALENT AND MAINTENANCE OF THE SYSTEM FOR THIRTY-SIX MONTHS (36) FOR OVERBERG WATER (OWB) IN THE WESTERN CAPE.",
-            "description": "SUPPLY, DELIVERY AND INSTALLATION OF A MODERN TELEMETRY SYSTEM, UPGRADE OF SUPERVISORY CONTROL AND DATA ACQUISITION (SCADA) SYSTEM FROM ADROIT CLASSIC TO ADROIT SMART UI/EQUIVALENT AND MAINTENANCE OF THE SYSTEM FOR THIRTY-SIX MONTHS (36) FOR OVERBERG WATER (OWB) IN THE WESTERN CAPE. | Reference: Re-Advert RFP OW-015/2026/27 | Services: Professional | Request for Proposal | NON-COMPULSORY BRIEFING SESSION Date: 04 September 2026 Time: 10:00 am Venue: Rûensveld East WTW 34° 4'35.83\"S 20°14'44.63\"E",
-            "client": "Overberg Water",
-            "source": "National Treasury",
-            "ref_is_authoritative": true,
-            "url": "https://www.etenders.gov.za/Home/opportunities",
-            "closing_date": "2026-09-16",
-            "published_date": "2026-09-02",
-            "category": "PHAKATHI",
-            "reason": "Phakathi Match: 1 keyword(s)",
-            "short_title": "Supply_Delivery_And_Installation",
-            "scores": {
-                "fit_score": 8,
-                "fit_reasons": [
-                    "Phakathi category match",
-                    "Phakathi alignment (1 keywords)"
-                ],
-                "fit_grade": "A",
-                "industry_score": 5,
-                "industry_matched": "General",
-                "industry_grade": "C",
-                "mexel_suitability": 1,
-                "mexel_fit": "Weak",
-                "company_category": "PHAKATHI",
-                "composite": 6.8,
-                "composite_score": 6.8,
-                "priority": "MEDIUM",
                 "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
             }
         },
