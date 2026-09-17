@@ -1,10 +1,10 @@
 {
     "meta": {
-        "last_sync": "2026-09-16 13:25",
+        "last_sync": "2026-09-17 13:33",
         "snapshot_origin": "static_scrape",
         "next_run": "Daily 08:00",
-        "build_sha": "f66bc47",
-        "build_id": "2026-09-16 13:25 · f66bc47",
+        "build_sha": "7984904",
+        "build_id": "2026-09-17 13:33 · 7984904",
         "inputs": [
             "eskom.json",
             "joburg_water.json",
@@ -13,8 +13,8 @@
             "soes.json"
         ],
         "validation": {
-            "total": 20,
-            "valid": 20,
+            "total": 21,
+            "valid": 21,
             "invalid": 0,
             "warnings": 0,
             "error_counts": {},
@@ -23,6 +23,69 @@
         "planned_opportunity_count": 14
     },
     "tenders": [
+        {
+            "ref": "E2192GXMPKRIR Bidders list",
+            "title": "Publication of bidder's names for Refurbishment of Kriel PS Generator Circuit Breaker (GCB) Compressor Plant Control Circuit at Units 1 & 4 for a period of 12 months.",
+            "description": "Publication of bidder's names for Refurbishment of Kriel PS Generator Circuit Breaker (GCB) Compressor Plant Control Circuit at Units 1 & 4 for a period of 12 months. | Reference: E2192GXMPKRIR Bidders list | Other service activities | Request for Bid(Open-Tender) | N/A",
+            "client": "ESKOM",
+            "source": "National Treasury",
+            "ref_is_authoritative": true,
+            "url": "https://www.etenders.gov.za/Home/opportunities",
+            "closing_date": "2026-10-16",
+            "published_date": "2026-09-17",
+            "category": "MEXEL",
+            "reason": "Competence Match (Profile B): compressor + service",
+            "short_title": "Publication_Of_Bidder_S",
+            "scores": {
+                "fit_score": 7,
+                "fit_reasons": [
+                    "Mexel category match"
+                ],
+                "fit_grade": "B",
+                "industry_score": 10,
+                "industry_matched": "Eskom",
+                "industry_grade": "A",
+                "mexel_suitability": 1,
+                "mexel_fit": "Weak",
+                "company_category": "MEXEL",
+                "composite": 8.2,
+                "composite_score": 8.2,
+                "priority": "HIGH",
+                "recommendation": "🔥 PRIORITY BID - Strong fit, pursue immediately"
+            }
+        },
+        {
+            "ref": "Bid SAWS-453/26",
+            "title": "Supply and delivery of Hydrogen Generators with onboard and handheld hydrogen leak detection devices and sensors, Reverse Osmosis and Water De-Ionizer Systems, and Water Filtration Systems.",
+            "description": "Supply and delivery of Hydrogen Generators with onboard and handheld hydrogen leak detection devices and sensors, Reverse Osmosis and Water De-Ionizer Systems, and Water Filtration Systems. | Reference: Bid SAWS-453/26 | Other professional, scientific and technical activities | Request for Bid(Open-Tender) | N/A",
+            "client": "South African Weather Service",
+            "source": "National Treasury",
+            "ref_is_authoritative": true,
+            "url": "https://www.etenders.gov.za/Home/opportunities",
+            "closing_date": "2026-10-12",
+            "published_date": "2026-09-17",
+            "category": "MEXEL",
+            "reason": "Competence Match (Profile B): reverse osmosis + supply",
+            "short_title": "Hydrogen_Generators_With_Onboard",
+            "scores": {
+                "fit_score": 8,
+                "fit_reasons": [
+                    "Mexel category match",
+                    "Mexel alignment (1 keywords)"
+                ],
+                "fit_grade": "A",
+                "industry_score": 5,
+                "industry_matched": "General",
+                "industry_grade": "C",
+                "mexel_suitability": 3,
+                "mexel_fit": "Moderate",
+                "company_category": "MEXEL",
+                "composite": 6.8,
+                "composite_score": 6.8,
+                "priority": "MEDIUM",
+                "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
+            }
+        },
         {
             "ref": "E3525GXMPMAT",
             "title": "Denim Vessel Floor repairs or replacement (cation 2 and Strong Base 1,2 and 3 weak base 1 and laterals repairs and cleaning 2 on a once off basis at for a period 12 Months of Matla Power Station",
@@ -589,37 +652,6 @@
                 "composite_score": 8.8,
                 "priority": "HIGH",
                 "recommendation": "🔥 PRIORITY BID - Strong fit, pursue immediately"
-            }
-        },
-        {
-            "ref": "002-2025-26",
-            "title": "Upgrade and maintenance of Data Centre for a period of three (03) years. (Re-advert)",
-            "description": "Upgrade and maintenance of Data Centre for a period of three (03) years. (Re-advert) | Reference: 002-2025-26 | Other service activities | Request for Bid(Open-Tender) | N/A",
-            "client": "King Sabata Dalindyebo Local Municipality",
-            "source": "National Treasury",
-            "ref_is_authoritative": true,
-            "url": "https://www.etenders.gov.za/Home/opportunities",
-            "closing_date": "2026-09-17",
-            "published_date": "2026-08-07",
-            "category": "MEXEL",
-            "reason": "Competence Match (Profile B): data centre + service",
-            "short_title": "Upgrade_And_Of_Data",
-            "scores": {
-                "fit_score": 7,
-                "fit_reasons": [
-                    "Mexel category match"
-                ],
-                "fit_grade": "B",
-                "industry_score": 7,
-                "industry_matched": "Municipal",
-                "industry_grade": "B",
-                "mexel_suitability": 0,
-                "mexel_fit": "Weak",
-                "company_category": "MEXEL",
-                "composite": 7.0,
-                "composite_score": 7.0,
-                "priority": "HIGH",
-                "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
             }
         },
         {
