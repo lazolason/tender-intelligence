@@ -1,17 +1,17 @@
 {
-    "generated_at": "2026-09-17 13:33",
-    "build_id": "2026-09-17 13:33 · 7984904",
-    "build_sha": "7984904",
+    "generated_at": "2026-09-18 13:05",
+    "build_id": "2026-09-18 13:05 · 0fee8b5",
+    "build_sha": "0fee8b5",
     "next_run": "Daily 08:00",
     "counts": {
         "total": 21,
         "by_company": {
-            "MEXEL": 17,
-            "PHAKATHI": 4
+            "MEXEL": 16,
+            "PHAKATHI": 5
         },
         "by_priority": {
-            "HIGH": 14,
-            "MEDIUM": 7
+            "HIGH": 13,
+            "MEDIUM": 8
         },
         "by_source": {
             "National Treasury": 21
@@ -109,11 +109,11 @@
             "url": "https://www.etenders.gov.za/Home/opportunities"
         },
         {
-            "title": "The provision of compressor maintenance at Arnot Power Station for a period of 4 years.",
+            "title": "Refurbishment and Delivery of Turbine Auxiliary Oil Pumps - Seal Oil Pumps, Seal oil Vacuum Pumps, Stator Coolant Pumps and Ammonia Dosing Pumps at Grootvlei Power Station for the period of 5 years",
             "source": "National Treasury",
             "company": "MEXEL",
             "priority": "HIGH",
-            "close_date": "2026-09-18",
+            "close_date": "2026-09-21",
             "fit": null,
             "suitability": 8.2,
             "url": "https://www.etenders.gov.za/Home/opportunities"

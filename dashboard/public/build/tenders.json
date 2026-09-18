@@ -1,10 +1,10 @@
 {
     "meta": {
-        "last_sync": "2026-09-17 13:33",
+        "last_sync": "2026-09-18 13:05",
         "snapshot_origin": "static_scrape",
         "next_run": "Daily 08:00",
-        "build_sha": "7984904",
-        "build_id": "2026-09-17 13:33 · 7984904",
+        "build_sha": "0fee8b5",
+        "build_id": "2026-09-18 13:05 · 0fee8b5",
         "inputs": [
             "eskom.json",
             "joburg_water.json",
@@ -80,6 +80,38 @@
                 "mexel_suitability": 3,
                 "mexel_fit": "Moderate",
                 "company_category": "MEXEL",
+                "composite": 6.8,
+                "composite_score": 6.8,
+                "priority": "MEDIUM",
+                "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
+            }
+        },
+        {
+            "ref": "RFQ 12176 RE-ISSUE",
+            "title": "SUPPLY, DELIVER, INSTALL, CONFIGURE AND TEST A SCADA PANEL FOR THE ELECTRICAL COMPLEX AT KING PHALO AIRPORT.",
+            "description": "SUPPLY, DELIVER, INSTALL, CONFIGURE AND TEST A SCADA PANEL FOR THE ELECTRICAL COMPLEX AT KING PHALO AIRPORT. | Reference: RFQ 12176 RE-ISSUE | Services: General | Request for Quotation | N/A",
+            "client": "Airports Company of South Africa",
+            "source": "National Treasury",
+            "ref_is_authoritative": true,
+            "url": "https://www.etenders.gov.za/Home/opportunities",
+            "closing_date": "2026-10-02",
+            "published_date": "2026-09-17",
+            "category": "PHAKATHI",
+            "reason": "Phakathi Match: 1 keyword(s)",
+            "short_title": "Supply_Deliver_Install_Configure",
+            "scores": {
+                "fit_score": 8,
+                "fit_reasons": [
+                    "Phakathi category match",
+                    "Phakathi alignment (1 keywords)"
+                ],
+                "fit_grade": "A",
+                "industry_score": 5,
+                "industry_matched": "General",
+                "industry_grade": "C",
+                "mexel_suitability": 0,
+                "mexel_fit": "Weak",
+                "company_category": "PHAKATHI",
                 "composite": 6.8,
                 "composite_score": 6.8,
                 "priority": "MEDIUM",
@@ -334,37 +366,6 @@
                 "company_category": "MEXEL",
                 "composite": 8.8,
                 "composite_score": 8.8,
-                "priority": "HIGH",
-                "recommendation": "🔥 PRIORITY BID - Strong fit, pursue immediately"
-            }
-        },
-        {
-            "ref": "E2896GXMPARNR",
-            "title": "The provision of compressor maintenance at Arnot Power Station for a period of 4 years.",
-            "description": "The provision of compressor maintenance at Arnot Power Station for a period of 4 years. | Reference: E2896GXMPARNR | Other service activities | Request for Bid(Limited-Tender | N/A",
-            "client": "ESKOM",
-            "source": "National Treasury",
-            "ref_is_authoritative": true,
-            "url": "https://www.etenders.gov.za/Home/opportunities",
-            "closing_date": "2026-09-18",
-            "published_date": "2026-09-02",
-            "category": "MEXEL",
-            "reason": "Competence Match (Profile B): power station + service",
-            "short_title": "The_Compressor_At_Arnot",
-            "scores": {
-                "fit_score": 7,
-                "fit_reasons": [
-                    "Mexel category match"
-                ],
-                "fit_grade": "B",
-                "industry_score": 10,
-                "industry_matched": "Power",
-                "industry_grade": "A",
-                "mexel_suitability": 0,
-                "mexel_fit": "Weak",
-                "company_category": "MEXEL",
-                "composite": 8.2,
-                "composite_score": 8.2,
                 "priority": "HIGH",
                 "recommendation": "🔥 PRIORITY BID - Strong fit, pursue immediately"
             }
