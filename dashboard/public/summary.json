@@ -1,20 +1,20 @@
 {
-    "generated_at": "2026-09-20 13:12",
-    "build_id": "2026-09-20 13:12 · 9fd143f",
-    "build_sha": "9fd143f",
+    "generated_at": "2026-09-21 14:41",
+    "build_id": "2026-09-21 14:41 · f42dd7f",
+    "build_sha": "f42dd7f",
     "next_run": "Daily 08:00",
     "counts": {
-        "total": 21,
+        "total": 19,
         "by_company": {
-            "MEXEL": 16,
+            "MEXEL": 14,
             "PHAKATHI": 5
         },
         "by_priority": {
-            "HIGH": 13,
-            "MEDIUM": 8
+            "HIGH": 12,
+            "MEDIUM": 7
         },
         "by_source": {
-            "National Treasury": 21
+            "National Treasury": 19
         }
     },
     "top": [
@@ -109,13 +109,13 @@
             "url": "https://www.etenders.gov.za/Home/opportunities"
         },
         {
-            "title": "Refurbishment and Delivery of Turbine Auxiliary Oil Pumps - Seal Oil Pumps, Seal oil Vacuum Pumps, Stator Coolant Pumps and Ammonia Dosing Pumps at Grootvlei Power Station for the period of 5 years",
+            "title": "SERVICE, MAINTENANCE AND REPAIRS OF ICT DATA CENTRE AIRCONDITIONING UNITS FOR A PERIOD ENDING 30 JUNE 2027",
             "source": "National Treasury",
             "company": "MEXEL",
             "priority": "HIGH",
-            "close_date": "2026-09-21",
+            "close_date": "2026-10-05",
             "fit": null,
-            "suitability": 8.2,
+            "suitability": 7.0,
             "url": "https://www.etenders.gov.za/Home/opportunities"
         }
     ]
