@@ -1,20 +1,20 @@
 {
-    "generated_at": "2026-09-21 14:41",
-    "build_id": "2026-09-21 14:41 · f42dd7f",
-    "build_sha": "f42dd7f",
+    "generated_at": "2026-09-22 13:28",
+    "build_id": "2026-09-22 13:28 · 5257a15",
+    "build_sha": "5257a15",
     "next_run": "Daily 08:00",
     "counts": {
-        "total": 19,
+        "total": 15,
         "by_company": {
-            "MEXEL": 14,
+            "MEXEL": 10,
             "PHAKATHI": 5
         },
         "by_priority": {
-            "HIGH": 12,
-            "MEDIUM": 7
+            "HIGH": 11,
+            "MEDIUM": 4
         },
         "by_source": {
-            "National Treasury": 19
+            "National Treasury": 15
         }
     },
     "top": [
@@ -26,16 +26,6 @@
             "close_date": "2026-09-29",
             "fit": null,
             "suitability": 9.4,
-            "url": "https://www.etenders.gov.za/Home/opportunities"
-        },
-        {
-            "title": "The Provision of Water Quality Monitoring and Water Trucking Services for Kusile Power Station Project",
-            "source": "National Treasury",
-            "company": "MEXEL",
-            "priority": "HIGH",
-            "close_date": "2026-09-22",
-            "fit": null,
-            "suitability": 8.8,
             "url": "https://www.etenders.gov.za/Home/opportunities"
         },
         {
@@ -114,6 +104,16 @@
             "company": "MEXEL",
             "priority": "HIGH",
             "close_date": "2026-10-05",
+            "fit": null,
+            "suitability": 7.0,
+            "url": "https://www.etenders.gov.za/Home/opportunities"
+        },
+        {
+            "title": "THE PLACEMENT OF NINETY (90) CALF COMPRESSOR DEVICES INCLUDING FULLY COMPREHENSIVE MAINTENANCE CONTRACT AND THE SUPPLY AND DELIVERY OF CONSUMABLES FOR GROOTE SCHUUR HOSPITAL OVER A THREE (3) YEAR PERIOD.",
+            "source": "National Treasury",
+            "company": "MEXEL",
+            "priority": "HIGH",
+            "close_date": "2026-10-02",
             "fit": null,
             "suitability": 7.0,
             "url": "https://www.etenders.gov.za/Home/opportunities"
