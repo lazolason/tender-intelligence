@@ -1,10 +1,10 @@
 {
     "meta": {
-        "last_sync": "2026-09-22 13:28",
+        "last_sync": "2026-09-29 14:43",
         "snapshot_origin": "static_scrape",
         "next_run": "Daily 08:00",
-        "build_sha": "5257a15",
-        "build_id": "2026-09-22 13:28 · 5257a15",
+        "build_sha": "afd525c",
+        "build_id": "2026-09-29 14:43 · afd525c",
         "inputs": [
             "eskom.json",
             "joburg_water.json",
@@ -23,6 +23,68 @@
         "planned_opportunity_count": 14
     },
     "tenders": [
+        {
+            "ref": "SCM/2026/99/ENG",
+            "title": "SUPPLY, INSTALL AND COMMISSION REVERSE OSMOSIS MEMBRANES AT THE PLETTENBERG BAY DESALINATION PLANT.",
+            "description": "SUPPLY, INSTALL AND COMMISSION REVERSE OSMOSIS MEMBRANES AT THE PLETTENBERG BAY DESALINATION PLANT. | Reference: SCM/2026/99/ENG | Services: General | Request for Proposal | N/A",
+            "client": "Bitou Municipality",
+            "source": "National Treasury",
+            "ref_is_authoritative": true,
+            "url": "https://www.etenders.gov.za/Home/opportunities",
+            "closing_date": "2026-10-30",
+            "published_date": "2026-09-25",
+            "category": "MEXEL",
+            "reason": "Competence Match (Profile B): reverse osmosis + supply",
+            "short_title": "Supply_Install_And_Commission",
+            "scores": {
+                "fit_score": 7,
+                "fit_reasons": [
+                    "Mexel category match"
+                ],
+                "fit_grade": "B",
+                "industry_score": 7,
+                "industry_matched": "Municipal",
+                "industry_grade": "B",
+                "mexel_suitability": 1,
+                "mexel_fit": "Weak",
+                "company_category": "MEXEL",
+                "composite": 7.0,
+                "composite_score": 7.0,
+                "priority": "HIGH",
+                "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
+            }
+        },
+        {
+            "ref": "RW10420384/26",
+            "title": "TENDER FOR THE INVESTIGATION, DRILLING, REHABILITATION, EQUIPPING, INSTALLATION, COMMISSIONING AND HANDOVER OF GROUNDWATER INFRASTRUCTURE FOR UNSERVED COMMUNITIES IN GAUTENG AND MPUMALANGA PROVINCES FOR A PERIOD OF SIX (6) MONTHS",
+            "description": "TENDER FOR THE INVESTIGATION, DRILLING, REHABILITATION, EQUIPPING, INSTALLATION, COMMISSIONING AND HANDOVER OF GROUNDWATER INFRASTRUCTURE FOR UNSERVED COMMUNITIES IN GAUTENG AND MPUMALANGA PROVINCES FOR A PERIOD OF SIX (6) MONTHS | Reference: RW10420384/26 | Architectural and engineering activities; technical testing and analysis | Request for Bid(Open-Tender) | N/A",
+            "client": "Rand Water",
+            "source": "National Treasury",
+            "ref_is_authoritative": true,
+            "url": "https://www.etenders.gov.za/Home/opportunities",
+            "closing_date": "2026-10-16",
+            "published_date": "2026-09-25",
+            "category": "MEXEL",
+            "reason": "Competence Match (Profile B): infrastructure + installation",
+            "short_title": "The_Investigation_Drilling_Rehabilitation",
+            "scores": {
+                "fit_score": 7,
+                "fit_reasons": [
+                    "Mexel category match"
+                ],
+                "fit_grade": "B",
+                "industry_score": 8,
+                "industry_matched": "Rand Water",
+                "industry_grade": "A",
+                "mexel_suitability": 1,
+                "mexel_fit": "Weak",
+                "company_category": "MEXEL",
+                "composite": 7.4,
+                "composite_score": 7.4,
+                "priority": "HIGH",
+                "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
+            }
+        },
         {
             "ref": "E2192GXMPKRIR Bidders list",
             "title": "Publication of bidder's names for Refurbishment of Kriel PS Generator Circuit Breaker (GCB) Compressor Plant Control Circuit at Units 1 & 4 for a period of 12 months.",
@@ -337,70 +399,6 @@
                 "composite_score": 8.8,
                 "priority": "HIGH",
                 "recommendation": "🔥 PRIORITY BID - Strong fit, pursue immediately"
-            }
-        },
-        {
-            "ref": "RFP14/2026",
-            "title": "CENTLEC (SOC) Ltd, hereafter referred to as CENTLEC, a Municipal Entity, distributing electricity in the area of Mangaung Metro and other Municipalities, request for proposals and bids, from registered electrical consulting engineers with their applicable professional teams, for the design and turnkey project management, specification, manufacturing, supply, delivery, installation, testing, commissioning and handing over of two new 33/11kV 20MVA transformers complete with tap change control and ",
-            "description": "CENTLEC (SOC) Ltd, hereafter referred to as CENTLEC, a Municipal Entity, distributing electricity in the area of Mangaung Metro and other Municipalities, request for proposals and bids, from registered electrical consulting engineers with their applicable professional teams, for the design and turnkey project management, specification, manufacturing, supply, delivery, installation, testing, commissioning and handing over of two new 33/11kV 20MVA transformers complete with tap change control and protection facilities, which includes amongst other all civil and electrical works, with the upgrading of the associated existing 11kV switching infrastructures, and all other related protection, communication, monitoring, SCADA, power quality and metering equipment, mounted in control panels, as well as alarm and security surveillance systems for the existing Coal Yard 33/11kV Distribution Centre and the replacement / upgrading of the existing electrical infrastructure supplying the power station office building with electricity, for a period of thirty-six (36) months. | Reference: RFP14/2026 | Services: Electrical | Request for Proposal | N/A",
-            "client": "CENTLEC SOC LTD",
-            "source": "National Treasury",
-            "ref_is_authoritative": true,
-            "url": "https://www.etenders.gov.za/Home/opportunities",
-            "closing_date": "2026-09-29",
-            "published_date": "2026-08-27",
-            "category": "PHAKATHI",
-            "reason": "Phakathi Match: 1 keyword(s)",
-            "short_title": "Centlec_Soc_Ltd_Hereafter",
-            "scores": {
-                "fit_score": 9,
-                "fit_reasons": [
-                    "Phakathi category match",
-                    "Mexel alignment (1 keywords)",
-                    "Phakathi alignment (1 keywords)"
-                ],
-                "fit_grade": "A",
-                "industry_score": 10,
-                "industry_matched": "Power",
-                "industry_grade": "A",
-                "mexel_suitability": 2,
-                "mexel_fit": "Weak",
-                "company_category": "PHAKATHI",
-                "composite": 9.4,
-                "composite_score": 9.4,
-                "priority": "HIGH",
-                "recommendation": "🔥 PRIORITY BID - Strong fit, pursue immediately"
-            }
-        },
-        {
-            "ref": "07/2026/2027",
-            "title": "REFURBISHMENT AND MAINTENANCE OF DATA CENTER/SERVER ROOM FOR THREE (3) YEARS",
-            "description": "REFURBISHMENT AND MAINTENANCE OF DATA CENTER/SERVER ROOM FOR THREE (3) YEARS | Reference: 07/2026/2027 | Administrative and support activities | Request for Bid(Open-Tender) | N/A",
-            "client": "Thulamela Local Municipality",
-            "source": "National Treasury",
-            "ref_is_authoritative": true,
-            "url": "https://www.etenders.gov.za/Home/opportunities",
-            "closing_date": "2026-09-23",
-            "published_date": "2026-08-21",
-            "category": "MEXEL",
-            "reason": "Competence Match (Profile B): data center + maintenance",
-            "short_title": "Refurbishment_And_Of_Data",
-            "scores": {
-                "fit_score": 7,
-                "fit_reasons": [
-                    "Mexel category match"
-                ],
-                "fit_grade": "B",
-                "industry_score": 7,
-                "industry_matched": "Municipal",
-                "industry_grade": "B",
-                "mexel_suitability": 0,
-                "mexel_fit": "Weak",
-                "company_category": "MEXEL",
-                "composite": 7.0,
-                "composite_score": 7.0,
-                "priority": "HIGH",
-                "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
             }
         },
         {

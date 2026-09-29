@@ -1,13 +1,13 @@
 {
-    "generated_at": "2026-09-22 13:28",
-    "build_id": "2026-09-22 13:28 · 5257a15",
-    "build_sha": "5257a15",
+    "generated_at": "2026-09-29 14:43",
+    "build_id": "2026-09-29 14:43 · afd525c",
+    "build_sha": "afd525c",
     "next_run": "Daily 08:00",
     "counts": {
         "total": 15,
         "by_company": {
-            "MEXEL": 10,
-            "PHAKATHI": 5
+            "MEXEL": 11,
+            "PHAKATHI": 4
         },
         "by_priority": {
             "HIGH": 11,
@@ -18,16 +18,6 @@
         }
     },
     "top": [
-        {
-            "title": "CENTLEC (SOC) Ltd, hereafter referred to as CENTLEC, a Municipal Entity, distributing electricity in the area of Mangaung Metro and other Municipalities, request for proposals and bids, from registered electrical consulting engineers with their applicable professional teams, for the design and turnkey project management, specification, manufacturing, supply, delivery, installation, testing, commissioning and handing over of two new 33/11kV 20MVA transformers complete with tap change control and ",
-            "source": "National Treasury",
-            "company": "PHAKATHI",
-            "priority": "HIGH",
-            "close_date": "2026-09-29",
-            "fit": null,
-            "suitability": 9.4,
-            "url": "https://www.etenders.gov.za/Home/opportunities"
-        },
         {
             "title": "The supply, delivery and dosing of Cooling water chemicals Grootvlei Power Station.",
             "source": "National Treasury",
@@ -99,21 +89,31 @@
             "url": "https://www.etenders.gov.za/Home/opportunities"
         },
         {
-            "title": "SERVICE, MAINTENANCE AND REPAIRS OF ICT DATA CENTRE AIRCONDITIONING UNITS FOR A PERIOD ENDING 30 JUNE 2027",
+            "title": "TENDER FOR THE INVESTIGATION, DRILLING, REHABILITATION, EQUIPPING, INSTALLATION, COMMISSIONING AND HANDOVER OF GROUNDWATER INFRASTRUCTURE FOR UNSERVED COMMUNITIES IN GAUTENG AND MPUMALANGA PROVINCES FOR A PERIOD OF SIX (6) MONTHS",
             "source": "National Treasury",
             "company": "MEXEL",
             "priority": "HIGH",
-            "close_date": "2026-10-05",
+            "close_date": "2026-10-16",
+            "fit": null,
+            "suitability": 7.4,
+            "url": "https://www.etenders.gov.za/Home/opportunities"
+        },
+        {
+            "title": "SUPPLY, INSTALL AND COMMISSION REVERSE OSMOSIS MEMBRANES AT THE PLETTENBERG BAY DESALINATION PLANT.",
+            "source": "National Treasury",
+            "company": "MEXEL",
+            "priority": "HIGH",
+            "close_date": "2026-10-30",
             "fit": null,
             "suitability": 7.0,
             "url": "https://www.etenders.gov.za/Home/opportunities"
         },
         {
-            "title": "THE PLACEMENT OF NINETY (90) CALF COMPRESSOR DEVICES INCLUDING FULLY COMPREHENSIVE MAINTENANCE CONTRACT AND THE SUPPLY AND DELIVERY OF CONSUMABLES FOR GROOTE SCHUUR HOSPITAL OVER A THREE (3) YEAR PERIOD.",
+            "title": "SERVICE, MAINTENANCE AND REPAIRS OF ICT DATA CENTRE AIRCONDITIONING UNITS FOR A PERIOD ENDING 30 JUNE 2027",
             "source": "National Treasury",
             "company": "MEXEL",
             "priority": "HIGH",
-            "close_date": "2026-10-02",
+            "close_date": "2026-10-05",
             "fit": null,
             "suitability": 7.0,
             "url": "https://www.etenders.gov.za/Home/opportunities"
