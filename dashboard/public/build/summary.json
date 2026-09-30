@@ -1,20 +1,20 @@
 {
-    "generated_at": "2026-09-29 14:43",
-    "build_id": "2026-09-29 14:43 · afd525c",
-    "build_sha": "afd525c",
+    "generated_at": "2026-09-30 14:28",
+    "build_id": "2026-09-30 14:28 · 865a84f",
+    "build_sha": "865a84f",
     "next_run": "Daily 08:00",
     "counts": {
-        "total": 15,
+        "total": 16,
         "by_company": {
-            "MEXEL": 11,
+            "MEXEL": 12,
             "PHAKATHI": 4
         },
         "by_priority": {
-            "HIGH": 11,
+            "HIGH": 12,
             "MEDIUM": 4
         },
         "by_source": {
-            "National Treasury": 15
+            "National Treasury": 16
         }
     },
     "top": [
@@ -43,7 +43,7 @@
             "source": "National Treasury",
             "company": "MEXEL",
             "priority": "HIGH",
-            "close_date": "2026-10-02",
+            "close_date": "2026-10-22",
             "fit": null,
             "suitability": 8.8,
             "url": "https://www.etenders.gov.za/Home/opportunities"
@@ -56,6 +56,16 @@
             "close_date": "2026-10-16",
             "fit": null,
             "suitability": 8.8,
+            "url": "https://www.etenders.gov.za/Home/opportunities"
+        },
+        {
+            "title": "The Provision of Verification, Calibration, Maintenance and Repair for Portable Testing and Measuring Instruments at Arnot Power Station over a period of 60 months.",
+            "source": "National Treasury",
+            "company": "MEXEL",
+            "priority": "HIGH",
+            "close_date": "2026-10-29",
+            "fit": null,
+            "suitability": 8.2,
             "url": "https://www.etenders.gov.za/Home/opportunities"
         },
         {
@@ -104,16 +114,6 @@
             "company": "MEXEL",
             "priority": "HIGH",
             "close_date": "2026-10-30",
-            "fit": null,
-            "suitability": 7.0,
-            "url": "https://www.etenders.gov.za/Home/opportunities"
-        },
-        {
-            "title": "SERVICE, MAINTENANCE AND REPAIRS OF ICT DATA CENTRE AIRCONDITIONING UNITS FOR A PERIOD ENDING 30 JUNE 2027",
-            "source": "National Treasury",
-            "company": "MEXEL",
-            "priority": "HIGH",
-            "close_date": "2026-10-05",
             "fit": null,
             "suitability": 7.0,
             "url": "https://www.etenders.gov.za/Home/opportunities"

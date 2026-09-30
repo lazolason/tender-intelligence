@@ -1,10 +1,10 @@
 {
     "meta": {
-        "last_sync": "2026-09-29 14:43",
+        "last_sync": "2026-09-30 14:28",
         "snapshot_origin": "static_scrape",
         "next_run": "Daily 08:00",
-        "build_sha": "afd525c",
-        "build_id": "2026-09-29 14:43 · afd525c",
+        "build_sha": "865a84f",
+        "build_id": "2026-09-30 14:28 · 865a84f",
         "inputs": [
             "eskom.json",
             "joburg_water.json",
@@ -13,8 +13,8 @@
             "soes.json"
         ],
         "validation": {
-            "total": 15,
-            "valid": 15,
+            "total": 16,
+            "valid": 16,
             "invalid": 0,
             "warnings": 0,
             "error_counts": {},
@@ -23,6 +23,37 @@
         "planned_opportunity_count": 14
     },
     "tenders": [
+        {
+            "ref": "E3610GXMPARN",
+            "title": "The Provision of Verification, Calibration, Maintenance and Repair for Portable Testing and Measuring Instruments at Arnot Power Station over a period of 60 months.",
+            "description": "The Provision of Verification, Calibration, Maintenance and Repair for Portable Testing and Measuring Instruments at Arnot Power Station over a period of 60 months. | Reference: E3610GXMPARN | Services: General | Request for Bid(Open-Tender) | N/A",
+            "client": "ESKOM",
+            "source": "National Treasury",
+            "ref_is_authoritative": true,
+            "url": "https://www.etenders.gov.za/Home/opportunities",
+            "closing_date": "2026-10-29",
+            "published_date": "2026-09-29",
+            "category": "MEXEL",
+            "reason": "Competence Match (Profile B): power station + maintenance",
+            "short_title": "The_Verification_Calibration_And",
+            "scores": {
+                "fit_score": 7,
+                "fit_reasons": [
+                    "Mexel category match"
+                ],
+                "fit_grade": "B",
+                "industry_score": 10,
+                "industry_matched": "Power",
+                "industry_grade": "A",
+                "mexel_suitability": 0,
+                "mexel_fit": "Weak",
+                "company_category": "MEXEL",
+                "composite": 8.2,
+                "composite_score": 8.2,
+                "priority": "HIGH",
+                "recommendation": "🔥 PRIORITY BID - Strong fit, pursue immediately"
+            }
+        },
         {
             "ref": "SCM/2026/99/ENG",
             "title": "SUPPLY, INSTALL AND COMMISSION REVERSE OSMOSIS MEMBRANES AT THE PLETTENBERG BAY DESALINATION PLANT.",
@@ -441,7 +472,7 @@
             "source": "National Treasury",
             "ref_is_authoritative": true,
             "url": "https://www.etenders.gov.za/Home/opportunities",
-            "closing_date": "2026-10-02",
+            "closing_date": "2026-10-22",
             "published_date": "2026-08-14",
             "category": "MEXEL",
             "reason": "Competence Match (Profile B): power station + maintenance",
