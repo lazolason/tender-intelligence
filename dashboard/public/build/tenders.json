@@ -1,10 +1,10 @@
 {
     "meta": {
-        "last_sync": "2026-09-30 14:28",
+        "last_sync": "2026-10-01 15:04",
         "snapshot_origin": "static_scrape",
         "next_run": "Daily 08:00",
-        "build_sha": "865a84f",
-        "build_id": "2026-09-30 14:28 · 865a84f",
+        "build_sha": "26ae4b1",
+        "build_id": "2026-10-01 15:04 · 26ae4b1",
         "inputs": [
             "eskom.json",
             "joburg_water.json",
@@ -13,8 +13,8 @@
             "soes.json"
         ],
         "validation": {
-            "total": 16,
-            "valid": 16,
+            "total": 17,
+            "valid": 17,
             "invalid": 0,
             "warnings": 0,
             "error_counts": {},
@@ -23,6 +23,69 @@
         "planned_opportunity_count": 14
     },
     "tenders": [
+        {
+            "ref": "E3624GXMPGRO",
+            "title": "REFURBISHMENT OF METAL SEATED BUTTERFLY VALVE FOR USE AS CW ISOLATION VALVE ON MAIN CONDENSER ISOLATION VALVES (T1 AND T2 VALVES) FOR ONCE-OFF BASIS.",
+            "description": "REFURBISHMENT OF METAL SEATED BUTTERFLY VALVE FOR USE AS CW ISOLATION VALVE ON MAIN CONDENSER ISOLATION VALVES (T1 AND T2 VALVES) FOR ONCE-OFF BASIS. | Reference: E3624GXMPGRO | Other service activities | Request for Quotation | N/A",
+            "client": "ESKOM",
+            "source": "National Treasury",
+            "ref_is_authoritative": true,
+            "url": "https://www.etenders.gov.za/Home/opportunities",
+            "closing_date": "2026-11-30",
+            "published_date": "2026-09-30",
+            "category": "MEXEL",
+            "reason": "Competence Match (Profile B): condenser + service",
+            "short_title": "Refurbishment_Of_Metal_Seated",
+            "scores": {
+                "fit_score": 8,
+                "fit_reasons": [
+                    "Mexel category match",
+                    "Mexel alignment (1 keywords)"
+                ],
+                "fit_grade": "A",
+                "industry_score": 10,
+                "industry_matched": "Eskom",
+                "industry_grade": "A",
+                "mexel_suitability": 2,
+                "mexel_fit": "Weak",
+                "company_category": "MEXEL",
+                "composite": 8.8,
+                "composite_score": 8.8,
+                "priority": "HIGH",
+                "recommendation": "🔥 PRIORITY BID - Strong fit, pursue immediately"
+            }
+        },
+        {
+            "ref": "E3614GXMPKEN",
+            "title": "Refurbishment, repairs, maintenance and supply of new HVAC chillers and chiller components at the Kendal Power Station for a period of five (5) years",
+            "description": "Refurbishment, repairs, maintenance and supply of new HVAC chillers and chiller components at the Kendal Power Station for a period of five (5) years | Reference: E3614GXMPKEN | Construction | Request for Bid(Open-Tender) | N/A",
+            "client": "ESKOM",
+            "source": "National Treasury",
+            "ref_is_authoritative": true,
+            "url": "https://www.etenders.gov.za/Home/opportunities",
+            "closing_date": "2026-10-28",
+            "published_date": "2026-09-30",
+            "category": "MEXEL",
+            "reason": "Competence Match (Profile B): power station + maintenance",
+            "short_title": "Refurbishment_And_New_Hvac",
+            "scores": {
+                "fit_score": 7,
+                "fit_reasons": [
+                    "Mexel category match"
+                ],
+                "fit_grade": "B",
+                "industry_score": 10,
+                "industry_matched": "Power",
+                "industry_grade": "A",
+                "mexel_suitability": 0,
+                "mexel_fit": "Weak",
+                "company_category": "MEXEL",
+                "composite": 8.2,
+                "composite_score": 8.2,
+                "priority": "HIGH",
+                "recommendation": "🔥 PRIORITY BID - Strong fit, pursue immediately"
+            }
+        },
         {
             "ref": "E3610GXMPARN",
             "title": "The Provision of Verification, Calibration, Maintenance and Repair for Portable Testing and Measuring Instruments at Arnot Power Station over a period of 60 months.",
@@ -365,38 +428,6 @@
                 "composite": 7.0,
                 "composite_score": 7.0,
                 "priority": "HIGH",
-                "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
-            }
-        },
-        {
-            "ref": "2026/047",
-            "title": "Design, Install and Commission SCADA Information Centre at North East Regional Office",
-            "description": "Design, Install and Commission SCADA Information Centre at North East Regional Office | Reference: 2026/047 | Services: Electrical | Request for Bid(Open-Tender) | N/A",
-            "client": "uMngeni-uThukela Water",
-            "source": "National Treasury",
-            "ref_is_authoritative": true,
-            "url": "https://www.etenders.gov.za/Home/opportunities",
-            "closing_date": "2026-10-01",
-            "published_date": "2026-08-31",
-            "category": "PHAKATHI",
-            "reason": "Phakathi Match: 1 keyword(s)",
-            "short_title": "Design_Install_And_Commission",
-            "scores": {
-                "fit_score": 8,
-                "fit_reasons": [
-                    "Phakathi category match",
-                    "Phakathi alignment (1 keywords)"
-                ],
-                "fit_grade": "A",
-                "industry_score": 5,
-                "industry_matched": "General",
-                "industry_grade": "C",
-                "mexel_suitability": 0,
-                "mexel_fit": "Weak",
-                "company_category": "PHAKATHI",
-                "composite": 6.8,
-                "composite_score": 6.8,
-                "priority": "MEDIUM",
                 "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
             }
         },

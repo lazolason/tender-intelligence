@@ -1,23 +1,33 @@
 {
-    "generated_at": "2026-09-30 14:28",
-    "build_id": "2026-09-30 14:28 · 865a84f",
-    "build_sha": "865a84f",
+    "generated_at": "2026-10-01 15:04",
+    "build_id": "2026-10-01 15:04 · 26ae4b1",
+    "build_sha": "26ae4b1",
     "next_run": "Daily 08:00",
     "counts": {
-        "total": 16,
+        "total": 17,
         "by_company": {
-            "MEXEL": 12,
-            "PHAKATHI": 4
+            "MEXEL": 14,
+            "PHAKATHI": 3
         },
         "by_priority": {
-            "HIGH": 12,
-            "MEDIUM": 4
+            "HIGH": 14,
+            "MEDIUM": 3
         },
         "by_source": {
-            "National Treasury": 16
+            "National Treasury": 17
         }
     },
     "top": [
+        {
+            "title": "REFURBISHMENT OF METAL SEATED BUTTERFLY VALVE FOR USE AS CW ISOLATION VALVE ON MAIN CONDENSER ISOLATION VALVES (T1 AND T2 VALVES) FOR ONCE-OFF BASIS.",
+            "source": "National Treasury",
+            "company": "MEXEL",
+            "priority": "HIGH",
+            "close_date": "2026-11-30",
+            "fit": null,
+            "suitability": 8.8,
+            "url": "https://www.etenders.gov.za/Home/opportunities"
+        },
         {
             "title": "The supply, delivery and dosing of Cooling water chemicals Grootvlei Power Station.",
             "source": "National Treasury",
@@ -59,6 +69,16 @@
             "url": "https://www.etenders.gov.za/Home/opportunities"
         },
         {
+            "title": "Refurbishment, repairs, maintenance and supply of new HVAC chillers and chiller components at the Kendal Power Station for a period of five (5) years",
+            "source": "National Treasury",
+            "company": "MEXEL",
+            "priority": "HIGH",
+            "close_date": "2026-10-28",
+            "fit": null,
+            "suitability": 8.2,
+            "url": "https://www.etenders.gov.za/Home/opportunities"
+        },
+        {
             "title": "The Provision of Verification, Calibration, Maintenance and Repair for Portable Testing and Measuring Instruments at Arnot Power Station over a period of 60 months.",
             "source": "National Treasury",
             "company": "MEXEL",
@@ -96,26 +116,6 @@
             "close_date": "2026-10-15",
             "fit": null,
             "suitability": 8.2,
-            "url": "https://www.etenders.gov.za/Home/opportunities"
-        },
-        {
-            "title": "TENDER FOR THE INVESTIGATION, DRILLING, REHABILITATION, EQUIPPING, INSTALLATION, COMMISSIONING AND HANDOVER OF GROUNDWATER INFRASTRUCTURE FOR UNSERVED COMMUNITIES IN GAUTENG AND MPUMALANGA PROVINCES FOR A PERIOD OF SIX (6) MONTHS",
-            "source": "National Treasury",
-            "company": "MEXEL",
-            "priority": "HIGH",
-            "close_date": "2026-10-16",
-            "fit": null,
-            "suitability": 7.4,
-            "url": "https://www.etenders.gov.za/Home/opportunities"
-        },
-        {
-            "title": "SUPPLY, INSTALL AND COMMISSION REVERSE OSMOSIS MEMBRANES AT THE PLETTENBERG BAY DESALINATION PLANT.",
-            "source": "National Treasury",
-            "company": "MEXEL",
-            "priority": "HIGH",
-            "close_date": "2026-10-30",
-            "fit": null,
-            "suitability": 7.0,
             "url": "https://www.etenders.gov.za/Home/opportunities"
         }
     ]
