@@ -1,20 +1,20 @@
 {
-    "generated_at": "2026-10-01 15:04",
-    "build_id": "2026-10-01 15:04 · 26ae4b1",
-    "build_sha": "26ae4b1",
+    "generated_at": "2026-10-02 14:26",
+    "build_id": "2026-10-02 14:26 · d08f32c",
+    "build_sha": "d08f32c",
     "next_run": "Daily 08:00",
     "counts": {
-        "total": 17,
+        "total": 15,
         "by_company": {
-            "MEXEL": 14,
+            "MEXEL": 12,
             "PHAKATHI": 3
         },
         "by_priority": {
-            "HIGH": 14,
-            "MEDIUM": 3
+            "HIGH": 13,
+            "MEDIUM": 2
         },
         "by_source": {
-            "National Treasury": 17
+            "National Treasury": 15
         }
     },
     "top": [
