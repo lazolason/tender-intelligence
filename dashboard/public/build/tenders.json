@@ -1,10 +1,10 @@
 {
     "meta": {
-        "last_sync": "2026-10-02 14:26",
+        "last_sync": "2026-10-03 13:36",
         "snapshot_origin": "static_scrape",
         "next_run": "Daily 08:00",
-        "build_sha": "d08f32c",
-        "build_id": "2026-10-02 14:26 · d08f32c",
+        "build_sha": "8a7d90c",
+        "build_id": "2026-10-03 13:36 · 8a7d90c",
         "inputs": [
             "eskom.json",
             "joburg_water.json",
@@ -13,8 +13,8 @@
             "soes.json"
         ],
         "validation": {
-            "total": 15,
-            "valid": 15,
+            "total": 14,
+            "valid": 14,
             "invalid": 0,
             "warnings": 0,
             "error_counts": {},
@@ -236,38 +236,6 @@
                 "mexel_suitability": 3,
                 "mexel_fit": "Moderate",
                 "company_category": "MEXEL",
-                "composite": 6.8,
-                "composite_score": 6.8,
-                "priority": "MEDIUM",
-                "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
-            }
-        },
-        {
-            "ref": "RFQ 12176 RE-ISSUE",
-            "title": "SUPPLY, DELIVER, INSTALL, CONFIGURE AND TEST A SCADA PANEL FOR THE ELECTRICAL COMPLEX AT KING PHALO AIRPORT.",
-            "description": "SUPPLY, DELIVER, INSTALL, CONFIGURE AND TEST A SCADA PANEL FOR THE ELECTRICAL COMPLEX AT KING PHALO AIRPORT. | Reference: RFQ 12176 RE-ISSUE | Services: General | Request for Quotation | N/A",
-            "client": "Airports Company of South Africa",
-            "source": "National Treasury",
-            "ref_is_authoritative": true,
-            "url": "https://www.etenders.gov.za/Home/opportunities",
-            "closing_date": "2026-10-02",
-            "published_date": "2026-09-17",
-            "category": "PHAKATHI",
-            "reason": "Phakathi Match: 1 keyword(s)",
-            "short_title": "Supply_Deliver_Install_Configure",
-            "scores": {
-                "fit_score": 8,
-                "fit_reasons": [
-                    "Phakathi category match",
-                    "Phakathi alignment (1 keywords)"
-                ],
-                "fit_grade": "A",
-                "industry_score": 5,
-                "industry_matched": "General",
-                "industry_grade": "C",
-                "mexel_suitability": 0,
-                "mexel_fit": "Weak",
-                "company_category": "PHAKATHI",
                 "composite": 6.8,
                 "composite_score": 6.8,
                 "priority": "MEDIUM",
