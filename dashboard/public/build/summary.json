@@ -1,20 +1,20 @@
 {
-    "generated_at": "2026-10-04 14:17",
-    "build_id": "2026-10-04 14:17 · f160556",
-    "build_sha": "f160556",
+    "generated_at": "2026-10-05 16:27",
+    "build_id": "2026-10-05 16:27 · abbfe76",
+    "build_sha": "abbfe76",
     "next_run": "Daily 08:00",
     "counts": {
-        "total": 14,
+        "total": 11,
         "by_company": {
-            "MEXEL": 12,
-            "PHAKATHI": 2
+            "MEXEL": 10,
+            "PHAKATHI": 1
         },
         "by_priority": {
-            "HIGH": 13,
+            "HIGH": 10,
             "MEDIUM": 1
         },
         "by_source": {
-            "National Treasury": 14
+            "National Treasury": 11
         }
     },
     "top": [
@@ -24,26 +24,6 @@
             "company": "MEXEL",
             "priority": "HIGH",
             "close_date": "2026-11-30",
-            "fit": null,
-            "suitability": 8.8,
-            "url": "https://www.etenders.gov.za/Home/opportunities"
-        },
-        {
-            "title": "The supply, delivery and dosing of Cooling water chemicals Grootvlei Power Station.",
-            "source": "National Treasury",
-            "company": "MEXEL",
-            "priority": "HIGH",
-            "close_date": "2026-10-05",
-            "fit": null,
-            "suitability": 8.8,
-            "url": "https://www.etenders.gov.za/Home/opportunities"
-        },
-        {
-            "title": "CENTRALIZED OPERATIONAL TECHNOLOGY (OT) CONFIGURATION MANAGEMENT SYSTEM FOR NTCSA",
-            "source": "National Treasury",
-            "company": "PHAKATHI",
-            "priority": "HIGH",
-            "close_date": "2026-10-05",
             "fit": null,
             "suitability": 8.8,
             "url": "https://www.etenders.gov.za/Home/opportunities"
@@ -116,6 +96,26 @@
             "close_date": "2026-10-15",
             "fit": null,
             "suitability": 8.2,
+            "url": "https://www.etenders.gov.za/Home/opportunities"
+        },
+        {
+            "title": "TENDER FOR THE INVESTIGATION, DRILLING, REHABILITATION, EQUIPPING, INSTALLATION, COMMISSIONING AND HANDOVER OF GROUNDWATER INFRASTRUCTURE FOR UNSERVED COMMUNITIES IN GAUTENG AND MPUMALANGA PROVINCES FOR A PERIOD OF SIX (6) MONTHS",
+            "source": "National Treasury",
+            "company": "MEXEL",
+            "priority": "HIGH",
+            "close_date": "2026-10-16",
+            "fit": null,
+            "suitability": 7.4,
+            "url": "https://www.etenders.gov.za/Home/opportunities"
+        },
+        {
+            "title": "SUPPLY, INSTALL AND COMMISSION REVERSE OSMOSIS MEMBRANES AT THE PLETTENBERG BAY DESALINATION PLANT.",
+            "source": "National Treasury",
+            "company": "MEXEL",
+            "priority": "HIGH",
+            "close_date": "2026-10-30",
+            "fit": null,
+            "suitability": 7.0,
             "url": "https://www.etenders.gov.za/Home/opportunities"
         }
     ]
