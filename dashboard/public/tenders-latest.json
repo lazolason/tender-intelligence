@@ -1,10 +1,10 @@
 {
     "meta": {
-        "last_sync": "2026-10-05 16:27",
+        "last_sync": "2026-10-07 15:14",
         "snapshot_origin": "static_scrape",
         "next_run": "Daily 08:00",
-        "build_sha": "abbfe76",
-        "build_id": "2026-10-05 16:27 · abbfe76",
+        "build_sha": "45bd217",
+        "build_id": "2026-10-07 15:14 · 45bd217",
         "inputs": [
             "eskom.json",
             "joburg_water.json",
@@ -13,8 +13,8 @@
             "soes.json"
         ],
         "validation": {
-            "total": 11,
-            "valid": 11,
+            "total": 10,
+            "valid": 10,
             "invalid": 0,
             "warnings": 0,
             "error_counts": {},
@@ -240,37 +240,6 @@
                 "composite_score": 6.8,
                 "priority": "MEDIUM",
                 "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
-            }
-        },
-        {
-            "ref": "E3525GXMPMAT",
-            "title": "Denim Vessel Floor repairs or replacement (cation 2 and Strong Base 1,2 and 3 weak base 1 and laterals repairs and cleaning 2 on a once off basis at for a period 12 Months of Matla Power Station",
-            "description": "Denim Vessel Floor repairs or replacement (cation 2 and Strong Base 1,2 and 3 weak base 1 and laterals repairs and cleaning 2 on a once off basis at for a period 12 Months of Matla Power Station | Reference: E3525GXMPMAT | Water collection, treatment and supply | Request for Bid(Open-Tender) | N/A",
-            "client": "ESKOM",
-            "source": "National Treasury",
-            "ref_is_authoritative": true,
-            "url": "https://www.etenders.gov.za/Home/opportunities",
-            "closing_date": "2026-10-07",
-            "published_date": "2026-09-14",
-            "category": "MEXEL",
-            "reason": "Competence Match (Profile B): power station + treatment",
-            "short_title": "Denim_Vessel_Floor_Or",
-            "scores": {
-                "fit_score": 7,
-                "fit_reasons": [
-                    "Mexel category match"
-                ],
-                "fit_grade": "B",
-                "industry_score": 10,
-                "industry_matched": "Power",
-                "industry_grade": "A",
-                "mexel_suitability": 2,
-                "mexel_fit": "Weak",
-                "company_category": "MEXEL",
-                "composite": 8.2,
-                "composite_score": 8.2,
-                "priority": "HIGH",
-                "recommendation": "🔥 PRIORITY BID - Strong fit, pursue immediately"
             }
         },
         {

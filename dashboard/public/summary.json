@@ -1,20 +1,20 @@
 {
-    "generated_at": "2026-10-05 16:27",
-    "build_id": "2026-10-05 16:27 · abbfe76",
-    "build_sha": "abbfe76",
+    "generated_at": "2026-10-07 15:14",
+    "build_id": "2026-10-07 15:14 · 45bd217",
+    "build_sha": "45bd217",
     "next_run": "Daily 08:00",
     "counts": {
-        "total": 11,
+        "total": 10,
         "by_company": {
-            "MEXEL": 10,
+            "MEXEL": 9,
             "PHAKATHI": 1
         },
         "by_priority": {
-            "HIGH": 10,
+            "HIGH": 9,
             "MEDIUM": 1
         },
         "by_source": {
-            "National Treasury": 11
+            "National Treasury": 10
         }
     },
     "top": [
@@ -79,16 +79,6 @@
             "url": "https://www.etenders.gov.za/Home/opportunities"
         },
         {
-            "title": "Denim Vessel Floor repairs or replacement (cation 2 and Strong Base 1,2 and 3 weak base 1 and laterals repairs and cleaning 2 on a once off basis at for a period 12 Months of Matla Power Station",
-            "source": "National Treasury",
-            "company": "MEXEL",
-            "priority": "HIGH",
-            "close_date": "2026-10-07",
-            "fit": null,
-            "suitability": 8.2,
-            "url": "https://www.etenders.gov.za/Home/opportunities"
-        },
-        {
             "title": "CENTLEC (SOC) Ltd, hereafter referred to as CENTLEC, a Municipal Entity, distributing electricity in the area of Mangaung Metro Municipality, request proposals and bids, from registered electrical consulting engineers with their applicable professional teams, for the design and turnkey project management, specification, manufacturing, supply, installation, testing, commissioning and handing over of three new 33/11kV 10MVA transformers complete with tap change control and protection facilities, w",
             "source": "National Treasury",
             "company": "PHAKATHI",
@@ -116,6 +106,16 @@
             "close_date": "2026-10-30",
             "fit": null,
             "suitability": 7.0,
+            "url": "https://www.etenders.gov.za/Home/opportunities"
+        },
+        {
+            "title": "Supply and delivery of Hydrogen Generators with onboard and handheld hydrogen leak detection devices and sensors, Reverse Osmosis and Water De-Ionizer Systems, and Water Filtration Systems.",
+            "source": "National Treasury",
+            "company": "MEXEL",
+            "priority": "MEDIUM",
+            "close_date": "2026-10-12",
+            "fit": null,
+            "suitability": 6.8,
             "url": "https://www.etenders.gov.za/Home/opportunities"
         }
     ]
