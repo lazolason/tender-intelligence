@@ -1,20 +1,20 @@
 {
-    "generated_at": "2026-10-07 15:14",
-    "build_id": "2026-10-07 15:14 · 45bd217",
-    "build_sha": "45bd217",
+    "generated_at": "2026-10-08 15:20",
+    "build_id": "2026-10-08 15:20 · df3311c",
+    "build_sha": "df3311c",
     "next_run": "Daily 08:00",
     "counts": {
-        "total": 10,
+        "total": 11,
         "by_company": {
-            "MEXEL": 9,
+            "MEXEL": 10,
             "PHAKATHI": 1
         },
         "by_priority": {
-            "HIGH": 9,
+            "HIGH": 10,
             "MEDIUM": 1
         },
         "by_source": {
-            "National Treasury": 10
+            "National Treasury": 11
         }
     },
     "top": [
@@ -46,6 +46,16 @@
             "close_date": "2026-10-16",
             "fit": null,
             "suitability": 8.8,
+            "url": "https://www.etenders.gov.za/Home/opportunities"
+        },
+        {
+            "title": "BID - 2646GS - For Bids For SAP Infrastructure",
+            "source": "National Treasury",
+            "company": "MEXEL",
+            "priority": "HIGH",
+            "close_date": "2026-11-10",
+            "fit": null,
+            "suitability": 8.2,
             "url": "https://www.etenders.gov.za/Home/opportunities"
         },
         {
@@ -106,16 +116,6 @@
             "close_date": "2026-10-30",
             "fit": null,
             "suitability": 7.0,
-            "url": "https://www.etenders.gov.za/Home/opportunities"
-        },
-        {
-            "title": "Supply and delivery of Hydrogen Generators with onboard and handheld hydrogen leak detection devices and sensors, Reverse Osmosis and Water De-Ionizer Systems, and Water Filtration Systems.",
-            "source": "National Treasury",
-            "company": "MEXEL",
-            "priority": "MEDIUM",
-            "close_date": "2026-10-12",
-            "fit": null,
-            "suitability": 6.8,
             "url": "https://www.etenders.gov.za/Home/opportunities"
         }
     ]

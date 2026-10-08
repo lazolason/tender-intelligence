@@ -1,10 +1,10 @@
 {
     "meta": {
-        "last_sync": "2026-10-07 15:14",
+        "last_sync": "2026-10-08 15:20",
         "snapshot_origin": "static_scrape",
         "next_run": "Daily 08:00",
-        "build_sha": "45bd217",
-        "build_id": "2026-10-07 15:14 · 45bd217",
+        "build_sha": "df3311c",
+        "build_id": "2026-10-08 15:20 · df3311c",
         "inputs": [
             "eskom.json",
             "joburg_water.json",
@@ -13,8 +13,8 @@
             "soes.json"
         ],
         "validation": {
-            "total": 10,
-            "valid": 10,
+            "total": 11,
+            "valid": 11,
             "invalid": 0,
             "warnings": 0,
             "error_counts": {},
@@ -23,6 +23,37 @@
         "planned_opportunity_count": 14
     },
     "tenders": [
+        {
+            "ref": "BID - 2646GS",
+            "title": "BID - 2646GS - For Bids For SAP Infrastructure",
+            "description": "BID - 2646GS - For Bids For SAP Infrastructure | Reference: BID - 2646GS | Information and communication | Request for Bid(Open-Tender) | Enterprises owned by black people with at least 51% shareholding  51% black ownership = 6 points  Less than 51% black ownership = 0 point (Provide certified copy (not older than three (3) months) of BEE certificate / sworn affidavit, consolidated B-BBEE certificate from verification agency if bidders JV/consortium) Less than 30% black women ownership = 0 points",
+            "client": "City Power – Johannesburg",
+            "source": "National Treasury",
+            "ref_is_authoritative": true,
+            "url": "https://www.etenders.gov.za/Home/opportunities",
+            "closing_date": "2026-11-10",
+            "published_date": "2026-10-08",
+            "category": "MEXEL",
+            "reason": "Competence Match (Profile B): infrastructure + verification",
+            "short_title": "Bid_2646gs_For_Bids",
+            "scores": {
+                "fit_score": 7,
+                "fit_reasons": [
+                    "Mexel category match"
+                ],
+                "fit_grade": "B",
+                "industry_score": 10,
+                "industry_matched": "Power",
+                "industry_grade": "A",
+                "mexel_suitability": 0,
+                "mexel_fit": "Weak",
+                "company_category": "MEXEL",
+                "composite": 8.2,
+                "composite_score": 8.2,
+                "priority": "HIGH",
+                "recommendation": "🔥 PRIORITY BID - Strong fit, pursue immediately"
+            }
+        },
         {
             "ref": "E3624GXMPGRO",
             "title": "REFURBISHMENT OF METAL SEATED BUTTERFLY VALVE FOR USE AS CW ISOLATION VALVE ON MAIN CONDENSER ISOLATION VALVES (T1 AND T2 VALVES) FOR ONCE-OFF BASIS.",
