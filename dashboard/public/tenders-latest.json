@@ -1,10 +1,10 @@
 {
     "meta": {
-        "last_sync": "2026-10-08 15:20",
+        "last_sync": "2026-10-09 15:07",
         "snapshot_origin": "static_scrape",
         "next_run": "Daily 08:00",
-        "build_sha": "df3311c",
-        "build_id": "2026-10-08 15:20 · df3311c",
+        "build_sha": "298945f",
+        "build_id": "2026-10-09 15:07 · 298945f",
         "inputs": [
             "eskom.json",
             "joburg_water.json",
@@ -13,8 +13,8 @@
             "soes.json"
         ],
         "validation": {
-            "total": 11,
-            "valid": 11,
+            "total": 12,
+            "valid": 12,
             "invalid": 0,
             "warnings": 0,
             "error_counts": {},
@@ -23,6 +23,39 @@
         "planned_opportunity_count": 14
     },
     "tenders": [
+        {
+            "ref": "9/3/1/445",
+            "title": "APPOINTMENT OF A SERVICE PROVIDER FOR THE SUPPLY, REFURBISHMENT, INSTALLATION AND COMMISSIONING OF MCC AND ASSOCIATED ELECTRICAL CONTROL INFRASTRUCTURE AT THE BELA-BELA WASTEWATER TREATMENT WORKS – SCADA IMPLEMENTATION PHASE 1A",
+            "description": "APPOINTMENT OF A SERVICE PROVIDER FOR THE SUPPLY, REFURBISHMENT, INSTALLATION AND COMMISSIONING OF MCC AND ASSOCIATED ELECTRICAL CONTROL INFRASTRUCTURE AT THE BELA-BELA WASTEWATER TREATMENT WORKS – SCADA IMPLEMENTATION PHASE 1A | Reference: 9/3/1/445 | Professional, scientific and technical activities | Request for Bid(Open-Tender) | 1EB or Higher CIDB Grading",
+            "client": "Bela Bela Local Municipality",
+            "source": "National Treasury",
+            "ref_is_authoritative": true,
+            "url": "https://www.etenders.gov.za/Home/opportunities",
+            "closing_date": "2026-10-30",
+            "published_date": "2026-10-09",
+            "category": "MEXEL",
+            "reason": "Competence Match (Profile B): infrastructure + treatment",
+            "short_title": "A_Provider_Supply_Refurbishment",
+            "scores": {
+                "fit_score": 9,
+                "fit_reasons": [
+                    "Mexel category match",
+                    "Mexel alignment (1 keywords)",
+                    "Phakathi alignment (1 keywords)"
+                ],
+                "fit_grade": "A",
+                "industry_score": 7,
+                "industry_matched": "Municipal",
+                "industry_grade": "B",
+                "mexel_suitability": 4,
+                "mexel_fit": "Moderate",
+                "company_category": "MEXEL",
+                "composite": 8.2,
+                "composite_score": 8.2,
+                "priority": "HIGH",
+                "recommendation": "🔥 PRIORITY BID - Strong fit, pursue immediately"
+            }
+        },
         {
             "ref": "BID - 2646GS",
             "title": "BID - 2646GS - For Bids For SAP Infrastructure",
@@ -182,7 +215,7 @@
         {
             "ref": "RW10420384/26",
             "title": "TENDER FOR THE INVESTIGATION, DRILLING, REHABILITATION, EQUIPPING, INSTALLATION, COMMISSIONING AND HANDOVER OF GROUNDWATER INFRASTRUCTURE FOR UNSERVED COMMUNITIES IN GAUTENG AND MPUMALANGA PROVINCES FOR A PERIOD OF SIX (6) MONTHS",
-            "description": "TENDER FOR THE INVESTIGATION, DRILLING, REHABILITATION, EQUIPPING, INSTALLATION, COMMISSIONING AND HANDOVER OF GROUNDWATER INFRASTRUCTURE FOR UNSERVED COMMUNITIES IN GAUTENG AND MPUMALANGA PROVINCES FOR A PERIOD OF SIX (6) MONTHS | Reference: RW10420384/26 | Architectural and engineering activities; technical testing and analysis | Request for Bid(Open-Tender) | N/A",
+            "description": "TENDER FOR THE INVESTIGATION, DRILLING, REHABILITATION, EQUIPPING, INSTALLATION, COMMISSIONING AND HANDOVER OF GROUNDWATER INFRASTRUCTURE FOR UNSERVED COMMUNITIES IN GAUTENG AND MPUMALANGA PROVINCES FOR A PERIOD OF SIX (6) MONTHS | Reference: RW10420384/26 | Architectural and engineering activities; technical testing and analysis | Request for Bid(Open-Tender) | 09 OCTOBER 2026 1. Bid Clarification 01 2. Bid queries and answers",
             "client": "Rand Water",
             "source": "National Treasury",
             "ref_is_authoritative": true,

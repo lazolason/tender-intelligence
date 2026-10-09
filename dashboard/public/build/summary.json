@@ -1,20 +1,20 @@
 {
-    "generated_at": "2026-10-08 15:20",
-    "build_id": "2026-10-08 15:20 · df3311c",
-    "build_sha": "df3311c",
+    "generated_at": "2026-10-09 15:07",
+    "build_id": "2026-10-09 15:07 · 298945f",
+    "build_sha": "298945f",
     "next_run": "Daily 08:00",
     "counts": {
-        "total": 11,
+        "total": 12,
         "by_company": {
-            "MEXEL": 10,
+            "MEXEL": 11,
             "PHAKATHI": 1
         },
         "by_priority": {
-            "HIGH": 10,
+            "HIGH": 11,
             "MEDIUM": 1
         },
         "by_source": {
-            "National Treasury": 11
+            "National Treasury": 12
         }
     },
     "top": [
@@ -46,6 +46,16 @@
             "close_date": "2026-10-16",
             "fit": null,
             "suitability": 8.8,
+            "url": "https://www.etenders.gov.za/Home/opportunities"
+        },
+        {
+            "title": "APPOINTMENT OF A SERVICE PROVIDER FOR THE SUPPLY, REFURBISHMENT, INSTALLATION AND COMMISSIONING OF MCC AND ASSOCIATED ELECTRICAL CONTROL INFRASTRUCTURE AT THE BELA-BELA WASTEWATER TREATMENT WORKS – SCADA IMPLEMENTATION PHASE 1A",
+            "source": "National Treasury",
+            "company": "MEXEL",
+            "priority": "HIGH",
+            "close_date": "2026-10-30",
+            "fit": null,
+            "suitability": 8.2,
             "url": "https://www.etenders.gov.za/Home/opportunities"
         },
         {
@@ -106,16 +116,6 @@
             "close_date": "2026-10-16",
             "fit": null,
             "suitability": 7.4,
-            "url": "https://www.etenders.gov.za/Home/opportunities"
-        },
-        {
-            "title": "SUPPLY, INSTALL AND COMMISSION REVERSE OSMOSIS MEMBRANES AT THE PLETTENBERG BAY DESALINATION PLANT.",
-            "source": "National Treasury",
-            "company": "MEXEL",
-            "priority": "HIGH",
-            "close_date": "2026-10-30",
-            "fit": null,
-            "suitability": 7.0,
             "url": "https://www.etenders.gov.za/Home/opportunities"
         }
     ]
