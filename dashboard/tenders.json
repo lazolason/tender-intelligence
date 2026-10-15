@@ -1,10 +1,10 @@
 {
     "meta": {
-        "last_sync": "2026-10-14 13:43",
+        "last_sync": "2026-10-15 13:21",
         "snapshot_origin": "static_scrape",
         "next_run": "Daily 08:00",
-        "build_sha": "a37ce6a",
-        "build_id": "2026-10-14 13:43 · a37ce6a",
+        "build_sha": "06544ee",
+        "build_id": "2026-10-15 13:21 · 06544ee",
         "inputs": [
             "eskom.json",
             "joburg_water.json",
@@ -13,16 +13,111 @@
             "soes.json"
         ],
         "validation": {
-            "total": 12,
-            "valid": 12,
+            "total": 14,
+            "valid": 14,
             "invalid": 0,
             "warnings": 0,
             "error_counts": {},
             "warning_counts": {}
         },
-        "planned_opportunity_count": 14
+        "planned_opportunity_count": 15
     },
     "tenders": [
+        {
+            "ref": "E3656GXNOU",
+            "title": "E3656GXNOU-EXPRESSION OF INTEREST (EOI) TO SUPPLIERS AND SERVICE PROVIDERS SPECIALISING IN CORROSION PREVENTION AND METALLURGICAL ENGINEERING CONSULTING SERVICES FOR THE CORROSION PROTECTION OF PRE OR POST TENSIONED AND STEEL REINFORCED CONCRETE CIVIL STRUCTURES AT KOEBERG POWER STATION.(EOI)",
+            "description": "E3656GXNOU-EXPRESSION OF INTEREST (EOI) TO SUPPLIERS AND SERVICE PROVIDERS SPECIALISING IN CORROSION PREVENTION AND METALLURGICAL ENGINEERING CONSULTING SERVICES FOR THE CORROSION PROTECTION OF PRE OR POST TENSIONED AND STEEL REINFORCED CONCRETE CIVIL STRUCTURES AT KOEBERG POWER STATION.(EOI) | Reference: E3656GXNOU | Other service activities | Expression of interest | N/A",
+            "client": "ESKOM",
+            "source": "National Treasury",
+            "ref_is_authoritative": true,
+            "url": "https://www.etenders.gov.za/Home/opportunities",
+            "closing_date": "2026-11-05",
+            "published_date": "2026-10-15",
+            "category": "MEXEL",
+            "reason": "Competence Match (Profile B): power station + service",
+            "short_title": "E3656gxnou_Expression_Of_Interest",
+            "scores": {
+                "fit_score": 8,
+                "fit_reasons": [
+                    "Mexel category match",
+                    "Mexel alignment (1 keywords)"
+                ],
+                "fit_grade": "A",
+                "industry_score": 10,
+                "industry_matched": "Power",
+                "industry_grade": "A",
+                "mexel_suitability": 2,
+                "mexel_fit": "Weak",
+                "company_category": "MEXEL",
+                "composite": 8.8,
+                "composite_score": 8.8,
+                "priority": "HIGH",
+                "recommendation": "🔥 PRIORITY BID - Strong fit, pursue immediately"
+            }
+        },
+        {
+            "ref": "SAF-RFQ-0160 - Rev 3 - Air-compressor Desiccant Dr",
+            "title": "SAF-RFQ-0160 – Rev3 - Inspect and service faulty air-compressor desiccant dryer",
+            "description": "SAF-RFQ-0160 – Rev3 - Inspect and service faulty air-compressor desiccant dryer | Reference: SAF-RFQ-0160 - Rev 3 - Air-compressor Desiccant Dr | Manufacturing | Request for Quotation | Note :- Mandatory Requirements",
+            "client": "South African Nuclear Energy Corporation Limited",
+            "source": "National Treasury",
+            "ref_is_authoritative": true,
+            "url": "https://www.etenders.gov.za/Home/opportunities",
+            "closing_date": "2026-10-19",
+            "published_date": "2026-10-14",
+            "category": "MEXEL",
+            "reason": "Competence Match (Profile B): compressor + service",
+            "short_title": "Saf_Rfq_0160_Rev3",
+            "scores": {
+                "fit_score": 7,
+                "fit_reasons": [
+                    "Mexel category match"
+                ],
+                "fit_grade": "B",
+                "industry_score": 6,
+                "industry_matched": "Manufacturing",
+                "industry_grade": "B",
+                "mexel_suitability": 0,
+                "mexel_fit": "Weak",
+                "company_category": "MEXEL",
+                "composite": 6.6,
+                "composite_score": 6.6,
+                "priority": "MEDIUM",
+                "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
+            }
+        },
+        {
+            "ref": "E3653GXNOU",
+            "title": "E3653GXNOU-INVITATION TO SUPPLIERS AND SERVICE PROVIDERS SPECIALISING IN IMPRESSED CURRENT CATHODIC PROTECTION (ICCP) SYSTEMS FOR THE CORROSION PROTECTION OF PRE OR POST TENSIONED AND STEEL REINFORCED CONCRETE CIVIL STRUCTURES SUPPLY, DELIVER, INSTALL, INCLUDING EXPANSION ON THE MANUFACTURING AND INSTALLATION SPECIFICATION OF THE DESIGN DOCUMENT AT KOEBERG NUCLEAR POWER STATION.(EOI)",
+            "description": "E3653GXNOU-INVITATION TO SUPPLIERS AND SERVICE PROVIDERS SPECIALISING IN IMPRESSED CURRENT CATHODIC PROTECTION (ICCP) SYSTEMS FOR THE CORROSION PROTECTION OF PRE OR POST TENSIONED AND STEEL REINFORCED CONCRETE CIVIL STRUCTURES SUPPLY, DELIVER, INSTALL, INCLUDING EXPANSION ON THE MANUFACTURING AND INSTALLATION SPECIFICATION OF THE DESIGN DOCUMENT AT KOEBERG NUCLEAR POWER STATION.(EOI) | Reference: E3653GXNOU | Other service activities | Expression of interest | N/A",
+            "client": "ESKOM",
+            "source": "National Treasury",
+            "ref_is_authoritative": true,
+            "url": "https://www.etenders.gov.za/Home/opportunities",
+            "closing_date": "2026-10-30",
+            "published_date": "2026-10-14",
+            "category": "MEXEL",
+            "reason": "Competence Match (Profile B): power station + service",
+            "short_title": "E3653gxnou_Invitation_To_Suppliers",
+            "scores": {
+                "fit_score": 8,
+                "fit_reasons": [
+                    "Mexel category match",
+                    "Mexel alignment (1 keywords)"
+                ],
+                "fit_grade": "A",
+                "industry_score": 10,
+                "industry_matched": "Power",
+                "industry_grade": "A",
+                "mexel_suitability": 2,
+                "mexel_fit": "Weak",
+                "company_category": "MEXEL",
+                "composite": 8.8,
+                "composite_score": 8.8,
+                "priority": "HIGH",
+                "recommendation": "🔥 PRIORITY BID - Strong fit, pursue immediately"
+            }
+        },
         {
             "ref": "MPMAT10677GX01",
             "title": "Maintenance services and repairs of unit 1 to 6 Valves (boiler and turbine), Pipe/heat exchanger Flanges as well as HP Heater leak testing and plugging at Matla Power Station for a period of (05) five years",
@@ -307,39 +402,6 @@
             }
         },
         {
-            "ref": "RFP15/2026",
-            "title": "CENTLEC (SOC) Ltd, hereafter referred to as CENTLEC, a Municipal Entity, distributing electricity in the area of Mangaung Metro Municipality, request proposals and bids, from registered electrical consulting engineers with their applicable professional teams, for the design and turnkey project management, specification, manufacturing, supply, installation, testing, commissioning and handing over of three new 33/11kV 10MVA transformers complete with tap change control and protection facilities, w",
-            "description": "CENTLEC (SOC) Ltd, hereafter referred to as CENTLEC, a Municipal Entity, distributing electricity in the area of Mangaung Metro Municipality, request proposals and bids, from registered electrical consulting engineers with their applicable professional teams, for the design and turnkey project management, specification, manufacturing, supply, installation, testing, commissioning and handing over of three new 33/11kV 10MVA transformers complete with tap change control and protection facilities, which includes amongst other all civil and electrical works, with the upgrading of the associated existing 11kV switching infrastructures, and all other related protection, quality assurance, communication, monitoring, SCADA, metering equipment, mounted in control panels, as well as alarm and security surveillance systems for the existing Botshabelo Substation T and W 33/11kV Distribution Centres for a period of thirty-six (36) months. | Reference: RFP15/2026 | Services: Electrical | Request for Proposal | N/A",
-            "client": "CENTLEC SOC LTD",
-            "source": "National Treasury",
-            "ref_is_authoritative": true,
-            "url": "https://www.etenders.gov.za/Home/opportunities",
-            "closing_date": "2026-10-15",
-            "published_date": "2026-09-14",
-            "category": "PHAKATHI",
-            "reason": "Phakathi Match: 1 keyword(s)",
-            "short_title": "Centlec_Soc_Ltd_Hereafter",
-            "scores": {
-                "fit_score": 9,
-                "fit_reasons": [
-                    "Phakathi category match",
-                    "Mexel alignment (1 keywords)",
-                    "Phakathi alignment (1 keywords)"
-                ],
-                "fit_grade": "A",
-                "industry_score": 7,
-                "industry_matched": "Municipal",
-                "industry_grade": "B",
-                "mexel_suitability": 2,
-                "mexel_fit": "Weak",
-                "company_category": "PHAKATHI",
-                "composite": 8.2,
-                "composite_score": 8.2,
-                "priority": "HIGH",
-                "recommendation": "🔥 PRIORITY BID - Strong fit, pursue immediately"
-            }
-        },
-        {
             "ref": "E3378GXMPMAT",
             "title": "Provision of Maintenance Services: Vessels Surface Preparation, Internal & External Corrosion Protection (Coatings and/or Linings), Pressure Testing, Safety Valve Calibration and/or Name Plate Replacement “As-and when required based on Inspection Findings. at Matla Power Station for a period of five (5) years",
             "description": "Provision of Maintenance Services: Vessels Surface Preparation, Internal & External Corrosion Protection (Coatings and/or Linings), Pressure Testing, Safety Valve Calibration and/or Name Plate Replacement “As-and when required based on Inspection Findings. at Matla Power Station for a period of five (5) years | Reference: E3378GXMPMAT | Services: General | Request for Bid(Open-Tender) | N/A",
@@ -405,6 +467,22 @@
         }
     ],
     "planned_opportunities": [
+        {
+            "external_id": "TPP-CAC43A4CEAC0D3714F5BD835",
+            "institution": "State Information Technology Agency",
+            "description": "WCG CEI Huawei Network Equipment with support for 5 years",
+            "planned_advert_date": "2026-10-20",
+            "planned_closing_date": "2026-10-30",
+            "planned_award_date": "2027-02-01",
+            "category": "PHAKATHI",
+            "classification_reason": "Direct Brand Routing: matched 'huawei'",
+            "matched_keywords": [
+                "huawei"
+            ],
+            "lifecycle_stage": "DUE_SOON",
+            "source": "National Treasury Procurement Plans",
+            "source_url": "https://www.etenders.gov.za/Home/ProcurementPlans"
+        },
         {
             "external_id": "TPP-9AF2EDEDB98F42B1E67F1311",
             "institution": "Justice & Constitutional Development",

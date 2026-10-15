@@ -1,22 +1,42 @@
 {
-    "generated_at": "2026-10-14 13:43",
-    "build_id": "2026-10-14 13:43 · a37ce6a",
-    "build_sha": "a37ce6a",
+    "generated_at": "2026-10-15 13:21",
+    "build_id": "2026-10-15 13:21 · 06544ee",
+    "build_sha": "06544ee",
     "next_run": "Daily 08:00",
     "counts": {
-        "total": 12,
+        "total": 14,
         "by_company": {
-            "MEXEL": 11,
-            "PHAKATHI": 1
+            "MEXEL": 14
         },
         "by_priority": {
-            "HIGH": 12
+            "HIGH": 13,
+            "MEDIUM": 1
         },
         "by_source": {
-            "National Treasury": 12
+            "National Treasury": 14
         }
     },
     "top": [
+        {
+            "title": "E3656GXNOU-EXPRESSION OF INTEREST (EOI) TO SUPPLIERS AND SERVICE PROVIDERS SPECIALISING IN CORROSION PREVENTION AND METALLURGICAL ENGINEERING CONSULTING SERVICES FOR THE CORROSION PROTECTION OF PRE OR POST TENSIONED AND STEEL REINFORCED CONCRETE CIVIL STRUCTURES AT KOEBERG POWER STATION.(EOI)",
+            "source": "National Treasury",
+            "company": "MEXEL",
+            "priority": "HIGH",
+            "close_date": "2026-11-05",
+            "fit": null,
+            "suitability": 8.8,
+            "url": "https://www.etenders.gov.za/Home/opportunities"
+        },
+        {
+            "title": "E3653GXNOU-INVITATION TO SUPPLIERS AND SERVICE PROVIDERS SPECIALISING IN IMPRESSED CURRENT CATHODIC PROTECTION (ICCP) SYSTEMS FOR THE CORROSION PROTECTION OF PRE OR POST TENSIONED AND STEEL REINFORCED CONCRETE CIVIL STRUCTURES SUPPLY, DELIVER, INSTALL, INCLUDING EXPANSION ON THE MANUFACTURING AND INSTALLATION SPECIFICATION OF THE DESIGN DOCUMENT AT KOEBERG NUCLEAR POWER STATION.(EOI)",
+            "source": "National Treasury",
+            "company": "MEXEL",
+            "priority": "HIGH",
+            "close_date": "2026-10-30",
+            "fit": null,
+            "suitability": 8.8,
+            "url": "https://www.etenders.gov.za/Home/opportunities"
+        },
         {
             "title": "Maintenance services and repairs of unit 1 to 6 Valves (boiler and turbine), Pipe/heat exchanger Flanges as well as HP Heater leak testing and plugging at Matla Power Station for a period of (05) five years",
             "source": "National Treasury",
@@ -93,26 +113,6 @@
             "company": "MEXEL",
             "priority": "HIGH",
             "close_date": "2026-10-29",
-            "fit": null,
-            "suitability": 8.2,
-            "url": "https://www.etenders.gov.za/Home/opportunities"
-        },
-        {
-            "title": "Publication of bidder's names for Refurbishment of Kriel PS Generator Circuit Breaker (GCB) Compressor Plant Control Circuit at Units 1 & 4 for a period of 12 months.",
-            "source": "National Treasury",
-            "company": "MEXEL",
-            "priority": "HIGH",
-            "close_date": "2026-10-16",
-            "fit": null,
-            "suitability": 8.2,
-            "url": "https://www.etenders.gov.za/Home/opportunities"
-        },
-        {
-            "title": "CENTLEC (SOC) Ltd, hereafter referred to as CENTLEC, a Municipal Entity, distributing electricity in the area of Mangaung Metro Municipality, request proposals and bids, from registered electrical consulting engineers with their applicable professional teams, for the design and turnkey project management, specification, manufacturing, supply, installation, testing, commissioning and handing over of three new 33/11kV 10MVA transformers complete with tap change control and protection facilities, w",
-            "source": "National Treasury",
-            "company": "PHAKATHI",
-            "priority": "HIGH",
-            "close_date": "2026-10-15",
             "fit": null,
             "suitability": 8.2,
             "url": "https://www.etenders.gov.za/Home/opportunities"
