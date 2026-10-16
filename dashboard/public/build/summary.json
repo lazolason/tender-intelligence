@@ -1,19 +1,20 @@
 {
-    "generated_at": "2026-10-15 13:21",
-    "build_id": "2026-10-15 13:21 · 06544ee",
-    "build_sha": "06544ee",
+    "generated_at": "2026-10-16 13:15",
+    "build_id": "2026-10-16 13:15 · 741a67c",
+    "build_sha": "741a67c",
     "next_run": "Daily 08:00",
     "counts": {
-        "total": 14,
+        "total": 12,
         "by_company": {
-            "MEXEL": 14
+            "MEXEL": 11,
+            "PHAKATHI": 1
         },
         "by_priority": {
-            "HIGH": 13,
-            "MEDIUM": 1
+            "HIGH": 10,
+            "MEDIUM": 2
         },
         "by_source": {
-            "National Treasury": 14
+            "National Treasury": 12
         }
     },
     "top": [
@@ -68,16 +69,6 @@
             "url": "https://www.etenders.gov.za/Home/opportunities"
         },
         {
-            "title": "Cooling Tower 1 Refurbishment at Grootvlei Power station.",
-            "source": "National Treasury",
-            "company": "MEXEL",
-            "priority": "HIGH",
-            "close_date": "2026-10-16",
-            "fit": null,
-            "suitability": 8.8,
-            "url": "https://www.etenders.gov.za/Home/opportunities"
-        },
-        {
             "title": "APPOINTMENT OF A SERVICE PROVIDER FOR THE SUPPLY, REFURBISHMENT, INSTALLATION AND COMMISSIONING OF MCC AND ASSOCIATED ELECTRICAL CONTROL INFRASTRUCTURE AT THE BELA-BELA WASTEWATER TREATMENT WORKS – SCADA IMPLEMENTATION PHASE 1A",
             "source": "National Treasury",
             "company": "MEXEL",
@@ -115,6 +106,16 @@
             "close_date": "2026-10-29",
             "fit": null,
             "suitability": 8.2,
+            "url": "https://www.etenders.gov.za/Home/opportunities"
+        },
+        {
+            "title": "SUPPLY, INSTALL AND COMMISSION REVERSE OSMOSIS MEMBRANES AT THE PLETTENBERG BAY DESALINATION PLANT.",
+            "source": "National Treasury",
+            "company": "MEXEL",
+            "priority": "HIGH",
+            "close_date": "2026-10-30",
+            "fit": null,
+            "suitability": 7.0,
             "url": "https://www.etenders.gov.za/Home/opportunities"
         }
     ]
