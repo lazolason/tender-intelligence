@@ -1,20 +1,20 @@
 {
-    "generated_at": "2026-10-18 12:54",
-    "build_id": "2026-10-18 12:54 · c91ddc5",
-    "build_sha": "c91ddc5",
+    "generated_at": "2026-10-19 14:56",
+    "build_id": "2026-10-19 14:56 · 805b49e",
+    "build_sha": "805b49e",
     "next_run": "Daily 08:00",
     "counts": {
-        "total": 12,
+        "total": 13,
         "by_company": {
-            "MEXEL": 11,
+            "MEXEL": 12,
             "PHAKATHI": 1
         },
         "by_priority": {
-            "HIGH": 10,
+            "HIGH": 11,
             "MEDIUM": 2
         },
         "by_source": {
-            "National Treasury": 12
+            "National Treasury": 13
         }
     },
     "top": [
@@ -109,13 +109,13 @@
             "url": "https://www.etenders.gov.za/Home/opportunities"
         },
         {
-            "title": "SUPPLY, INSTALL AND COMMISSION REVERSE OSMOSIS MEMBRANES AT THE PLETTENBERG BAY DESALINATION PLANT.",
+            "title": "THE DESIGN, SUPPLY, INSTALLATION, TESTING, COMMISSIONING AND VERIFICATION OF LED ARENA FLOODLIGHTING, NEW FLOODLIGHT MASTS AND ASSOCIATED ELECTRICAL INFRASTRUCTURE, AND MAINTENANCE FOR TEN (10) YEARS, AT THE BORDER CRICKET GROUNDS (BUFFALO PARK STADIUM), KUGOMPO CITY",
             "source": "National Treasury",
             "company": "MEXEL",
             "priority": "HIGH",
-            "close_date": "2026-10-30",
+            "close_date": "2026-11-23",
             "fit": null,
-            "suitability": 7.0,
+            "suitability": 7.6,
             "url": "https://www.etenders.gov.za/Home/opportunities"
         }
     ]

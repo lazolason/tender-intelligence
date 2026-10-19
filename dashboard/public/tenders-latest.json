@@ -1,10 +1,10 @@
 {
     "meta": {
-        "last_sync": "2026-10-18 12:54",
+        "last_sync": "2026-10-19 14:56",
         "snapshot_origin": "static_scrape",
         "next_run": "Daily 08:00",
-        "build_sha": "c91ddc5",
-        "build_id": "2026-10-18 12:54 · c91ddc5",
+        "build_sha": "805b49e",
+        "build_id": "2026-10-19 14:56 · 805b49e",
         "inputs": [
             "eskom.json",
             "joburg_water.json",
@@ -13,8 +13,8 @@
             "soes.json"
         ],
         "validation": {
-            "total": 12,
-            "valid": 12,
+            "total": 13,
+            "valid": 13,
             "invalid": 0,
             "warnings": 0,
             "error_counts": {},
@@ -23,6 +23,38 @@
         "planned_opportunity_count": 16
     },
     "tenders": [
+        {
+            "ref": "CSA/06/2026-27",
+            "title": "THE DESIGN, SUPPLY, INSTALLATION, TESTING, COMMISSIONING AND VERIFICATION OF LED ARENA FLOODLIGHTING, NEW FLOODLIGHT MASTS AND ASSOCIATED ELECTRICAL INFRASTRUCTURE, AND MAINTENANCE FOR TEN (10) YEARS, AT THE BORDER CRICKET GROUNDS (BUFFALO PARK STADIUM), KUGOMPO CITY",
+            "description": "THE DESIGN, SUPPLY, INSTALLATION, TESTING, COMMISSIONING AND VERIFICATION OF LED ARENA FLOODLIGHTING, NEW FLOODLIGHT MASTS AND ASSOCIATED ELECTRICAL INFRASTRUCTURE, AND MAINTENANCE FOR TEN (10) YEARS, AT THE BORDER CRICKET GROUNDS (BUFFALO PARK STADIUM), KUGOMPO CITY | Reference: CSA/06/2026-27 | Electricity, gas, steam and air conditioning | Request for Bid(Open-Tender) | It is estimated that tenderers must have a CIDB contractor grading designation of 8EP or higher. Joint ventures are permitted in accordance with the CIDB requirements. An OEM may tender in its own right, be a CIDB-registered joint venture member, or be named as a key Subcontractor, in which case its grading (if any) does not count.",
+            "client": "Buffalo City Metropolitan Municipality",
+            "source": "National Treasury",
+            "ref_is_authoritative": true,
+            "url": "https://www.etenders.gov.za/Home/opportunities",
+            "closing_date": "2026-11-23",
+            "published_date": "2026-10-19",
+            "category": "MEXEL",
+            "reason": "Competence Match (Profile B): infrastructure + maintenance",
+            "short_title": "The_Design_Supply_Installation",
+            "scores": {
+                "fit_score": 8,
+                "fit_reasons": [
+                    "Mexel category match",
+                    "Mexel alignment (1 keywords)"
+                ],
+                "fit_grade": "A",
+                "industry_score": 7,
+                "industry_matched": "Municipal",
+                "industry_grade": "B",
+                "mexel_suitability": 2,
+                "mexel_fit": "Weak",
+                "company_category": "MEXEL",
+                "composite": 7.6,
+                "composite_score": 7.6,
+                "priority": "HIGH",
+                "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
+            }
+        },
         {
             "ref": "E3656GXNOU",
             "title": "E3656GXNOU-EXPRESSION OF INTEREST (EOI) TO SUPPLIERS AND SERVICE PROVIDERS SPECIALISING IN CORROSION PREVENTION AND METALLURGICAL ENGINEERING CONSULTING SERVICES FOR THE CORROSION PROTECTION OF PRE OR POST TENSIONED AND STEEL REINFORCED CONCRETE CIVIL STRUCTURES AT KOEBERG POWER STATION.(EOI)",
@@ -88,37 +120,6 @@
             }
         },
         {
-            "ref": "SAF-RFQ-0160 - Rev 3 - Air-compressor Desiccant Dr",
-            "title": "SAF-RFQ-0160 – Rev3 - Inspect and service faulty air-compressor desiccant dryer",
-            "description": "SAF-RFQ-0160 – Rev3 - Inspect and service faulty air-compressor desiccant dryer | Reference: SAF-RFQ-0160 - Rev 3 - Air-compressor Desiccant Dr | Manufacturing | Request for Quotation | Note :- Mandatory Requirements",
-            "client": "South African Nuclear Energy Corporation Limited",
-            "source": "National Treasury",
-            "ref_is_authoritative": true,
-            "url": "https://www.etenders.gov.za/Home/opportunities",
-            "closing_date": "2026-10-19",
-            "published_date": "2026-10-14",
-            "category": "MEXEL",
-            "reason": "Competence Match (Profile B): compressor + service",
-            "short_title": "Saf_Rfq_0160_Rev3",
-            "scores": {
-                "fit_score": 7,
-                "fit_reasons": [
-                    "Mexel category match"
-                ],
-                "fit_grade": "B",
-                "industry_score": 6,
-                "industry_matched": "Manufacturing",
-                "industry_grade": "B",
-                "mexel_suitability": 0,
-                "mexel_fit": "Weak",
-                "company_category": "MEXEL",
-                "composite": 6.6,
-                "composite_score": 6.6,
-                "priority": "MEDIUM",
-                "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
-            }
-        },
-        {
             "ref": "E3653GXNOU",
             "title": "E3653GXNOU-INVITATION TO SUPPLIERS AND SERVICE PROVIDERS SPECIALISING IN IMPRESSED CURRENT CATHODIC PROTECTION (ICCP) SYSTEMS FOR THE CORROSION PROTECTION OF PRE OR POST TENSIONED AND STEEL REINFORCED CONCRETE CIVIL STRUCTURES SUPPLY, DELIVER, INSTALL, INCLUDING EXPANSION ON THE MANUFACTURING AND INSTALLATION SPECIFICATION OF THE DESIGN DOCUMENT AT KOEBERG NUCLEAR POWER STATION.(EOI)",
             "description": "E3653GXNOU-INVITATION TO SUPPLIERS AND SERVICE PROVIDERS SPECIALISING IN IMPRESSED CURRENT CATHODIC PROTECTION (ICCP) SYSTEMS FOR THE CORROSION PROTECTION OF PRE OR POST TENSIONED AND STEEL REINFORCED CONCRETE CIVIL STRUCTURES SUPPLY, DELIVER, INSTALL, INCLUDING EXPANSION ON THE MANUFACTURING AND INSTALLATION SPECIFICATION OF THE DESIGN DOCUMENT AT KOEBERG NUCLEAR POWER STATION.(EOI) | Reference: E3653GXNOU | Other service activities | Expression of interest | N/A",
@@ -148,6 +149,37 @@
                 "composite_score": 8.8,
                 "priority": "HIGH",
                 "recommendation": "🔥 PRIORITY BID - Strong fit, pursue immediately"
+            }
+        },
+        {
+            "ref": "SAF-RFQ-0160 - Rev 3 - Air-compressor Desiccant Dr",
+            "title": "SAF-RFQ-0160 – Rev3 - Inspect and service faulty air-compressor desiccant dryer",
+            "description": "SAF-RFQ-0160 – Rev3 - Inspect and service faulty air-compressor desiccant dryer | Reference: SAF-RFQ-0160 - Rev 3 - Air-compressor Desiccant Dr | Manufacturing | Request for Quotation | Note :- Mandatory Requirements",
+            "client": "South African Nuclear Energy Corporation Limited",
+            "source": "National Treasury",
+            "ref_is_authoritative": true,
+            "url": "https://www.etenders.gov.za/Home/opportunities",
+            "closing_date": "2026-10-19",
+            "published_date": "2026-10-14",
+            "category": "MEXEL",
+            "reason": "Competence Match (Profile B): compressor + service",
+            "short_title": "Saf_Rfq_0160_Rev3",
+            "scores": {
+                "fit_score": 7,
+                "fit_reasons": [
+                    "Mexel category match"
+                ],
+                "fit_grade": "B",
+                "industry_score": 6,
+                "industry_matched": "Manufacturing",
+                "industry_grade": "B",
+                "mexel_suitability": 0,
+                "mexel_fit": "Weak",
+                "company_category": "MEXEL",
+                "composite": 6.6,
+                "composite_score": 6.6,
+                "priority": "MEDIUM",
+                "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
             }
         },
         {
