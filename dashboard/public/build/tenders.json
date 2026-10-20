@@ -1,10 +1,10 @@
 {
     "meta": {
-        "last_sync": "2026-10-19 14:56",
+        "last_sync": "2026-10-20 13:25",
         "snapshot_origin": "static_scrape",
         "next_run": "Daily 08:00",
-        "build_sha": "805b49e",
-        "build_id": "2026-10-19 14:56 · 805b49e",
+        "build_sha": "cf47418",
+        "build_id": "2026-10-20 13:25 · cf47418",
         "inputs": [
             "eskom.json",
             "joburg_water.json",
@@ -23,6 +23,37 @@
         "planned_opportunity_count": 16
     },
     "tenders": [
+        {
+            "ref": "ZNQP 04/08/2026",
+            "title": "Request to appoint a suitable service provider to supply and install 3 UPS system for eThekwini Region 2nd floor server room, eThekwini District and MEC’s office and installation of existing UPS at the Main Server room. Department of Public Works and Infrastructure, eThekwini Region, 455A King Cetshwayo Highway 4001.",
+            "description": "Request to appoint a suitable service provider to supply and install 3 UPS system for eThekwini Region 2nd floor server room, eThekwini District and MEC’s office and installation of existing UPS at the Main Server room. Department of Public Works and Infrastructure, eThekwini Region, 455A King Cetshwayo Highway 4001. | Reference: ZNQP 04/08/2026 | Supplies: Computer Equipment | Request for Quotation | N/A",
+            "client": "Kwazulu Natal - Public Works (Head Office)",
+            "source": "National Treasury",
+            "ref_is_authoritative": true,
+            "url": "https://www.etenders.gov.za/Home/opportunities",
+            "closing_date": "2026-10-27",
+            "published_date": "2026-10-20",
+            "category": "MEXEL",
+            "reason": "Competence Match (Profile B): server room + service",
+            "short_title": "Request_To_Appoint_A",
+            "scores": {
+                "fit_score": 7,
+                "fit_reasons": [
+                    "Mexel category match"
+                ],
+                "fit_grade": "B",
+                "industry_score": 5,
+                "industry_matched": "General",
+                "industry_grade": "C",
+                "mexel_suitability": 0,
+                "mexel_fit": "Weak",
+                "company_category": "MEXEL",
+                "composite": 6.2,
+                "composite_score": 6.2,
+                "priority": "MEDIUM",
+                "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
+            }
+        },
         {
             "ref": "CSA/06/2026-27",
             "title": "THE DESIGN, SUPPLY, INSTALLATION, TESTING, COMMISSIONING AND VERIFICATION OF LED ARENA FLOODLIGHTING, NEW FLOODLIGHT MASTS AND ASSOCIATED ELECTRICAL INFRASTRUCTURE, AND MAINTENANCE FOR TEN (10) YEARS, AT THE BORDER CRICKET GROUNDS (BUFFALO PARK STADIUM), KUGOMPO CITY",
@@ -149,37 +180,6 @@
                 "composite_score": 8.8,
                 "priority": "HIGH",
                 "recommendation": "🔥 PRIORITY BID - Strong fit, pursue immediately"
-            }
-        },
-        {
-            "ref": "SAF-RFQ-0160 - Rev 3 - Air-compressor Desiccant Dr",
-            "title": "SAF-RFQ-0160 – Rev3 - Inspect and service faulty air-compressor desiccant dryer",
-            "description": "SAF-RFQ-0160 – Rev3 - Inspect and service faulty air-compressor desiccant dryer | Reference: SAF-RFQ-0160 - Rev 3 - Air-compressor Desiccant Dr | Manufacturing | Request for Quotation | Note :- Mandatory Requirements",
-            "client": "South African Nuclear Energy Corporation Limited",
-            "source": "National Treasury",
-            "ref_is_authoritative": true,
-            "url": "https://www.etenders.gov.za/Home/opportunities",
-            "closing_date": "2026-10-19",
-            "published_date": "2026-10-14",
-            "category": "MEXEL",
-            "reason": "Competence Match (Profile B): compressor + service",
-            "short_title": "Saf_Rfq_0160_Rev3",
-            "scores": {
-                "fit_score": 7,
-                "fit_reasons": [
-                    "Mexel category match"
-                ],
-                "fit_grade": "B",
-                "industry_score": 6,
-                "industry_matched": "Manufacturing",
-                "industry_grade": "B",
-                "mexel_suitability": 0,
-                "mexel_fit": "Weak",
-                "company_category": "MEXEL",
-                "composite": 6.6,
-                "composite_score": 6.6,
-                "priority": "MEDIUM",
-                "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
             }
         },
         {
