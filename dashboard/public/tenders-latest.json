@@ -1,10 +1,10 @@
 {
     "meta": {
-        "last_sync": "2026-10-20 13:25",
+        "last_sync": "2026-10-21 13:41",
         "snapshot_origin": "static_scrape",
         "next_run": "Daily 08:00",
-        "build_sha": "cf47418",
-        "build_id": "2026-10-20 13:25 · cf47418",
+        "build_sha": "8e15ac1",
+        "build_id": "2026-10-21 13:41 · 8e15ac1",
         "inputs": [
             "eskom.json",
             "joburg_water.json",
@@ -13,8 +13,8 @@
             "soes.json"
         ],
         "validation": {
-            "total": 13,
-            "valid": 13,
+            "total": 14,
+            "valid": 14,
             "invalid": 0,
             "warnings": 0,
             "error_counts": {},
@@ -23,6 +23,38 @@
         "planned_opportunity_count": 16
     },
     "tenders": [
+        {
+            "ref": "RFQJW054NS26-27",
+            "title": "Supply and Delivery of Huawei Idea Hub ES2 86\" (IHE3-86SA) or equivalent x3",
+            "description": "Supply and Delivery of Huawei Idea Hub ES2 86\" (IHE3-86SA) or equivalent x3 | Reference: RFQJW054NS26-27 | Supplies: Computer Equipment | Request for Quotation | N/A",
+            "client": "Johannesburg Water",
+            "source": "National Treasury",
+            "ref_is_authoritative": true,
+            "url": "https://www.etenders.gov.za/Home/opportunities",
+            "closing_date": "2026-10-28",
+            "published_date": "2026-10-21",
+            "category": "PHAKATHI",
+            "reason": "Direct Brand Routing: matched 'huawei'",
+            "short_title": "Huawei_Idea_Hub_Es2",
+            "scores": {
+                "fit_score": 8,
+                "fit_reasons": [
+                    "Phakathi category match",
+                    "Phakathi alignment (1 keywords)"
+                ],
+                "fit_grade": "A",
+                "industry_score": 5,
+                "industry_matched": "General",
+                "industry_grade": "C",
+                "mexel_suitability": 0,
+                "mexel_fit": "Weak",
+                "company_category": "PHAKATHI",
+                "composite": 6.8,
+                "composite_score": 6.8,
+                "priority": "MEDIUM",
+                "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
+            }
+        },
         {
             "ref": "ZNQP 04/08/2026",
             "title": "Request to appoint a suitable service provider to supply and install 3 UPS system for eThekwini Region 2nd floor server room, eThekwini District and MEC’s office and installation of existing UPS at the Main Server room. Department of Public Works and Infrastructure, eThekwini Region, 455A King Cetshwayo Highway 4001.",
