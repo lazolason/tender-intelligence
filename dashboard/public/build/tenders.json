@@ -1,10 +1,10 @@
 {
     "meta": {
-        "last_sync": "2026-10-21 13:41",
+        "last_sync": "2026-10-22 13:40",
         "snapshot_origin": "static_scrape",
         "next_run": "Daily 08:00",
-        "build_sha": "8e15ac1",
-        "build_id": "2026-10-21 13:41 · 8e15ac1",
+        "build_sha": "f420e0d",
+        "build_id": "2026-10-22 13:40 · f420e0d",
         "inputs": [
             "eskom.json",
             "joburg_water.json",
@@ -51,6 +51,37 @@
                 "company_category": "PHAKATHI",
                 "composite": 6.8,
                 "composite_score": 6.8,
+                "priority": "MEDIUM",
+                "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
+            }
+        },
+        {
+            "ref": "WTE-2636ES",
+            "title": "SUPPLY AND DELIVERY OF MOBILE COMPRESSOR, PORTABLE SANDBLASTING POT AND CRANE CABLE GREASER AND OTHER MATERIAL TO MIDMAR DAM NEAR HOWICK TOWN",
+            "description": "SUPPLY AND DELIVERY OF MOBILE COMPRESSOR, PORTABLE SANDBLASTING POT AND CRANE CABLE GREASER AND OTHER MATERIAL TO MIDMAR DAM NEAR HOWICK TOWN | Reference: WTE-2636ES | Supplies: General | Request for Quotation | N/A",
+            "client": "Water and Sanitation",
+            "source": "National Treasury",
+            "ref_is_authoritative": true,
+            "url": "https://www.etenders.gov.za/Home/opportunities",
+            "closing_date": "2026-11-11",
+            "published_date": "2026-10-21",
+            "category": "MEXEL",
+            "reason": "Competence Match (Profile B): compressor + supply",
+            "short_title": "Mobile_Compressor_Portable_Sandblasting",
+            "scores": {
+                "fit_score": 7,
+                "fit_reasons": [
+                    "Mexel category match"
+                ],
+                "fit_grade": "B",
+                "industry_score": 5,
+                "industry_matched": "General",
+                "industry_grade": "C",
+                "mexel_suitability": 0,
+                "mexel_fit": "Weak",
+                "company_category": "MEXEL",
+                "composite": 6.2,
+                "composite_score": 6.2,
                 "priority": "MEDIUM",
                 "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
             }
@@ -433,38 +464,6 @@
                 "composite_score": 7.0,
                 "priority": "HIGH",
                 "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
-            }
-        },
-        {
-            "ref": "E3378GXMPMAT",
-            "title": "Provision of Maintenance Services: Vessels Surface Preparation, Internal & External Corrosion Protection (Coatings and/or Linings), Pressure Testing, Safety Valve Calibration and/or Name Plate Replacement “As-and when required based on Inspection Findings. at Matla Power Station for a period of five (5) years",
-            "description": "Provision of Maintenance Services: Vessels Surface Preparation, Internal & External Corrosion Protection (Coatings and/or Linings), Pressure Testing, Safety Valve Calibration and/or Name Plate Replacement “As-and when required based on Inspection Findings. at Matla Power Station for a period of five (5) years | Reference: E3378GXMPMAT | Services: General | Request for Bid(Open-Tender) | N/A",
-            "client": "ESKOM",
-            "source": "National Treasury",
-            "ref_is_authoritative": true,
-            "url": "https://www.etenders.gov.za/Home/opportunities",
-            "closing_date": "2026-10-22",
-            "published_date": "2026-08-14",
-            "category": "MEXEL",
-            "reason": "Competence Match (Profile B): power station + maintenance",
-            "short_title": "Vessels_Surface_Preparation_Internal",
-            "scores": {
-                "fit_score": 8,
-                "fit_reasons": [
-                    "Mexel category match",
-                    "Mexel alignment (1 keywords)"
-                ],
-                "fit_grade": "A",
-                "industry_score": 10,
-                "industry_matched": "Power",
-                "industry_grade": "A",
-                "mexel_suitability": 2,
-                "mexel_fit": "Weak",
-                "company_category": "MEXEL",
-                "composite": 8.8,
-                "composite_score": 8.8,
-                "priority": "HIGH",
-                "recommendation": "🔥 PRIORITY BID - Strong fit, pursue immediately"
             }
         }
     ],
