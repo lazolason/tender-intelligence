@@ -1,10 +1,10 @@
 {
     "meta": {
-        "last_sync": "2026-10-22 13:40",
+        "last_sync": "2026-10-23 13:30",
         "snapshot_origin": "static_scrape",
         "next_run": "Daily 08:00",
-        "build_sha": "f420e0d",
-        "build_id": "2026-10-22 13:40 · f420e0d",
+        "build_sha": "5edc537",
+        "build_id": "2026-10-23 13:30 · 5edc537",
         "inputs": [
             "eskom.json",
             "joburg_water.json",
@@ -13,8 +13,8 @@
             "soes.json"
         ],
         "validation": {
-            "total": 14,
-            "valid": 14,
+            "total": 15,
+            "valid": 15,
             "invalid": 0,
             "warnings": 0,
             "error_counts": {},
@@ -23,6 +23,39 @@
         "planned_opportunity_count": 16
     },
     "tenders": [
+        {
+            "ref": "E3626GXMPKRI",
+            "title": "Supply, Installation, Commissioning, and Design of Coal Bunkers Unit 1 to 6 CO Gas Monitors and Interface to WinCC SCADA System at Kriel Power Station for a period of three months.",
+            "description": "Supply, Installation, Commissioning, and Design of Coal Bunkers Unit 1 to 6 CO Gas Monitors and Interface to WinCC SCADA System at Kriel Power Station for a period of three months. | Reference: E3626GXMPKRI | Electricity, gas, steam and air conditioning | Request for Bid(Open-Tender) | N/A",
+            "client": "ESKOM",
+            "source": "National Treasury",
+            "ref_is_authoritative": true,
+            "url": "https://www.etenders.gov.za/Home/opportunities",
+            "closing_date": "2026-11-13",
+            "published_date": "2026-10-23",
+            "category": "PHAKATHI",
+            "reason": "Phakathi Match: 1 keyword(s)",
+            "short_title": "Supply_Installation_Commissioning_And",
+            "scores": {
+                "fit_score": 9,
+                "fit_reasons": [
+                    "Phakathi category match",
+                    "Mexel alignment (1 keywords)",
+                    "Phakathi alignment (1 keywords)"
+                ],
+                "fit_grade": "A",
+                "industry_score": 10,
+                "industry_matched": "Power",
+                "industry_grade": "A",
+                "mexel_suitability": 2,
+                "mexel_fit": "Weak",
+                "company_category": "PHAKATHI",
+                "composite": 9.4,
+                "composite_score": 9.4,
+                "priority": "HIGH",
+                "recommendation": "🔥 PRIORITY BID - Strong fit, pursue immediately"
+            }
+        },
         {
             "ref": "RFQJW054NS26-27",
             "title": "Supply and Delivery of Huawei Idea Hub ES2 86\" (IHE3-86SA) or equivalent x3",
