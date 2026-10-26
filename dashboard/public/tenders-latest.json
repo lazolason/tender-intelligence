@@ -1,10 +1,10 @@
 {
     "meta": {
-        "last_sync": "2026-10-25 13:14",
+        "last_sync": "2026-10-26 14:48",
         "snapshot_origin": "static_scrape",
         "next_run": "Daily 08:00",
-        "build_sha": "8f915a2",
-        "build_id": "2026-10-25 13:14 · 8f915a2",
+        "build_sha": "d6771e4",
+        "build_id": "2026-10-26 14:48 · d6771e4",
         "inputs": [
             "eskom.json",
             "joburg_water.json",
@@ -13,8 +13,8 @@
             "soes.json"
         ],
         "validation": {
-            "total": 15,
-            "valid": 15,
+            "total": 16,
+            "valid": 16,
             "invalid": 0,
             "warnings": 0,
             "error_counts": {},
@@ -23,6 +23,37 @@
         "planned_opportunity_count": 16
     },
     "tenders": [
+        {
+            "ref": "57 OF 2026",
+            "title": "Supply, delivery, installation and commissioning of server room environmental management system including quarterly support and maintenance plan for the period of three years",
+            "description": "Supply, delivery, installation and commissioning of server room environmental management system including quarterly support and maintenance plan for the period of three years | Reference: 57 OF 2026 | Information service activities | Request for Bid(Open-Tender) | N/A",
+            "client": "Makhado Local Municipality",
+            "source": "National Treasury",
+            "ref_is_authoritative": true,
+            "url": "https://www.etenders.gov.za/Home/opportunities",
+            "closing_date": "2026-11-30",
+            "published_date": "2026-10-26",
+            "category": "MEXEL",
+            "reason": "Competence Match (Profile B): server room + service",
+            "short_title": "Supply_Delivery_Installation_And",
+            "scores": {
+                "fit_score": 7,
+                "fit_reasons": [
+                    "Mexel category match"
+                ],
+                "fit_grade": "B",
+                "industry_score": 7,
+                "industry_matched": "Municipal",
+                "industry_grade": "B",
+                "mexel_suitability": 0,
+                "mexel_fit": "Weak",
+                "company_category": "MEXEL",
+                "composite": 7.0,
+                "composite_score": 7.0,
+                "priority": "HIGH",
+                "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
+            }
+        },
         {
             "ref": "E3626GXMPKRI",
             "title": "Supply, Installation, Commissioning, and Design of Coal Bunkers Unit 1 to 6 CO Gas Monitors and Interface to WinCC SCADA System at Kriel Power Station for a period of three months.",
