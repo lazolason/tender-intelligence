@@ -1,20 +1,20 @@
 {
-    "generated_at": "2026-10-27 14:03",
-    "build_id": "2026-10-27 14:03 · 7d3bdf8",
-    "build_sha": "7d3bdf8",
+    "generated_at": "2026-10-29 14:51",
+    "build_id": "2026-10-29 14:51 · 18cf395",
+    "build_sha": "18cf395",
     "next_run": "Daily 08:00",
     "counts": {
-        "total": 15,
+        "total": 14,
         "by_company": {
             "MEXEL": 12,
-            "PHAKATHI": 3
+            "PHAKATHI": 2
         },
         "by_priority": {
-            "HIGH": 12,
-            "MEDIUM": 3
+            "HIGH": 10,
+            "MEDIUM": 4
         },
         "by_source": {
-            "National Treasury": 15
+            "National Treasury": 14
         }
     },
     "top": [
@@ -89,26 +89,6 @@
             "url": "https://www.etenders.gov.za/Home/opportunities"
         },
         {
-            "title": "Refurbishment, repairs, maintenance and supply of new HVAC chillers and chiller components at the Kendal Power Station for a period of five (5) years",
-            "source": "National Treasury",
-            "company": "MEXEL",
-            "priority": "HIGH",
-            "close_date": "2026-10-28",
-            "fit": null,
-            "suitability": 8.2,
-            "url": "https://www.etenders.gov.za/Home/opportunities"
-        },
-        {
-            "title": "The Provision of Verification, Calibration, Maintenance and Repair for Portable Testing and Measuring Instruments at Arnot Power Station over a period of 60 months.",
-            "source": "National Treasury",
-            "company": "MEXEL",
-            "priority": "HIGH",
-            "close_date": "2026-10-29",
-            "fit": null,
-            "suitability": 8.2,
-            "url": "https://www.etenders.gov.za/Home/opportunities"
-        },
-        {
             "title": "THE DESIGN, SUPPLY, INSTALLATION, TESTING, COMMISSIONING AND VERIFICATION OF LED ARENA FLOODLIGHTING, NEW FLOODLIGHT MASTS AND ASSOCIATED ELECTRICAL INFRASTRUCTURE, AND MAINTENANCE FOR TEN (10) YEARS, AT THE BORDER CRICKET GROUNDS (BUFFALO PARK STADIUM), KUGOMPO CITY",
             "source": "National Treasury",
             "company": "MEXEL",
@@ -116,6 +96,26 @@
             "close_date": "2026-11-23",
             "fit": null,
             "suitability": 7.6,
+            "url": "https://www.etenders.gov.za/Home/opportunities"
+        },
+        {
+            "title": "Supply, delivery, installation and commissioning of server room environmental management system including quarterly support and maintenance plan for the period of three years",
+            "source": "National Treasury",
+            "company": "MEXEL",
+            "priority": "HIGH",
+            "close_date": "2026-11-30",
+            "fit": null,
+            "suitability": 7.0,
+            "url": "https://www.etenders.gov.za/Home/opportunities"
+        },
+        {
+            "title": "SUPPLY, INSTALL AND COMMISSION REVERSE OSMOSIS MEMBRANES AT THE PLETTENBERG BAY DESALINATION PLANT.",
+            "source": "National Treasury",
+            "company": "MEXEL",
+            "priority": "HIGH",
+            "close_date": "2026-10-30",
+            "fit": null,
+            "suitability": 7.0,
             "url": "https://www.etenders.gov.za/Home/opportunities"
         }
     ]

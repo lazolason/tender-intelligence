@@ -1,10 +1,10 @@
 {
     "meta": {
-        "last_sync": "2026-10-27 14:03",
+        "last_sync": "2026-10-29 14:51",
         "snapshot_origin": "static_scrape",
         "next_run": "Daily 08:00",
-        "build_sha": "7d3bdf8",
-        "build_id": "2026-10-27 14:03 · 7d3bdf8",
+        "build_sha": "18cf395",
+        "build_id": "2026-10-29 14:51 · 18cf395",
         "inputs": [
             "eskom.json",
             "joburg_water.json",
@@ -13,8 +13,8 @@
             "soes.json"
         ],
         "validation": {
-            "total": 15,
-            "valid": 15,
+            "total": 14,
+            "valid": 14,
             "invalid": 0,
             "warnings": 0,
             "error_counts": {},
@@ -23,6 +23,68 @@
         "planned_opportunity_count": 16
     },
     "tenders": [
+        {
+            "ref": "PRDP 32/2025-26",
+            "title": "PRDP 32/2025-26 – REQUEST FOR PROPOSAL FOR THE PROVISION OF THE PROVINCIAL DATA CENTRE INFRASTRUCTURE FOR A PERIOD OF THIRTY-SIX (36) MONTHS",
+            "description": "PRDP 32/2025-26 – REQUEST FOR PROPOSAL FOR THE PROVISION OF THE PROVINCIAL DATA CENTRE INFRASTRUCTURE FOR A PERIOD OF THIRTY-SIX (36) MONTHS | Reference: PRDP 32/2025-26 | Services: Professional | Participation | This bid is only open to accredited service providers as per the SITA Transversal Contract. Bidder(s) must be registered as a service provider on the SITA RFB 2003 for services in Limpopo Province",
+            "client": "Limpopo - Office of the Premier",
+            "source": "National Treasury",
+            "ref_is_authoritative": true,
+            "url": "https://www.etenders.gov.za/Home/opportunities",
+            "closing_date": "2026-11-20",
+            "published_date": "2026-10-28",
+            "category": "MEXEL",
+            "reason": "Competence Match (Profile B): data centre + service",
+            "short_title": "Prdp_32_2025_26",
+            "scores": {
+                "fit_score": 7,
+                "fit_reasons": [
+                    "Mexel category match"
+                ],
+                "fit_grade": "B",
+                "industry_score": 5,
+                "industry_matched": "General",
+                "industry_grade": "C",
+                "mexel_suitability": 0,
+                "mexel_fit": "Weak",
+                "company_category": "MEXEL",
+                "composite": 6.2,
+                "composite_score": 6.2,
+                "priority": "MEDIUM",
+                "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
+            }
+        },
+        {
+            "ref": "TPT/2026/10/1476/13514/RFQ",
+            "title": "Provision to Service, repair and test air Compressor for Transnet Soc Limited (Reg. no. 1990/000900/30) Operating as Transnet Port Terminals (hereinafter referred to as “TPT”) at the Port of Port Elizabeth Container Terminal as a once-off service.",
+            "description": "Provision to Service, repair and test air Compressor for Transnet Soc Limited (Reg. no. 1990/000900/30) Operating as Transnet Port Terminals (hereinafter referred to as “TPT”) at the Port of Port Elizabeth Container Terminal as a once-off service. | Reference: TPT/2026/10/1476/13514/RFQ | Repair and installation of machinery and equipment | Request for Quotation | N/A",
+            "client": "Transnet SOC Ltd",
+            "source": "National Treasury",
+            "ref_is_authoritative": true,
+            "url": "https://www.etenders.gov.za/Home/opportunities",
+            "closing_date": "2026-11-05",
+            "published_date": "2026-10-27",
+            "category": "MEXEL",
+            "reason": "Competence Match (Profile B): compressor + service",
+            "short_title": "Provision_To_Repair_And",
+            "scores": {
+                "fit_score": 7,
+                "fit_reasons": [
+                    "Mexel category match"
+                ],
+                "fit_grade": "B",
+                "industry_score": 5,
+                "industry_matched": "General",
+                "industry_grade": "C",
+                "mexel_suitability": 0,
+                "mexel_fit": "Weak",
+                "company_category": "MEXEL",
+                "composite": 6.2,
+                "composite_score": 6.2,
+                "priority": "MEDIUM",
+                "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
+            }
+        },
         {
             "ref": "57 OF 2026",
             "title": "Supply, delivery, installation and commissioning of server room environmental management system including quarterly support and maintenance plan for the period of three years",
@@ -85,38 +147,6 @@
                 "composite_score": 9.4,
                 "priority": "HIGH",
                 "recommendation": "🔥 PRIORITY BID - Strong fit, pursue immediately"
-            }
-        },
-        {
-            "ref": "RFQJW054NS26-27",
-            "title": "Supply and Delivery of Huawei Idea Hub ES2 86\" (IHE3-86SA) or equivalent x3",
-            "description": "Supply and Delivery of Huawei Idea Hub ES2 86\" (IHE3-86SA) or equivalent x3 | Reference: RFQJW054NS26-27 | Supplies: Computer Equipment | Request for Quotation | N/A",
-            "client": "Johannesburg Water",
-            "source": "National Treasury",
-            "ref_is_authoritative": true,
-            "url": "https://www.etenders.gov.za/Home/opportunities",
-            "closing_date": "2026-10-28",
-            "published_date": "2026-10-21",
-            "category": "PHAKATHI",
-            "reason": "Direct Brand Routing: matched 'huawei'",
-            "short_title": "Huawei_Idea_Hub_Es2",
-            "scores": {
-                "fit_score": 8,
-                "fit_reasons": [
-                    "Phakathi category match",
-                    "Phakathi alignment (1 keywords)"
-                ],
-                "fit_grade": "A",
-                "industry_score": 5,
-                "industry_matched": "General",
-                "industry_grade": "C",
-                "mexel_suitability": 0,
-                "mexel_fit": "Weak",
-                "company_category": "PHAKATHI",
-                "composite": 6.8,
-                "composite_score": 6.8,
-                "priority": "MEDIUM",
-                "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
             }
         },
         {
@@ -402,68 +432,6 @@
                 "company_category": "MEXEL",
                 "composite": 8.8,
                 "composite_score": 8.8,
-                "priority": "HIGH",
-                "recommendation": "🔥 PRIORITY BID - Strong fit, pursue immediately"
-            }
-        },
-        {
-            "ref": "E3614GXMPKEN",
-            "title": "Refurbishment, repairs, maintenance and supply of new HVAC chillers and chiller components at the Kendal Power Station for a period of five (5) years",
-            "description": "Refurbishment, repairs, maintenance and supply of new HVAC chillers and chiller components at the Kendal Power Station for a period of five (5) years | Reference: E3614GXMPKEN | Construction | Request for Bid(Open-Tender) | N/A",
-            "client": "ESKOM",
-            "source": "National Treasury",
-            "ref_is_authoritative": true,
-            "url": "https://www.etenders.gov.za/Home/opportunities",
-            "closing_date": "2026-10-28",
-            "published_date": "2026-09-30",
-            "category": "MEXEL",
-            "reason": "Competence Match (Profile B): power station + maintenance",
-            "short_title": "Refurbishment_And_New_Hvac",
-            "scores": {
-                "fit_score": 7,
-                "fit_reasons": [
-                    "Mexel category match"
-                ],
-                "fit_grade": "B",
-                "industry_score": 10,
-                "industry_matched": "Power",
-                "industry_grade": "A",
-                "mexel_suitability": 0,
-                "mexel_fit": "Weak",
-                "company_category": "MEXEL",
-                "composite": 8.2,
-                "composite_score": 8.2,
-                "priority": "HIGH",
-                "recommendation": "🔥 PRIORITY BID - Strong fit, pursue immediately"
-            }
-        },
-        {
-            "ref": "E3610GXMPARN",
-            "title": "The Provision of Verification, Calibration, Maintenance and Repair for Portable Testing and Measuring Instruments at Arnot Power Station over a period of 60 months.",
-            "description": "The Provision of Verification, Calibration, Maintenance and Repair for Portable Testing and Measuring Instruments at Arnot Power Station over a period of 60 months. | Reference: E3610GXMPARN | Services: General | Request for Bid(Open-Tender) | N/A",
-            "client": "ESKOM",
-            "source": "National Treasury",
-            "ref_is_authoritative": true,
-            "url": "https://www.etenders.gov.za/Home/opportunities",
-            "closing_date": "2026-10-29",
-            "published_date": "2026-09-29",
-            "category": "MEXEL",
-            "reason": "Competence Match (Profile B): power station + maintenance",
-            "short_title": "The_Verification_Calibration_And",
-            "scores": {
-                "fit_score": 7,
-                "fit_reasons": [
-                    "Mexel category match"
-                ],
-                "fit_grade": "B",
-                "industry_score": 10,
-                "industry_matched": "Power",
-                "industry_grade": "A",
-                "mexel_suitability": 0,
-                "mexel_fit": "Weak",
-                "company_category": "MEXEL",
-                "composite": 8.2,
-                "composite_score": 8.2,
                 "priority": "HIGH",
                 "recommendation": "🔥 PRIORITY BID - Strong fit, pursue immediately"
             }
