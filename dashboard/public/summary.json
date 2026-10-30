@@ -1,20 +1,20 @@
 {
-    "generated_at": "2026-10-29 14:51",
-    "build_id": "2026-10-29 14:51 · 18cf395",
-    "build_sha": "18cf395",
+    "generated_at": "2026-10-30 14:43",
+    "build_id": "2026-10-30 14:43 · 3c3a02a",
+    "build_sha": "3c3a02a",
     "next_run": "Daily 08:00",
     "counts": {
-        "total": 14,
+        "total": 12,
         "by_company": {
-            "MEXEL": 12,
+            "MEXEL": 10,
             "PHAKATHI": 2
         },
         "by_priority": {
-            "HIGH": 10,
-            "MEDIUM": 4
+            "HIGH": 7,
+            "MEDIUM": 5
         },
         "by_source": {
-            "National Treasury": 14
+            "National Treasury": 12
         }
     },
     "top": [
@@ -29,31 +29,21 @@
             "url": "https://www.etenders.gov.za/Home/opportunities"
         },
         {
+            "title": "The Maintenance Services on routine, non-routine on an as and when required basis for High Pressure Jetting of Condenser Tubes – Grootvlei Power Station for a period of 5 years",
+            "source": "National Treasury",
+            "company": "MEXEL",
+            "priority": "HIGH",
+            "close_date": "2027-01-20",
+            "fit": null,
+            "suitability": 8.8,
+            "url": "https://www.etenders.gov.za/Home/opportunities"
+        },
+        {
             "title": "E3656GXNOU-EXPRESSION OF INTEREST (EOI) TO SUPPLIERS AND SERVICE PROVIDERS SPECIALISING IN CORROSION PREVENTION AND METALLURGICAL ENGINEERING CONSULTING SERVICES FOR THE CORROSION PROTECTION OF PRE OR POST TENSIONED AND STEEL REINFORCED CONCRETE CIVIL STRUCTURES AT KOEBERG POWER STATION.(EOI)",
             "source": "National Treasury",
             "company": "MEXEL",
             "priority": "HIGH",
             "close_date": "2026-11-05",
-            "fit": null,
-            "suitability": 8.8,
-            "url": "https://www.etenders.gov.za/Home/opportunities"
-        },
-        {
-            "title": "E3653GXNOU-INVITATION TO SUPPLIERS AND SERVICE PROVIDERS SPECIALISING IN IMPRESSED CURRENT CATHODIC PROTECTION (ICCP) SYSTEMS FOR THE CORROSION PROTECTION OF PRE OR POST TENSIONED AND STEEL REINFORCED CONCRETE CIVIL STRUCTURES SUPPLY, DELIVER, INSTALL, INCLUDING EXPANSION ON THE MANUFACTURING AND INSTALLATION SPECIFICATION OF THE DESIGN DOCUMENT AT KOEBERG NUCLEAR POWER STATION.(EOI)",
-            "source": "National Treasury",
-            "company": "MEXEL",
-            "priority": "HIGH",
-            "close_date": "2026-10-30",
-            "fit": null,
-            "suitability": 8.8,
-            "url": "https://www.etenders.gov.za/Home/opportunities"
-        },
-        {
-            "title": "Maintenance services and repairs of unit 1 to 6 Valves (boiler and turbine), Pipe/heat exchanger Flanges as well as HP Heater leak testing and plugging at Matla Power Station for a period of (05) five years",
-            "source": "National Treasury",
-            "company": "MEXEL",
-            "priority": "HIGH",
-            "close_date": "2026-11-10",
             "fit": null,
             "suitability": 8.8,
             "url": "https://www.etenders.gov.za/Home/opportunities"
@@ -66,16 +56,6 @@
             "close_date": "2026-11-30",
             "fit": null,
             "suitability": 8.8,
-            "url": "https://www.etenders.gov.za/Home/opportunities"
-        },
-        {
-            "title": "APPOINTMENT OF A SERVICE PROVIDER FOR THE SUPPLY, REFURBISHMENT, INSTALLATION AND COMMISSIONING OF MCC AND ASSOCIATED ELECTRICAL CONTROL INFRASTRUCTURE AT THE BELA-BELA WASTEWATER TREATMENT WORKS – SCADA IMPLEMENTATION PHASE 1A",
-            "source": "National Treasury",
-            "company": "MEXEL",
-            "priority": "HIGH",
-            "close_date": "2026-10-30",
-            "fit": null,
-            "suitability": 8.2,
             "url": "https://www.etenders.gov.za/Home/opportunities"
         },
         {
@@ -109,13 +89,33 @@
             "url": "https://www.etenders.gov.za/Home/opportunities"
         },
         {
-            "title": "SUPPLY, INSTALL AND COMMISSION REVERSE OSMOSIS MEMBRANES AT THE PLETTENBERG BAY DESALINATION PLANT.",
+            "title": "Supply and Delivery of Huawei Network Infrastructure Equipment with Huawei Support for Five (5) Years for the Western Cape Government (WCG), Department of the Premier - Centre for e-Innovation (CEI)",
+            "source": "National Treasury",
+            "company": "PHAKATHI",
+            "priority": "MEDIUM",
+            "close_date": "2026-11-06",
+            "fit": null,
+            "suitability": 6.8,
+            "url": "https://www.etenders.gov.za/Home/opportunities"
+        },
+        {
+            "title": "Supply of 1X Aircon compressor unit for a Carrier air conditioner. 12000 BTU, installation and configuration location control room.",
             "source": "National Treasury",
             "company": "MEXEL",
-            "priority": "HIGH",
-            "close_date": "2026-10-30",
+            "priority": "MEDIUM",
+            "close_date": "2026-11-13",
             "fit": null,
-            "suitability": 7.0,
+            "suitability": 6.2,
+            "url": "https://www.etenders.gov.za/Home/opportunities"
+        },
+        {
+            "title": "PRDP 32/2025-26 – REQUEST FOR PROPOSAL FOR THE PROVISION OF THE PROVINCIAL DATA CENTRE INFRASTRUCTURE FOR A PERIOD OF THIRTY-SIX (36) MONTHS",
+            "source": "National Treasury",
+            "company": "MEXEL",
+            "priority": "MEDIUM",
+            "close_date": "2026-11-20",
+            "fit": null,
+            "suitability": 6.2,
             "url": "https://www.etenders.gov.za/Home/opportunities"
         }
     ]
