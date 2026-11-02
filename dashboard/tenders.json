@@ -1,10 +1,10 @@
 {
     "meta": {
-        "last_sync": "2026-11-01 15:12",
+        "last_sync": "2026-11-02 17:36",
         "snapshot_origin": "static_scrape",
         "next_run": "Daily 08:00",
-        "build_sha": "1ed0e40",
-        "build_id": "2026-11-01 15:12 · 1ed0e40",
+        "build_sha": "425e9f7",
+        "build_id": "2026-11-02 17:36 · 425e9f7",
         "inputs": [
             "eskom.json",
             "joburg_water.json",
@@ -181,8 +181,8 @@
         },
         {
             "ref": "E3626GXMPKRI",
-            "title": "Supply, Installation, Commissioning, and Design of Coal Bunkers Unit 1 to 6 CO Gas Monitors and Interface to WinCC SCADA System at Kriel Power Station for a period of three months.",
-            "description": "Supply, Installation, Commissioning, and Design of Coal Bunkers Unit 1 to 6 CO Gas Monitors and Interface to WinCC SCADA System at Kriel Power Station for a period of three months. | Reference: E3626GXMPKRI | Electricity, gas, steam and air conditioning | Request for Bid(Open-Tender) | N/A",
+            "title": "Supply, Installation, Commissioning, and Design of Coal Bunkers Unit 1 to 6 CO Gas Monitors and Interface to WinCC SCADA System at Kriel Power Station for a period of three months. It is estimated that tenderers should have a CIDB contractor grading of 7EP or higher, however 6EP Potentially Emerging Enterprises who satisfy criteria stated in the Tender Data may submit Tender offers.",
+            "description": "Supply, Installation, Commissioning, and Design of Coal Bunkers Unit 1 to 6 CO Gas Monitors and Interface to WinCC SCADA System at Kriel Power Station for a period of three months. It is estimated that tenderers should have a CIDB contractor grading of 7EP or higher, however 6EP Potentially Emerging Enterprises who satisfy criteria stated in the Tender Data may submit Tender offers. | Reference: E3626GXMPKRI | Electricity, gas, steam and air conditioning | Request for Bid(Open-Tender) | Supply, Installation, Commissioning, and Design of Coal Bunkers Unit 1 to 6 CO Gas Monitors and Interface to WinCC SCADA System at Kriel Power Station for a period of three months. It is estimated that tenderers should have a CIDB contractor grading of 7EP or higher, however 6EP Potentially Emerging Enterprises who satisfy criteria stated in the Tender Data may submit Tender offers.",
             "client": "ESKOM",
             "source": "National Treasury",
             "ref_is_authoritative": true,
