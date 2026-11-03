@@ -499,18 +499,27 @@ def scrape_seriti():
 # MASTER FUNCTION
 # ----------------------------------------------------------
 def scrape_all_soes():
-    """Scrape all SOE and corporate sources"""
+    """Scrape all SOE and corporate sources.
+
+    Only Eskom is scraped here. It has a working bulletin API and outyields the
+    eTenders feed for Eskom itself.
+
+    RETIRED because eTenders already covers them (raw feed, 2026-11-03):
+    Transnet 149 records, Johannesburg Water 11, Rand Water 9, Harmony Gold 2.
+    Their own sites redirect to eTenders, render listings client-side (Rand
+    Water's table script 404s) or block automated access (Harmony sits behind an
+    Incapsula challenge).
+
+    RETIRED because they publish nothing machine-readable (0 eTenders records,
+    no listing content on their own procurement pages): Anglo American, Seriti.
+    Functions are kept for reference so the history of the attempt stays
+    readable.
+    """
     all_tenders = []
     failed_sources = []
     
     scrapers = [
-        ("Rand Water", scrape_rand_water),
-        ("Johannesburg Water", scrape_joburg_water_selenium),
-        ("Transnet", scrape_transnet),
         ("Eskom", scrape_eskom),
-        ("Anglo American", scrape_anglo_american),
-        ("Harmony Gold", scrape_harmony_gold),
-        ("Seriti", scrape_seriti),
     ]
     
     for name, scraper in scrapers:

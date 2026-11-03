@@ -14,12 +14,6 @@ def _scrape_national_treasury() -> list:
     return NationalTreasuryScraper().run()
 
 
-def _scrape_joburg_water() -> list:
-    from scrapers.joburg_water_selenium import scrape_joburg_water_selenium
-
-    return scrape_joburg_water_selenium()
-
-
 def _scrape_eskom_bulletin() -> list:
     from scrapers.eskom_direct import scrape_eskom_tenders
 
@@ -48,12 +42,9 @@ SCRAPER_REGISTRY = [
         requires_selenium=False,
         description="Public National Treasury eTender listing feed",
     ),
-    ScraperRegistration(
-        name="Johannesburg Water",
-        scrape_func=_scrape_joburg_water,
-        requires_selenium=True,
-        description="Selenium-driven Johannesburg Water scraping",
-    ),
+    # Johannesburg Water is intentionally absent: its tenders page redirects to
+    # eTenders, which the National Treasury registration above already ingests
+    # (11 records on 2026-11-03). Scraping it directly only duplicated coverage.
     ScraperRegistration(
         name="Eskom Tender Bulletin",
         scrape_func=_scrape_eskom_bulletin,
