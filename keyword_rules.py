@@ -159,7 +159,13 @@ NEGATIVE_KEYWORDS = [
 
     # Staffing/HR
     "resourcing", "personnel",
-    "appointment of", "panel of service providers",
+    # NOTE (2026-11-03): "appointment of" and "panel of service providers" were
+    # removed from this list. They are South African procurement boilerplate that
+    # appears in most in-scope tenders ("APPOINTMENT OF A SERVICE PROVIDER FOR
+    # COOLING TOWER WATER TREATMENT..."), so they carried no scope signal and
+    # acted as false-negative generators. Measured on the live eTenders feed they
+    # rejected 409 and 135 tenders respectively before profile matching ran.
+    # Narrow staffed-appointment scope is still covered by "resourcing"/"personnel".
 
     # Procurement notices and non-live opportunity records
     "regret letter", "publication of bidders", "publication of name of bidders",
