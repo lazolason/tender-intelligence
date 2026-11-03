@@ -317,14 +317,24 @@ def build_snapshot_from_inputs(paths: List[str], limit: int) -> dict:
         client = tender.get("client", "") or ""
         closing_date = tender.get("closing_date", "") or ""
 
-        classification = classify_tender(title, description)
-        category = classification.get("category", tender.get("category", "Unknown"))
+        # These inputs are already filtered to actionable categories (MEXEL /
+        # PHAKATHI) when they come from the database via sync_dashboard. Running
+        # the classifier a second time only ever removes them again: on
+        # 2026-11-03 it cut 87 stored tenders down to 4 before date validation.
+        # Re-classify only when the record carries no usable category.
+        stored_category = (tender.get("category") or "").strip()
+        if stored_category and stored_category.upper() != "UNKNOWN":
+            category = stored_category.upper()
+        else:
+            classification = classify_tender(title, description)
+            category = classification.get("category", "Unknown")
+            tender["reason"] = classification.get("reason", tender.get("reason", ""))
+            tender["short_title"] = classification.get("short_title", tender.get("short_title", ""))
+
         if category == "EXCLUDED":
             continue
 
         tender["category"] = category
-        tender["reason"] = classification.get("reason", tender.get("reason", ""))
-        tender["short_title"] = classification.get("short_title", tender.get("short_title", ""))
 
         tender["scores"] = score_tender(
             title=title,
