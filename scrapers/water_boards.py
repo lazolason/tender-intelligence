@@ -127,26 +127,165 @@ def scrape_umgeni_water():
 # ----------------------------------------------------------
 # MAGALIES WATER
 # ----------------------------------------------------------
+def _magalies_date(raw: str) -> str:
+    """Convert '27 November 2026 at 12:00' to ISO '2026-11-27'."""
+    match = re.search(r"(\d{1,2})\s+([A-Za-z]+)\s+(\d{4})", raw or "")
+    if not match:
+        return ""
+    try:
+        return datetime.strptime(
+            f"{match.group(1)} {match.group(2)} {match.group(3)}", "%d %B %Y"
+        ).strftime("%Y-%m-%d")
+    except ValueError:
+        return ""
+
+
 def scrape_magalies_water():
-    """Scrape Magalies Water tenders"""
-    return _scrape_generic_water_board(
-        client_name="Magalies Water",
-        url="https://magalieswater.co.za/tenders/",
-        row_selector="table tr, .et_pb_text_inner p", # Divi builder often uses these
-        ref_prefix="MW"
-    )
+    """Scrape Magalies Water's Visual Composer toggle list.
+
+    Each tender is a .vc_toggle block whose title holds the advert heading and
+    whose content carries 'Contract No:', 'Closing Date:' and a PDF link. The
+    generic row scraper found no table rows and therefore reported zero tenders.
+    """
+    url = "https://magalieswater.co.za/tenders/"
+    headers = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"}
+
+    resp = safe_get(url, headers=headers, timeout=20, log=logger)
+    if resp is None:
+        logger.warning("Magalies Water: no response")
+        return []
+
+    soup = BeautifulSoup(resp.text, "html.parser")
+    blocks = soup.select(".vc_toggle")
+    if not blocks:
+        logger.warning("Magalies Water: no toggle blocks found")
+        return []
+
+    tenders = []
+    for block in blocks:
+        heading = block.select_one(".vc_toggle_title h4") or block.find("h4")
+        title = heading.get_text(" ", strip=True) if heading else ""
+        if not title or len(title) < 12:
+            continue
+        # Supplier-database forms and generic notices are not opportunities.
+        if not any(word in title.upper() for word in ("TENDER", "RFQ", "RFB", "BID")):
+            continue
+
+        content = block.select_one(".vc_toggle_content")
+        body = content.get_text(" ", strip=True) if content else ""
+
+        ref_match = re.search(r"Contract\s*No[:.]?\s*([A-Za-z0-9/._\-]+)", body, re.IGNORECASE)
+        ref = ref_match.group(1) if ref_match else f"MW-{len(tenders) + 1}"
+
+        closing_match = re.search(
+            r"Closing\s*Date[:.]?\s*(\d{1,2}\s+[A-Za-z]+\s+\d{4})", body, re.IGNORECASE
+        )
+        closing = _magalies_date(closing_match.group(1)) if closing_match else ""
+
+        # The page keeps a long history. Ingesting closed adverts would count as
+        # "new tenders" and fire alerts for dead opportunities.
+        if closing and closing < datetime.now().strftime("%Y-%m-%d"):
+            continue
+
+        pdf = ""
+        if content:
+            for link in content.find_all("a", href=True):
+                if ".pdf" in link["href"].lower():
+                    pdf = link["href"]
+                    break
+
+        classification = classify_tender(title, body[:500])
+
+        tenders.append({
+            "ref": ref,
+            "title": title,
+            "description": (body[:500] or title),
+            "client": "Magalies Water",
+            "closing_date": closing,
+            "category": classification["category"],
+            "short_title": classification.get("short_title", "Tender"),
+            "reason": classification.get("reason", ""),
+            "source": "Magalies Water",
+            "url": pdf,
+        })
+
+    logger.info("Magalies Water: %d tenders", len(tenders))
+    return tenders
 
 # ----------------------------------------------------------
 # LEPELLE NORTHERN WATER
 # ----------------------------------------------------------
+def _lepelle_date(raw: str) -> str:
+    """Convert '07 December 2026 11:00am' to ISO '2026-12-07'."""
+    match = re.search(r"(\d{1,2})\s+([A-Za-z]+)\s+(\d{4})", raw or "")
+    if not match:
+        return ""
+    try:
+        return datetime.strptime(
+            f"{match.group(1)} {match.group(2)} {match.group(3)}", "%d %B %Y"
+        ).strftime("%Y-%m-%d")
+    except ValueError:
+        return ""
+
+
 def scrape_lepelle_water():
-    """Scrape Lepelle Northern Water tenders"""
-    return _scrape_generic_water_board(
-        client_name="Lepelle Northern Water",
-        url="https://lepellewater.co.za/procurement/tenders/",
-        row_selector="article, .entry-content p, table tr, .et_pb_text_inner p",
-        ref_prefix="LNW"
-    )
+    """Scrape Lepelle Northern Water from its article-based opportunity list.
+
+    Each opportunity is <article class="alt-theme-opportunity"> with a bid number
+    and a <dl> of opening/closing dates. The generic row scraper found no table
+    rows and reported zero tenders.
+    """
+    url = "https://www.lepellewater.co.za/procurement/tenders/"
+    headers = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"}
+
+    resp = safe_get(url, headers=headers, timeout=20, log=logger)
+    if resp is None:
+        logger.warning("Lepelle Northern Water: no response")
+        return []
+
+    soup = BeautifulSoup(resp.text, "html.parser")
+    articles = soup.select("article.alt-theme-opportunity")
+    if not articles:
+        logger.warning("Lepelle Northern Water: no opportunity articles found")
+        return []
+
+    tenders = []
+    for article in articles:
+        heading = article.find("h3")
+        link = heading.find("a") if heading else None
+        title = (link.get_text(" ", strip=True) if link else (heading.get_text(" ", strip=True) if heading else ""))
+        if not title or len(title) < 10:
+            continue
+
+        reference_el = article.select_one(".alt-theme-opportunity__reference")
+        ref = reference_el.get_text(" ", strip=True) if reference_el else ""
+        ref = re.sub(r"(?i)^bid\s*number:\s*", "", ref).strip()
+
+        closing = ""
+        for fact in article.select("dl > div"):
+            label = fact.find("dt")
+            value = fact.find("dd")
+            if label and value and "closing" in label.get_text(" ", strip=True).lower():
+                closing = _lepelle_date(value.get_text(" ", strip=True))
+                break
+
+        classification = classify_tender(title, title)
+
+        tenders.append({
+            "ref": ref or f"LNW-{len(tenders) + 1}",
+            "title": title,
+            "description": title,
+            "client": "Lepelle Northern Water",
+            "closing_date": closing,
+            "category": classification["category"],
+            "short_title": classification.get("short_title", "Tender"),
+            "reason": classification.get("reason", ""),
+            "source": "Lepelle Northern Water",
+            "url": link.get("href", "") if link else "",
+        })
+
+    logger.info("Lepelle Northern Water: %d tenders", len(tenders))
+    return tenders
 
 # ----------------------------------------------------------
 # MASTER FUNCTION

@@ -95,51 +95,74 @@ class CapeTownScraper(BaseMunicipalityScraper):
     def __init__(self, timeout: int = 15):
         super().__init__(
             name="City of Cape Town",
-            url="https://www.capetown.gov.za/Work%20and%20business/Tenders-and-supplier-management/Tenders/Current-tenders",
+            # The old "Work and business/.../Current-tenders" path returns HTTP
+            # 404 (verified 2026-11-03); the procurement portal below serves the
+            # live listing as a plain table with 40+ rows.
+            url="https://web1.capetown.gov.za/web1/tenderportal/Tender",
             timeout=timeout
         )
     
     def parse_tenders(self, html: str):
+        """Parse the procurement portal's tender table.
+
+        Header layout (2026-11-03):
+        Tender Number | Description | Directorate | Department | Closing Date | ...
+        """
         soup = BeautifulSoup(html, "html.parser")
+        table = soup.find("table")
+        if table is None:
+            return []
+
+        rows = table.find_all("tr")
+        if len(rows) < 2:
+            return []
+
+        header = [c.get_text(" ", strip=True).lower() for c in rows[0].find_all(["th", "td"])]
+
+        def column(*prefixes):
+            for prefix in prefixes:
+                for index, name in enumerate(header):
+                    if name.startswith(prefix):
+                        return index
+            return None
+
+        i_ref = column("tender number", "tender no", "reference")
+        i_desc = column("description", "title")
+        i_dept = column("department", "directorate")
+        i_close = column("closing date", "closing")
+
         tenders = []
-        
-        # Cape Town uses accordion/list style
-        for selector in [".accordion-item", ".tender-item", "table tbody tr", ".list-item", "article"]:
-            rows = soup.select(selector)
-            if rows:
-                break
-        
-        for row in rows:
-            try:
-                link = row.find("a")
-                title = clean_text(link.get_text()) if link else clean_text(row.get_text())
-                
-                if not title or len(title) < 10:
-                    continue
-                
-                # Look for tender number pattern
-                import re
-                ref_match = re.search(r'[A-Z]{2,4}[-/]?\d+[-/]?\d*', title)
-                ref = ref_match.group(0) if ref_match else "CPT"
-                
-                classification = classify_tender(title, title)
-                
-                tenders.append({
-                    "ref": ref,
-                    "title": title,
-                    "short_title": classification["short_title"],
-                    "client": "City of Cape Town",
-                    "closing_date": "",
-                    "description": title,
-                    "category": classification["category"],
-                    "reason": classification["reason"],
-                    "source": self.name
-                })
-                
-            except Exception as exc:
-                logger.debug("Skipping Cape Town row due to parse error: %s", exc)
+        for row in rows[1:]:
+            cells = [c.get_text(" ", strip=True) for c in row.find_all("td")]
+            if not cells:
                 continue
-        
+
+            def cell(index):
+                return cells[index] if index is not None and index < len(cells) else ""
+
+            ref = cell(i_ref) or "CPT"
+            description = cell(i_desc)
+            if not description or len(description) < 5:
+                continue
+
+            department = cell(i_dept)
+            closing_date = cell(i_close)
+            summary = f"{description} ({department})" if department else description
+
+            classification = classify_tender(summary, description)
+
+            tenders.append({
+                "ref": ref,
+                "title": description,
+                "short_title": classification["short_title"],
+                "client": "City of Cape Town",
+                "closing_date": closing_date,
+                "description": summary,
+                "category": classification["category"],
+                "reason": classification["reason"],
+                "source": self.name
+            })
+
         return tenders
 
 
