@@ -1,0 +1,84 @@
+{
+    "meta": {
+        "last_sync": "2026-07-13 08:00",
+        "next_run": "Daily 08:00",
+        "build_sha": "8a70a2d",
+        "build_id": "2026-07-13 08:00 · 8a70a2d",
+        "inputs": [
+            "tenders.json"
+        ]
+    },
+    "tenders": [
+        {
+            "ref": "E3140CXMWP",
+            "title": "Request for information on commercially available leakage detection technologies application to coal fired power station flue gas Air Cooled Condensers",
+            "description": "Services: Professional. Request for Information. Request for information on commercially available leakage detection technologies application to coal fired power station flue gas Air Cooled Condensers",
+            "client": "ESKOM",
+            "priority": "HIGH",
+            "score": 8.8,
+            "category": "MEXEL",
+            "source": "National Treasury",
+            "url": "https://www.etenders.gov.za/Home/opportunities?search=E3140CXMWP",
+            "company": "Mexel",
+            "closing_date": "2026-07-20",
+            "matched_keywords": [
+                "condensers",
+                "application"
+            ],
+            "reason": "Competence Match (Profile B): condensers + application",
+            "short_title": "Request_For_Information_On",
+            "scores": {
+                "fit_score": 8,
+                "fit_reasons": [
+                    "Mexel category match",
+                    "Company alignment (1 keywords)"
+                ],
+                "fit_grade": "A",
+                "industry_score": 10,
+                "industry_matched": "Power",
+                "industry_grade": "A",
+                "mexel_suitability": 2,
+                "mexel_fit": "Weak",
+                "composite": 8.8,
+                "composite_score": 8.8,
+                "priority": "HIGH",
+                "recommendation": "🔥 PRIORITY BID - Strong fit, pursue immediately"
+            }
+        },
+        {
+            "ref": "RFQJW017NS26-27",
+            "title": "Supply and Delivery of Telemetry-SCADA OT Network Hardware Upgrade Equipment (SNMPv3 Compliant)",
+            "description": "Supplies: Computer Equipment. Request for Quotation. Supply and Delivery of Telemetry-SCADA OT Network Hardware Upgrade Equipment (SNMPv3 Compliant)",
+            "client": "Johannesburg Water",
+            "priority": "MEDIUM",
+            "score": 6.2,
+            "category": "PHAKATHI",
+            "source": "National Treasury",
+            "url": "https://www.etenders.gov.za/Home/opportunities?search=RFQJW017NS26-27",
+            "company": "Phakathi",
+            "closing_date": "2026-07-17",
+            "matched_keywords": [
+                "scada ot network",
+                "ot network"
+            ],
+            "reason": "Strong Match (Phakathi Profile A): scada ot network",
+            "short_title": "Telemetry_Scada_Ot_Network",
+            "scores": {
+                "fit_score": 7,
+                "fit_reasons": [
+                    "Phakathi category match"
+                ],
+                "fit_grade": "B",
+                "industry_score": 5,
+                "industry_matched": "General",
+                "industry_grade": "C",
+                "mexel_suitability": 0,
+                "mexel_fit": "Weak",
+                "composite": 6.2,
+                "composite_score": 6.2,
+                "priority": "MEDIUM",
+                "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
+            }
+        }
+    ]
+}

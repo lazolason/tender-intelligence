@@ -1,0 +1,12 @@
+{
+    "meta": {
+        "last_sync": "2026-07-12 18:47",
+        "next_run": "Daily 08:00",
+        "build_sha": "8a70a2d",
+        "build_id": "2026-07-12 18:47 · 8a70a2d",
+        "inputs": [
+            "tenders.json"
+        ]
+    },
+    "tenders": []
+}

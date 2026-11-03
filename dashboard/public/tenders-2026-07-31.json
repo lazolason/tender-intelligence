@@ -1,0 +1,921 @@
+{
+    "meta": {
+        "last_sync": "2026-07-31 08:00",
+        "next_run": "Daily 08:00",
+        "build_sha": "77e851e",
+        "build_id": "2026-07-31 08:00 · 77e851e",
+        "inputs": [
+            "tenders.json"
+        ]
+    },
+    "tenders": [
+        {
+            "ref": "6000080636",
+            "title": "Supply and delivery of coupling shouldered 110mm &160mm",
+            "description": "Supplies: General. Request for Quotation. Supply and delivery of coupling shouldered 110mm &160mm",
+            "client": "Johannesburg Water",
+            "priority": "MEDIUM",
+            "score": 6.2,
+            "category": "PHAKATHI",
+            "source": "National Treasury",
+            "url": "https://www.etenders.gov.za/home/Download/?blobName=989dff5f-7cbb-4ef5-adbb-ba207ad9f992.pdf&downloadedFileName=6000080636+Supply+and+delivery+of+coupling+shouldered+110mm+%26160mm.pdf",
+            "company": "Phakathi",
+            "closing_date": "2026-08-05",
+            "matched_keywords": [
+                "delivery",
+                "coupling",
+                "supply",
+                "supply and delivery"
+            ],
+            "pdf_analysis": {
+                "page_count": 27,
+                "word_count": 7596,
+                "requirements": [
+                    "include any individual or organization, other than the bidder, whether or not",
+                    "be inclusive of all applicable taxes",
+                    "be on company letterheads",
+                    "be indicated in paragraph 4 below",
+                    "form part of all tenders invited",
+                    "be awarded for specific goals stated in the tender",
+                    "indicate the points allocated for specific goals for both the 90/10 and",
+                    "also be indicated as such",
+                    "indicate how they claim points for each preference point",
+                    "form part of all bids invited",
+                    "form part of all bids¹ invited",
+                    "provide measures for the combating of abuse of the supply chain management system, and must",
+                    "be completed and submitted with the bid:"
+                ],
+                "deadlines": [],
+                "values": [
+                    {
+                        "value": 2022000000.0,
+                        "formatted": "R2,022,000,000",
+                        "context": "Form Page 1 | 1 FRM-POPI-2: MAR2022R1 City of Johannesburg Johann"
+                    },
+                    {
+                        "value": 2000000000.0,
+                        "formatted": "R2,000,000,000",
+                        "context": "C) Limited, registration number 2000/029271/30 3.1 The information"
+                    },
+                    {
+                        "value": 90000000.0,
+                        "formatted": "R90,000,000",
+                        "context": "ED FOR PRICE 3.1.1 THE 80/20 OR 90/10 PREFERENCE POINT SYSTEMS A"
+                    },
+                    {
+                        "value": 90000000.0,
+                        "formatted": "R90,000,000",
+                        "context": "OINT SYSTEMS A maximum of 80 or 90 points is allocated for price"
+                    },
+                    {
+                        "value": 90000000.0,
+                        "formatted": "R90,000,000",
+                        "context": "ED FOR PRICE A maximum of 80 or 90 points is allocated for price"
+                    },
+                    {
+                        "value": 90000000.0,
+                        "formatted": "R90,000,000",
+                        "context": "is unclear whether the 80/20 or 90/10 preference point system ap"
+                    },
+                    {
+                        "value": 90000000.0,
+                        "formatted": "R90,000,000",
+                        "context": "racts, that either the 80/20 or 90/10 preference point system wi"
+                    },
+                    {
+                        "value": 90000000.0,
+                        "formatted": "R90,000,000",
+                        "context": "ender, that either the 80/20 or 90/10 preference point system Di"
+                    },
+                    {
+                        "value": 80000000.0,
+                        "formatted": "R80,000,000",
+                        "context": "system. c) Either the 90/10 or 80/20 preference point system wi"
+                    },
+                    {
+                        "value": 80000000.0,
+                        "formatted": "R80,000,000",
+                        "context": "tate: Where either the 90/10 or 80/20 preference point system is"
+                    }
+                ],
+                "contact": {
+                    "email": "Gerhard.Buitendach@jwater.co.za",
+                    "phone": "001 688 1400"
+                }
+            },
+            "reason": "Competence Match (Phakathi Industrial Supply): coupling + supply and delivery",
+            "short_title": "Coupling_Shouldered_110mm_160mm",
+            "scores": {
+                "fit_score": 7,
+                "fit_reasons": [
+                    "Phakathi category match"
+                ],
+                "fit_grade": "B",
+                "industry_score": 5,
+                "industry_matched": "General",
+                "industry_grade": "C",
+                "mexel_suitability": 0,
+                "mexel_fit": "Weak",
+                "composite": 6.2,
+                "composite_score": 6.2,
+                "priority": "MEDIUM",
+                "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
+            }
+        },
+        {
+            "ref": "E3293GXLPMED",
+            "title": "For the supply and delivery of estimated quantities of high pressure, high temperature valves to Medupi Power Station for a period of five (5) years on an as and when required basis.",
+            "description": "Services: General. Request for Bid(Open-Tender). For the supply and delivery of estimated quantities of high pressure, high temperature valves to Medupi Power Station for a period of five (5) years on an as and when required basis.",
+            "client": "ESKOM",
+            "priority": "HIGH",
+            "score": 8.2,
+            "category": "PHAKATHI",
+            "source": "National Treasury",
+            "url": "https://www.etenders.gov.za/home/Download/?blobName=763d4831-b0c8-4a32-8ecf-0d32e4d6bf99.pdf&downloadedFileName=SDLI+Bidders+Template+for+HT+and+HP+Valves.pdf",
+            "company": "Phakathi",
+            "closing_date": "2026-08-26",
+            "matched_keywords": [
+                "delivery",
+                "services",
+                "supply",
+                "valves",
+                "supply and delivery"
+            ],
+            "pdf_analysis": {
+                "page_count": 5,
+                "word_count": 2055,
+                "requirements": [
+                    "migrate and achieve as a non-negotiable a milestone of b-bbee level 3 by the end of",
+                    "migrate and achieve as a non-negotiable a milestone of level 4 by the end of",
+                    "be sourced from lephalale municipality area",
+                    "only be released to the",
+                    "on a quarterly basis submit a report to eskom in accordance with data",
+                    "review the sdl&i reports submitted by the suppliers within 30 (thirty) days of receipt",
+                    "be required to implement corrective measures to meet those sdl&i obligations before the",
+                    "be accompanied by the sdl&i implementation schedule, which must be",
+                    "be added to the points scored for price and the",
+                    "be rounded off to the nearest two decimal places",
+                    "be awarded to the tenderer",
+                    "comply with all of the elements of qse score card relevant to",
+                    "be representative of the population demographics of",
+                    "be considered when it comes to validity of affidavits;",
+                    "ensure that the affidavits meet the following key pointers to",
+                    "be indicated in order to know that person is duly",
+                    "select the basis for the empowering"
+                ],
+                "deadlines": [],
+                "values": [
+                    {
+                        "value": 240000000.0,
+                        "formatted": "R240,000,000",
+                        "context": "Document Identifier 240-6860265 Rev 1 SDL&I Strategy"
+                    },
+                    {
+                        "value": 240000000.0,
+                        "formatted": "R240,000,000",
+                        "context": "cific goals Document Identifier 240-6860265 Rev 1 SDL&I Strategy"
+                    },
+                    {
+                        "value": 240000000.0,
+                        "formatted": "R240,000,000",
+                        "context": "the end of Document Identifier 240-6860265 Rev 1 SDL&I Strategy"
+                    },
+                    {
+                        "value": 240000000.0,
+                        "formatted": "R240,000,000",
+                        "context": "f 24 months Document Identifier 240-6860265 Rev 1 SDL&I Strategy"
+                    },
+                    {
+                        "value": 240000000.0,
+                        "formatted": "R240,000,000",
+                        "context": "Open market Document Identifier 240-6860265 Rev 1 SDL&I Strategy"
+                    },
+                    {
+                        "value": 50000000.0,
+                        "formatted": "R50,000,000",
+                        "context": "your annual Total Revenue is R50 Million or less, you qualify"
+                    },
+                    {
+                        "value": 50000000.0,
+                        "formatted": "R50,000,000",
+                        "context": "Annual Total Revenue is above R50m you need to submit a Valid B"
+                    },
+                    {
+                        "value": 20000000.0,
+                        "formatted": "R20,000,000",
+                        "context": "skill one candidate for every R20 Million spend cumulatively th"
+                    },
+                    {
+                        "value": 10000000.0,
+                        "formatted": "R10,000,000",
+                        "context": "any’s annual Total Revenue is R10 Million or less you qualify a"
+                    },
+                    {
+                        "value": 3000000.0,
+                        "formatted": "R3,000,000",
+                        "context": "r learners at the 1st or 2nd or 3rd year National diploma Unive"
+                    }
+                ],
+                "contact": {}
+            },
+            "reason": "Competence Match (Phakathi Industrial Supply): valves + supply and delivery",
+            "short_title": "Estimated_Quantities_Of_High",
+            "scores": {
+                "fit_score": 7,
+                "fit_reasons": [
+                    "Phakathi category match"
+                ],
+                "fit_grade": "B",
+                "industry_score": 10,
+                "industry_matched": "Power",
+                "industry_grade": "A",
+                "mexel_suitability": 0,
+                "mexel_fit": "Weak",
+                "composite": 8.2,
+                "composite_score": 8.2,
+                "priority": "HIGH",
+                "recommendation": "🔥 PRIORITY BID - Strong fit, pursue immediately"
+            }
+        },
+        {
+            "ref": "6000080632",
+            "title": "Supply and delivery of Valves",
+            "description": "Supplies: General. Request for Quotation. Supply and delivery of Valves",
+            "client": "Johannesburg Water",
+            "priority": "MEDIUM",
+            "score": 6.2,
+            "category": "PHAKATHI",
+            "source": "National Treasury",
+            "url": "https://www.etenders.gov.za/home/Download/?blobName=cfaa8952-bf92-4274-b3cd-f5cb3c75bbc5.pdf&downloadedFileName=6000080632+-+Valves+re-advert.pdf",
+            "company": "Phakathi",
+            "closing_date": "2026-08-05",
+            "matched_keywords": [
+                "delivery",
+                "supply",
+                "supply and delivery",
+                "valves"
+            ],
+            "pdf_analysis": {
+                "page_count": 27,
+                "word_count": 7374,
+                "requirements": [
+                    "include any individual or organization, other than the",
+                    "be manufactured locally",
+                    "be inclusive of all applicable taxes",
+                    "be on company letterheads",
+                    "form part of all tenders invited",
+                    "be awarded for specific goals stated in the",
+                    "indicate the points allocated for specific goals",
+                    "also be indicated as such",
+                    "indicate how they claim points for each preference",
+                    "form part of all bids invited",
+                    "form part of all bids¹ invited",
+                    "provide measures for the combating of abuse of the supply chain management system,",
+                    "enable the accounting officer, among others, to:",
+                    "be completed and submitted with the bid:"
+                ],
+                "deadlines": [],
+                "values": [
+                    {
+                        "value": 2022000000.0,
+                        "formatted": "R2,022,000,000",
+                        "context": "Form Page 1 | 1 FRM-POPI-2: MAR2022R1 City of Johannesburg Johann"
+                    },
+                    {
+                        "value": 2000000000.0,
+                        "formatted": "R2,000,000,000",
+                        "context": "C) Limited, registration number 2000/029271/30 3.1 The information"
+                    },
+                    {
+                        "value": 90000000.0,
+                        "formatted": "R90,000,000",
+                        "context": "ED FOR PRICE 2.1.1 THE 80/20 OR 90/10 PREFERENCE POINT SYSTEMS A"
+                    },
+                    {
+                        "value": 90000000.0,
+                        "formatted": "R90,000,000",
+                        "context": "OINT SYSTEMS A maximum of 80 or 90 points is allocated for price"
+                    },
+                    {
+                        "value": 90000000.0,
+                        "formatted": "R90,000,000",
+                        "context": "is unclear whether the 80/20 or 90/10 preference point system ap"
+                    },
+                    {
+                        "value": 90000000.0,
+                        "formatted": "R90,000,000",
+                        "context": "racts, that either the 80/20 or 90/10 preference point system wi"
+                    },
+                    {
+                        "value": 90000000.0,
+                        "formatted": "R90,000,000",
+                        "context": "ender, that either the 80/20 or 90/10 preference point system wi"
+                    },
+                    {
+                        "value": 80000000.0,
+                        "formatted": "R80,000,000",
+                        "context": "system. c) Either the 90/10 or 80/20 preference point system wi"
+                    },
+                    {
+                        "value": 80000000.0,
+                        "formatted": "R80,000,000",
+                        "context": "tate: Where either the 90/10 or 80/20 preference point system is"
+                    },
+                    {
+                        "value": 50000000.0,
+                        "formatted": "R50,000,000",
+                        "context": "ments with a Rand value above R50 000 000 (all applicable taxes"
+                    }
+                ],
+                "contact": {
+                    "email": "csd@treasury.gov.za",
+                    "phone": "001 688 1400",
+                    "name": "Jabulani Phodiso"
+                }
+            },
+            "reason": "Competence Match (Phakathi Industrial Supply): valves + supply and delivery",
+            "short_title": "Valves",
+            "scores": {
+                "fit_score": 7,
+                "fit_reasons": [
+                    "Phakathi category match"
+                ],
+                "fit_grade": "B",
+                "industry_score": 5,
+                "industry_matched": "General",
+                "industry_grade": "C",
+                "mexel_suitability": 0,
+                "mexel_fit": "Weak",
+                "composite": 6.2,
+                "composite_score": 6.2,
+                "priority": "MEDIUM",
+                "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
+            }
+        },
+        {
+            "ref": "E2281GXMPTUTpublish",
+            "title": "INLINE OR OFFLINE VALVE COMPONENTS RECONDITIONING – SEAT HARD-FACING WELD OVERLAY, OR WELD OVERLAY O",
+            "description": "INLINE OR OFFLINE VALVE COMPONENTS RECONDITIONING – SEAT HARD-FACING WELD OVERLAY, OR WELD OVERLAY ON VALVE BODIES AND OTHER COMPONENTS    DURING PLANNED OUTAGES AND NORMAL MAINTENANCE AT TUTUKA POWER STATION FOR A PERIOD OF 5 YEARS - Publish",
+            "client": "Eskom",
+            "priority": "HIGH",
+            "score": 8.2,
+            "category": "PHAKATHI",
+            "source": "Eskom",
+            "url": "https://tenderbulletin.eskom.co.za/tender/94260",
+            "company": "Phakathi",
+            "closing_date": "2027-12-13T10:00:00",
+            "matched_keywords": [
+                "valve components",
+                "valve",
+                "maintenance",
+                "components"
+            ],
+            "reason": "Competence Match (Phakathi Industrial Supply): valve + components",
+            "short_title": "Inline_Or_Offline_Valve",
+            "scores": {
+                "fit_score": 7,
+                "fit_reasons": [
+                    "Phakathi category match"
+                ],
+                "fit_grade": "B",
+                "industry_score": 10,
+                "industry_matched": "Power",
+                "industry_grade": "A",
+                "mexel_suitability": 0,
+                "mexel_fit": "Weak",
+                "composite": 8.2,
+                "composite_score": 8.2,
+                "priority": "HIGH",
+                "recommendation": "🔥 PRIORITY BID - Strong fit, pursue immediately"
+            }
+        },
+        {
+            "ref": "E2985GXLPMAT",
+            "title": "Supply and delivery of Valves to Matimba Power Station over a period of five (5) years on an as-and-when required.",
+            "description": "Manufacture of basic metals. Request for Bid(Open-Tender). Supply and delivery of Valves to Matimba Power Station over a period of five (5) years on an as-and-when required.",
+            "client": "ESKOM",
+            "priority": "HIGH",
+            "score": 8.2,
+            "category": "PHAKATHI",
+            "source": "National Treasury",
+            "url": "https://www.etenders.gov.za/home/Download/?blobName=90337b98-9a58-4972-bc42-0e0430c428b6.pdf&downloadedFileName=SDLI+Strategy+for+Supply+and+delivery+of+Valves.pdf",
+            "company": "Phakathi",
+            "closing_date": "2026-07-31",
+            "matched_keywords": [
+                "supply",
+                "supply and delivery",
+                "valves",
+                "delivery"
+            ],
+            "pdf_analysis": {
+                "page_count": 5,
+                "word_count": 2106,
+                "requirements": [
+                    "migrate and achieve as a non-negotiable a milestone of b-bbee level 3 by the end of",
+                    "migrate and achieve as a non-negotiable a milestone of level 4 by the end of",
+                    "be sourced from previously disadvantage groups in south africa,",
+                    "only be released to the contractor",
+                    "on a quarterly basis submit a report to eskom in accordance with data",
+                    "review the sdl&i reports submitted by the suppliers within 30 (thirty) days of receipt",
+                    "be required to implement corrective measures to meet those sdl&i obligations before the",
+                    "be accompanied by the sdl&i implementation schedule, which must be",
+                    "be tender returnable if applicable",
+                    "obtain an exemption letter from the department",
+                    "comply with all of the elements of qse score card relevant to",
+                    "be separated into its components as per the price schedule included with",
+                    "be representative of the population demographics of",
+                    "be considered when it comes to validity of affidavits;",
+                    "ensure that the affidavits meet the following key pointers to",
+                    "be indicated in order to know that person is duly",
+                    "select the basis for the empowering"
+                ],
+                "deadlines": [],
+                "values": [
+                    {
+                        "value": 240000000.0,
+                        "formatted": "R240,000,000",
+                        "context": "Document Identifier 240-148918142 Rev 4 SDL&I Strateg"
+                    },
+                    {
+                        "value": 240000000.0,
+                        "formatted": "R240,000,000",
+                        "context": "cific goals Document Identifier 240-148918142 Rev 4 SDL&I Strateg"
+                    },
+                    {
+                        "value": 240000000.0,
+                        "formatted": "R240,000,000",
+                        "context": "e contract. Document Identifier 240-148918142 Rev 4 SDL&I Strateg"
+                    },
+                    {
+                        "value": 240000000.0,
+                        "formatted": "R240,000,000",
+                        "context": "be retained Document Identifier 240-148918142 Rev 4 SDL&I Strateg"
+                    },
+                    {
+                        "value": 240000000.0,
+                        "formatted": "R240,000,000",
+                        "context": "be invoked. Document Identifier 240-148918142 Rev 4 SDL&I Strateg"
+                    },
+                    {
+                        "value": 50000000.0,
+                        "formatted": "R50,000,000",
+                        "context": "your annual Total Revenue is R50 Million or less, you qualify"
+                    },
+                    {
+                        "value": 50000000.0,
+                        "formatted": "R50,000,000",
+                        "context": "Annual Total Revenue is above R50m you need to submit a Valid B"
+                    },
+                    {
+                        "value": 20000000.0,
+                        "formatted": "R20,000,000",
+                        "context": "skill one candidate for every R20 Million spend cumulatively th"
+                    },
+                    {
+                        "value": 10000000.0,
+                        "formatted": "R10,000,000",
+                        "context": "any’s annual Total Revenue is R10 Million or less you qualify a"
+                    },
+                    {
+                        "value": 2000000.0,
+                        "formatted": "R2,000,000",
+                        "context": "rsary to learners at the 1st or 2nd year National Diploma unive"
+                    }
+                ],
+                "contact": {}
+            },
+            "reason": "Competence Match (Phakathi Industrial Supply): valves + supply and delivery",
+            "short_title": "Valves_To_Matimba_Power",
+            "scores": {
+                "fit_score": 7,
+                "fit_reasons": [
+                    "Phakathi category match"
+                ],
+                "fit_grade": "B",
+                "industry_score": 10,
+                "industry_matched": "Power",
+                "industry_grade": "A",
+                "mexel_suitability": 0,
+                "mexel_fit": "Weak",
+                "composite": 8.2,
+                "composite_score": 8.2,
+                "priority": "HIGH",
+                "recommendation": "🔥 PRIORITY BID - Strong fit, pursue immediately"
+            }
+        },
+        {
+            "ref": "JW OPS 026/25",
+            "title": "Supply And Delivery of Small Diameter Valves on An as And When Required Basis for A Period of Thirty-Six (36) Months",
+            "description": "Specialised construction activities. Request for Bid(Open-Tender). Supply And Delivery of Small Diameter Valves on An as And When Required Basis for A Period of Thirty-Six (36) Months",
+            "client": "Johannesburg Water",
+            "priority": "MEDIUM",
+            "score": 6.2,
+            "category": "PHAKATHI",
+            "source": "National Treasury",
+            "url": "https://www.etenders.gov.za/home/Download/?blobName=9145de2d-3551-465f-acf0-93ff6a97f6d2.pdf&downloadedFileName=JW++ADVERT+29+JUNE+2026.pdf",
+            "company": "Phakathi",
+            "closing_date": "2026-08-05",
+            "matched_keywords": [
+                "supply",
+                "supply and delivery",
+                "valves",
+                "delivery"
+            ],
+            "pdf_analysis": {
+                "page_count": 1,
+                "word_count": 531,
+                "requirements": [
+                    "comply with requirements as described therein, i",
+                    "be deposited in the tender box situated at the"
+                ],
+                "deadlines": [],
+                "values": [
+                    {
+                        "value": 8000000.0,
+                        "formatted": "R8,000,000",
+                        "context": "513 Upgrading Of Inchanga Sewer 8CE or Compulsory briefing 07 A"
+                    }
+                ],
+                "contact": {
+                    "email": "nthabisieng.matabane@jwater.co.za",
+                    "phone": "011 688 1512"
+                }
+            },
+            "reason": "Competence Match (Phakathi Industrial Supply): valves + supply and delivery",
+            "short_title": "Small_Diameter_Valves_On",
+            "scores": {
+                "fit_score": 7,
+                "fit_reasons": [
+                    "Phakathi category match"
+                ],
+                "fit_grade": "B",
+                "industry_score": 5,
+                "industry_matched": "General",
+                "industry_grade": "C",
+                "mexel_suitability": 0,
+                "mexel_fit": "Weak",
+                "composite": 6.2,
+                "composite_score": 6.2,
+                "priority": "MEDIUM",
+                "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
+            }
+        },
+        {
+            "ref": "NLM-QUO-26/116",
+            "title": "RFQ TO SUPPLY SYSTEM MANUAL VALVES FOR OIL PLASMA GAS PROJECT",
+            "description": "Other manufacturing. Request for Quotation. RFQ TO SUPPLY SYSTEM MANUAL VALVES FOR OIL PLASMA GAS PROJECT",
+            "client": "South African Nuclear Energy Corporation Limited",
+            "priority": "MEDIUM",
+            "score": 6.6,
+            "category": "PHAKATHI",
+            "source": "National Treasury",
+            "url": "https://www.etenders.gov.za/home/Download/?blobName=a7c68b4e-80cb-4b9c-a86f-68927535bd45.pdf&downloadedFileName=1Gas+Supply+Valves+List+for+RFQ.pdf",
+            "company": "Phakathi",
+            "closing_date": "2026-08-07",
+            "matched_keywords": [
+                "supply",
+                "valves"
+            ],
+            "pdf_analysis": {
+                "page_count": 1,
+                "word_count": 688,
+                "requirements": [],
+                "deadlines": [],
+                "values": [
+                    {
+                        "value": 38000000.0,
+                        "formatted": "R38,000,000",
+                        "context": "PE-25033 SPE-25033 Total Number 38 of Valves"
+                    },
+                    {
+                        "value": 8000000.0,
+                        "formatted": "R8,000,000",
+                        "context": "E CLASS SS (ASTM A182- SUPPLIER 8 15 Globe valve 93 20685 Ambie"
+                    },
+                    {
+                        "value": 3000000.0,
+                        "formatted": "R3,000,000",
+                        "context": "ract from ENS-OWPVR-LST-24008 R3 Valve List for Gas Supply Sys"
+                    },
+                    {
+                        "value": 1000000.0,
+                        "formatted": "R1,000,000",
+                        "context": "N SPECIFICATION SHEET ENS- 1 PR1 Regulator (Female) SHEET ENS-"
+                    },
+                    {
+                        "value": 316.0,
+                        "formatted": "R316",
+                        "context": "ient 20000/600 15 B1.20.1 or OR 316 SS TION ON SHEET N SPECIFICAT"
+                    },
+                    {
+                        "value": 1.0,
+                        "formatted": "R1",
+                        "context": "16/316L) #12 Pressure Regulator 1 2 3 4 5 6 7 8 9 10 11 Design"
+                    }
+                ],
+                "contact": {}
+            },
+            "reason": "Competence Match (Phakathi Industrial Supply): valves + supply",
+            "short_title": "Rfq_To_Supply_System",
+            "scores": {
+                "fit_score": 7,
+                "fit_reasons": [
+                    "Phakathi category match"
+                ],
+                "fit_grade": "B",
+                "industry_score": 6,
+                "industry_matched": "Manufacturing",
+                "industry_grade": "B",
+                "mexel_suitability": 0,
+                "mexel_fit": "Weak",
+                "composite": 6.6,
+                "composite_score": 6.6,
+                "priority": "MEDIUM",
+                "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
+            }
+        },
+        {
+            "ref": "E2737GXMPKRI",
+            "title": "Open, inspect, issue inspection report, refurbish or replace non-return, Globe, Ball, AMOT, Butterfly, Wedge, Gate, Parallel Slide and Diaphragm valves of the boiler and turbine auxiliary systems at Kriel Power Station for a period of five years",
+            "description": "Services: General. Request for Bid(Open-Tender). Open, inspect, issue inspection report, refurbish or replace non-return, Globe, Ball, AMOT, Butterfly, Wedge, Gate, Parallel Slide and Diaphragm valves of the boiler and turbine auxiliary systems at Kriel Power Station for a period of five years",
+            "client": "ESKOM",
+            "priority": "HIGH",
+            "score": 8.8,
+            "category": "PHAKATHI",
+            "source": "National Treasury",
+            "url": "https://www.etenders.gov.za/home/Download/?blobName=d87db44c-16e3-4297-b1f5-0137a1ac9943.pdf&downloadedFileName=Annexure+B.pdf",
+            "company": "Phakathi",
+            "closing_date": "2026-08-13",
+            "matched_keywords": [
+                "services",
+                "boiler"
+            ],
+            "pdf_analysis": {
+                "page_count": 2,
+                "word_count": 625,
+                "requirements": [
+                    "be enforced on the main supplier for non-conformance/s (identified for the main supplier and/or",
+                    "monitor contractors or suppliers through audits and assessments with regard to ohs",
+                    "be provided by the main supplier",
+                    "ensure that he/she understands the ohs"
+                ],
+                "deadlines": [],
+                "values": [],
+                "contact": {}
+            },
+            "reason": "Competence Match (Phakathi Industrial Supply): valves + services",
+            "short_title": "Open_Inspect_Issue_Inspection",
+            "scores": {
+                "fit_score": 8,
+                "fit_reasons": [
+                    "Phakathi category match",
+                    "Company alignment (1 keywords)"
+                ],
+                "fit_grade": "A",
+                "industry_score": 10,
+                "industry_matched": "Power",
+                "industry_grade": "A",
+                "mexel_suitability": 2,
+                "mexel_fit": "Weak",
+                "composite": 8.8,
+                "composite_score": 8.8,
+                "priority": "HIGH",
+                "recommendation": "🔥 PRIORITY BID - Strong fit, pursue immediately"
+            }
+        },
+        {
+            "ref": "E2981GXMPRO",
+            "title": "Supply and delivery of bearings, housings, sleeves and couplings as and when required at Grootvlei Power Sation as and when required for the period of 5 years",
+            "description": "Other service activities. Request for Bid(Open-Tender). Supply and delivery of bearings, housings, sleeves and couplings as and when required at Grootvlei Power Sation as and when required for the period of 5 years",
+            "client": "ESKOM",
+            "priority": "HIGH",
+            "score": 8.2,
+            "category": "PHAKATHI",
+            "source": "National Treasury",
+            "url": "https://www.etenders.gov.za/home/Download/?blobName=974fed4a-ed4e-4017-81b8-065e84eb4c86.pdf&downloadedFileName=Cover+page.pdf",
+            "company": "Phakathi",
+            "closing_date": "2026-08-12",
+            "matched_keywords": [
+                "couplings",
+                "supply",
+                "delivery",
+                "service",
+                "supply and delivery"
+            ],
+            "pdf_analysis": {
+                "page_count": 2,
+                "word_count": 146,
+                "requirements": [],
+                "deadlines": [],
+                "values": [
+                    {
+                        "value": 1000000.0,
+                        "formatted": "R1,000,000",
+                        "context": "t Data provided by the Supplier 1 C1.3 Proforma Guarantees 0 CO"
+                    },
+                    {
+                        "value": 15.0,
+                        "formatted": "R15",
+                        "context": "Data provided by the Purchaser 15 C1.2b Contract Data provided"
+                    }
+                ],
+                "contact": {}
+            },
+            "reason": "Competence Match (Phakathi Industrial Supply): couplings + supply and delivery",
+            "short_title": "Bearings_Housings_Sleeves_And",
+            "scores": {
+                "fit_score": 7,
+                "fit_reasons": [
+                    "Phakathi category match"
+                ],
+                "fit_grade": "B",
+                "industry_score": 10,
+                "industry_matched": "Power",
+                "industry_grade": "A",
+                "mexel_suitability": 0,
+                "mexel_fit": "Weak",
+                "composite": 8.2,
+                "composite_score": 8.2,
+                "priority": "HIGH",
+                "recommendation": "🔥 PRIORITY BID - Strong fit, pursue immediately"
+            }
+        },
+        {
+            "ref": "E2979GXPOU",
+            "title": "The supply and delivery of various valves and valve components on an “as and when” required basis for all Peaking Power Stations for a period of five (5) years NB - Clarification Posted 22.06.2026 NB: The Tender Closing Date has been extended to 20 August 2026 at 10:00. Enquiry No. E2979GXPOU: The supply and delivery of various valves and valve components on an “as and when” required basis for all Peaking Power Stations for a period of five (5) years. NB - Technical Clarifications Posted 03.07.2026 refer attached document loaded \"Tender E2979GXPOU - Addendum - Technical Data Package\"",
+            "description": "Supplies: General. Request for Bid(Open-Tender). The supply and delivery of various valves and valve components on an “as and when” required basis for all Peaking Power Stations for a period of five (5) years NB - Clarification Posted 22.06.2026 NB: The Tender Closing Date has been extended to 20 August 2026 at 10:00. Enquiry No. E2979GXPOU: The supply and delivery of various valves and valve components on an “as and when” required basis for all Peaking Power Stations for a period of five (5) years. NB - Technical Clarifications Posted 03.07.2026 refer attached document loaded \"Tender E2979GXPOU - Addendum - Technical Data Package\"",
+            "client": "ESKOM",
+            "priority": "HIGH",
+            "score": 8.2,
+            "category": "PHAKATHI",
+            "source": "National Treasury",
+            "url": "https://www.etenders.gov.za/home/Download/?blobName=833a2fb0-8f1f-4442-b533-066915f733c3.zip&downloadedFileName=Attachment+7+Quality+Returnables.zip",
+            "company": "Phakathi",
+            "closing_date": "2026-08-20",
+            "matched_keywords": [
+                "components",
+                "supply",
+                "valve components",
+                "delivery",
+                "supply and delivery"
+            ],
+            "reason": "Competence Match (Phakathi Industrial Supply): valve + supply and delivery",
+            "short_title": "The_Various_Valves_And",
+            "scores": {
+                "fit_score": 7,
+                "fit_reasons": [
+                    "Phakathi category match"
+                ],
+                "fit_grade": "B",
+                "industry_score": 10,
+                "industry_matched": "Power",
+                "industry_grade": "A",
+                "mexel_suitability": 0,
+                "mexel_fit": "Weak",
+                "composite": 8.2,
+                "composite_score": 8.2,
+                "priority": "HIGH",
+                "recommendation": "🔥 PRIORITY BID - Strong fit, pursue immediately"
+            }
+        },
+        {
+            "ref": "E3125GXMPMAT",
+            "title": "The refurbishment and spares supply of seal oil vacuum pumps for Matla Power Station for a period of Five (5) years",
+            "description": "Services: General. Request for Bid(Open-Tender). The refurbishment and spares supply of seal oil vacuum pumps for Matla Power Station for a period of Five (5) years",
+            "client": "ESKOM",
+            "priority": "HIGH",
+            "score": 8.2,
+            "category": "PHAKATHI",
+            "source": "National Treasury",
+            "url": "https://www.etenders.gov.za/home/Download/?blobName=a0ddbbcf-16c6-4333-bf83-082f9ccb670a.pdf&downloadedFileName=Code+of+Ethics.pdf",
+            "company": "Phakathi",
+            "closing_date": "2026-08-25",
+            "matched_keywords": [
+                "supply",
+                "services",
+                "seal oil vacuum pumps",
+                "refurbishment",
+                "vacuum pumps",
+                "spares"
+            ],
+            "pdf_analysis": {
+                "page_count": 9,
+                "word_count": 3786,
+                "requirements": [
+                    "apply throughout eskom holdings limited, which includes its board of",
+                    "apply the most recent edition of the documents listed below",
+                    "also be registered to attend an induction programme within one month of",
+                    "be made aware of, and are expected to adhere to,",
+                    "be referred to the ethics office",
+                    "be read together with the supplementary code information",
+                    "in living the eskom values of integrity, excellence, customer satisfaction and innovation, but"
+                ],
+                "deadlines": [],
+                "values": [
+                    {
+                        "value": 3000000.0,
+                        "formatted": "R3,000,000",
+                        "context": "ive 3.4.2 MD: Managing Director 3.4.3 EDC: Eskom Documentation"
+                    }
+                ],
+                "contact": {
+                    "email": "ethics@eskom.co.za",
+                    "phone": "+27 11 800 3187"
+                }
+            },
+            "reason": "Competence Match (Phakathi Industrial Supply): vacuum pumps + supply",
+            "short_title": "The_Refurbishment_And_Spares",
+            "scores": {
+                "fit_score": 7,
+                "fit_reasons": [
+                    "Phakathi category match"
+                ],
+                "fit_grade": "B",
+                "industry_score": 10,
+                "industry_matched": "Power",
+                "industry_grade": "A",
+                "mexel_suitability": 0,
+                "mexel_fit": "Weak",
+                "composite": 8.2,
+                "composite_score": 8.2,
+                "priority": "HIGH",
+                "recommendation": "🔥 PRIORITY BID - Strong fit, pursue immediately"
+            }
+        },
+        {
+            "ref": "E2157GXMPDUVR",
+            "title": "Duvha Power Station Cooling Water Pumps Control System PLC Upgrade",
+            "description": "Services: General. Request for Quotation. Duvha Power Station Cooling Water Pumps Control System PLC Upgrade",
+            "client": "ESKOM",
+            "priority": "HIGH",
+            "score": 8.8,
+            "category": "PHAKATHI",
+            "source": "National Treasury",
+            "url": "https://www.etenders.gov.za/home/Download/?blobName=abf12e0e-a921-4253-970f-013b9c4b19a2.zip&downloadedFileName=Appendix+1+Limits+of+Supply+and+Services.zip",
+            "company": "Phakathi",
+            "closing_date": "2026-08-03",
+            "matched_keywords": [
+                "services",
+                "upgrade",
+                "water pumps"
+            ],
+            "reason": "Competence Match (Phakathi Industrial Supply): water pumps + upgrade",
+            "short_title": "Duvha_Power_Station_Cooling",
+            "scores": {
+                "fit_score": 8,
+                "fit_reasons": [
+                    "Phakathi category match",
+                    "Company alignment (1 keywords)"
+                ],
+                "fit_grade": "A",
+                "industry_score": 10,
+                "industry_matched": "Power",
+                "industry_grade": "A",
+                "mexel_suitability": 3,
+                "mexel_fit": "Moderate",
+                "composite": 8.8,
+                "composite_score": 8.8,
+                "priority": "HIGH",
+                "recommendation": "🔥 PRIORITY BID - Strong fit, pursue immediately"
+            }
+        },
+        {
+            "ref": "PWRT/669/26/MP",
+            "title": "SUPPLY, REPAIR AND MAINTENANCE OF ROTARY SCREW VACUUM PUMP INSTALLATIONS AT VARIOUS INSTITUTIONS WITHIN MPUMALANGA PROVINCE FOR A PERIOD OF THREE YEARS",
+            "description": "Services: General. Request for Bid(Open-Tender). SUPPLY, REPAIR AND MAINTENANCE OF ROTARY SCREW VACUUM PUMP INSTALLATIONS AT VARIOUS INSTITUTIONS WITHIN MPUMALANGA PROVINCE FOR A PERIOD OF THREE YEARS",
+            "client": "Mpumalanga - Public Works Roads and Transport",
+            "priority": "MEDIUM",
+            "score": 6.2,
+            "category": "PHAKATHI",
+            "source": "National Treasury",
+            "url": "https://www.etenders.gov.za/home/Download/?blobName=20590d31-d363-467e-b551-1b663b4a68de.pdf&downloadedFileName=PWRT+669.pdf+n.pdf",
+            "company": "Phakathi",
+            "closing_date": "2026-08-07",
+            "matched_keywords": [
+                "supply",
+                "services",
+                "vacuum pump",
+                "repair",
+                "maintenance"
+            ],
+            "reason": "Competence Match (Phakathi Industrial Supply): vacuum pump + supply",
+            "short_title": "Supply_Repair_And_Of",
+            "scores": {
+                "fit_score": 7,
+                "fit_reasons": [
+                    "Phakathi category match"
+                ],
+                "fit_grade": "B",
+                "industry_score": 5,
+                "industry_matched": "General",
+                "industry_grade": "C",
+                "mexel_suitability": 0,
+                "mexel_fit": "Weak",
+                "composite": 6.2,
+                "composite_score": 6.2,
+                "priority": "MEDIUM",
+                "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
+            }
+        }
+    ]
+}
