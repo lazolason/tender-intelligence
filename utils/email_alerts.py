@@ -17,6 +17,51 @@ from pathlib import Path
 logger = logging.getLogger(__name__)
 DASHBOARD_URL = (os.getenv("DASHBOARD_URL") or "http://localhost:5001/").strip() or "http://localhost:5001/"
 
+# Locations searched for a shared mailctl app password, so one Google credential
+# serves both the mail CLI and the tender digest.
+_MAILCTL_CREDENTIAL_PATHS = [
+    Path(os.environ.get("MAILCTL_CREDENTIALS", "~/.mailctl/credentials.json")).expanduser(),
+    Path("~/Documents/deepseek-harness/default-workspace/.mailctl/credentials.json").expanduser(),
+]
+
+
+def _mailctl_credentials():
+    """Return (address, app_password) from mailctl's store, or (None, None).
+
+    mailctl stores a flat JSON map of {email: app_password} at mode 600.
+    """
+    for path in _MAILCTL_CREDENTIAL_PATHS:
+        try:
+            if not path.exists():
+                continue
+            data = json.loads(path.read_text())
+            if not isinstance(data, dict):
+                continue
+            for address, password in data.items():
+                if isinstance(address, str) and isinstance(password, str) and "@" in address and password:
+                    return address.strip(), password.strip()
+        except Exception as exc:  # unreadable or corrupt store must not break alerts
+            logger.warning("Could not read mailctl credentials at %s: %s", path, exc)
+    return None, None
+
+
+def config_status(cfg: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+    """Report whether the digest can actually be sent, and what is missing."""
+    cfg = cfg or EMAIL_CONFIG
+    missing = []
+    if not cfg.get("sender_email"):
+        missing.append("sender address (SMTP_USER/EMAIL_FROM, or a mailctl credential)")
+    if not cfg.get("sender_password"):
+        missing.append("app password (SMTP_PASSWORD, or a mailctl credential)")
+    if not cfg.get("recipient_emails"):
+        missing.append("recipient (EMAIL_TO or config.yaml email.to_addresses)")
+    return {
+        "configured": not missing,
+        "missing": missing,
+        "sender": cfg.get("sender_email") or None,
+        "recipients": cfg.get("recipient_emails") or [],
+    }
+
 
 def _get_env(*names, default=""):
     """Return the first non-empty environment variable from `names`."""
@@ -82,13 +127,25 @@ def load_email_config():
         "recipient_emails": [],
     }
     
+    # Fall back to a shared mailctl app password. Explicit env vars always win.
+    if not result["sender_email"] or not result["sender_password"]:
+        cred_address, cred_password = _mailctl_credentials()
+        if cred_address and cred_password:
+            result["sender_email"] = result["sender_email"] or cred_address
+            result["smtp_user"] = result["smtp_user"] or result["sender_email"]
+            result["sender_password"] = result["sender_password"] or cred_password
+
     # Parse recipients from env var if provided
     email_to = _get_env("EMAIL_TO", "TENDERSCAN_EMAIL_TO", default="")
     if email_to:
         result["recipient_emails"] = [addr.strip() for addr in email_to.split(',')]
     elif email_config.get('to_addresses'):
         result["recipient_emails"] = email_config['to_addresses']
-    
+
+    # Default the digest to the sending account rather than dropping it silently.
+    if not result["recipient_emails"] and result["sender_email"]:
+        result["recipient_emails"] = [result["sender_email"]]
+
     return result
 
 

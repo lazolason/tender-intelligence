@@ -91,6 +91,14 @@ def test_run_daily_writes_status_and_reports_step_results(tmp_path, monkeypatch)
     email_alerts_module = ModuleType("utils.email_alerts")
     email_alerts_module.EMAIL_CONFIG = {"sender_email": "ops@example.com"}
     email_alerts_module.send_daily_digest = lambda: True
+    # The real module exposes config_status(); daily_runner uses it to decide
+    # whether sending is possible instead of matching a literal placeholder.
+    email_alerts_module.config_status = lambda: {
+        "configured": True,
+        "missing": [],
+        "sender": "ops@example.com",
+        "recipients": ["ops@example.com"],
+    }
 
     backup_module = ModuleType("utils.backup_database")
     backup_module.backup_database = lambda: True

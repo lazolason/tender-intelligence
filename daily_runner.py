@@ -162,13 +162,18 @@ def run_daily():
     # Step 4: Send email alerts for HIGH priority tenders
     print("\n📧 Step 4: Sending email alerts...")
     try:
-        from utils.email_alerts import send_daily_digest, EMAIL_CONFIG
+        from utils.email_alerts import send_daily_digest, config_status
 
-        # Check if email is configured
-        if EMAIL_CONFIG["sender_email"] == "your-email@gmail.com":
+        # Check whether the digest can actually be sent. The previous test
+        # compared sender_email to a literal placeholder, so a config that was
+        # empty in any other way reached SMTP and failed with a confusing error
+        # instead of skipping cleanly.
+        status = config_status()
+        if not status["configured"]:
             print("   ⚠️ Email not configured - skipping alerts")
-            print("   💡 Edit utils/email_alerts.py to enable email alerts")
-            results["email"] = {"status": "not_configured"}
+            for missing in status["missing"]:
+                print(f"      missing: {missing}")
+            results["email"] = {"status": "not_configured", "missing": status["missing"]}
         else:
             success = send_daily_digest()
             if success:
