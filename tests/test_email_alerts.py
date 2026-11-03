@@ -53,9 +53,9 @@ def _config(**overrides):
     cfg = {
         "smtp_server": "smtp.gmail.com",
         "smtp_port": 587,
-        "sender_email": "tenders@example.com",
+        "sender_email": "tenders@mexel.co.za",
         "sender_password": "app-password",
-        "recipient_emails": ["ops@example.com"],
+        "recipient_emails": ["ops@mexel.co.za"],
     }
     cfg.update(overrides)
     return cfg
@@ -87,17 +87,17 @@ def test_send_email_starts_tls_authenticates_and_sends(fake_smtp, monkeypatch):
     server = fake_smtp.instances[0]
     assert (server.host, server.port) == ("smtp.gmail.com", 587)
     assert server.started_tls is True
-    assert server.credentials == ("tenders@example.com", "app-password")
+    assert server.credentials == ("tenders@mexel.co.za", "app-password")
     sender, recipients, message = server.sent
-    assert sender == "tenders@example.com"
-    assert recipients == ["ops@example.com"]
+    assert sender == "tenders@mexel.co.za"
+    assert recipients == ["ops@mexel.co.za"]
     assert "Subject: Test digest" in message
 
 
 def test_mailctl_credentials_are_used_as_fallback(tmp_path, monkeypatch):
     """One shared app password should serve both mailctl and the digest."""
     creds = tmp_path / "credentials.json"
-    creds.write_text(json.dumps({"owner@example.com": "abcd efgh ijkl mnop"}))
+    creds.write_text(json.dumps({"owner@piso.co.za": "abcd efgh ijkl mnop"}))
 
     monkeypatch.setattr(ea, "_MAILCTL_CREDENTIAL_PATHS", [creds])
     for var in (
@@ -109,7 +109,42 @@ def test_mailctl_credentials_are_used_as_fallback(tmp_path, monkeypatch):
         monkeypatch.delenv(var, raising=False)
 
     cfg = ea.load_email_config()
-    assert cfg["sender_email"] == "owner@example.com"
+    assert cfg["sender_email"] == "owner@piso.co.za"
     assert cfg["sender_password"] == "abcd efgh ijkl mnop"
     # Digest defaults to the sending account rather than being dropped.
-    assert cfg["recipient_emails"] == ["owner@example.com"]
+    assert cfg["recipient_emails"] == ["owner@piso.co.za"]
+
+
+def test_placeholder_values_are_not_treated_as_configured():
+    """A copied .env must not look configured.
+
+    .env ships TENDERSCAN_SMTP_USER=your-email@gmail.com and example recipients;
+    treating those as real made the daily run attempt an SMTP login.
+    """
+    status = ea.config_status(_config(
+        sender_email="your-email@gmail.com",
+        sender_password="your-app-password",
+        recipient_emails=["recipient1@example.com", "recipient2@example.com"],
+    ))
+
+    assert status["configured"] is False
+    assert len(status["missing"]) == 3
+    assert status["sender"] is None
+    assert status["recipients"] == []
+
+
+def test_send_email_refuses_placeholder_credentials(fake_smtp, monkeypatch):
+    monkeypatch.setattr(ea, "EMAIL_CONFIG", _config(
+        sender_email="your-email@gmail.com",
+        sender_password="your-app-password",
+    ))
+
+    assert ea.send_email("digest", "<p>body</p>") is False
+    assert fake_smtp.instances == []
+
+
+def test_real_values_remain_configured():
+    status = ea.config_status(_config())
+    assert status["configured"] is True
+    assert status["sender"] == "tenders@mexel.co.za"
+    assert status["recipients"] == ["ops@mexel.co.za"]

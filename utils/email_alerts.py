@@ -45,21 +45,54 @@ def _mailctl_credentials():
     return None, None
 
 
+# Values shipped in .env.example / .env that are documentation, not credentials.
+# Without this check a copied .env makes config_status() claim the digest is
+# configured, so the daily run attempts an SMTP login as "your-email@gmail.com".
+_PLACEHOLDER_MARKERS = (
+    "your-email@",
+    "your-app-password",
+    "your-random-secret",
+    "@example.com",
+    "@example.org",
+    "recipient1@",
+    "changeme",
+)
+
+
+def _is_placeholder(value: Any) -> bool:
+    """True when a configured value is still an example/placeholder string."""
+    text = str(value or "").strip().lower()
+    if not text:
+        return False
+    return any(marker in text for marker in _PLACEHOLDER_MARKERS)
+
+
+def _usable(value: Any) -> bool:
+    return bool(str(value or "").strip()) and not _is_placeholder(value)
+
+
 def config_status(cfg: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
     """Report whether the digest can actually be sent, and what is missing."""
     cfg = cfg or EMAIL_CONFIG
     missing = []
-    if not cfg.get("sender_email"):
+
+    sender = cfg.get("sender_email")
+    password = cfg.get("sender_password")
+    recipients = [r for r in (cfg.get("recipient_emails") or []) if _usable(r)]
+
+    if not _usable(sender):
         missing.append("sender address (SMTP_USER/EMAIL_FROM, or a mailctl credential)")
-    if not cfg.get("sender_password"):
+    if not _usable(password):
         missing.append("app password (SMTP_PASSWORD, or a mailctl credential)")
-    if not cfg.get("recipient_emails"):
+    if not recipients:
         missing.append("recipient (EMAIL_TO or config.yaml email.to_addresses)")
+
     return {
         "configured": not missing,
         "missing": missing,
-        "sender": cfg.get("sender_email") or None,
-        "recipients": cfg.get("recipient_emails") or [],
+        # Report placeholders as unresolved rather than echoing them as valid.
+        "sender": sender if _usable(sender) else None,
+        "recipients": recipients,
     }
 
 
@@ -736,6 +769,12 @@ def send_email(subject, html_content):
     """Send email via SMTP"""
     if not EMAIL_CONFIG["sender_email"] or not EMAIL_CONFIG["recipient_emails"] or not EMAIL_CONFIG["sender_password"]:
         logger.warning("⚠️ Email not configured. Update EMAIL_CONFIG in utils/email_alerts.py")
+        return False
+
+    # Refuse placeholder credentials outright: a copied .env should skip the
+    # digest, not attempt an SMTP login as "your-email@gmail.com".
+    if not _usable(EMAIL_CONFIG["sender_email"]) or not _usable(EMAIL_CONFIG["sender_password"]):
+        logger.warning("⚠️ Email placeholders still in place; skipping send")
         return False
 
     try:
