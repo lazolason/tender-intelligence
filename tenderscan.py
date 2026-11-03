@@ -20,6 +20,7 @@ load_dotenv()
 # Import utils
 from scrapers import BaseScraper, get_active_scrapers
 from utils.db_writer import DatabaseWriter
+from utils.text_utils import normalize_ref
 from utils.folder_tools import create_tender_folder
 from utils.logging_tools import write_log, log_error, rotate_log_if_needed
 from utils.pipeline_validation import validate_tender_batch
@@ -505,7 +506,7 @@ def _load_existing_tenders(json_path):
 
 def _tender_identity(tender):
     """Return a stable identifier for merging tender lists."""
-    ref = (tender.get("ref") or "").strip().lower()
+    ref = normalize_ref(tender.get("ref")).lower()
     if ref:
         return f"ref::{ref}"
     title = (tender.get("title") or "").strip().lower()

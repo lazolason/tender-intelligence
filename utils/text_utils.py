@@ -26,6 +26,19 @@ def normalize_text(value: str) -> str:
     return value
 
 
+def normalize_ref(value: str) -> str:
+    """Canonicalise a tender reference for identity and dedupe comparisons.
+
+    Sources spell the same reference differently: the City of Cape Town tender
+    "092S/2026/27" is listed on eTenders as "92S/2026/27". Exact-ref dedupe
+    therefore stores the same tender twice. Upper-case, collapse whitespace, and
+    strip zero padding from a leading numeric run only, so refs such as
+    "CTICC 009/2027" keep their identifier intact.
+    """
+    ref = re.sub(r"\s+", " ", str(value or "")).strip().upper()
+    return re.sub(r"^0+(?=\d)", "", ref)
+
+
 def parse_date(value: str) -> Optional[date]:
     """
     Parse date string to date object.

@@ -17,6 +17,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from classify_engine import classify_tender
 from scoring_engine import score_tender
 from utils.db_migrations import get_schema_version, run_migrations
+from utils.text_utils import normalize_ref
 
 logger = logging.getLogger(__name__)
 
@@ -100,7 +101,7 @@ class DatabaseWriter:
         Returns:
             True if added, False if duplicate ref exists.
         """
-        ref = str(tender_data.get("ref", "")).strip().upper()
+        ref = normalize_ref(tender_data.get("ref", ""))
         
         # Guard against duplicates
         if ref and ref != "NA":
@@ -144,7 +145,7 @@ class DatabaseWriter:
         refresh on an update; user-managed workflow fields (stage, status,
         next_action, and notes) remain untouched.
         """
-        ref = str(tender_data.get("ref", "")).strip().upper()
+        ref = normalize_ref(tender_data.get("ref", ""))
         if not ref or ref == "NA":
             raise ValueError("A stable tender reference is required for upsert")
 
