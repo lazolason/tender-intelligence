@@ -549,31 +549,39 @@ def save_outputs(new_items, *, validation_report_text=""):
 
     if new_items:
         merged_items = _merge_tenders(new_items, existing_items)
+    else:
+        merged_items = existing_items
 
-        meta = {
+    # Always rewrite the snapshot. Previously the no-new-tenders branch left the
+    # file untouched, so meta.last_sync froze on the last day something new was
+    # found: the daily job could run for months while the dashboard kept
+    # reporting an old sync time. Freshness metadata must describe the run, not
+    # the last change in content.
+    output_payload = {
+        "meta": {
             "last_sync": datetime.now().strftime("%Y-%m-%d %H:%M"),
             "next_run": "Daily 08:00",
-        }
+            "new_count": len(new_items),
+            "total": len(merged_items),
+        },
+        "tenders": merged_items,
+    }
 
-        output_payload = {"meta": meta, "tenders": merged_items}
+    with open(json_path, "w") as jf:
+        json.dump(output_payload, jf, indent=4)
 
-        with open(json_path, "w") as jf:
-            json.dump(output_payload, jf, indent=4)
-
+    if new_items:
         write_log(
             LOG_FILE,
             f"Dashboard snapshot updated: {len(new_items)} new / {len(merged_items)} retained",
         )
+    elif existing_items:
+        write_log(
+            LOG_FILE,
+            f"No new tenders - snapshot freshness refreshed ({len(merged_items)} retained)",
+        )
     else:
-        if existing_items:
-            write_log(LOG_FILE, "No new tenders - keeping previous dashboard snapshot")
-        else:
-            with open(json_path, "w") as jf:
-                json.dump([], jf, indent=4)
-            write_log(
-                LOG_FILE, "No new tenders and no history - snapshot initialised empty"
-            )
-        merged_items = existing_items
+        write_log(LOG_FILE, "No new tenders and no history - snapshot initialised empty")
 
     # Save text summary
     summary_path = os.path.join(OUTPUT_DIR, "summary.txt")
