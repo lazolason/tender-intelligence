@@ -142,11 +142,20 @@ class ScraperMonitor:
             total_runs = int(entry.get("total_runs") or 0) + 1
             failures = int(entry.get("failures") or 0)
             consecutive_failures = int(entry.get("consecutive_failures") or 0)
+            consecutive_empty = int(entry.get("consecutive_empty") or 0)
             total_tenders = int(entry.get("total_tenders") or 0)
             total_duration = float(entry.get("total_duration") or 0.0)
 
             if success:
-                status = "success"
+                # A run that parses cleanly but yields nothing is not healthy: it
+                # is the signature of selectors or an endpoint that drifted.
+                # Municipalities ran 66 times this way while reporting success.
+                if int(tenders_found or 0) == 0:
+                    status = "empty"
+                    consecutive_empty += 1
+                else:
+                    status = "success"
+                    consecutive_empty = 0
                 total_tenders += int(tenders_found or 0)
                 total_duration += float(duration or 0.0)
                 consecutive_failures = 0
@@ -154,6 +163,7 @@ class ScraperMonitor:
                 status = "failure"
                 failures += 1
                 consecutive_failures += 1
+                consecutive_empty = 0
 
             successes = max(0, total_runs - failures)
             success_rate = (successes / total_runs) if total_runs else 0.0
@@ -170,6 +180,7 @@ class ScraperMonitor:
                     "total_runs": total_runs,
                     "failures": failures,
                     "consecutive_failures": consecutive_failures,
+                    "consecutive_empty": consecutive_empty,
                     "avg_tenders": float(round(avg_tenders, 2)),
                     "avg_duration": float(round(avg_duration, 2)),
                 }
@@ -416,11 +427,14 @@ def summarize_scraper_health_status(
     metrics = health_metrics or {}
     latest_failed_sources = []
     problem_sources = []
+    empty_sources = []
 
     for source, entry in metrics.items():
         status = str((entry or {}).get("status") or "").strip().lower()
         if status in FAILURE_STATUSES:
             latest_failed_sources.append(source)
+        if status == "empty":
+            empty_sources.append(source)
         if int((entry or {}).get("consecutive_failures") or 0) >= int(problem_threshold):
             problem_sources.append(source)
 
@@ -428,6 +442,9 @@ def summarize_scraper_health_status(
         "sources_tracked": len(metrics),
         "latest_failed_sources": sorted(latest_failed_sources),
         "problem_sources": sorted(problem_sources),
+        # Sources that parsed cleanly but produced nothing. These used to be
+        # indistinguishable from healthy sources.
+        "empty_sources": sorted(empty_sources),
     }
 
 
