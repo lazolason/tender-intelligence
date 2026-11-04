@@ -18,111 +18,39 @@ PHAKATHI KEYWORDS - REICON/ODACON chemistry, preservation and OT integration
 # PROFILE A: THE SERVICE (Automatic Match)
 # Mexel brand, core technologies, and unique service offerings
 STRONG_MATCH_KEYWORDS = [
-    # Brand & Product
-    "mexel", "mexel 432", "mexel432", "mexsteam", "mexsteam 100",
-    "antiscalant", "oxidizing biocide", "surfactant",
-
-    # Core Service Metrics (unique to TES)
-    "condenser performance", "condenser efficiency",
-    "thermal efficiency", "heat rate",
-    "back pressure", "vacuum recovery",
-    "megawatt gain", "mw gain", "power gain",
-
-    # Service Delivery
-    "iot dosing", "automated dosing", "precision dosing",
-
-    # Validation & Standards
-    "asme ptc 12.2", "measurement and verification", "m&v protocol",
-
-    # Data Center Specific
-    "pue", "power usage effectiveness",
-    "legionella control", "legionella compliance"
+    "mexel", "mexel 432", "mexel432",
+    "condenser performance", "condenser efficiency", "vacuum recovery",
+    "asme ptc 12.2", "legionella control", "legionella compliance",
+    "cooling tower preservation",
 ]
 
-# PROFILE B1: THE SYSTEM (Must be paired with an Action)
-# Industrial cooling systems where Mexel provides efficiency services
+# Require a cooling-water circuit AND a process/chemistry action. A site,
+# equipment purchase or generic maintenance action does not establish fit.
 SYSTEM_KEYWORDS = [
-    # Power Generation
-    "power plant", "power station", "generating unit", "generation facility",
-    "turbine condenser", "condenser", "condensor",
-    "cooling tower", "cooling water", "cooling system", "wet cooling", "wet-cooled",
-    "closed loop", "circulating water",
-
-    # Specific Sites (Critical for Matches without "Power Station")
-    "medupi", "matla", "grootvlei", "kusile", "kendal", "majuba", "tutuka",
-    "arnot", "hendrina", "camden", "komati", "lethabo", "duvha",
-
-
-    # Heat Transfer Equipment
-    "heat exchanger", "chiller", "cooling coil",
-    "reverse osmosis", "ro system",
-
-    # Mining & Smelters
-    "smelter", "furnace", "furnace cooling",
-    "compressor", "compressor cooling",
-
-    # Data Center / Critical HVAC
-    "crac", "crah", "chr",
-    "data center", "data centre",
-    "computer room", "server room",
-    "precision cooling", "close control cooling",
-    "mission critical cooling",
-
-    # Generic Industrial (New)
-    "industrial system", "facility", "infrastructure"
+    "cooling tower", "cooling water", "cooling system", "circulating water",
+    "turbine condenser", "condenser", "condensor", "heat exchanger",
+    "furnace cooling", "compressor cooling", "precision cooling",
+    "chiller", "chiller loop", "chiller loops", "mine refrigeration", "heat rejection loop",
+    "closed cooling loop", "once through cooling", "recirculating cooling",
+    "crac", "crah", "data center", "data centre", "server room",
 ]
-
-# PROFILE B2: THE ACTION (Must be paired with a System)
-# Services and outcomes that Mexel delivers
 ACTION_KEYWORDS = [
-    # Efficiency & Performance
-    "efficiency", "thermal efficiency", "optimization", "optimisation",
-    "performance improvement", "performance restoration",
-    "efficiency improvement", "efficiency restoration",
-
-    # Service Delivery
-    "dosing", "treatment", "application",
-    "monitoring", "performance tracking",
-    "service", "servicing",
-    "maintenance", "operation",
-
-    # Supply & Installation (for dosing systems)
-    "supply", "delivery", "installation",
-
-    # Problems Mexel Solves
-    "fouling", "scaling", "deposition",
-    "fouling prevention", "scale prevention",
-    "corrosion", "corrosion prevention",
-
-    # Service Process
-    "baseline", "intervention", "restoration", "restore",
-    "verification", "validation",
-    "chemistry", "analysis",
-
-    # Outcomes
-    "thermal performance", "heat transfer",
-    "capacity restoration", "capacity recovery",
-    "water quality", "water treatment",
-
-    # New Growth Actions
-    "retrofit", "refurbishment", "epc", "engineering", "resin", "desulphurization", "fgd"
+    "chemical dosing", "dosing", "water treatment", "water chemistry",
+    "cooling water condition", "thermal monitoring", "thermal performance",
+    "thermal efficiency", "heat transfer performance", "fouling", "scaling",
+    "scale prevention", "biofouling", "biocide", "biocides",
+    "biocidal", "biocidal properties", "online dosing", "on line dosing",
+    "online dosing monitoring", "dosing monitoring", "antiscalant",
+    "antiscalants", "surfactant", "surfactants", "legionella",
+    "treatment chemicals", "treatment", "condenser vacuum", "cleanliness factor",
+    "heat rate", "terminal temperature difference", "corrosion control",
+    "corrosion inhibition", "scale control", "solids dispersion", "pulsed dosing",
+    "performance verification", "thermal baseline", "water hygiene",
 ]
-
-# PROFILE B GUARDRAILS
-# Broad site references and generic commercial actions are not enough on their own.
-BROAD_SYSTEM_KEYWORDS = [
-    "power plant", "power station", "generating unit", "generation facility",
-    "medupi", "matla", "grootvlei", "kusile", "kendal", "majuba", "tutuka",
-    "arnot", "hendrina", "camden", "komati", "lethabo", "duvha",
-    "industrial system", "facility", "infrastructure"
-]
-
-BROAD_ACTION_KEYWORDS = [
-    "service", "servicing", "maintenance", "operation",
-    "supply", "delivery", "installation",
-    "retrofit", "refurbishment", "epc", "engineering",
-    "monitoring", "performance tracking"
-]
+# Kept for existing callers. Generic site and procurement terms are no longer
+# present in the positive lists above.
+BROAD_SYSTEM_KEYWORDS = []
+BROAD_ACTION_KEYWORDS = []
 
 # EXCLUSIONS (Refined for TES Business)
 # Exclude tenders that are clearly outside Mexel's service scope
@@ -193,19 +121,33 @@ EXCLUDE_KEYWORDS = NEGATIVE_KEYWORDS
 # =============================================================================
 
 PHAKATHI_KEYWORDS = [
-    # Brand Triggers & Agencies (highest priority — any match routes directly to PHAKATHI)
     "huawei", "reicon", "odacon",
-
-    # Boilers & Steam Chemistry (compound phrases only — avoids false positives)
-    "boiler chemistry", "boiler water", "boiler protection",
-    "boiler treatment", "boiler preservation", "boiler water treatment",
-    "lay-up", "layup", "asset preservation",
+    "boiler chemistry", "boiler water treatment", "steam cycle chemistry",
+    "water steam cycle chemistry", "steam circuit treatment",
+    "boiler preservation", "boiler lay-up", "steam cycle preservation",
+    "feedwater treatment", "condensate treatment", "condensate polishing",
+    "boiler chemical dosing", "steam cycle treatment", "water steam cycle treatment",
     "flow-accelerated corrosion", "film forming amine", "film-forming amine",
-    "filming amine", "film forming agent",
-    "ffa treatment", "steam drum", "steam circuit", "boiler lay-up",
-
-    # OT Networking & SCADA
-    "ot networking", "ot network", "ot networks", "operational technology",
-    "scada", "industrial networking",
-    "plc programming", "hmi programming", "automation system",
+    "filming amine", "film forming agent", "ffa treatment",
+    "chemical dosing", "dosing system", "dosing systems", "metering pump",
+    "metering pumps", "flow verification", "flow meter", "flow meters",
+    "flowmeter", "flowmeters", "process instrumentation", "process measurement",
+    "industrial networking", "ot networking", "ot network", "ot networks",
+    "industrial communications", "plant network", "plc programming",
+    "hmi programming", "scada integration", "industrial automation",
+    "industrial switching", "industrial ethernet", "plant connectivity",
+    "remote telemetry", "cellular iot", "edge monitoring", "dosing skid",
+    "dosing skids", "flow paced dosing", "injection system",
+    # User-confirmed display supply opportunity (MWP3022CX is historical).
+    "interactive led touch panel", "interactive led touch panels",
+    "interactive display", "interactive displays", "interactive flat panel",
+    "interactive flat panels", "touch screen monitor", "touchscreen monitor",
+    "computer monitor", "computer monitors", "display monitor", "display monitors",
 ]
+
+# Broad instrumentation and preservation words need a relevant circuit/system.
+PISO_CIRCUITS = ["boiler", "feedwater", "condensate", "steam circuit", "steam cycle", "water steam cycle"]
+PISO_CHEMISTRY_ACTIONS = ["chemistry", "chemical treatment", "corrosion inhibitor", "corrosion inhibitors", "corrosion inhibition", "preservation", "lay up", "layup", "iron transport", "corrosion product transport", "start up cleanup"]
+PROCESS_CONTEXT = ["dosing", "process", "industrial", "cooling water", "boiler", "feedwater", "condensate", "steam cycle"]
+PROCESS_INSTRUMENTS = ["conductivity", "pressure transmitter", "temperature sensor", "level measurement", "level sensor", "flow measurement", "online monitoring", "on line monitoring", "pump status", "plc interface", "plc interfaces", "historian connection", "historian interface", "scada interface"]
+HUAWEI_SCOPE = ["network", "networking", "router", "routers", "switch", "switches", "switching", "firewall", "server", "servers", "connectivity", "enterprise integration", "ideahub", "idea hub", "interactive display", "touch panel", "touch panels"]

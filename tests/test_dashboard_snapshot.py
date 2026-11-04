@@ -95,12 +95,8 @@ def test_write_dashboard_payload_updates_all_targets(tmp_path):
     assert json.loads(out_b.read_text(encoding="utf-8")) == payload
 
 
-def test_stored_category_is_trusted_over_name_based_reclassification(tmp_path, monkeypatch):
-    """Database inputs are already filtered; re-classifying them only removes rows.
-
-    On 2026-11-03 this double classification cut 87 stored tenders to 4 before
-    date validation, so a dashboard that should show ~32 showed 1.
-    """
+def test_stored_category_cannot_bypass_current_scope(tmp_path, monkeypatch):
+    """A legacy Phakathi label cannot keep road/civil works in the portfolio."""
     input_path = tmp_path / "scrape.json"
     input_path.write_text(
         json.dumps({
@@ -135,8 +131,8 @@ def test_stored_category_is_trusted_over_name_based_reclassification(tmp_path, m
     payload = build_snapshot_from_inputs([str(input_path)], limit=200)
     refs = [item["ref"] for item in payload["tenders"]]
 
-    assert refs == ["SNAP-STORED"]
-    assert payload["tenders"][0]["category"] == "PHAKATHI"
+    assert refs == []
+    assert json.loads(input_path.read_text())["tenders"][0]["category"] == "PHAKATHI"
 
 
 def test_records_without_category_are_still_classified(tmp_path, monkeypatch):

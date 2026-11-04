@@ -749,24 +749,10 @@
                 align-items: flex-start;
             }
 
-            .tender-info {
-                width: 100%;
-                min-width: 0;
-            }
-
-            .tender-ref {
-                overflow-wrap: anywhere;
-            }
-
             .tender-right {
                 margin-top: 15px;
                 width: 100%;
                 justify-content: space-between;
-                flex-wrap: wrap;
-            }
-
-            .tender-right > div:last-child {
-                flex-wrap: wrap;
             }
 
             .calendar {
@@ -779,103 +765,1596 @@
             }
         }
     </style>
+    <style>
+        /* ── Dashboard UI refresh ───────────────────────────────────────── */
+        :root {
+            --bg: #0b0d12;
+            --bg-raised: #10131b;
+            --panel: #131722;
+            --panel-2: #171c29;
+            --line: rgba(255, 255, 255, 0.07);
+            --line-strong: rgba(255, 255, 255, 0.13);
+            --text: #eef1f8;
+            --muted: #98a2b8;
+            --muted-2: #7f8aa0;
+            --accent: #7c8cf8;
+            --accent-strong: #8f9dff;
+            --green: #3ddc97;
+            --amber: #f2b84b;
+            --red: #ff7b7b;
+            --cyan: #55c8e8;
+            --purple: #b3a4ff;
+            --radius: 14px;
+        }
+
+        * {
+            transition: none;
+        }
+
+        [hidden] {
+            display: none !important;
+        }
+
+        html {
+            color-scheme: dark;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, Arial, sans-serif;
+            background-color: var(--bg);
+            background-image:
+                radial-gradient(900px 420px at 12% -12%, rgba(124, 140, 248, 0.11), transparent 70%),
+                radial-gradient(700px 360px at 92% 0%, rgba(85, 200, 232, 0.06), transparent 72%);
+            color: var(--text);
+            font-size: 15px;
+            line-height: 1.45;
+            padding: 22px 22px 36px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 1280px;
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        :focus-visible {
+            outline: 2px solid var(--accent-strong);
+            outline-offset: 2px;
+        }
+
+        .portfolio-logos { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 4px; }
+        .portfolio-logo { background: #fff; border-radius: 9px; padding: 8px 12px; display: grid; place-items: center; }
+        .portfolio-logo:first-child { background: #162437; border: 1px solid var(--line-strong); }
+        .portfolio-logo img { display: block; width: 145px; height: 50px; object-fit: contain; }
+        @media (max-width: 360px) {
+            .portfolio-logos { gap: 8px; }
+            .portfolio-logo { padding: 6px 8px; }
+            .portfolio-logo img { width: 116px; height: 42px; }
+        }
+        /* Header */
+        .app-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+            padding: 18px 0 18px;
+            text-align: left;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            min-width: 0;
+        }
+
+        .brand-mark {
+            width: 42px;
+            height: 42px;
+            flex: 0 0 auto;
+            border-radius: 12px;
+            display: grid;
+            place-items: center;
+            font-size: 0.8rem;
+            font-weight: 800;
+            letter-spacing: 0.06em;
+            color: #fff;
+            background: linear-gradient(140deg, #7c8cf8 0%, #5d6fe8 55%, #8a6cf0 100%);
+            box-shadow: 0 8px 24px rgba(93, 111, 232, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.28);
+        }
+
+        .brand-copy {
+            min-width: 0;
+        }
+
+        h1 {
+            font-size: clamp(1.35rem, 2.4vw, 1.65rem);
+            line-height: 1.1;
+            letter-spacing: -0.025em;
+            margin: 0;
+            color: var(--text);
+            background: none;
+            -webkit-text-fill-color: currentColor;
+        }
+
+        .subtitle {
+            margin-top: 4px;
+            color: var(--muted);
+            font-size: 0.8rem;
+            letter-spacing: 0.005em;
+        }
+
+        .header-status {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 7px;
+            min-width: 0;
+        }
+
+        .status-line {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 9px;
+            flex-wrap: wrap;
+        }
+
+        .data-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            border: 1px solid transparent;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.01em;
+            white-space: nowrap;
+        }
+
+        .data-pill-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: currentColor;
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.04);
+        }
+
+        .data-pill.ok {
+            color: #66e2b3;
+            background: rgba(61, 220, 151, 0.08);
+            border-color: rgba(61, 220, 151, 0.22);
+        }
+
+        .data-pill.warn {
+            color: #f5c76d;
+            background: rgba(242, 184, 75, 0.09);
+            border-color: rgba(242, 184, 75, 0.26);
+        }
+
+        .data-pill.err {
+            color: #ff9b9b;
+            background: rgba(255, 123, 123, 0.09);
+            border-color: rgba(255, 123, 123, 0.28);
+        }
+
+        .freshness {
+            color: var(--muted);
+            font-size: 0.74rem;
+            white-space: nowrap;
+        }
+
+        .refresh-btn {
+            width: 29px;
+            height: 29px;
+            display: inline-grid;
+            place-items: center;
+            padding: 0;
+            border-radius: 8px;
+            border: 1px solid var(--line);
+            background: var(--panel);
+            color: var(--muted);
+            cursor: pointer;
+        }
+
+        .refresh-btn:hover {
+            color: var(--text);
+            border-color: var(--line-strong);
+            background: var(--panel-2);
+        }
+
+        .refresh-btn:disabled {
+            opacity: 0.55;
+            cursor: wait;
+        }
+
+        .refresh-btn.is-spinning svg {
+            animation: refreshSpin 0.8s linear infinite;
+        }
+
+        .win-rate {
+            color: var(--muted);
+            font-size: 0.72rem;
+        }
+
+        .win-rate strong {
+            color: #c9d1e6;
+            font-weight: 700;
+        }
+
+        @keyframes refreshSpin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Data notice */
+        .data-notice {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 13px;
+            margin: 0 0 14px;
+            border: 1px solid rgba(242, 184, 75, 0.24);
+            border-radius: 10px;
+            background: rgba(242, 184, 75, 0.07);
+            color: #f3d9a1;
+            font-size: 0.8rem;
+            line-height: 1.45;
+        }
+
+        .data-notice.err {
+            border-color: rgba(255, 123, 123, 0.26);
+            background: rgba(255, 123, 123, 0.07);
+            color: #ffc1c1;
+        }
+
+        .data-notice-icon {
+            width: 18px;
+            height: 18px;
+            flex: 0 0 auto;
+            display: grid;
+            place-items: center;
+            border-radius: 50%;
+            border: 1px solid currentColor;
+            font-size: 0.68rem;
+            font-weight: 800;
+            opacity: 0.9;
+        }
+
+        .data-notice-action {
+            margin-left: auto;
+            padding: 5px 10px;
+            border-radius: 7px;
+            border: 1px solid currentColor;
+            background: transparent;
+            color: inherit;
+            font-size: 0.72rem;
+            font-weight: 700;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .data-notice-action:hover {
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        /* Tabs */
+        .tab-nav {
+            display: flex;
+            justify-content: flex-start;
+            gap: 3px;
+            width: fit-content;
+            max-width: 100%;
+            margin: 0 0 18px;
+            padding: 4px;
+            border: 1px solid var(--line);
+            border-radius: 11px;
+            background: var(--panel);
+            overflow-x: auto;
+            flex-wrap: nowrap;
+            scrollbar-width: none;
+        }
+
+        .tab-nav::-webkit-scrollbar {
+            display: none;
+        }
+
+        .tab-btn {
+            padding: 8px 15px;
+            border: 1px solid transparent;
+            border-radius: 8px;
+            background: transparent;
+            color: var(--muted);
+            font-size: 0.8rem;
+            font-weight: 600;
+            white-space: nowrap;
+            cursor: pointer;
+        }
+
+        .tab-btn:hover {
+            color: var(--text);
+            background: rgba(255, 255, 255, 0.04);
+            border-color: transparent;
+        }
+
+        .tab-btn.active {
+            color: #e6e9ff;
+            background: rgba(124, 140, 248, 0.15);
+            border-color: rgba(124, 140, 248, 0.25);
+            box-shadow: none;
+        }
+
+        /* Controls */
+        .controls {
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            padding: 12px;
+            margin: 0 0 14px;
+        }
+
+        .search-field {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            color: var(--muted-2);
+            pointer-events: none;
+        }
+
+        .search-field input {
+            width: 100%;
+            height: 40px;
+            padding: 0 76px 0 36px;
+            border: 1px solid var(--line);
+            border-radius: 9px;
+            background: #0e1118;
+            color: var(--text);
+            font: inherit;
+            font-size: 0.85rem;
+        }
+
+        .search-field input::placeholder {
+            color: #68738a;
+        }
+
+        .search-field input:focus {
+            outline: none;
+            border-color: rgba(124, 140, 248, 0.6);
+            box-shadow: 0 0 0 3px rgba(124, 140, 248, 0.12);
+        }
+
+        .search-field input::-webkit-search-cancel-button {
+            display: none;
+        }
+
+        .clear-search {
+            position: absolute;
+            right: 6px;
+            padding: 5px 9px;
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            background: var(--panel-2);
+            color: var(--muted);
+            font-size: 0.7rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .clear-search:hover {
+            color: var(--text);
+            border-color: var(--line-strong);
+        }
+
+        .filter-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 4px;
+            margin: 0;
+            padding: 0;
+            flex-wrap: wrap;
+        }
+
+        .filter-tab {
+            padding: 6px 10px;
+            border: 1px solid transparent;
+            border-radius: 7px;
+            background: transparent;
+            color: var(--muted);
+            font-size: 0.74rem;
+            font-weight: 600;
+            white-space: nowrap;
+            cursor: pointer;
+        }
+
+        .filter-tab:hover {
+            color: var(--text);
+            background: rgba(255, 255, 255, 0.04);
+            border-color: transparent;
+        }
+
+        .filter-tab.active {
+            color: #e6e9ff;
+            background: rgba(124, 140, 248, 0.14);
+            border-color: rgba(124, 140, 248, 0.24);
+        }
+
+        .filter-tab.high,
+        .filter-tab.medium,
+        .filter-tab.low {
+            border-left: 1px solid transparent;
+        }
+
+        .result-count {
+            color: var(--muted);
+            font-size: 0.74rem;
+            white-space: nowrap;
+        }
+
+        .result-count strong,
+        #totalCount {
+            color: #d7dcec;
+            font-weight: 700;
+        }
+
+        .dot-sep {
+            color: #4d576d;
+            margin: 0 3px;
+        }
+
+        /* Stats */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(6, minmax(0, 1fr));
+            gap: 9px;
+            margin: 0 0 14px;
+        }
+
+        .stat-card {
+            min-width: 0;
+            padding: 12px 13px;
+            border: 1px solid var(--line);
+            border-radius: 11px;
+            background: var(--panel);
+            text-align: left;
+            backdrop-filter: none;
+        }
+
+        .stat-card:hover {
+            transform: none;
+            box-shadow: none;
+            border-color: var(--line-strong);
+        }
+
+        .stat-value {
+            margin: 0 0 3px;
+            font-size: 1.45rem;
+            line-height: 1;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+        }
+
+        .stat-label {
+            color: var(--muted);
+            font-size: 0.62rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .total { color: #e8ebff; }
+        .high { color: #ff8f8f; }
+        .medium { color: #f5c76d; }
+        .low { color: #67c9e8; }
+        .mexel-color { color: #5ed8d0; }
+        .phakathi-color { color: var(--purple); }
+
+        /* Panels */
+        .tender-section,
+        #pipeline .section,
+        #calendar .section {
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            padding: 0;
+            margin: 0 0 16px;
+            overflow: hidden;
+        }
+
+        .section-head {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 16px 18px 13px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .section-head h2 {
+            margin: 0;
+            color: var(--text);
+            font-size: 0.95rem;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+        }
+
+        .section-sub {
+            margin-top: 3px;
+            color: var(--muted);
+            font-size: 0.74rem;
+            line-height: 1.4;
+        }
+
+        .count-badge {
+            display: inline-block;
+            margin-left: 4px;
+            padding: 1px 7px;
+            border-radius: 999px;
+            border: 1px solid var(--line-strong);
+            background: var(--panel-2);
+            color: var(--muted);
+            font-size: 0.68rem;
+            font-weight: 700;
+            vertical-align: 1px;
+        }
+
+        /* Tender list */
+        .tender-list {
+            display: flex;
+            flex-direction: column;
+            list-style: none;
+        }
+
+        .tender-item {
+            position: relative;
+            padding: 14px 18px;
+            border-bottom: 1px solid var(--line);
+            border-left: 3px solid transparent;
+            background: transparent;
+            cursor: pointer;
+            transition: background-color 0.14s ease;
+        }
+
+        .tender-item:last-child {
+            border-bottom: none;
+        }
+
+        .tender-item:hover {
+            background: rgba(255, 255, 255, 0.025);
+        }
+
+        .tender-item:focus-visible {
+            outline: 2px solid var(--accent-strong);
+            outline-offset: -2px;
+            background: rgba(124, 140, 248, 0.06);
+        }
+
+        .tender-item.priority-high {
+            border-left-color: rgba(255, 123, 123, 0.75);
+        }
+
+        .tender-item.priority-medium {
+            border-left-color: rgba(242, 184, 75, 0.7);
+        }
+
+        .tender-item.priority-low {
+            border-left-color: rgba(85, 200, 232, 0.55);
+        }
+
+        .tender-item.urgent {
+            border-left-color: rgba(255, 123, 123, 0.9);
+            background: linear-gradient(135deg, rgba(255, 123, 123, 0.055) 0%, transparent 62%);
+        }
+
+        .tender-item.warning {
+            border-left-color: rgba(242, 184, 75, 0.85);
+            background: linear-gradient(135deg, rgba(242, 184, 75, 0.045) 0%, transparent 62%);
+        }
+
+        .tender-content {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 218px;
+            align-items: start;
+            gap: 20px;
+        }
+
+        .tender-info {
+            min-width: 0;
+        }
+
+        .tender-header {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-bottom: 6px;
+        }
+
+        .tender-ref {
+            padding: 3px 7px;
+            border-radius: 5px;
+            border: 1px solid rgba(124, 140, 248, 0.17);
+            background: rgba(124, 140, 248, 0.08);
+            color: #b6c0ff;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+        }
+
+        .company-badge {
+            padding: 3px 8px;
+            border-radius: 5px;
+            font-size: 0.6rem;
+            font-weight: 800;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            border: 1px solid transparent;
+        }
+
+        .company-MEXEL {
+            color: #66d9ed;
+            background: rgba(85, 200, 232, 0.08);
+            border-color: rgba(85, 200, 232, 0.2);
+        }
+
+        .company-PHAKATHI {
+            color: #c0b4ff;
+            background: rgba(179, 164, 255, 0.08);
+            border-color: rgba(179, 164, 255, 0.2);
+        }
+
+        .countdown {
+            padding: 3px 7px;
+            border-radius: 5px;
+            font-size: 0.64rem;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .countdown.urgent {
+            color: #ff9c9c;
+            background: rgba(255, 123, 123, 0.1);
+            animation: none;
+        }
+
+        .countdown.warning {
+            color: #f5c76d;
+            background: rgba(242, 184, 75, 0.09);
+        }
+
+        .countdown.normal {
+            color: #79d2e9;
+            background: rgba(85, 200, 232, 0.07);
+        }
+
+        .countdown.closed {
+            color: #7d879c;
+            background: rgba(125, 135, 156, 0.08);
+            text-decoration: none;
+        }
+
+        .intel-badge {
+            padding: 3px 7px;
+            border-radius: 5px;
+            border: 1px solid rgba(179, 164, 255, 0.2);
+            background: rgba(179, 164, 255, 0.08);
+            color: #c0b4ff;
+            font-size: 0.62rem;
+            font-weight: 700;
+        }
+
+        .tender-title {
+            margin: 0 0 7px;
+            color: #eef1f8;
+            font-size: 0.9rem;
+            font-weight: 600;
+            line-height: 1.45;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .tender-meta {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 6px 14px;
+            margin: 0 0 7px;
+            color: #b9c2d6;
+            font-size: 0.72rem;
+        }
+
+        .meta-item {
+            display: inline-flex;
+            align-items: baseline;
+            gap: 5px;
+            min-width: 0;
+            max-width: 46ch;
+        }
+
+        .meta-item > span:last-child {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .meta-label {
+            color: #6d788f;
+            font-size: 0.6rem;
+            font-weight: 800;
+            letter-spacing: 0.07em;
+            text-transform: uppercase;
+        }
+
+        .keyword-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 0;
+        }
+
+        .keyword-tag {
+            padding: 2px 6px;
+            border-radius: 4px;
+            border: 1px solid rgba(124, 140, 248, 0.13);
+            background: rgba(124, 140, 248, 0.055);
+            color: #9fa9d6;
+            font-size: 0.62rem;
+            text-transform: lowercase;
+        }
+
+        .tender-right {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 9px;
+            min-width: 0;
+        }
+
+        .tender-score-group {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 9px;
+            flex-wrap: wrap;
+        }
+
+        .score-block {
+            display: inline-flex;
+            align-items: baseline;
+            gap: 4px;
+        }
+
+        .score-label {
+            color: #6d788f;
+            font-size: 0.58rem;
+            font-weight: 800;
+            letter-spacing: 0.07em;
+            text-transform: uppercase;
+        }
+
+        .score {
+            min-width: 0;
+            color: #eef1f8;
+            font-size: 1rem;
+            font-weight: 700;
+            text-align: right;
+        }
+
+        .priority-badge {
+            padding: 4px 8px;
+            border-radius: 5px;
+            font-size: 0.6rem;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+            border: 1px solid transparent;
+        }
+
+        .priority-HIGH {
+            color: #ff9c9c;
+            background: rgba(255, 123, 123, 0.09);
+            border-color: rgba(255, 123, 123, 0.2);
+        }
+
+        .priority-MEDIUM {
+            color: #f5c76d;
+            background: rgba(242, 184, 75, 0.08);
+            border-color: rgba(242, 184, 75, 0.18);
+        }
+
+        .priority-LOW {
+            color: #79d2e9;
+            background: rgba(85, 200, 232, 0.07);
+            border-color: rgba(85, 200, 232, 0.17);
+        }
+
+        .tender-actions {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .ai-btn {
+            margin: 0;
+            padding: 6px 9px;
+            border: 1px solid var(--line-strong);
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.035);
+            color: #d7dcec;
+            font-size: 0.7rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: none;
+        }
+
+        .ai-btn:hover {
+            transform: none;
+            background: rgba(255, 255, 255, 0.07);
+            box-shadow: none;
+        }
+
+        .view-btn {
+            padding: 6px 10px;
+            border-radius: 6px;
+            background: #6677e8;
+            color: #fff;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: background-color 0.14s ease;
+        }
+
+        .view-btn:hover {
+            transform: none;
+            background: #7686f2;
+            box-shadow: none;
+        }
+
+        /* Load more / recent */
+        #loadMoreContainer {
+            display: none;
+            padding: 13px 18px 16px;
+            text-align: center;
+        }
+
+        .load-more-btn {
+            padding: 8px 14px;
+            border: 1px solid var(--line-strong);
+            border-radius: 7px;
+            background: var(--panel-2);
+            color: #d7dcec;
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .load-more-btn:hover {
+            border-color: rgba(124, 140, 248, 0.4);
+            color: #fff;
+        }
+
+        #recentMatchesSection {
+            padding: 0 0 4px;
+            border-top: 1px solid var(--line);
+        }
+
+        .subsection-header {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin: 0;
+            padding: 14px 18px 2px;
+        }
+
+        .subsection-title {
+            color: #dfe4f1;
+            font-size: 0.82rem;
+            font-weight: 700;
+        }
+
+        .subsection-meta {
+            color: var(--muted);
+            font-size: 0.68rem;
+        }
+
+        .subsection-copy {
+            margin: 0;
+            padding: 2px 18px 10px;
+            color: var(--muted);
+            font-size: 0.72rem;
+            line-height: 1.45;
+        }
+
+        /* Empty states */
+        .empty-state-panel {
+            margin: 16px 18px;
+            padding: 30px 20px;
+            border: 1px dashed var(--line-strong);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.012);
+            text-align: center;
+        }
+
+        .empty-state-icon {
+            width: 34px;
+            height: 34px;
+            margin: 0 auto 10px;
+            display: grid;
+            place-items: center;
+            border: 1px solid rgba(124, 140, 248, 0.24);
+            border-radius: 50%;
+            background: rgba(124, 140, 248, 0.07);
+            color: #aab4ff;
+            font-size: 1rem;
+        }
+
+        .empty-state-title {
+            margin-bottom: 5px;
+            color: var(--text);
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+
+        .empty-state-copy {
+            max-width: 560px;
+            margin: 0 auto;
+            color: var(--muted);
+            font-size: 0.78rem;
+            line-height: 1.55;
+        }
+
+        .empty-state-action {
+            margin-top: 12px;
+            padding: 7px 12px;
+            border: 1px solid var(--line-strong);
+            border-radius: 7px;
+            background: var(--panel-2);
+            color: #d7dcec;
+            font-size: 0.73rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .empty-state-action:hover {
+            border-color: rgba(124, 140, 248, 0.4);
+            color: #fff;
+        }
+
+        /* Pipeline */
+        #pipeline .filter-tabs {
+            padding: 13px 18px 0;
+        }
+
+        #pipeline .pipeline-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            align-items: start;
+            gap: 10px;
+            padding: 12px 18px 18px;
+        }
+
+        .pipeline-card {
+            padding: 14px;
+            border: 1px solid var(--line);
+            border-left: 3px solid var(--accent);
+            border-radius: 9px;
+            background: var(--panel-2);
+        }
+
+        .pipeline-card.due-soon {
+            border-left-color: var(--amber);
+        }
+
+        .pipeline-card.overdue {
+            border-left-color: var(--red);
+        }
+
+        .pipeline-card h3 {
+            margin-bottom: 6px;
+            color: #e6eaf4;
+            font-size: 0.84rem;
+            line-height: 1.45;
+        }
+
+        .pipeline-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px 11px;
+            color: var(--muted);
+            font-size: 0.7rem;
+            line-height: 1.45;
+        }
+
+        .pipeline-actions {
+            margin-top: 10px;
+        }
+
+        /* Calendar */
+        #calendar .calendar-nav {
+            margin: 0;
+            padding: 13px 18px;
+        }
+
+        #calendar .calendar-nav button {
+            padding: 6px 10px;
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            background: var(--panel-2);
+            color: var(--muted);
+            font-size: 0.72rem;
+            cursor: pointer;
+        }
+
+        #calendar .calendar-nav button:hover {
+            color: var(--text);
+            border-color: var(--line-strong);
+        }
+
+        .calendar-month {
+            color: var(--text);
+            font-size: 0.88rem;
+            font-weight: 700;
+        }
+
+        #calendar .calendar {
+            display: grid;
+            grid-template-columns: repeat(7, minmax(0, 1fr));
+            gap: 4px;
+            padding: 0 18px;
+        }
+
+        #calendar .calendar + .calendar {
+            padding-bottom: 18px;
+        }
+
+        .calendar-header {
+            padding: 7px 2px;
+            color: var(--muted-2);
+            font-size: 0.64rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .calendar-day {
+            min-height: 64px;
+            aspect-ratio: auto;
+            border: 1px solid transparent;
+            border-radius: 7px;
+            background: rgba(255, 255, 255, 0.025);
+            color: #c7cfdf;
+            font-size: 0.78rem;
+        }
+
+        .calendar-day:hover {
+            border-color: var(--line-strong);
+            background: rgba(255, 255, 255, 0.055);
+        }
+
+        .calendar-day.today {
+            border-color: rgba(124, 140, 248, 0.55);
+        }
+
+        .calendar-day.has-tenders {
+            border-color: rgba(255, 123, 123, 0.24);
+            background: rgba(255, 123, 123, 0.08);
+        }
+
+        .calendar-day.has-tenders:hover {
+            background: rgba(255, 123, 123, 0.13);
+        }
+
+        .tender-count {
+            color: #ff9c9c;
+            font-size: 0.58rem;
+            font-weight: 700;
+        }
+
+        #dayTenders {
+            padding: 0 18px 18px;
+        }
+
+        #dayTenders h3 {
+            margin-bottom: 8px;
+            color: var(--text);
+            font-size: 0.85rem;
+        }
+
+        /* Modal polish */
+        .modal-content {
+            border: 1px solid var(--line-strong);
+            border-radius: 14px;
+            background: var(--panel);
+            box-shadow: 0 24px 70px rgba(0, 0, 0, 0.55);
+        }
+
+        .modal-title {
+            color: #eef1f8;
+            font-size: 1.15rem;
+        }
+
+        .modal-subtitle {
+            color: #aab4ff;
+            font-size: 0.78rem;
+        }
+
+        .summary-text {
+            color: #d5dbea;
+            font-size: 0.86rem;
+        }
+
+        .modal-close {
+            border: 1px solid var(--line);
+            background: var(--panel-2);
+            color: var(--muted);
+        }
+
+        .modal-close:hover {
+            color: var(--text);
+            border-color: var(--line-strong);
+        }
+
+        .copy-btn {
+            padding: 6px 10px;
+            border: 1px solid var(--line-strong);
+            border-radius: 6px;
+            background: var(--panel-2);
+            color: #d7dcec;
+            font-size: 0.73rem;
+        }
+
+        .cache-badge {
+            color: #66e2b3;
+            background: rgba(61, 220, 151, 0.07);
+            border: 1px solid rgba(61, 220, 151, 0.16);
+            border-radius: 5px;
+        }
+
+        /* Responsive */
+        @media (max-width: 1050px) {
+            .stats {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 820px) {
+            .tender-content {
+                grid-template-columns: minmax(0, 1fr) 185px;
+                gap: 14px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 14px 14px 28px;
+            }
+
+            .app-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+                padding: 8px 0 12px;
+            }
+
+            .brand-mark {
+                width: 36px;
+                height: 36px;
+                border-radius: 10px;
+                font-size: 0.72rem;
+            }
+
+            h1 {
+                font-size: 1.28rem;
+            }
+
+            .subtitle {
+                font-size: 0.72rem;
+            }
+
+            .header-status {
+                width: 100%;
+                align-items: flex-start;
+            }
+
+            .status-line {
+                justify-content: flex-start;
+                gap: 7px;
+            }
+
+            .freshness {
+                font-size: 0.7rem;
+            }
+
+            .tab-nav {
+                width: 100%;
+                margin-bottom: 12px;
+            }
+
+            .tab-btn {
+                flex: 1 0 auto;
+                min-height: 38px;
+                padding: 8px 10px;
+                font-size: 0.74rem;
+            }
+
+            .controls {
+                position: sticky;
+                top: 6px;
+                z-index: 40;
+                padding: 9px;
+                margin-bottom: 10px;
+                border-radius: 11px;
+                background: rgba(19, 23, 34, 0.96);
+                backdrop-filter: blur(12px);
+                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+            }
+
+            .search-field input {
+                height: 38px;
+                font-size: 0.82rem;
+            }
+
+            .filter-row {
+                gap: 8px;
+                margin-top: 8px;
+            }
+
+            .filter-tabs {
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                width: 100%;
+                padding-bottom: 1px;
+                scrollbar-width: none;
+            }
+
+            .filter-tabs::-webkit-scrollbar {
+                display: none;
+            }
+
+            .filter-tab {
+                min-height: 34px;
+                padding: 6px 9px;
+                font-size: 0.71rem;
+            }
+
+            .result-count {
+                display: none;
+            }
+
+            .stats {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                gap: 7px;
+                margin-bottom: 10px;
+            }
+
+            .stat-card {
+                padding: 10px 11px;
+                border-radius: 9px;
+            }
+
+            .stat-value {
+                font-size: 1.28rem;
+            }
+
+            .stat-label {
+                font-size: 0.58rem;
+            }
+
+            .section-head {
+                padding: 13px 14px 11px;
+            }
+
+            .section-head h2 {
+                font-size: 0.88rem;
+            }
+
+            .section-sub {
+                font-size: 0.69rem;
+            }
+
+            .tender-item {
+                padding: 13px 14px;
+            }
+
+            .tender-content {
+                grid-template-columns: minmax(0, 1fr);
+                gap: 10px;
+            }
+
+            .tender-title {
+                font-size: 0.86rem;
+                -webkit-line-clamp: 4;
+            }
+
+            .tender-meta {
+                gap: 4px 10px;
+                font-size: 0.69rem;
+            }
+
+            .meta-item {
+                max-width: 100%;
+            }
+
+            .meta-item.category-meta {
+                display: none;
+            }
+
+            .tender-right {
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+                gap: 8px;
+                flex-wrap: wrap;
+                width: 100%;
+            }
+
+            .tender-score-group {
+                justify-content: flex-start;
+            }
+
+            .tender-actions {
+                margin-left: auto;
+            }
+
+            .tender-actions .ai-btn,
+            .tender-actions .view-btn {
+                min-height: 34px;
+                padding: 7px 10px;
+            }
+
+            .empty-state-panel {
+                margin: 12px 14px;
+                padding: 24px 16px;
+            }
+
+            .subsection-header,
+            .subsection-copy {
+                padding-left: 14px;
+                padding-right: 14px;
+            }
+
+            #pipeline .filter-tabs {
+                padding: 11px 14px 0;
+                flex-wrap: nowrap;
+                overflow-x: auto;
+            }
+
+            #pipeline .pipeline-grid {
+                padding: 10px 14px 14px;
+            }
+
+            #calendar .calendar-nav {
+                padding: 11px 14px;
+            }
+
+            #calendar .calendar {
+                padding: 0 14px;
+            }
+
+            #calendar .calendar + .calendar {
+                padding-bottom: 14px;
+            }
+
+            #dayTenders {
+                padding: 0 14px 14px;
+            }
+
+            .calendar-day {
+                min-height: 38px;
+                font-size: 0.68rem;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .stats {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 420px) {
+            .tender-actions {
+                width: 100%;
+                margin-left: 0;
+            }
+
+            .tender-actions > * {
+                flex: 1 1 0;
+                justify-content: center;
+            }
+
+            .tender-right {
+                align-items: flex-start;
+            }
+
+            .data-notice {
+                align-items: flex-start;
+                flex-wrap: wrap;
+            }
+
+            .data-notice-action {
+                margin-left: 28px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+    </style>
 </head>
 
 <body>
     <div class="container">
-        <header>
-            <h1>🎯 Tender Intelligence</h1>
-            <p class="subtitle"><span class="status"></span>Mexel Energy Sustain Automation Engine</p>
-            <div id="headerBadges"
-                style="display: flex; justify-content: center; gap: 10px; margin-top: 15px; flex-wrap: wrap;">
-                <div class="last-sync" id="lastSync">🔄 Last synced: --</div>
-                <div class="last-sync win-rate-badge" id="winRateBadge" style="display: none;">🏆 Win Rate: --%</div>
+        <div class="portfolio-logos" aria-label="Company portfolio">
+            <div class="portfolio-logo"><img src="branding/mexel.svg" alt="Mexel Energy Sustain" width="160" height="55"></div>
+            <div class="portfolio-logo"><img src="branding/phakathi.svg" alt="Phakathi Industrial Solutions" width="160" height="55"></div>
+        </div>
+        <header class="app-header">
+            <div class="brand">
+                <div class="brand-mark" aria-hidden="true">TI</div>
+                <div class="brand-copy">
+                    <h1>Tender Intelligence</h1>
+                    <p class="subtitle">Mexel · REICON/ODACON · Phakathi</p>
+                </div>
             </div>
-            <div class="last-sync" id="sourceStats"
-                style="margin-top: 10px; background: rgba(72,219,251,0.2); border-color: rgba(72,219,251,0.3);">📊
-                Loading stats...</div>
+            <div class="header-status">
+                <div class="status-line">
+                    <span class="data-pill ok" id="dataStatusPill"><span class="data-pill-dot" aria-hidden="true"></span><span id="dataStatusLabel">Loading data</span></span>
+                    <span class="freshness" id="lastSync">Syncing…</span>
+                    <button type="button" class="refresh-btn" id="refreshDataBtn" aria-label="Refresh tender data" title="Refresh tender data">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-2.64-6.36"></path><path d="M21 3v6h-6"></path></svg>
+                    </button>
+                </div>
+                <div class="win-rate" id="winRateBadge" hidden></div>
+            </div>
         </header>
 
-        <nav class="tab-nav">
-            <button class="tab-btn active" type="button" data-tab="dashboard">📊 Dashboard</button>
-            <button class="tab-btn" type="button" data-tab="pipeline">🗓️ Planned Pipeline</button>
-            <button class="tab-btn" type="button" data-tab="calendar">📅 Bid Calendar</button>
+        <div class="data-notice" id="dataNotice" role="status" hidden>
+            <span class="data-notice-icon" aria-hidden="true">!</span>
+            <span id="dataNoticeText"></span>
+            <button type="button" class="data-notice-action" id="dataNoticeAction" hidden>Retry</button>
+        </div>
+        <div id="sourceStats" class="sr-only" aria-live="polite">Loading stats…</div>
+
+        <section class="tender-section" aria-label="Coverage and review">
+            <details style="padding:12px 16px"><summary>Source health &amp; opportunities needing review <span id="coverageCount"></span></summary>
+                <div id="sourceHealth" style="padding-top:12px">Source health unavailable.</div>
+                <div id="opportunityReview" style="padding-top:12px"></div>
+            </details>
+        </section>
+        <nav class="tab-nav" role="tablist" aria-label="Dashboard sections">
+            <button class="tab-btn active" type="button" role="tab" aria-selected="true" aria-controls="dashboard" data-tab="dashboard">Dashboard</button>
+            <button class="tab-btn" type="button" role="tab" aria-selected="false" aria-controls="pipeline" data-tab="pipeline">Planned pipeline</button>
+            <button class="tab-btn" type="button" role="tab" aria-selected="false" aria-controls="calendar" data-tab="calendar">Bid calendar</button>
         </nav>
 
-        <div id="dashboard" class="tab-content active">
-            <div class="stats">
+        <div id="dashboard" class="tab-content active" role="tabpanel">
+            <section class="controls" aria-label="Search and filter tenders">
+                <div class="search-field">
+                    <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+                    <label class="sr-only" for="searchBox">Search tenders</label>
+                    <input type="search" id="searchBox" placeholder="Search reference, title, client…" autocomplete="off">
+                    <button type="button" class="clear-search" id="clearSearchBtn" hidden>Clear</button>
+                </div>
+                <div class="filter-row">
+                    <div class="filter-tabs" role="group" aria-label="Filter tenders">
+                        <button class="filter-tab active" type="button" data-filter="all" aria-pressed="true">All</button>
+                        <button class="filter-tab" type="button" data-filter="Mexel" aria-pressed="false">Mexel</button>
+                        <button class="filter-tab" type="button" data-filter="Phakathi" aria-pressed="false">Phakathi</button>
+                        <button class="filter-tab" type="button" data-filter="HIGH" aria-pressed="false">High</button>
+                        <button class="filter-tab" type="button" data-filter="MEDIUM" aria-pressed="false">Medium</button>
+                        <button class="filter-tab" type="button" data-filter="LOW" aria-pressed="false">Low</button>
+                    </div>
+                    <div class="result-count" aria-live="polite"><strong id="displayedCount">0</strong> open <span class="dot-sep">·</span> <span id="totalCount">0</span> in snapshot</div>
+                </div>
+            </section>
+
+            <div class="stats" aria-label="Tender summary">
                 <div class="stat-card">
                     <div class="stat-value total" id="statTotal">--</div>
-                    <div class="stat-label">Total</div>
+                    <div class="stat-label">Open</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-value high" id="statHigh">--</div>
-                    <div class="stat-label">🔥 High</div>
+                    <div class="stat-label">High</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-value medium" id="statMedium">--</div>
-                    <div class="stat-label">✅ Medium</div>
+                    <div class="stat-label">Medium</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-value low" id="statLow">--</div>
-                    <div class="stat-label">📝 Low</div>
+                    <div class="stat-label">Low</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-value mexel-color" id="statMexel">--</div>
-                    <div class="stat-label">⚗️ Mexel</div>
+                    <div class="stat-label">Mexel</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value" id="statPhakathi" style="color: #a29bfe;">--</div>
-                    <div class="stat-label">🏢 Phakathi</div>
+                    <div class="stat-value phakathi-color" id="statPhakathi">--</div>
+                    <div class="stat-label">Phakathi</div>
                 </div>
             </div>
 
-            <div class="section">
-                <h2>📋 Active Tenders (<span id="displayedCount">0</span> active of <span id="totalCount">0</span> snapshot matches)</h2>
-                <div style="margin-bottom: 20px;">
-                    <input type="text" id="searchBox" placeholder="🔍 Search by ref, title, description, client..."
-                        style="width: 100%; padding: 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); color: #fff; font-size: 1rem;">
-                </div>
-
-                <div class="filter-tabs">
-                    <button class="filter-tab active" type="button" data-filter="all">All</button>
-                    <button class="filter-tab" type="button" data-filter="Mexel">⚗️ Mexel</button>
-                    <button class="filter-tab" type="button" data-filter="Phakathi">🏢 Phakathi</button>
-                    <button class="filter-tab high" type="button" data-filter="HIGH">🔥 HIGH</button>
-                    <button class="filter-tab medium" type="button" data-filter="MEDIUM">⚡ MEDIUM</button>
-                    <button class="filter-tab low" type="button" data-filter="LOW">📝 LOW</button>
+            <section class="section tender-section" aria-labelledby="activeTendersHeading">
+                <div class="section-head">
+                    <div>
+                        <h2 id="activeTendersHeading">Active tenders</h2>
+                        <p class="section-sub">Open opportunities, soonest closing first</p>
+                    </div>
                 </div>
                 <ul class="tender-list" id="tenderList"></ul>
                 <div id="activeEmptyState" class="empty-state-panel" hidden>
+                    <div class="empty-state-icon" aria-hidden="true">◌</div>
                     <div id="activeEmptyStateTitle" class="empty-state-title"></div>
                     <p id="activeEmptyStateMessage" class="empty-state-copy"></p>
+                    <button type="button" class="empty-state-action" id="emptyStateAction" hidden></button>
                 </div>
-                <div id="loadMoreContainer" style="text-align: center; margin-top: 20px; display: none;">
-                    <button id="loadMoreBtn" type="button"
-                        style="padding: 12px 30px; border-radius: 25px; border: 1px solid rgba(102,126,234,0.5); background: rgba(102,126,234,0.2); color: #667eea; cursor: pointer; font-size: 1rem; font-weight: 600;">
-                        Load More (<span id="remainingCount">0</span> remaining)
-                    </button>
+                <div id="loadMoreContainer">
+                    <button id="loadMoreBtn" class="load-more-btn" type="button">Load more (<span id="remainingCount">0</span> remaining)</button>
                 </div>
                 <div id="recentMatchesSection" hidden>
                     <div class="subsection-header">
-                        <div class="subsection-title">🕘 Recent Matches</div>
+                        <div class="subsection-title">Recently closed</div>
                         <div class="subsection-meta"><span id="recentMatchesCount">0</span> shown</div>
                     </div>
-                    <p class="subsection-copy">Latest matched tenders from the current snapshot, including recently closed items for context.</p>
+                    <p class="subsection-copy">Recently closed matches from this snapshot, shown for context.</p>
                     <ul class="tender-list" id="recentTenderList"></ul>
                 </div>
-            </div>
+            </section>
         </div>
 
-        <div id="pipeline" class="tab-content">
+        <div id="pipeline" class="tab-content" role="tabpanel">
             <div class="section">
-                <h2>🗓️ Treasury Planned Opportunities (<span id="plannedCount">0</span>)</h2>
-                <p class="subsection-copy">Early-warning opportunities published in National Treasury procurement plans. Dates are planned and may change.</p>
+                <div class="section-head">
+                    <div>
+                        <h2>Planned pipeline <span class="count-badge" id="plannedCount">0</span></h2>
+                        <p class="section-sub">Early-warning opportunities from National Treasury procurement plans. Dates are planned and may change.</p>
+                    </div>
+                </div>
                 <div class="filter-tabs">
-                    <button class="filter-tab active" type="button" data-plan-filter="all">All</button>
-                    <button class="filter-tab" type="button" data-plan-filter="DUE_SOON">Due within 90 days</button>
-                    <button class="filter-tab" type="button" data-plan-filter="MEXEL">⚗️ Mexel</button>
-                    <button class="filter-tab" type="button" data-plan-filter="PHAKATHI">🏢 Phakathi</button>
+                    <button class="filter-tab active" type="button" data-plan-filter="all" aria-pressed="true">All</button>
+                    <button class="filter-tab" type="button" data-plan-filter="DUE_SOON" aria-pressed="false">Due within 90 days</button>
+                    <button class="filter-tab" type="button" data-plan-filter="MEXEL" aria-pressed="false">Mexel</button>
+                    <button class="filter-tab" type="button" data-plan-filter="PHAKATHI" aria-pressed="false">Phakathi</button>
                 </div>
                 <div id="plannedOpportunityList" class="pipeline-grid"></div>
                 <div id="plannedEmptyState" class="empty-state-panel" hidden>
@@ -885,8 +2364,14 @@
             </div>
         </div>
 
-        <div id="calendar" class="tab-content">
+        <div id="calendar" class="tab-content" role="tabpanel">
             <div class="section">
+                <div class="section-head">
+                    <div>
+                        <h2>Bid calendar</h2>
+                        <p class="section-sub">Closing dates across the current snapshot.</p>
+                    </div>
+                </div>
                 <div class="calendar-nav">
                     <button id="prevMonthBtn" type="button">← Prev</button>
                     <span class="calendar-month" id="calendarMonth"></span>

@@ -5,6 +5,8 @@ from __future__ import annotations
 import os
 import sys
 from typing import Any
+from urllib.parse import urlencode
+from uuid import UUID
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -138,6 +140,16 @@ class NationalTreasuryScraper:
             if not ref or not title:
                 continue
 
+            attachments = []
+            for document in item.get("supportDocument") or []:
+                try:
+                    document_id = str(UUID(str(document.get("supportDocumentID"))))
+                except (ValueError, TypeError, AttributeError):
+                    continue
+                if document.get("active") is False:
+                    continue
+                name = str(document.get("fileName") or "document.pdf")
+                attachments.append({"name": name, "url": "https://www.etenders.gov.za/home/Download/?" + urlencode({"blobName": document_id + str(document.get("extension") or ".pdf"), "downloadedFileName": name})})
             detail_parts = [
                 full_title,
                 f"Reference: {ref}",
@@ -148,6 +160,8 @@ class NationalTreasuryScraper:
             tenders.append(
                 {
                     "ref": ref,
+                    "attachments": attachments,
+                    "source_id": item.get("id"),
                     "title": title,
                     "description": " | ".join(part for part in detail_parts if part),
                     "client": client,

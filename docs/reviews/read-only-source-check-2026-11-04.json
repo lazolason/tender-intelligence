@@ -1,0 +1,37 @@
+[
+  {
+    "source": "eTenders",
+    "status": "success",
+    "records": 2020,
+    "candidate_matches": [
+      {
+        "ref": "E3748GXMPHEN",
+        "title": "DESIGN AND REPLACEMENT OF FUEL OIL FLOW METERS FOR A PERIOD OF 24 MONTHS",
+        "portfolios": [
+          "PHAKATHI"
+        ]
+      },
+      {
+        "ref": "RFB 3273/2026-(ERP No 523017)",
+        "title": "Supply and Delivery of Huawei Network Infrastructure Equipment with Huawei Support for Five (5) Years for the Western Cape Government (WCG), Department of the Premier - Centre for e-Innovation (CEI)",
+        "portfolios": [
+          "PHAKATHI"
+        ]
+      }
+    ]
+  },
+  {
+    "source": "Eskom Bulletin",
+    "status": "success",
+    "records": 320,
+    "candidate_matches": [
+      {
+        "ref": "E3748GXMPHEN",
+        "title": "DESIGN AND REPLACEMENT OF FUEL OIL FLOW METERS FOR A PERIOD OF 24 MONTHS",
+        "portfolios": [
+          "PHAKATHI"
+        ]
+      }
+    ]
+  }
+]

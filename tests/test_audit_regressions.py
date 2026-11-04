@@ -178,7 +178,13 @@ def test_checked_in_dashboard_snapshot_contains_only_current_scope_matches():
     public_payload = json.loads(Path('dashboard/public/tenders-latest.json').read_text())
     assert public_payload == payload
     assert all(row.get('category') in {'MEXEL', 'PHAKATHI'} for row in payload['tenders'])
-    assert payload['meta']['scope_refresh']['records_removed_as_out_of_scope'] == 32
+    refresh = payload['meta'].get('scope_refresh')
+    if refresh:
+        assert refresh['records_reviewed'] == len(payload['tenders']) + refresh['records_removed_as_out_of_scope'] + refresh.get('records_quarantined_unverified', 0)
+    else:
+        assert payload['meta']['snapshot_origin'] == 'public_source_refresh_without_database_write'
+        assert any(source['source'] == 'National Treasury' and source['status'] == 'success' for source in payload['meta']['source_health'])
+    assert all(classify_tender(row['title'], row.get('description', ''))['category'] != 'EXCLUDED' for row in payload['tenders'])
 
 
 def test_municipality_failure_reaches_pipeline(monkeypatch):

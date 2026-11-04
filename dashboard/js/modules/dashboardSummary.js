@@ -1,17 +1,29 @@
 import { getCompany, getDaysUntil, getPriority, isTenderActive } from './tender.js';
 
-export function normalizeCompanyLabel(tender) {
+export function getCompanyLabels(tender) {
+    const companies = tender?.companies;
+    if (Array.isArray(companies)) {
+        return [...new Set(companies.filter((value) => typeof value === 'string' && value.trim()).map((value) => value.trim()))];
+    }
     const value = (getCompany(tender) || '').trim();
-    return value || 'Unknown';
+    return value ? [value] : [];
+}
+
+export function normalizeCompanyLabel(tender) {
+    return getCompanyLabels(tender).join(' / ') || 'Unknown';
+}
+
+export function matchesCompany(tender, company) {
+    return getCompanyLabels(tender).some((value) => value.toLowerCase() === company.toLowerCase());
 }
 
 function matchesFilter(tender, filter) {
     const currentFilter = String(filter || 'all');
     if (currentFilter.toLowerCase() === 'mexel') {
-        return normalizeCompanyLabel(tender).toLowerCase() === 'mexel';
+        return matchesCompany(tender, 'mexel');
     }
     if (currentFilter.toLowerCase() === 'phakathi') {
-        return normalizeCompanyLabel(tender).toLowerCase() === 'phakathi';
+        return matchesCompany(tender, 'phakathi');
     }
     if (['HIGH', 'MEDIUM', 'LOW'].includes(currentFilter)) {
         return getPriority(tender) === currentFilter;
@@ -29,6 +41,8 @@ function matchesSearch(tender, searchQuery) {
         tender?.client,
         tender?.source,
         tender?.category,
+        ...(tender?.portfolios || []),
+        ...(tender?.capabilities || []),
     ]
         .map((value) => (value || '').toString().toLowerCase())
         .join(' ')

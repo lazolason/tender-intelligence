@@ -29,7 +29,8 @@ from utils.scraper_monitor import ScraperMonitor
 from utils.config_validator import validate_env_on_startup
 
 # Import the central classification engine
-from classify_engine import classify_tender
+from classify_engine import classify_tender, PORTFOLIO_FIELDS
+from utils.opportunity_review import prepare_opportunities, write_review_state
 
 # ----------------------------------------------------------
 # LOAD CONFIG
@@ -346,6 +347,7 @@ def process_tenders(tenders, *, return_stats=False):
             title = t.get("title", "")
             description = t.get("description", title)
             classification = classify_tender(title, description)
+            t.update({key: classification[key] for key in PORTFOLIO_FIELDS})
             t["category"] = classification["category"]
             t["reason"] = classification["reason"]
             t["short_title"] = classification["short_title"]
@@ -680,6 +682,8 @@ if __name__ == "__main__":
     # Scrape all sources (with monitoring)
     monitor = ScraperMonitor(output_dir=OUTPUT_DIR, db_path=DB_PATH)
     all_tenders = run_all_scrapers(monitor)
+    all_tenders, review_queue = prepare_opportunities(all_tenders)
+    write_review_state(OUTPUT_DIR, review_queue)
 
     # Save scraper health report
     try:
