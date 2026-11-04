@@ -133,9 +133,11 @@ async function run() {
 
     const sourceStats = await page.locator('#sourceStats').textContent();
     expect(
-      String(sourceStats).includes(`Snapshot Matches: ${expectedSnapshotCount}`),
+      String(sourceStats).includes(`${expectedSnapshotCount} in the snapshot`),
       `Unexpected source stats: ${sourceStats}`,
     );
+    const dataStatus = (await page.locator('#dataStatusLabel').textContent())?.trim() || '';
+    expect(dataStatus === 'Live data', `Expected live data status, got ${dataStatus}`);
 
     const displayedCount = Number((await page.locator('#displayedCount').textContent()) || '0');
     const totalCount = Number((await page.locator('#totalCount').textContent()) || '0');
