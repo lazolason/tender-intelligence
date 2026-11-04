@@ -425,7 +425,9 @@ def health():
         except sqlite3.Error:
             db_count = None
         snapshot_count = snapshot_info.get("record_count")
-        is_local_snapshot = snapshot_info.get("snapshot_origin") != "static_scrape"
+        is_local_snapshot = snapshot_info.get("snapshot_origin") not in {
+            "static_scrape", "public_source_refresh_without_database_write"
+        }
         counts_match = None
         if is_local_snapshot:
             counts_match = (

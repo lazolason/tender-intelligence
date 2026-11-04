@@ -8,7 +8,7 @@ See [CLAUDE.md](CLAUDE.md#classification-rules-and-portfolio-matches) for the so
 
 ## Local operation
 
-Use `./serve_app.sh` for the local dashboard. Scan and sync commands and deployment details are documented in [DEPLOY_GUIDE.md](DEPLOY_GUIDE.md). A scan can update the operational database and trigger configured notifications; run only within the authorised scope. Repository cleanup does not reload installed launchd jobs.
+Open `Launch Dashboard.command` for the dashboard at `http://127.0.0.1:5001/`; it reuses the existing service and preserves the current snapshot. Use `./serve_app.sh` to run that same app directly. Scan and sync commands and deployment details are documented in [DEPLOY_GUIDE.md](DEPLOY_GUIDE.md). A scan can update the operational database and trigger configured notifications; run only within the authorised scope. Repository cleanup does not reload installed launchd jobs.
 
 ## Verification
 
@@ -24,3 +24,7 @@ The dashboard includes source health and a specification-review queue. Official-
 ## Search beyond the shortlist
 
 Use **Search all captured notices** to search the full captured public feed, including uncertain and excluded records, by reference, scope, buyer and attachment name. Possible candidates remain separate from strong portfolio matches. No keyword signal means unassessed, not irrelevant. Source failures and unread attachments prevent any claim of zero misses; compare results against an independent feed to measure recall.
+
+## One local application
+
+The Flask/Gunicorn service serves the dashboard and API together. Its master process and two workers belong to one service. The scheduled daily scanner and weekly report are supporting jobs, not separate apps. Keep one `.venv`; Node dependencies are development/test tools. Database, snapshots, logs and backups are operational data. Installed machine-specific schedules live in `~/Library/LaunchAgents`; repository plists are portable templates.

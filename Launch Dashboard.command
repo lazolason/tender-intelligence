@@ -1,50 +1,26 @@
-#!/bin/bash
-
-# ==========================================================
-# TENDER INTELLIGENCE DASHBOARD LAUNCHER
-# Standardizes the sequence to refresh and serve the dashboard.
-# ==========================================================
-
-# 1. Get the directory of the script
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-cd "$DIR"
-
-echo "----------------------------------------------------"
-echo "🚀 Starting Tender Intelligence Dashboard..."
-echo "----------------------------------------------------"
-
-# 2. Activate virtual environment
-if [ -d ".venv" ]; then
-    source .venv/bin/activate
-elif [ -d "venv" ]; then
-    source venv/bin/activate
-else
-    echo "⚠️  Warning: Virtual environment (.venv) not found. Trying system python..."
+#!/bin/zsh
+# Open the existing app without refreshing or replacing its tender snapshot.
+set -euo pipefail
+cd "$(dirname "$0")"
+URL="http://127.0.0.1:5001"
+if ! curl --silent --fail --max-time 3 "$URL/" >/dev/null; then
+    if lsof -nP -iTCP:5001 -sTCP:LISTEN -t >/dev/null; then
+        echo "Port 5001 is occupied but the dashboard is not responding."
+        exit 1
+    fi
+    mkdir -p logs
+    nohup ./serve_app.sh >>logs/app_server.log 2>>logs/app_server_error.log </dev/null &
+    ready=false
+    for attempt in {1..20}; do
+        if curl --silent --fail --max-time 2 "$URL/" >/dev/null; then
+            ready=true
+            break
+        fi
+        sleep 1
+    done
+    if [[ "$ready" != true ]]; then
+        echo "Dashboard did not start. See logs/app_server_error.log."
+        exit 1
+    fi
 fi
-
-# 3. Refresh dashboard data
-echo "📡 Refreshing dashboard data..."
-python3 sync_dashboard.py
-
-# 4. Check if app server is already running
-if lsof -Pi :5001 -sTCP:LISTEN -t >/dev/null ; then
-    echo "ℹ️  Tender Intelligence app is already running on port 5001."
-else
-    echo "🌐 Starting Tender Intelligence app on port 5001..."
-    ./serve_app.sh &
-    # Allow a moment for server to start
-    sleep 2
-fi
-
-# 5. Open browser
-echo "✨ Opening dashboard in your default browser..."
-open "http://localhost:5001"
-
-echo "----------------------------------------------------"
-echo "✅ Dashboard is live!"
-echo "You can close this window. The server will run in the background."
-echo "----------------------------------------------------"
-
-# Stay open briefly so the user can see if any errors occurred
-sleep 3
-exit
+open "$URL/"
