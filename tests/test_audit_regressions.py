@@ -254,7 +254,7 @@ def test_partial_group_keeps_records_and_failure_health(tmp_path, monkeypatch):
     monkeypatch.setattr(tenderscan, 'get_active_scrapers', lambda **kwargs: [FunctionScraper('Test group', fail_partially)])
     monkeypatch.setattr(tenderscan, 'SEMANTIC_DEDUP_AVAILABLE', False)
     monkeypatch.setattr(tenderscan, 'LOG_FILE', str(tmp_path / 'test.log'))
-    assert tenderscan.run_all_scrapers(monitor=Monitor(), max_workers=1) == [record]
+    assert tenderscan.run_all_scrapers(monitor=Monitor(), max_workers=1) == [{**record, "capture_group": "Test group"}]
     assert observed == {'status': 'failure', 'count': 1}
 
 

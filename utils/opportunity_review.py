@@ -6,10 +6,10 @@ from urllib.parse import urlparse
 import json
 import time
 
-from classify_engine import classify_tender, clean, keyword_hits
+from classify_engine import classify_tender
 from utils.retry_tools import guarded_request
+from utils.discovery import assess_discovery
 
-REVIEW_TERMS = ["boiler", "feedwater", "condensate", "cooling", "chemical", "corrosion", "monitor", "monitors", "monitoring", "display", "touch panels", "telemetry", "dosing", "flow meters", "instrumentation"]
 DOCUMENT_HOSTS = {"www.etenders.gov.za", "etenders.gov.za", "tenderbulletin.eskom.co.za", "www.eskom.co.za", "eskom.co.za"}
 
 
@@ -46,14 +46,12 @@ def prepare_opportunities(tenders, *, fetch_text=document_text, document_budget=
     for original in ordered:
         tender = dict(original)
         title, description = tender.get('title', ''), tender.get('description', '')
-        initial = classify_tender(title, description)
-        signal = keyword_hits(clean(title + ' ' + description), REVIEW_TERMS)
+        discovery = assess_discovery(tender)
         documents = tender.get('attachments') or []
-        document_signal = keyword_hits(clean(' '.join(str(d.get('name', '')) for d in documents)), REVIEW_TERMS)
         # Explicit notices/works stay excluded, even when annexures mention brands.
-        scope_excluded = initial['reason'].startswith(('Excluded: works scope', 'Excluded: notice'))
+        scope_excluded = discovery['tier'] == 'clearly_excluded'
         evidence, errors = [], []
-        if not scope_excluded and (initial['portfolios'] or signal or document_signal):
+        if not scope_excluded and discovery['tier'] in ('strong_candidate', 'possible_candidate'):
             def rank(document):
                 name = str(document.get('name', '')).lower()
                 if any(word in name for word in ['scope', 'specification', 'technical']):
@@ -79,7 +77,7 @@ def prepare_opportunities(tenders, *, fetch_text=document_text, document_budget=
             reason = ('Specification/eligibility check required' if final['portfolios'] else 'Possible scope; listing/document evidence insufficient')
             if not documents:
                 errors.append('No attachment links supplied by source')
-            queue.append({'ref': tender.get('ref', ''), 'title': title, 'url': tender.get('url', ''), 'portfolios': final['portfolios'], 'reason': reason, 'documents_checked': evidence, 'limitations': errors})
+            queue.append({'ref': tender.get('ref', ''), 'client': tender.get('client', ''), 'source': tender.get('source', ''), 'title': title, 'url': tender.get('url', ''), 'portfolios': final['portfolios'], 'discovery': discovery, 'reason': reason, 'documents_checked': evidence, 'limitations': errors})
             tender['review_status'] = 'needs_review'
             tender['document_evidence'] = evidence
         tender['description'] = description

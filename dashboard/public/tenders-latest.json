@@ -1,18 +1,288 @@
 {
   "meta": {
-    "last_sync": "2026-11-04T16:00:20.946185+00:00",
+    "last_sync": "2026-11-04T16:53:53.278053+00:00",
     "snapshot_origin": "public_source_refresh_without_database_write",
     "next_run": "Daily 08:00",
     "tender_count": 2,
-    "last_update": "2026-11-04T16:00:20.946185+00:00",
+    "last_update": "2026-11-04T16:53:53.278053+00:00",
     "planned_opportunity_count": 16,
     "bid_statistics": {
       "total_bids": 0,
       "wins": 0,
       "win_rate": 0
     },
-    "checked_at": "2026-11-04T16:01:02.133872+00:00",
+    "checked_at": "2026-11-04T16:57:32.880462+00:00",
     "review_queue": [
+      {
+        "ref": "RFQ-112823",
+        "title": "Computer (CPU) with Monitor (All in one AI PC-Intel Core 5235 1 TB SSD 32GB)",
+        "url": "https://www.etenders.gov.za/Home/opportunities",
+        "portfolios": [],
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Monitor and display supply": [
+              "monitor"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
+        "reason": "Possible scope; listing/document evidence insufficient",
+        "documents_checked": [
+          {
+            "name": "Standard Bidding Document(SBD6.1) new.pdf",
+            "url": "https://www.etenders.gov.za/home/Download/?blobName=91ad2e71-b4ab-4eef-a1ff-06cb5610e413.pdf&downloadedFileName=Standard+Bidding+Document%28SBD6.1%29+new.pdf",
+            "characters": 9878
+          }
+        ],
+        "limitations": [
+          "No readable PDF text; OCR/manual review required",
+          "Document is not a PDF; archive/other format requires review",
+          "Additional attachments not analysed"
+        ],
+        "client": "Statistics South Africa",
+        "source": "National Treasury"
+      },
+      {
+        "ref": "RFQ 202140",
+        "title": "RFQ 202140: SUPPLY AND DELIVER OF THE HIGH PRECISION DENSITY METER FOR MEASURING SOLIDS",
+        "client": "SA Bureau of Standards",
+        "source": "National Treasury",
+        "url": "https://www.etenders.gov.za/Home/opportunities",
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Cooling-water process": [
+              "chemical"
+            ],
+            "Process dosing and instrumentation": [
+              "density meter"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
+        "portfolios": [],
+        "reason": "Broader discovery signal; specification review needed",
+        "documents_checked": [],
+        "limitations": [
+          "Attachment scope not yet checked; retained to avoid silent rejection"
+        ]
+      },
+      {
+        "ref": "RE ADVERSITED RFQKZNM04AUG098",
+        "title": "TELEMETRY SERVICES FOR A PERIOD OF 5 YEARS (60 MONTHS)",
+        "url": "https://www.etenders.gov.za/Home/opportunities",
+        "portfolios": [],
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Process dosing and instrumentation": [
+              "telemetry"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
+        "reason": "Possible scope; listing/document evidence insufficient",
+        "documents_checked": [
+          {
+            "name": "RE \u2013 ADVERSITED RFQ-KZN.M04AUG098.pdf",
+            "url": "https://www.etenders.gov.za/home/Download/?blobName=2a938ec3-c3d3-4c68-a8a0-9850c0165782.pdf&downloadedFileName=RE+%E2%80%93+ADVERSITED+RFQ-KZN.M04AUG098.pdf",
+            "characters": 40000
+          }
+        ],
+        "limitations": [],
+        "client": "KwaZulu-Natal Museum",
+        "source": "National Treasury"
+      },
+      {
+        "ref": "DFFE-B013 (26-27)",
+        "title": "THE APPOINTMENT OF THE PROFESSIONAL SERVICE PROVIDER FOR A PERIOD OF 24 MONTHS TO DEVELOP AN INVENTORY, PHASE-OUT PLAN, AND A SOCIOECONOMIC ASSESSMENT OF PHASING OUT THE PERSISTENT ORGANIC POLLUTANTS (DICOFOL, METHOXYCHLOR, CHLORPYRIFOS, MEDIUM-CHAIN CHLORINATED PARAFFINS AND LONG-CHAIN PERFLUOROCARBOXYLIC ACIDS, THEIR SALTS AND RELATED COMPOUNDS) AND CHEMICALS PROPOSED FOR LISTING (POLYBROMINATED DIBENZO-P-DIOXINS AND DIBENZOFURANS AND MIXED POLYBROMINATED/CHLORINATED DIBENZO-P-DIOXINS) UNDER S",
+        "client": "National - Environment, Forestry and Fisheries",
+        "source": "National Treasury",
+        "url": "https://www.etenders.gov.za/Home/opportunities",
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Cooling-water process": [
+              "chemicals"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
+        "portfolios": [],
+        "reason": "Broader discovery signal; specification review needed",
+        "documents_checked": [],
+        "limitations": [
+          "Attachment scope not yet checked; retained to avoid silent rejection"
+        ]
+      },
+      {
+        "ref": "E3776GXMPGRO",
+        "title": "Boiler inspections and plant failure investigations for maintenance and outage at Grootvlei Power Station for a period of 5 years on as and when required basis.",
+        "url": "https://www.etenders.gov.za/Home/opportunities",
+        "portfolios": [],
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Water and steam-cycle chemistry": [
+              "boiler"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
+        "reason": "Possible scope; listing/document evidence insufficient",
+        "documents_checked": [
+          {
+            "name": "Invitation to Tender (ITT).pdf",
+            "url": "https://www.etenders.gov.za/home/Download/?blobName=58296afd-9332-4aa1-a58c-2dc9a9a9cdb9.pdf&downloadedFileName=Invitation+to+Tender+%28ITT%29.pdf",
+            "characters": 40000
+          }
+        ],
+        "limitations": [],
+        "client": "ESKOM",
+        "source": "National Treasury"
+      },
+      {
+        "ref": "RFP199/2026",
+        "title": "APPOINTMENT OF A PROFESSIONAL SERVICE PROVIDER FOR THE PROVISION OF PROFESSIONAL SERVICES TO PLAN, DESIGN, MONITOR AND COMPLETE [AS PER FIDPM STAGES 2 \u2013 7] MANZANA SSS IN THE EASTERN CAPE",
+        "url": "https://www.etenders.gov.za/Home/opportunities",
+        "portfolios": [],
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Monitor and display supply": [
+              "monitor"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
+        "reason": "Possible scope; listing/document evidence insufficient",
+        "documents_checked": [
+          {
+            "name": "Annexure A - Health and Safety Specifications.pdf",
+            "url": "https://www.etenders.gov.za/home/Download/?blobName=664869a0-90d5-4eef-87f6-46fe6ed11099.pdf&downloadedFileName=Annexure+A+-+Health+and+Safety+Specifications.pdf",
+            "characters": 40000
+          },
+          {
+            "name": "RFP199.2026 MANZANA PRIMARY SCHOOL.pdf",
+            "url": "https://www.etenders.gov.za/home/Download/?blobName=a08f9ea6-19fc-4500-a9b4-b3f8e745166b.pdf&downloadedFileName=RFP199.2026+MANZANA+PRIMARY+SCHOOL.pdf",
+            "characters": 40000
+          }
+        ],
+        "limitations": [
+          "No readable PDF text; OCR/manual review required",
+          "Additional attachments not analysed"
+        ],
+        "client": "Development Bank of Southern Africa",
+        "source": "National Treasury"
+      },
+      {
+        "ref": "ALMT06/2026",
+        "title": "Supply and Delivery of Water Treatment Chemicals for a period of 36 Months",
+        "url": "https://www.etenders.gov.za/Home/opportunities",
+        "portfolios": [],
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Cooling-water process": [
+              "chemicals",
+              "water treatment"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
+        "reason": "Possible scope; listing/document evidence insufficient",
+        "documents_checked": [
+          {
+            "name": "Tender Advert Closing 01 December.pdf",
+            "url": "https://www.etenders.gov.za/home/Download/?blobName=c14e7fe5-a6a6-4199-88fa-4312cf834cec.pdf&downloadedFileName=Tender+Advert+Closing+01+December.pdf",
+            "characters": 3418
+          }
+        ],
+        "limitations": [],
+        "client": "Chief Albert Luthuli Municipality",
+        "source": "National Treasury"
+      },
+      {
+        "ref": "RFP200/2026",
+        "title": "APPOINTMENT OF A PROFESSIONAL SERVICE PROVIDER FOR THE PROVISION OF PROFESSIONAL SERVICES TO PLAN, DESIGN, MONITOR AND COMPLETE [AS PER FIDPM STAGES 2 \u2013 7] MYOLWA PS IN THE EASTERN CAPE.",
+        "url": "https://www.etenders.gov.za/Home/opportunities",
+        "portfolios": [],
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Monitor and display supply": [
+              "monitor"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
+        "reason": "Possible scope; listing/document evidence insufficient",
+        "documents_checked": [
+          {
+            "name": "Annexure A - Health and Safety Specifications.pdf",
+            "url": "https://www.etenders.gov.za/home/Download/?blobName=a7e42815-a1fe-42e5-8d30-4ec66c348bdd.pdf&downloadedFileName=Annexure+A+-+Health+and+Safety+Specifications.pdf",
+            "characters": 40000
+          },
+          {
+            "name": "Annexure B - Baseline Risk Assessment.pdf",
+            "url": "https://www.etenders.gov.za/home/Download/?blobName=44a17336-ff14-494c-b522-343868e11f1e.pdf&downloadedFileName=Annexure+B+-+Baseline+Risk+Assessment.pdf",
+            "characters": 40000
+          }
+        ],
+        "limitations": [
+          "No readable PDF text; OCR/manual review required",
+          "Additional attachments not analysed"
+        ],
+        "client": "Development Bank of Southern Africa",
+        "source": "National Treasury"
+      },
+      {
+        "ref": "RFP201/2026",
+        "title": "APPOINTMENT OF A PROFESSIONAL SERVICE PROVIDER FOR THE PROVISION OF PROFESSIONAL SERVICES TO PLAN, DESIGN, MONITOR AND COMPLETE [AS PER FIDPM STAGES 2 \u2013 7] NOBANTU SSS, IN THE EASTERN CAPE.",
+        "url": "https://www.etenders.gov.za/Home/opportunities",
+        "portfolios": [],
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Monitor and display supply": [
+              "monitor"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
+        "reason": "Possible scope; listing/document evidence insufficient",
+        "documents_checked": [],
+        "limitations": [
+          "Document-check budget reached; manual review needed",
+          "Additional attachments not analysed"
+        ],
+        "client": "Development Bank of Southern Africa",
+        "source": "National Treasury"
+      },
+      {
+        "ref": "E3729GXMPDUV",
+        "title": "Cooling Water and Potable water clarifier cleaning services",
+        "url": "https://www.etenders.gov.za/Home/opportunities",
+        "portfolios": [],
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Cooling-water process": [
+              "cooling"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
+        "reason": "Possible scope; listing/document evidence insufficient",
+        "documents_checked": [],
+        "limitations": [
+          "Document-check budget reached; manual review needed",
+          "Additional attachments not analysed"
+        ],
+        "client": "ESKOM",
+        "source": "National Treasury"
+      },
       {
         "ref": "E3748GXMPHEN",
         "title": "DESIGN AND REPLACEMENT OF FUEL OIL FLOW METERS FOR A PERIOD OF 24 MONTHS",
@@ -20,6 +290,15 @@
         "portfolios": [
           "PHAKATHI"
         ],
+        "discovery": {
+          "tier": "strong_candidate",
+          "signals": {
+            "Process dosing and instrumentation": [
+              "flow meters"
+            ]
+          },
+          "reason": "Current capability rules match; specification and eligibility still require review"
+        },
         "reason": "Specification/eligibility check required",
         "documents_checked": [
           {
@@ -40,408 +319,349 @@
         ],
         "limitations": [
           "Additional attachments not analysed"
-        ]
-      },
-      {
-        "ref": "RFB 3273/2026-(ERP NO 523017)",
-        "title": "Supply and Delivery of Huawei Network Infrastructure Equipment with Huawei Support for Five (5) Years for the Western Cape Government (WCG), Department of the Premier - Centre for e-Innovation (CEI)",
-        "url": "https://www.etenders.gov.za/Home/opportunities",
-        "portfolios": [
-          "PHAKATHI"
         ],
-        "reason": "Specification/eligibility check required",
-        "documents_checked": [],
-        "limitations": [
-          "Document is not a PDF; archive/other format requires review",
-          "Document is not a PDF; archive/other format requires review",
-          "Document is not a PDF; archive/other format requires review",
-          "Additional attachments not analysed"
-        ]
+        "client": "ESKOM",
+        "source": "National Treasury"
       },
       {
-        "ref": "RFQ-112823",
-        "title": "Computer (CPU) with Monitor (All in one AI PC-Intel Core 5235 1 TB SSD 32GB)",
+        "ref": "AW2026/27/05",
+        "title": "SUPPLY AND DELIVER A NEW 2.5MVA 11KV/400V OIL IMMERSED TRANSFORMER FOR SANDILE WATER TREATMENT WORKS",
         "url": "https://www.etenders.gov.za/Home/opportunities",
         "portfolios": [],
-        "reason": "Possible scope; listing/document evidence insufficient",
-        "documents_checked": [
-          {
-            "name": "Standard Bidding Document(SBD6.1) new.pdf",
-            "url": "https://www.etenders.gov.za/home/Download/?blobName=91ad2e71-b4ab-4eef-a1ff-06cb5610e413.pdf&downloadedFileName=Standard+Bidding+Document%28SBD6.1%29+new.pdf",
-            "characters": 9878
-          }
-        ],
-        "limitations": [
-          "No readable PDF text; OCR/manual review required",
-          "Document is not a PDF; archive/other format requires review",
-          "Additional attachments not analysed"
-        ]
-      },
-      {
-        "ref": "E3755CXMWP",
-        "title": "Appointment of a suitably qualified professional service provider to deliver integrated Supplier Development, Localisation and Industrialisation (SDL&I) monitoring, verification, reporting, assurance, analytical support and structured intervention services across Eskom for a period of two (2) years.",
-        "url": "https://www.etenders.gov.za/Home/opportunities",
-        "portfolios": [],
-        "reason": "Possible scope; listing/document evidence insufficient",
-        "documents_checked": [
-          {
-            "name": "Scope of Work.pdf",
-            "url": "https://www.etenders.gov.za/home/Download/?blobName=018f640b-8b06-4b82-9d12-295186864ea8.pdf&downloadedFileName=Scope+of+Work.pdf",
-            "characters": 22280
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Cooling-water process": [
+              "water treatment"
+            ]
           },
-          {
-            "name": "Invitation to Tender (ITT) - SDLI Performance Monitoring Assurance  Reporting Support.pdf",
-            "url": "https://www.etenders.gov.za/home/Download/?blobName=5d03d71b-0a8b-4994-a3e4-26324b7a6382.pdf&downloadedFileName=Invitation+to+Tender+%28ITT%29+-+SDLI+Performance+Monitoring+Assurance++Reporting+Support.pdf",
-            "characters": 40000
-          },
-          {
-            "name": "Standard Bidding Document (SBD 4) Bidders Disclosure.pdf",
-            "url": "https://www.etenders.gov.za/home/Download/?blobName=0138927c-59d0-4f26-b557-14835f402f58.pdf&downloadedFileName=Standard+Bidding+Document+%28SBD+4%29+Bidders+Disclosure.pdf",
-            "characters": 5457
-          }
-        ],
-        "limitations": [
-          "Additional attachments not analysed"
-        ]
-      },
-      {
-        "ref": "RFQ 202140",
-        "title": "RFQ 202140: SUPPLY AND DELIVER OF THE HIGH PRECISION DENSITY METER FOR MEASURING SOLIDS",
-        "url": "https://www.etenders.gov.za/Home/opportunities",
-        "portfolios": [],
-        "reason": "Possible scope; listing/document evidence insufficient",
-        "documents_checked": [
-          {
-            "name": "RFQ 202140 Chemical and Materials Solid Density Meter.pdf",
-            "url": "https://www.etenders.gov.za/home/Download/?blobName=d1507471-671d-413a-87f4-bf57d8b3e1aa.pdf&downloadedFileName=RFQ+202140+Chemical+and+Materials+Solid+Density+Meter.pdf",
-            "characters": 26714
-          }
-        ],
-        "limitations": []
-      },
-      {
-        "ref": "RE ADVERSITED RFQKZNM04AUG098",
-        "title": "TELEMETRY SERVICES FOR A PERIOD OF 5 YEARS (60 MONTHS)",
-        "url": "https://www.etenders.gov.za/Home/opportunities",
-        "portfolios": [],
-        "reason": "Possible scope; listing/document evidence insufficient",
-        "documents_checked": [
-          {
-            "name": "RE \u2013 ADVERSITED RFQ-KZN.M04AUG098.pdf",
-            "url": "https://www.etenders.gov.za/home/Download/?blobName=2a938ec3-c3d3-4c68-a8a0-9850c0165782.pdf&downloadedFileName=RE+%E2%80%93+ADVERSITED+RFQ-KZN.M04AUG098.pdf",
-            "characters": 40000
-          }
-        ],
-        "limitations": []
-      },
-      {
-        "ref": "COR10932/2026/RFP",
-        "title": "REQUEST FOR PROPOSALS FOR THE PROVISION OF JOINT MONITORING TEAM PROFESSIONAL SERVICES FOR THE DESIGN, SUPPLY, INSTALLATIONS AND COMMISSIONING OF NEW AUTOMATED WEATHER OBSERVATION SYSTEMS (AWOS), AS WELL AS DECOMMISSIONING OF THE EXISTING WEATHER OBSERVATION SYSTEMS (AWOS) AT CAPE TOWN INTERNATIONAL AIRPORT (CTIA), GEORGE AIRPORT (GRJ), CHIEF DAWID STUURMAN INTERNATIONAL AIRPORT (CDSIA), UPINGTON AIRPORT (UPN) AND KIMBERLY AIRPORT (KIM) FOR A PERIOD OF TWENTY-FOUR (24) MONTHS",
-        "url": "https://www.etenders.gov.za/Home/opportunities",
-        "portfolios": [],
-        "reason": "Possible scope; listing/document evidence insufficient",
-        "documents_checked": [
-          {
-            "name": "FINAL JMT AWOS COR10932-2026-RFP_FINAL.pdf",
-            "url": "https://www.etenders.gov.za/home/Download/?blobName=1727ae59-db7e-4cb8-bae2-66b76597f7ca.pdf&downloadedFileName=FINAL+JMT+AWOS+COR10932-2026-RFP_FINAL.pdf",
-            "characters": 40000
-          },
-          {
-            "name": "NEC3 PSC - JMT Automated Weather Observation System Replacement Program final.pdf",
-            "url": "https://www.etenders.gov.za/home/Download/?blobName=a0c2b20b-87f4-46c7-8ab0-ce878de22e5e.pdf&downloadedFileName=NEC3+PSC+-+JMT+Automated+Weather+Observation+System+Replacement+Program+final.pdf",
-            "characters": 40000
-          }
-        ],
-        "limitations": []
-      },
-      {
-        "ref": "RLM/DTIS/0070 /2026/27",
-        "title": "Appointment of a service provider for the provision of drinking water quality monitoring programme in the Rustenburg jurisdiction for a period of three (3) years",
-        "url": "https://www.etenders.gov.za/Home/opportunities",
-        "portfolios": [],
-        "reason": "Possible scope; listing/document evidence insufficient",
-        "documents_checked": [
-          {
-            "name": "Newspaper Advert 30 October 2026.pdf",
-            "url": "https://www.etenders.gov.za/home/Download/?blobName=ba3e8cb6-e997-414a-a409-77d7bf57d2f6.pdf&downloadedFileName=Newspaper+Advert+30+October+2026.pdf",
-            "characters": 3775
-          },
-          {
-            "name": "Tender Docuemnt Water Quality.pdf",
-            "url": "https://www.etenders.gov.za/home/Download/?blobName=f9f694ed-0eaa-49d6-8a69-9d07b21bdf66.pdf&downloadedFileName=Tender+Docuemnt+Water+Quality.pdf",
-            "characters": 36309
-          }
-        ],
-        "limitations": []
-      },
-      {
-        "ref": "26/11",
-        "title": "THE APPOINTMENT OF PROFESSIONAL SERVICE PROVIDERS FOR THE DESIGN AND CONSTRUCTION MONITORING OF A NEW PACKHOUSE AT TATS GREENERY IN THE WATERBERG DISTRICT MUNICIPALITY OF THE LIMPOPO PROVINCE",
-        "url": "https://www.etenders.gov.za/Home/opportunities",
-        "portfolios": [],
-        "reason": "Possible scope; listing/document evidence insufficient",
-        "documents_checked": [
-          {
-            "name": "ACDP 2611 TENDER DOCUMENT.pdf",
-            "url": "https://www.etenders.gov.za/home/Download/?blobName=9349140a-fc45-4c6e-be8b-9e12ef795f52.pdf&downloadedFileName=ACDP+2611+TENDER+DOCUMENT.pdf",
-            "characters": 40000
-          }
-        ],
-        "limitations": []
-      },
-      {
-        "ref": "GT/GDE/045/2026",
-        "title": "Invitation of Service provider(s) to submit proposals to render the service of Hiring, Delivery, and Servicing of Flushing Mobile Chemical Toilets for Gauteng Department of Education (GDE) Institutions for a fixed term period of thirty-six (36) months.",
-        "url": "https://www.etenders.gov.za/Home/opportunities",
-        "portfolios": [],
-        "reason": "Possible scope; listing/document evidence insufficient",
-        "documents_checked": [
-          {
-            "name": "GT GDE 045 2026 - Section 1.pdf",
-            "url": "https://www.etenders.gov.za/home/Download/?blobName=1bac93ce-1149-4947-8458-59f958945e46.pdf&downloadedFileName=GT+GDE+045+2026+-+Section+1.pdf",
-            "characters": 40000
-          }
-        ],
-        "limitations": [
-          "Document-check budget reached; manual review needed"
-        ]
-      },
-      {
-        "ref": "H004L2710RFQ00219",
-        "title": "PROCUREMENT OF AN UNMANNED AERIAL SYSTEMS FOR BORDERLINE SEGMENT MONITORING",
-        "url": "https://www.etenders.gov.za/Home/opportunities",
-        "portfolios": [],
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
         "reason": "Possible scope; listing/document evidence insufficient",
         "documents_checked": [],
         "limitations": [
           "Document-check budget reached; manual review needed"
-        ]
-      },
-      {
-        "ref": "RFQ 4712/26",
-        "title": "Appointment of a Service Provider for Electrical Wiring and Lighting Installation at the Standerton Air Quality Monitoring Station.",
-        "url": "https://www.etenders.gov.za/Home/opportunities",
-        "portfolios": [],
-        "reason": "Possible scope; listing/document evidence insufficient",
-        "documents_checked": [],
-        "limitations": [
-          "Document-check budget reached; manual review needed"
-        ]
-      },
-      {
-        "ref": "Q50-2026-27",
-        "title": "ADVERTISEMENT: APPOINTMENT OF A SERVICE PROVIDER FOR REPAIRS, MAINTENANCE AND CALIBRATION OF AUTOMATED SUCTION UNIT AND CALIBRATION OF CARDIAC MONITORING EQUIPMENT AS WHEN REQUIRED FOR A PERIOD NOT EXCEEDING TWELVE (12) MONTHS",
-        "url": "https://www.etenders.gov.za/Home/opportunities",
-        "portfolios": [],
-        "reason": "Possible scope; listing/document evidence insufficient",
-        "documents_checked": [],
-        "limitations": [
-          "Document-check budget reached; manual review needed"
-        ]
-      },
-      {
-        "ref": "E3776GXMPGRO",
-        "title": "Boiler inspections and plant failure investigations for maintenance and outage at Grootvlei Power Station for a period of 5 years on as and when required basis.",
-        "url": "https://www.etenders.gov.za/Home/opportunities",
-        "portfolios": [],
-        "reason": "Possible scope; listing/document evidence insufficient",
-        "documents_checked": [],
-        "limitations": [
-          "Document-check budget reached; manual review needed"
-        ]
-      },
-      {
-        "ref": "RFP199/2026",
-        "title": "APPOINTMENT OF A PROFESSIONAL SERVICE PROVIDER FOR THE PROVISION OF PROFESSIONAL SERVICES TO PLAN, DESIGN, MONITOR AND COMPLETE [AS PER FIDPM STAGES 2 \u2013 7] MANZANA SSS IN THE EASTERN CAPE",
-        "url": "https://www.etenders.gov.za/Home/opportunities",
-        "portfolios": [],
-        "reason": "Possible scope; listing/document evidence insufficient",
-        "documents_checked": [],
-        "limitations": [
-          "Document-check budget reached; manual review needed",
-          "Additional attachments not analysed"
-        ]
-      },
-      {
-        "ref": "RFP200/2026",
-        "title": "APPOINTMENT OF A PROFESSIONAL SERVICE PROVIDER FOR THE PROVISION OF PROFESSIONAL SERVICES TO PLAN, DESIGN, MONITOR AND COMPLETE [AS PER FIDPM STAGES 2 \u2013 7] MYOLWA PS IN THE EASTERN CAPE.",
-        "url": "https://www.etenders.gov.za/Home/opportunities",
-        "portfolios": [],
-        "reason": "Possible scope; listing/document evidence insufficient",
-        "documents_checked": [],
-        "limitations": [
-          "Document-check budget reached; manual review needed",
-          "Additional attachments not analysed"
-        ]
-      },
-      {
-        "ref": "RFP201/2026",
-        "title": "APPOINTMENT OF A PROFESSIONAL SERVICE PROVIDER FOR THE PROVISION OF PROFESSIONAL SERVICES TO PLAN, DESIGN, MONITOR AND COMPLETE [AS PER FIDPM STAGES 2 \u2013 7] NOBANTU SSS, IN THE EASTERN CAPE.",
-        "url": "https://www.etenders.gov.za/Home/opportunities",
-        "portfolios": [],
-        "reason": "Possible scope; listing/document evidence insufficient",
-        "documents_checked": [],
-        "limitations": [
-          "Document-check budget reached; manual review needed",
-          "Additional attachments not analysed"
-        ]
-      },
-      {
-        "ref": "RFQ180-2026",
-        "title": "APPOINTMENT OF A BIDDER TO RENDER SERVICE OF MAINTENANCE, SERVICING, REPAIR AND MONITORING OF INTRUDER ALARM SYSTEM FOR 36 MONTHS.",
-        "url": "https://www.etenders.gov.za/Home/opportunities",
-        "portfolios": [],
-        "reason": "Possible scope; listing/document evidence insufficient",
-        "documents_checked": [],
-        "limitations": [
-          "Document-check budget reached; manual review needed"
-        ]
-      },
-      {
-        "ref": "E3729GXMPDUV",
-        "title": "Cooling Water and Potable water clarifier cleaning services",
-        "url": "https://www.etenders.gov.za/Home/opportunities",
-        "portfolios": [],
-        "reason": "Possible scope; listing/document evidence insufficient",
-        "documents_checked": [],
-        "limitations": [
-          "Document-check budget reached; manual review needed",
-          "Additional attachments not analysed"
-        ]
-      },
-      {
-        "ref": "PSSC GP-PSP 0001 (2026/2027)",
-        "title": "PROPOSAL REQUEST FOR THE PLANNING, DESIGN AND CONSTRUCTION MONITORING FOR THE CONSTRUCTION OF +/-24 KM GRAVEL ROAD AND RIVER CROSSING IN RUST DE WINTER OLD STATE LAND FARMS UNDER THE CITY OF TSHWANE METROPOLITAN MUNICIPALITY: GAUTENG PROVINCE.",
-        "url": "https://www.etenders.gov.za/Home/opportunities",
-        "portfolios": [],
-        "reason": "Possible scope; listing/document evidence insufficient",
-        "documents_checked": [],
-        "limitations": [
-          "Document-check budget reached; manual review needed"
-        ]
+        ],
+        "client": "Amatola Water Board",
+        "source": "National Treasury"
       },
       {
         "ref": "E2326TSSERI-",
         "title": "TRANSFORMER OIL INHIBITOR DOSING",
         "url": "https://www.etenders.gov.za/Home/opportunities",
         "portfolios": [],
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Process dosing and instrumentation": [
+              "dosing"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
         "reason": "Possible scope; listing/document evidence insufficient",
         "documents_checked": [],
         "limitations": [
           "Document-check budget reached; manual review needed",
           "Additional attachments not analysed"
-        ]
+        ],
+        "client": "ESKOM",
+        "source": "National Treasury"
       },
       {
-        "ref": "OVG (01) (2026/2027)",
-        "title": "APPOINTMENT OF A SERVICE PROVIDER TO RENDER PHYSICAL SECURITY GUARDING SERVICES FOR THE OFFICE OF THE VALUER-GENERAL (OVG) FOR A PERIOD OF THIRTY-SIX (36) MONTHS",
+        "ref": "10416904",
+        "title": "Refurbishment of Ferric Chloride and Coagulant Dosing Equipment at Rietvlei Water Purification Plant at Tshwane",
         "url": "https://www.etenders.gov.za/Home/opportunities",
         "portfolios": [],
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Process dosing and instrumentation": [
+              "dosing"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
         "reason": "Possible scope; listing/document evidence insufficient",
         "documents_checked": [],
         "limitations": [
           "Document-check budget reached; manual review needed"
-        ]
+        ],
+        "client": "Rand Water",
+        "source": "National Treasury"
       },
       {
         "ref": "RFQ 135/2026",
         "title": "SUPPLY AND DELIVERY OF SWIMMING POOL CHEMICALS AND EQUIPMENT FOR A PERIOD ENDING 30 JUNE 2027",
+        "client": "Prince Albert Municipality",
+        "source": "National Treasury",
+        "url": "https://www.etenders.gov.za/Home/opportunities",
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Cooling-water process": [
+              "chemical",
+              "chemicals"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
+        "portfolios": [],
+        "reason": "Broader discovery signal; specification review needed",
+        "documents_checked": [],
+        "limitations": [
+          "Attachment scope not yet checked; retained to avoid silent rejection"
+        ]
+      },
+      {
+        "ref": "51 OF 2026",
+        "title": "Supply and delivery of High voltage CTVT Metering Units",
         "url": "https://www.etenders.gov.za/Home/opportunities",
         "portfolios": [],
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Process dosing and instrumentation": [
+              "metering"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
         "reason": "Possible scope; listing/document evidence insufficient",
         "documents_checked": [],
         "limitations": [
           "Document-check budget reached; manual review needed"
-        ]
+        ],
+        "client": "Makhado Local Municipality",
+        "source": "National Treasury"
+      },
+      {
+        "ref": "54 OF 2026",
+        "title": "Supply, Delivery, Installation and Commissioning of 2 x Oil filled 11kv ground mount metering unit",
+        "url": "https://www.etenders.gov.za/Home/opportunities",
+        "portfolios": [],
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Process dosing and instrumentation": [
+              "metering"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
+        "reason": "Possible scope; listing/document evidence insufficient",
+        "documents_checked": [],
+        "limitations": [
+          "Document-check budget reached; manual review needed"
+        ],
+        "client": "Makhado Local Municipality",
+        "source": "National Treasury"
       },
       {
         "ref": "PR0016381",
         "title": "REQUEST FOR ENERGY MANAGEMENT SERVICE PROVIDERS TO SUBMIT A QUOTATION TO AIDC FOR MONTHLY MONITORING OF THE EXISTING DLMS 3 PHASE 4 WIRE ONLINE SMART ELECTRICAL METERING FOR PERIOD OF 36 MONTH AT THE AUTOMOTIVE SUPPLER PARK, ROSSLYN PRETORIA.",
         "url": "https://www.etenders.gov.za/Home/opportunities",
         "portfolios": [],
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Process dosing and instrumentation": [
+              "metering"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
         "reason": "Possible scope; listing/document evidence insufficient",
         "documents_checked": [],
         "limitations": [
           "Document-check budget reached; manual review needed",
           "Additional attachments not analysed"
-        ]
-      },
-      {
-        "ref": "RLM/DCD/0052/2026/27",
-        "title": "Appointment of a qualified service provider for the data management and maintenance of the Rustenburg air quality monitoring network for a period of 36 months",
-        "url": "https://www.etenders.gov.za/Home/opportunities",
-        "portfolios": [],
-        "reason": "Possible scope; listing/document evidence insufficient",
-        "documents_checked": [],
-        "limitations": [
-          "Document-check budget reached; manual review needed"
-        ]
-      },
-      {
-        "ref": "2026-08-06-0002775-80101500",
-        "title": "Request for Proposals the Appointment of a service provider to undertake spatial transformation research in selected municipalities, collect data, monitor and assess state of progress and submit each municipal data set to populate the SALGA Spatial Transformation Barometer and produce annual report on the state of municipal spatial transformation to SALGA",
-        "url": "https://www.etenders.gov.za/Home/opportunities",
-        "portfolios": [],
-        "reason": "Possible scope; listing/document evidence insufficient",
-        "documents_checked": [],
-        "limitations": [
-          "Document-check budget reached; manual review needed"
-        ]
+        ],
+        "client": "Automotive Industry Development Centre (AIDC)",
+        "source": "National Treasury"
       },
       {
         "ref": "E3626GXMPKRI",
         "title": "Supply, Installation, Commissioning, and Design of Coal Bunkers Unit 1 to 6 CO Gas Monitors and Interface to WinCC SCADA System at Kriel Power Station for a period of three months. It is estimated that tenderers should have a CIDB contractor grading of 7EP or higher, however 6EP Potentially Emerging Enterprises who satisfy criteria stated in the Tender Data may submit Tender offers.",
         "url": "https://www.etenders.gov.za/Home/opportunities",
         "portfolios": [],
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Process dosing and instrumentation": [
+              "scada"
+            ],
+            "Monitor and display supply": [
+              "monitors"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
         "reason": "Possible scope; listing/document evidence insufficient",
         "documents_checked": [],
         "limitations": [
           "Document-check budget reached; manual review needed",
           "Additional attachments not analysed"
-        ]
+        ],
+        "client": "ESKOM",
+        "source": "National Treasury"
+      },
+      {
+        "ref": "E3734DXMWP",
+        "title": "The Supply and Delivery of Metering Seals (Tool-less Seals) for various Eskom Distribution clusters on an as and when required basis for a period of 36 months",
+        "url": "https://www.etenders.gov.za/Home/opportunities",
+        "portfolios": [],
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Process dosing and instrumentation": [
+              "metering"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
+        "reason": "Possible scope; listing/document evidence insufficient",
+        "documents_checked": [],
+        "limitations": [
+          "Document-check budget reached; manual review needed",
+          "Additional attachments not analysed"
+        ],
+        "client": "ESKOM",
+        "source": "National Treasury"
       },
       {
         "ref": "GM2026/226",
         "title": "Supply, Delivery And Off-Loading Of Chemicals For Water And Wastewater Treatment For A Period Of 36 Months",
         "url": "https://www.etenders.gov.za/Home/opportunities",
         "portfolios": [],
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Cooling-water process": [
+              "chemical",
+              "chemicals",
+              "water treatment"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
         "reason": "Possible scope; listing/document evidence insufficient",
         "documents_checked": [],
         "limitations": [
           "Document-check budget reached; manual review needed"
-        ]
+        ],
+        "client": "Gamagara Local Municipality",
+        "source": "National Treasury"
       },
       {
         "ref": "NKO 53/2026",
         "title": "SUPPLY AND DELIVERY OF CHEMICAL PRODUCTS FOR WATER AND SEWERAGE SCHEMES FOR NKOMAZI LOCAL MUNICIPALITY FOR A PERIOD OF FOR A PERIOD OF 36 MONTHS.",
+        "client": "Nkomazi Local Municipality",
+        "source": "National Treasury",
+        "url": "https://www.etenders.gov.za/Home/opportunities",
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Cooling-water process": [
+              "chemical",
+              "chemicals"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
+        "portfolios": [],
+        "reason": "Broader discovery signal; specification review needed",
+        "documents_checked": [],
+        "limitations": [
+          "Attachment scope not yet checked; retained to avoid silent rejection"
+        ]
+      },
+      {
+        "ref": "34981/TNP/2026-27-R",
+        "title": "APPOINTMENT OF A SERVICE PROVIDER FOR SERVICING AND MAINTENANCE OF WATER TREATMENT PLANTS AND WATER PURIFICATION PLANTS WITHIN THE TSITSIKAMMA SECTION OF GARDEN ROUTE NATIONAL PARK FOR A PERIOD OF 36 MONTHS.",
         "url": "https://www.etenders.gov.za/Home/opportunities",
         "portfolios": [],
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Cooling-water process": [
+              "water treatment"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
         "reason": "Possible scope; listing/document evidence insufficient",
         "documents_checked": [],
         "limitations": [
           "Document-check budget reached; manual review needed"
-        ]
+        ],
+        "client": "South African National Parks",
+        "source": "National Treasury"
       },
       {
-        "ref": "100225713",
+        "ref": "00100225713",
         "title": "Provision of an Imaging System for Nucleic acid/protein gels and Western blots for the Centre for Bioprocess Engineering Research, Department of Chemical Engineering, University of Cape Town (UCT) under the DSTI/KfW/SAMRC Support of development and production of vaccines in South Africa Project.",
+        "client": "Medical Research Council of South Africa",
+        "source": "National Treasury",
         "url": "https://www.etenders.gov.za/Home/opportunities",
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Cooling-water process": [
+              "chemical"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
         "portfolios": [],
-        "reason": "Possible scope; listing/document evidence insufficient",
+        "reason": "Broader discovery signal; specification review needed",
         "documents_checked": [],
         "limitations": [
-          "Document-check budget reached; manual review needed"
+          "Attachment scope not yet checked; retained to avoid silent rejection"
         ]
       },
       {
-        "ref": "100225712OR",
+        "ref": "00100225712OR",
         "title": "Supply and delivery of Spectrophotometer with microdrop capabilities for the Centre for Bioprocess Engineering Research, Department of Chemical Engineering, University of Cape Town (UCT) under the DSTI/KfW/SAMRC Support of development and production of vaccines in South Africa Project.",
+        "client": "Medical Research Council of South Africa",
+        "source": "National Treasury",
         "url": "https://www.etenders.gov.za/Home/opportunities",
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Cooling-water process": [
+              "chemical"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
         "portfolios": [],
-        "reason": "Possible scope; listing/document evidence insufficient",
+        "reason": "Broader discovery signal; specification review needed",
         "documents_checked": [],
         "limitations": [
-          "Document-check budget reached; manual review needed"
+          "Attachment scope not yet checked; retained to avoid silent rejection"
+        ]
+      },
+      {
+        "ref": "Bid 942 2026/2027",
+        "title": "SUPPLY, DELIVERY, INSTALLATION, COMMISSIONING, VALIDATION, AND USER TRAINING FOR A CONTINUOUS FLOW ANALYSER (CFA)",
+        "client": "Western Cape - Agriculture",
+        "source": "National Treasury",
+        "url": "https://www.etenders.gov.za/Home/opportunities",
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Process dosing and instrumentation": [
+              "analyser"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
+        "portfolios": [],
+        "reason": "Broader discovery signal; specification review needed",
+        "documents_checked": [],
+        "limitations": [
+          "Attachment scope not yet checked; retained to avoid silent rejection"
         ]
       },
       {
@@ -449,55 +669,110 @@
         "title": "ANNUAL CHILLER AND COOLING TOWER SERVICES FOR A PERIOD OF 6 MONTHS AT OR TAMBO INTERNATIONAL AIRPORT.",
         "url": "https://www.etenders.gov.za/Home/opportunities",
         "portfolios": [],
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Cooling-water process": [
+              "cooling",
+              "chiller"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
         "reason": "Possible scope; listing/document evidence insufficient",
         "documents_checked": [],
         "limitations": [
           "Document-check budget reached; manual review needed"
-        ]
+        ],
+        "client": "Airports Company of South Africa Limited",
+        "source": "National Treasury"
       },
       {
         "ref": "22134GGHNP/2026-27",
         "title": "Appointment of a service provider for the maintenance of cooling, refrigeration and freezing equipment including replacement of parts for a period of three (3) years",
         "url": "https://www.etenders.gov.za/Home/opportunities",
         "portfolios": [],
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Cooling-water process": [
+              "cooling"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
         "reason": "Possible scope; listing/document evidence insufficient",
         "documents_checked": [],
         "limitations": [
           "Document-check budget reached; manual review needed"
-        ]
+        ],
+        "client": "South African National Parks",
+        "source": "National Treasury"
       },
       {
         "ref": "E3342GCDLETBIDDERS",
         "title": "Publication of Names of Bidders in Respect of Advertised Competitive Bids for Provision of Plant Instrumentation Design and Commissioning services, including associated Electrical and Civil Designs and Commissioning services for all six (6) units at Lethabo Power Station Tender Number E3342GCDLET",
         "url": "https://www.etenders.gov.za/Home/opportunities",
         "portfolios": [],
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Process dosing and instrumentation": [
+              "instrumentation"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
         "reason": "Possible scope; listing/document evidence insufficient",
         "documents_checked": [],
         "limitations": [
           "Document-check budget reached; manual review needed"
-        ]
-      },
-      {
-        "ref": "RFQ NO 06 - 2026/27 - RE-ADVERTISEMENT",
-        "title": "TERMS OF REFERENCE FOR THE APPOINTMENT OF A POOL OF CONSULTANTS TO SUPPORT THE ETDP SETA AS AND WHEN REQUIRED TO DELIVER QUALITY ASSURANCE SERVICES",
-        "url": "https://www.etenders.gov.za/Home/opportunities",
-        "portfolios": [],
-        "reason": "Possible scope; listing/document evidence insufficient",
-        "documents_checked": [],
-        "limitations": [
-          "Document-check budget reached; manual review needed",
-          "Additional attachments not analysed"
-        ]
+        ],
+        "client": "ESKOM",
+        "source": "National Treasury"
       },
       {
         "ref": "E3623GXMPGRO",
-        "title": "The Supply and delivery of various control and\ninstrumentation cables and related items for\nGrootvlei power station, as and when required.",
-        "url": "https://tenderbulletin.eskom.co.za/tender/96652",
+        "title": "The supply and delivery of various control and instrumentation cables and related items for Grootvlei Power Station as and when required.",
+        "client": "ESKOM",
+        "source": "National Treasury",
+        "url": "https://www.etenders.gov.za/Home/opportunities",
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Process dosing and instrumentation": [
+              "instrumentation"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
         "portfolios": [],
-        "reason": "Possible scope; listing/document evidence insufficient",
+        "reason": "Broader discovery signal; specification review needed",
         "documents_checked": [],
         "limitations": [
-          "No attachment links supplied by source"
+          "Attachment scope not yet checked; retained to avoid silent rejection"
+        ]
+      },
+      {
+        "ref": "DPWFS (T) 007/2026",
+        "title": "APPOINTMENT OF SUITABLY QUALIFIED SUPPLIERS ON A PANEL FOR THE SUPPLY, DELIVERY AND OFF-LOADING OF CLEANING MATERIALS AND HYGIENIC PAPER PRODUCTS ON AN \u201cAS, WHEN AND WHERE NEEDED BASIS\u201d FOR A PERIOD OF THREE (3) YEARS ON BEHALF OF THE FREE STATE PROVINCIAL DEPARTMENT OF PUBLIC WORKS AND INFRASTRUCTURE.",
+        "client": "Free State - Public Works",
+        "source": "National Treasury",
+        "url": "https://www.etenders.gov.za/Home/opportunities",
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Cooling-water process": [
+              "chemicals"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
+        "portfolios": [],
+        "reason": "Broader discovery signal; specification review needed",
+        "documents_checked": [],
+        "limitations": [
+          "Attachment scope not yet checked; retained to avoid silent rejection"
         ]
       },
       {
@@ -505,77 +780,88 @@
         "title": "Repair of Ffennell Road Round Building (including Telemetry Wing) Roof",
         "url": "https://www.etenders.gov.za/Home/opportunities",
         "portfolios": [],
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Process dosing and instrumentation": [
+              "telemetry"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
         "reason": "Possible scope; listing/document evidence insufficient",
         "documents_checked": [],
         "limitations": [
           "Document-check budget reached; manual review needed"
-        ]
+        ],
+        "client": "Johannesburg Water",
+        "source": "National Treasury"
       },
       {
-        "ref": "REC 74476",
-        "title": "DESIGN OF MONITORING SYSTEM FOR SEWERAGE AND STORM WATER SUMP PUMP STATIONS INCLUDING CLOUD AND MOBILE MONITORING PLATFORM (MONITORING ONLY)",
+        "ref": "KSIA8233/2026/RFP",
+        "title": "INSTALLATION OF AUTOMATED METER READING (AMR) SYSTEM FOR ELECTRICITY AND MAINTENANCE FOR A PERIOD OF 5 YEARS AT AIRPORTS COMPANY SOUTH AFRICA KING SHAKA INTERNATIONAL AIRPORT",
         "url": "https://www.etenders.gov.za/Home/opportunities",
         "portfolios": [],
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Process dosing and instrumentation": [
+              "metering"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
         "reason": "Possible scope; listing/document evidence insufficient",
         "documents_checked": [],
         "limitations": [
-          "Document-check budget reached; manual review needed"
-        ]
+          "Document-check budget reached; manual review needed",
+          "Additional attachments not analysed"
+        ],
+        "client": "Airports Company of South Africa",
+        "source": "National Treasury"
       },
       {
         "ref": "RFQ-EUG-OCT-2026",
         "title": "Request for quotation for Boilter retube and inspection",
         "url": "https://www.etenders.gov.za/Home/opportunities",
         "portfolios": [],
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Water and steam-cycle chemistry": [
+              "boiler"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
         "reason": "Possible scope; listing/document evidence insufficient",
         "documents_checked": [],
         "limitations": [
           "Document-check budget reached; manual review needed"
-        ]
+        ],
+        "client": "South African Nuclear Energy Corporation Limited",
+        "source": "National Treasury"
       },
       {
-        "ref": "RFQ/12075",
-        "title": "Request for a Service Provider for Alien and Invasive Vegetation Monitoring and Eradication for a Period of Three (3) Years at King Phalo Airport (KPA)",
+        "ref": "DFFE-B012(26-27)",
+        "title": "THE APPOINTMENT OF A PROFESSIONAL SERVICE PROVIDER FOR A PERIOD OF 24 MONTHS TO DEVELOP A NATIONAL CHEMICALS PROFILE FOR SOUTH AFRICA, ON BEHALF OF THE DEPARTMENT OF FORESTRY, FISHERIES AND THE ENVIRONMENT (DFFE).",
+        "client": "National - Environment, Forestry and Fisheries",
+        "source": "National Treasury",
         "url": "https://www.etenders.gov.za/Home/opportunities",
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Cooling-water process": [
+              "chemicals"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
         "portfolios": [],
-        "reason": "Possible scope; listing/document evidence insufficient",
+        "reason": "Broader discovery signal; specification review needed",
         "documents_checked": [],
         "limitations": [
-          "Document-check budget reached; manual review needed"
-        ]
-      },
-      {
-        "ref": "E3696GXMPKOM",
-        "title": "REQUEST FOR PROPOSAL - The Provision of Ash Dam Monitoring, Dam safety evaluation and Stability assessment for the period of 36 months at Komati Power",
-        "url": "https://www.etenders.gov.za/Home/opportunities",
-        "portfolios": [],
-        "reason": "Possible scope; listing/document evidence insufficient",
-        "documents_checked": [],
-        "limitations": [
-          "Document-check budget reached; manual review needed",
-          "Additional attachments not analysed"
-        ]
-      },
-      {
-        "ref": "NERSA-2627-ELR-MMSP-BID011",
-        "title": "REQUEST FOR INFORMATION (RFI) FOR THE APPOINTMENT OF A SERVICE PROVIDER TO DEVELOP, IMPLEMENT, MAINTAIN AND SUPPORT A REGULATORY DATA HUB TO PERFORM DIGITAL SAWEM MARKET MONITORING AND SURVEILLANCE, INTEGRATED DATA DRIVEN REGULATORY DECISION MAKING AND BUSINESS INTELLIGENCE FOR A PERIOD OF FIVE (5) YEARS.",
-        "url": "https://www.etenders.gov.za/Home/opportunities",
-        "portfolios": [],
-        "reason": "Possible scope; listing/document evidence insufficient",
-        "documents_checked": [],
-        "limitations": [
-          "Document-check budget reached; manual review needed"
-        ]
-      },
-      {
-        "ref": "LG 02 2026-2027",
-        "title": "APPOINTMENT OF A SERVICE PROVIDER TO DEVELOP A REPORTING MECHANISM AND PROVIDE RELATED DATA GOVERNANCE, MONITORING AND EVALUATION, AND KNOWLEDGE MANAGEMENT SUPPORT.",
-        "url": "https://www.etenders.gov.za/Home/opportunities",
-        "portfolios": [],
-        "reason": "Possible scope; listing/document evidence insufficient",
-        "documents_checked": [],
-        "limitations": [
-          "Document-check budget reached; manual review needed"
+          "Attachment scope not yet checked; retained to avoid silent rejection"
         ]
       },
       {
@@ -583,33 +869,63 @@
         "title": "Tender to appoint professional service providers to supply, install, maintain, repair and upgrade of existing heating, ventilation, air conditioning and cooling systems city wide as and when required for a period of 3 years.",
         "url": "https://www.etenders.gov.za/Home/opportunities",
         "portfolios": [],
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Cooling-water process": [
+              "cooling"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
         "reason": "Possible scope; listing/document evidence insufficient",
         "documents_checked": [],
         "limitations": [
           "Document-check budget reached; manual review needed"
-        ]
-      },
-      {
-        "ref": "SALB 15/10/2026",
-        "title": "Request for quotation for 24-hour alarm monitoring and emergency responses services at the SALB premises.",
-        "url": "https://www.etenders.gov.za/Home/opportunities",
-        "portfolios": [],
-        "reason": "Possible scope; listing/document evidence insufficient",
-        "documents_checked": [],
-        "limitations": [
-          "Document-check budget reached; manual review needed",
-          "Additional attachments not analysed"
-        ]
+        ],
+        "client": "City of Tshwane",
+        "source": "National Treasury"
       },
       {
         "ref": "WCGHIC0003/2026",
         "title": "DELIVERY OF HEAT ENERGY IN THE FORM OF SATURATED PROCESS STEAM AND BOILER HOUSE MAINTENANCE WORK AT TYGERBERG HOSPITAL BOILER HOUSE, LENTEGEUR HOSPITAL BOILER HOUSE AND THE WESTERN CAPE COLLEGE OF NURSING, DEPARTMENT OF HEALTH AND WELLNESS, WESTERN CAPE GOVERNMENT FOR A THREE (3) YEAR PERIOD.",
         "url": "https://www.etenders.gov.za/Home/opportunities",
         "portfolios": [],
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Water and steam-cycle chemistry": [
+              "boiler"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
         "reason": "Possible scope; listing/document evidence insufficient",
         "documents_checked": [],
         "limitations": [
           "Document-check budget reached; manual review needed"
+        ],
+        "client": "Western Cape - Health",
+        "source": "National Treasury"
+      },
+      {
+        "ref": "RFB 3273/2026-(ERP No 523017)",
+        "title": "Supply and Delivery of Huawei Network Infrastructure Equipment with Huawei Support for Five (5) Years for the Western Cape Government (WCG), Department of the Premier - Centre for e-Innovation (CEI)",
+        "client": "State Information Technology Agency",
+        "source": "National Treasury",
+        "url": "https://www.etenders.gov.za/Home/opportunities",
+        "discovery": {
+          "tier": "strong_candidate",
+          "signals": {},
+          "reason": "Current capability rules match; specification and eligibility still require review"
+        },
+        "portfolios": [
+          "PHAKATHI"
+        ],
+        "reason": "Broader discovery signal; specification review needed",
+        "documents_checked": [],
+        "limitations": [
+          "Attachment scope not yet checked; retained to avoid silent rejection"
         ]
       },
       {
@@ -617,34 +933,89 @@
         "title": "ENGINEERING, PROCUREMENT AND CONSTRUCTION OF THE HOWICK PUMP STATION FIRE SYSTEM UPGRADE",
         "url": "https://www.etenders.gov.za/Home/opportunities",
         "portfolios": [],
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Process dosing and instrumentation": [
+              "instrumentation"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
         "reason": "Possible scope; listing/document evidence insufficient",
         "documents_checked": [],
         "limitations": [
           "Document-check budget reached; manual review needed",
           "Additional attachments not analysed"
-        ]
+        ],
+        "client": "Transnet SOC Ltd",
+        "source": "National Treasury"
       },
       {
         "ref": "E1526GXMPHENR",
         "title": "Supply and delivery of Laboratory Chemicals on an as and when required basis for a period of 05 years",
+        "client": "ESKOM",
+        "source": "National Treasury",
+        "url": "https://www.etenders.gov.za/Home/opportunities",
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Cooling-water process": [
+              "chemicals"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
+        "portfolios": [],
+        "reason": "Broader discovery signal; specification review needed",
+        "documents_checked": [],
+        "limitations": [
+          "Attachment scope not yet checked; retained to avoid silent rejection"
+        ]
+      },
+      {
+        "ref": "TP/2026/10/0002/115012/RFP",
+        "title": "RFP for Supply, Design, Development, Installation, Testing and Commissioning of the National Smart Metering System for the Electricity and Water at Transnet Property.",
         "url": "https://www.etenders.gov.za/Home/opportunities",
         "portfolios": [],
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Process dosing and instrumentation": [
+              "metering"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
         "reason": "Possible scope; listing/document evidence insufficient",
         "documents_checked": [],
         "limitations": [
           "Document-check budget reached; manual review needed",
           "Additional attachments not analysed"
-        ]
+        ],
+        "client": "Transnet SOC Ltd",
+        "source": "National Treasury"
       },
       {
-        "ref": "RFQ 72628 RE-ISSUE",
-        "title": "Request for Quotation for Professional Services for the Replacement of Sewerage Pump Systems, Monitoring, and Control Systems at OR Tambo International Airport Airports Company South Africa.",
+        "ref": "ALA/605/26/MP Re-advertisement",
+        "title": "TURNKEY PROPOSAL FOR THE DEVELOPMENT OF A WATER TREATMENT, RIVER PUMP STATION AND WATER BOTTLING PLANT FOR THE MPUMALANGA INTERNATIONAL FOOD MARKET AT THE CITY OF MBOMBELA LOCAL MUNICIPALITY",
+        "client": "Mpumalanga - Agriculture Rural Development and Land Administration",
+        "source": "National Treasury",
         "url": "https://www.etenders.gov.za/Home/opportunities",
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Cooling-water process": [
+              "water treatment"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
         "portfolios": [],
-        "reason": "Possible scope; listing/document evidence insufficient",
+        "reason": "Broader discovery signal; specification review needed",
         "documents_checked": [],
         "limitations": [
-          "Document-check budget reached; manual review needed"
+          "Attachment scope not yet checked; retained to avoid silent rejection"
         ]
       },
       {
@@ -652,11 +1023,44 @@
         "title": "The maintenance, outage repair services; the supply, transportation, erection and dismantling of scaffolding and insulation material for boiler pressure parts and high pressure pipework for 14 (fourteen) fossil fired power stations for a period of 5 (five) years.",
         "url": "https://www.etenders.gov.za/Home/opportunities",
         "portfolios": [],
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Water and steam-cycle chemistry": [
+              "boiler"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
         "reason": "Possible scope; listing/document evidence insufficient",
         "documents_checked": [],
         "limitations": [
           "Document-check budget reached; manual review needed",
           "Additional attachments not analysed"
+        ],
+        "client": "ESKOM",
+        "source": "National Treasury"
+      },
+      {
+        "ref": "Re-advert014/MKLM/2025/2026",
+        "title": "Supply and delivery of water and wastewater treatment plant chemicals and plant optimization testing at Madikwe, Pella, Molatedi and Mogwase plants for a period of thirty-six (36) months on as and when required basis.",
+        "client": "Moses Kotane Local Municipality",
+        "source": "National Treasury",
+        "url": "https://www.etenders.gov.za/Home/opportunities",
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Cooling-water process": [
+              "chemicals"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
+        "portfolios": [],
+        "reason": "Broader discovery signal; specification review needed",
+        "documents_checked": [],
+        "limitations": [
+          "Attachment scope not yet checked; retained to avoid silent rejection"
         ]
       },
       {
@@ -664,54 +1068,110 @@
         "title": "BID 8/2/2/464 (4SQ3SQPE) (2026-2029): BID TO APPOINT A SERVICE PROVIDER FOR THE INSTALLATION AND MAINTENANCE OF FENCING FOR MIDVAAL LOCAL MUNICIPALITY ON AN AS AND WHEN REQUIRED BASIS FROM DATE OF APPOINTMENT UNTIL 30 JUNE 2029",
         "url": "https://www.etenders.gov.za/Home/opportunities",
         "portfolios": [],
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Monitor and display supply": [
+              "monitor"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
         "reason": "Possible scope; listing/document evidence insufficient",
         "documents_checked": [],
         "limitations": [
           "Document-check budget reached; manual review needed"
-        ]
+        ],
+        "client": "Midvaal Local Municipality",
+        "source": "National Treasury"
       },
       {
         "ref": "8/2/2/474 (2026-2029)",
         "title": "8/2/2/474 (2026-2029) BID TO APPOINT A PANEL OF PROFESSIONAL SERVICE PROVIDERS FOR WATER USE LICENCE APPLICATIONS (WULA) AND ENVIRONMENTAL IMPACT ASSESSMENT (EIA) APPLICATIONS ON AN AS WHEN REQUIRED BASIS FROM DATE OF APPOINTMENT TO 30 JUNE 2029",
         "url": "https://www.etenders.gov.za/Home/opportunities",
         "portfolios": [],
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Monitor and display supply": [
+              "monitor"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
         "reason": "Possible scope; listing/document evidence insufficient",
         "documents_checked": [],
         "limitations": [
           "Document-check budget reached; manual review needed"
-        ]
+        ],
+        "client": "Midvaal Local Municipality",
+        "source": "National Treasury"
       },
       {
-        "ref": "T 2027/006",
-        "title": "SUPPLY, INSTALLATION, COMMISSIONING AND MONITORING OF A VEHICLE TRACKING SYSTEM FOR THE PERIOD ENDING 30 JUNE 2030",
+        "ref": "35023-5W",
+        "title": "Water metering project for eThekwini Municipality area of supply for a period of 36 months",
         "url": "https://www.etenders.gov.za/Home/opportunities",
         "portfolios": [],
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Process dosing and instrumentation": [
+              "metering"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
         "reason": "Possible scope; listing/document evidence insufficient",
         "documents_checked": [],
         "limitations": [
           "Document-check budget reached; manual review needed"
-        ]
+        ],
+        "client": "Ethekwini Metropolitan Municipality",
+        "source": "National Treasury"
       },
       {
         "ref": "TENDER 23/2026",
         "title": "SERVICE AND REPAIR OF ALL ELECTRICAL, MECHANICAL AND TELEMETRY EQUIPMENT IN THE LANGEBERG MUNICIPALITY, FOR A PERIOD OF THREE (3) YEARS",
         "url": "https://www.etenders.gov.za/Home/opportunities",
         "portfolios": [],
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Process dosing and instrumentation": [
+              "telemetry"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
         "reason": "Possible scope; listing/document evidence insufficient",
         "documents_checked": [],
         "limitations": [
           "Document-check budget reached; manual review needed"
-        ]
+        ],
+        "client": "Langeberg Municipality",
+        "source": "National Treasury"
       },
       {
         "ref": "GSDM 10/2026",
         "title": "APPOINTMENT OF A PANEL OF SERVICE PROVIDERS FOR PROVISION OF PROFESSIONAL CHEMICAL WASTE DISPOSAL SERVICES TO THE GERT SIBANDE DISTRICT MUNICIPALITY WATER QUALITY LABORATORY AS AND WHEN REQUIRED FOR THE PERIOD OF 36 MONTHS.",
+        "client": "Gert Sibande District Municipality",
+        "source": "National Treasury",
         "url": "https://www.etenders.gov.za/Home/opportunities",
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Cooling-water process": [
+              "chemical",
+              "chemicals"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
         "portfolios": [],
-        "reason": "Possible scope; listing/document evidence insufficient",
+        "reason": "Broader discovery signal; specification review needed",
         "documents_checked": [],
         "limitations": [
-          "Document-check budget reached; manual review needed"
+          "Attachment scope not yet checked; retained to avoid silent rejection"
         ]
       },
       {
@@ -719,77 +1179,134 @@
         "title": "REQUEST FOR PROPOSALS: APPOINTMENT OF A SUITABLE SERVICE PROVIDER FOR THE SUPPLY, INSTALLATION AND MAINTENANCE OF AN INTRUDER ALARMS SYSTEMS, MONITOR AND ARMED RESPONSE AT NHBRC TWENTY-TWO (22) OFFICES FOR A PERIOD OF THREE (03) YEARS",
         "url": "https://www.etenders.gov.za/Home/opportunities",
         "portfolios": [],
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Monitor and display supply": [
+              "monitor"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
         "reason": "Possible scope; listing/document evidence insufficient",
         "documents_checked": [],
         "limitations": [
           "Document-check budget reached; manual review needed"
-        ]
-      },
-      {
-        "ref": "PLMT26-27/01A",
-        "title": "provision of laboratory services for monitoring of water quality in Phumelela local municipality for 36 months",
-        "url": "https://www.etenders.gov.za/Home/opportunities",
-        "portfolios": [],
-        "reason": "Possible scope; listing/document evidence insufficient",
-        "documents_checked": [],
-        "limitations": [
-          "Document-check budget reached; manual review needed"
-        ]
+        ],
+        "client": "National Home Builders Registration Council",
+        "source": "National Treasury"
       },
       {
         "ref": "GMA/004/26",
         "title": "Request for Proposals for a service provider to conduct Independent Socio-Economic monitor services for the Gautrain System for a period of five (5) years",
         "url": "https://www.etenders.gov.za/Home/opportunities",
         "portfolios": [],
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Monitor and display supply": [
+              "monitor"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
         "reason": "Possible scope; listing/document evidence insufficient",
         "documents_checked": [],
         "limitations": [
           "Document-check budget reached; manual review needed",
           "Additional attachments not analysed"
-        ]
+        ],
+        "client": "Gauteng - Gautrain Management Agency",
+        "source": "National Treasury"
       },
       {
-        "ref": "T/TECH/02/10/2026/2027",
-        "title": "APPOINTMENT OF A SERVICE PROVIDER TO SUPPLY (RENTAL), INSTALL AND MAINTAIN/SERVICE 300 PORTABLE CHEMICAL TOILETS AT INFORMAL SETTLEMENTS AROUND VICTOR KHANYE LOCAL MUNICIPALITY FOR A PERIOD OF 36 MONTHS (3 YEARS). RE- ADVERT",
+        "ref": "DTP/RFP/14/PRO/05/2026",
+        "title": "Supply, Decommissioning, Delivery, Installation and Commissioning of Air-Cooled Chillers for Dube AgriZone Facilities",
         "url": "https://www.etenders.gov.za/Home/opportunities",
         "portfolios": [],
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Cooling-water process": [
+              "chiller"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
         "reason": "Possible scope; listing/document evidence insufficient",
         "documents_checked": [],
         "limitations": [
           "Document-check budget reached; manual review needed"
-        ]
+        ],
+        "client": "Dube Tradeport",
+        "source": "National Treasury"
       },
       {
-        "ref": "CSIR RFQ NO 9544/06/11/2026",
+        "ref": "CSIR RFQ No 9544/06/11/2026",
         "title": "Request for Quotation (RFQ) For the provision of safety systems and upgrades for a Lithium-Ion Laboratory Environment at the CSIR Campus in Stellenbosch.",
+        "client": "Council for Scientific and Industrial Research (CSIR)",
+        "source": "National Treasury",
         "url": "https://www.etenders.gov.za/Home/opportunities",
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Cooling-water process": [
+              "chemical",
+              "chemicals"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
         "portfolios": [],
-        "reason": "Possible scope; listing/document evidence insufficient",
+        "reason": "Broader discovery signal; specification review needed",
         "documents_checked": [],
         "limitations": [
-          "Document-check budget reached; manual review needed"
+          "Attachment scope not yet checked; retained to avoid silent rejection"
         ]
       },
       {
-        "ref": "GTLM/INFR05/20262027",
-        "title": "PLANNING, DESIGN, CONSTRUCTION MONITORING, CONSTRUCTION AND CLOSE-OUT (TURNKEY) OF QHOO ROAD AND STORM-WATER",
+        "ref": "GSDM 07/2026",
+        "title": "APPOINTMENT OF A PANEL OF SERVICE PROVIDERS TO SUPPLY AND DELIVER REAGENTS AND CONSUMABLES FOR THE DISCRETE ANALYSER (GALLERY PLUS)TO THE GERT SIBANDE WATER QUALITY LABORATORY AS AND WHEN REQUIRED FOR THE PERIOD OF 36 MONTHS",
         "url": "https://www.etenders.gov.za/Home/opportunities",
         "portfolios": [],
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Process dosing and instrumentation": [
+              "analyser"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
         "reason": "Possible scope; listing/document evidence insufficient",
         "documents_checked": [],
         "limitations": [
           "Document-check budget reached; manual review needed"
-        ]
+        ],
+        "client": "Gert Sibande District Municipality",
+        "source": "National Treasury"
       },
       {
         "ref": "ARC/71/02/2026/2",
         "title": "APPOINTMENT OF A SERVICE PROVIDER APPOINTMENT OF A SERVICE PROVIDER TO FORMULATE, MANUFACTURE, TEST AND COMMERCIALISE A FUNGAL PRODUCT FOR THE BIOLOGICAL CONTROL OF THE TWO SPOTTED STINKBUG IN MACADAMIA",
+        "client": "Agricultural Research Council",
+        "source": "National Treasury",
         "url": "https://www.etenders.gov.za/Home/opportunities",
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Cooling-water process": [
+              "chemical",
+              "chemicals"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
         "portfolios": [],
-        "reason": "Possible scope; listing/document evidence insufficient",
+        "reason": "Broader discovery signal; specification review needed",
         "documents_checked": [],
         "limitations": [
-          "Document-check budget reached; manual review needed"
+          "Attachment scope not yet checked; retained to avoid silent rejection"
         ]
       },
       {
@@ -797,92 +1314,203 @@
         "title": "PROVISION OF PRESERVATION, CONDITION MONITORING, INSPECTION AND MAINTENANCE SERVICES FOR GE TM2500 GEN4 GAS TURBINE GENERATOR PACKAGES IN LONG-TERM STORAGE FOR A PERIOD OF ONE (1) YEAR",
         "url": "https://www.etenders.gov.za/Home/opportunities",
         "portfolios": [],
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Water and steam-cycle chemistry": [
+              "preservation"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
         "reason": "Possible scope; listing/document evidence insufficient",
         "documents_checked": [],
         "limitations": [
           "Document-check budget reached; manual review needed",
           "Additional attachments not analysed"
-        ]
-      },
-      {
-        "ref": "E3640CXMWP",
-        "title": "SUPPLY, DELIVERY, TRAINING, AND TECHNICAL SUPPORT OF THE DRONE SYSTEM FOR INSPECTION AND APPLICATION IN FOSSIL POWER PLANTS AT ESKOM RESEARCH AND DEVELOPMENT FOR THE PERIOD OF TWELVE (12) MONTHS.",
-        "url": "https://www.etenders.gov.za/Home/opportunities",
-        "portfolios": [],
-        "reason": "Possible scope; listing/document evidence insufficient",
-        "documents_checked": [],
-        "limitations": [
-          "Document-check budget reached; manual review needed",
-          "Additional attachments not analysed"
-        ]
+        ],
+        "client": "Transnet National Ports Authority",
+        "source": "National Treasury"
       },
       {
         "ref": "E3575GXMPKRI",
         "title": "Provide Coating and Lining for Kriel Condensers, Coolers, associated large bore pipework, water boxes and tube sheets for a period of 5 years on an as and when required",
         "url": "https://www.etenders.gov.za/Home/opportunities",
         "portfolios": [],
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Cooling-water process": [
+              "cooling",
+              "condenser"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
         "reason": "Possible scope; listing/document evidence insufficient",
         "documents_checked": [],
         "limitations": [
           "Document-check budget reached; manual review needed",
           "Additional attachments not analysed"
+        ],
+        "client": "ESKOM",
+        "source": "National Treasury"
+      },
+      {
+        "ref": "Tender 66/2026",
+        "title": "APPOINTMENT OF A PROFESSIONAL SERVICE PROVIDER FOR MANAGEMENT, OPERATION & MAINTENANCE OF POTCHEFSTROOM WATER TREATMENT WORKS AND ASSOCIATED BULK INFRASTRUCTURE FOR A PERIOD OF THREE(3) YEARS",
+        "client": "JB Marks Local Municipality",
+        "source": "National Treasury",
+        "url": "https://www.etenders.gov.za/Home/opportunities",
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Cooling-water process": [
+              "water treatment"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
+        "portfolios": [],
+        "reason": "Broader discovery signal; specification review needed",
+        "documents_checked": [],
+        "limitations": [
+          "Attachment scope not yet checked; retained to avoid silent rejection"
         ]
       },
       {
-        "ref": "DFFE-B009 (26-27)",
-        "title": "THE APPOINTMENT OF A SUITABLE MULTI-DISCIPLINARY BUILT ENVIRONMENT SERVICE PROVIDER, INCLUDING THE OHS AGENT, TO PROVIDE PROFESSIONAL SERVICES IN PLANNING, DESIGNING, AND MONITORING OF CONSTRUCTION FOR THE MATERIAL RECOVERY FACILITY (MRF), COMPOSTING FACILITY AND OTHER SUPPORTING STRUCTURES IN KOUGA LOCAL MUNICIPALITY IN THE EASTERN CAPE PROVINCE, FOR A PERIOD OF THIRTY-SIX (36) MONTHS",
+        "ref": "E3628DXKZNOU",
+        "title": "The establishment of an enabling agreement for the provision of SPU Meter Reading Services for the various areas in KZN Operating Unit, in Central East Cluster for Distribution Division (on an as and when required basis) for a period of thirty-six (36) months.",
         "url": "https://www.etenders.gov.za/Home/opportunities",
         "portfolios": [],
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Process dosing and instrumentation": [
+              "metering"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
+        "reason": "Possible scope; listing/document evidence insufficient",
+        "documents_checked": [],
+        "limitations": [
+          "Document-check budget reached; manual review needed",
+          "Additional attachments not analysed"
+        ],
+        "client": "ESKOM",
+        "source": "National Treasury"
+      },
+      {
+        "ref": "DTP/RFP/19/AGZ/08/2026",
+        "title": "Supply and installation of RO membrane, associated accessories, supply of spare parts, clean-in-place process, and ad-hoc maintenance for Dube AgriZone Water Treatment Works (AWTW)",
+        "url": "https://www.etenders.gov.za/Home/opportunities",
+        "portfolios": [],
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Cooling-water process": [
+              "water treatment"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
         "reason": "Possible scope; listing/document evidence insufficient",
         "documents_checked": [],
         "limitations": [
           "Document-check budget reached; manual review needed"
-        ]
-      },
-      {
-        "ref": "E3599GXPOU",
-        "title": "CORROSION PROTECTION SERVICES ON AN 'AS AND WHEN REQUIRED' BASIS FOR ELEVEN (11) ESKOM PEAKING SITES FOR A PERIOD OF 5 YEARS (GOURIKWA & ANKERLIG GAS TURBINE, GARIEP, VANDERKLOOF & NCORA HYDROPOWER, INGULA, DRAKENSBERG & PALMIET PUMPED STORAGE SCHEMES, SERE WIND FARM, PORT REX AND ACCACIA AERODERIVATIVE)",
-        "url": "https://www.etenders.gov.za/Home/opportunities",
-        "portfolios": [],
-        "reason": "Possible scope; listing/document evidence insufficient",
-        "documents_checked": [],
-        "limitations": [
-          "Document-check budget reached; manual review needed",
-          "Additional attachments not analysed"
-        ]
+        ],
+        "client": "Dube Tradeport",
+        "source": "National Treasury"
       },
       {
         "ref": "8/2/3/129RE (2027-2032)",
         "title": "8/2/3/129RE (2027-2032) Bid for rendering of banking services for Midvaal Local Municipality for the period 01 April 2027 to 31 March 2032",
         "url": "https://www.etenders.gov.za/Home/opportunities",
         "portfolios": [],
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Monitor and display supply": [
+              "monitor"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
         "reason": "Possible scope; listing/document evidence insufficient",
         "documents_checked": [],
         "limitations": [
           "Document-check budget reached; manual review needed"
-        ]
+        ],
+        "client": "Midvaal Local Municipality",
+        "source": "National Treasury"
+      },
+      {
+        "ref": "E3481NTCSADX",
+        "title": "Procurement of Distribution / National Transmission Company of South Africa (Dx / NTCSA) Enterprise Historian solution.",
+        "url": "https://www.etenders.gov.za/Home/opportunities",
+        "portfolios": [],
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Process dosing and instrumentation": [
+              "historian"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
+        "reason": "Possible scope; listing/document evidence insufficient",
+        "documents_checked": [],
+        "limitations": [
+          "No attachment links supplied by source"
+        ],
+        "client": "ESKOM",
+        "source": "National Treasury"
       },
       {
         "ref": "TPL/2026/07/0460/8583/RFP",
         "title": "ENGINEERING, PROCUREMENT AND CONSTRUCTION OF THE WITBANK DEPOT FIRE SYSTEM UPGRADE",
         "url": "https://www.etenders.gov.za/Home/opportunities",
         "portfolios": [],
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Process dosing and instrumentation": [
+              "instrumentation"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
         "reason": "Possible scope; listing/document evidence insufficient",
         "documents_checked": [],
         "limitations": [
           "Document-check budget reached; manual review needed",
           "Additional attachments not analysed"
-        ]
+        ],
+        "client": "Transnet SOC Ltd",
+        "source": "National Treasury"
       },
       {
         "ref": "HD 05-2026/27",
         "title": "Tender for the supply and delivery of specialized chemical and microbiological analyses as and when required over a three (3) year period",
+        "client": "City of Tshwane",
+        "source": "National Treasury",
         "url": "https://www.etenders.gov.za/Home/opportunities",
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Cooling-water process": [
+              "chemical",
+              "chemicals"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
         "portfolios": [],
-        "reason": "Possible scope; listing/document evidence insufficient",
+        "reason": "Broader discovery signal; specification review needed",
         "documents_checked": [],
         "limitations": [
-          "Document-check budget reached; manual review needed"
+          "Attachment scope not yet checked; retained to avoid silent rejection"
         ]
       },
       {
@@ -890,81 +1518,135 @@
         "title": "E3373GXMPCAM MAINTENANCE OF CAMDEN POWER STATION COOLING TOWERS FOR A PERIOD OF 4 YEARS.",
         "url": "https://www.etenders.gov.za/Home/opportunities",
         "portfolios": [],
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Cooling-water process": [
+              "cooling"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
         "reason": "Possible scope; listing/document evidence insufficient",
         "documents_checked": [],
         "limitations": [
           "Document-check budget reached; manual review needed",
           "Additional attachments not analysed"
-        ]
-      },
-      {
-        "ref": "E3397CXMWP",
-        "title": "Request for Information (RFI) for suppliers with the capability to supply and install a new gas monitoring system.",
-        "url": "https://www.etenders.gov.za/Home/opportunities",
-        "portfolios": [],
-        "reason": "Possible scope; listing/document evidence insufficient",
-        "documents_checked": [],
-        "limitations": [
-          "Document-check budget reached; manual review needed"
-        ]
+        ],
+        "client": "ESKOM",
+        "source": "National Treasury"
       },
       {
         "ref": "E3457GXMPGRO",
         "title": "Supply and Delivery of Boiler Internal Tubing for Grootvlei Power Station Units 1 to 3 on an As-and-When-Required Basis",
         "url": "https://www.etenders.gov.za/Home/opportunities",
         "portfolios": [],
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Water and steam-cycle chemistry": [
+              "boiler"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
         "reason": "Possible scope; listing/document evidence insufficient",
         "documents_checked": [],
         "limitations": [
           "Document-check budget reached; manual review needed",
           "Additional attachments not analysed"
-        ]
+        ],
+        "client": "ESKOM",
+        "source": "National Treasury"
       },
       {
         "ref": "E3331GXMPMAJ",
         "title": "Provision of Boiler Refractory Service Outage at Majuba Power Station for 60 months",
         "url": "https://www.etenders.gov.za/Home/opportunities",
         "portfolios": [],
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Water and steam-cycle chemistry": [
+              "boiler"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
         "reason": "Possible scope; listing/document evidence insufficient",
         "documents_checked": [],
         "limitations": [
           "Document-check budget reached; manual review needed",
           "Additional attachments not analysed"
-        ]
-      },
-      {
-        "ref": "E2902GXMPKRI",
-        "title": "Draw, Fabricate, Supply, Deliver, Replace, and Install new pipework with fittings inside the cable tunnels and pipe trenches at Kriel Power Station for a period of six months",
-        "url": "https://www.etenders.gov.za/Home/opportunities",
-        "portfolios": [],
-        "reason": "Possible scope; listing/document evidence insufficient",
-        "documents_checked": [],
-        "limitations": [
-          "Document-check budget reached; manual review needed",
-          "Additional attachments not analysed"
-        ]
+        ],
+        "client": "ESKOM",
+        "source": "National Treasury"
       },
       {
         "ref": "E2737GXMPKRI",
         "title": "Open, inspect, issue inspection report, refurbish or replace non-return, Globe, Ball, AMOT, Butterfly, Wedge, Gate, Parallel Slide and Diaphragm valves of the boiler and turbine auxiliary systems at Kriel Power Station for a period of five years",
         "url": "https://www.etenders.gov.za/Home/opportunities",
         "portfolios": [],
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Water and steam-cycle chemistry": [
+              "boiler"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
         "reason": "Possible scope; listing/document evidence insufficient",
         "documents_checked": [],
         "limitations": [
           "Document-check budget reached; manual review needed",
           "Additional attachments not analysed"
-        ]
+        ],
+        "client": "ESKOM",
+        "source": "National Treasury"
       },
       {
         "ref": "TENDER LIST - E1357GXMPLET",
         "title": "BIDDERS LIST - CALIBRATION, SERVICE AND AD HOC MAINTENANCE OF CHEMICAL SERVICES LABORATORY EQUIPMENT FOR A PERIOD OF FIVE (5) YEARS AT LETHABO POWER STATION",
+        "client": "ESKOM",
+        "source": "National Treasury",
         "url": "https://www.etenders.gov.za/Home/opportunities",
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Cooling-water process": [
+              "chemical"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
         "portfolios": [],
-        "reason": "Possible scope; listing/document evidence insufficient",
+        "reason": "Broader discovery signal; specification review needed",
         "documents_checked": [],
         "limitations": [
-          "Document-check budget reached; manual review needed"
+          "Attachment scope not yet checked; retained to avoid silent rejection"
+        ]
+      },
+      {
+        "ref": "E2737GXMPKRI",
+        "title": "Open, inspect, issue inspection report, refurbish or\nreplace non-return, Globe, Ball, AMOT, Butterfly,Wedge, Gate, Parallel Slide and Diaphragm valves of boiler and turbine auxiliary systems at Kriel Power Station for a period of five years",
+        "client": "Eskom",
+        "source": "Eskom",
+        "url": "https://tenderbulletin.eskom.co.za/tender/94736",
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Water and steam-cycle chemistry": [
+              "boiler"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
+        "portfolios": [],
+        "reason": "Broader discovery signal; specification review needed",
+        "documents_checked": [],
+        "limitations": [
+          "Attachment scope not yet checked; retained to avoid silent rejection"
         ]
       },
       {
@@ -972,10 +1654,43 @@
         "title": "E3072GXMPARN NAMES OF THE BIDDERS FOR SERVICE AND MAINTENANCE OF BOILER EMISSIONS GAS ANALYSERS FOR BOTH SOUTH AND NORTH STACK AT ARNOT POWER STATION FOR A PERIOD OF 4 YEARS",
         "url": "https://tenderbulletin.eskom.co.za/tender/95866",
         "portfolios": [],
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Water and steam-cycle chemistry": [
+              "boiler"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
         "reason": "Possible scope; listing/document evidence insufficient",
         "documents_checked": [],
         "limitations": [
           "No attachment links supplied by source"
+        ],
+        "client": "Eskom",
+        "source": "Eskom"
+      },
+      {
+        "ref": "E3331GXMPMAJ",
+        "title": "Provision of Boiler Refractory Service Outage at Majuba Power Station for 60",
+        "client": "Eskom",
+        "source": "Eskom",
+        "url": "https://tenderbulletin.eskom.co.za/tender/95931",
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Water and steam-cycle chemistry": [
+              "boiler"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
+        "portfolios": [],
+        "reason": "Broader discovery signal; specification review needed",
+        "documents_checked": [],
+        "limitations": [
+          "Attachment scope not yet checked; retained to avoid silent rejection"
         ]
       },
       {
@@ -983,43 +1698,381 @@
         "title": "BIDDERS NAME FOR CONTROL AND INSTRUMENTATION SITE INSTALLATION WORKS FOR VANDERKLOOF HYDRO STATION",
         "url": "https://tenderbulletin.eskom.co.za/tender/96005",
         "portfolios": [],
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Process dosing and instrumentation": [
+              "instrumentation"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
         "reason": "Possible scope; listing/document evidence insufficient",
         "documents_checked": [],
         "limitations": [
           "No attachment links supplied by source"
+        ],
+        "client": "Eskom",
+        "source": "Eskom"
+      },
+      {
+        "ref": "E3457GXMPGRO",
+        "title": "Supply and Delivery of Boiler Internal Tubing for Grootvlei Power Station Units 1 to 3 on an As-and-When-Required Basis",
+        "url": "https://tenderbulletin.eskom.co.za/tender/96119",
+        "portfolios": [],
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Water and steam-cycle chemistry": [
+              "boiler"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
+        "reason": "Possible scope; listing/document evidence insufficient",
+        "documents_checked": [],
+        "limitations": [
+          "Document-check budget reached; manual review needed",
+          "Additional attachments not analysed"
+        ],
+        "client": "Eskom",
+        "source": "Eskom"
+      },
+      {
+        "ref": "E3373GXMPCAM",
+        "title": "E3373GXMPCAM MAINTENANCE OF CAMDEN POWER STATION COOLING TOWERS FOR A PERIOD OF 4 YEARS",
+        "client": "Eskom",
+        "source": "Eskom",
+        "url": "https://tenderbulletin.eskom.co.za/tender/96137",
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Cooling-water process": [
+              "cooling"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
+        "portfolios": [],
+        "reason": "Broader discovery signal; specification review needed",
+        "documents_checked": [],
+        "limitations": [
+          "Attachment scope not yet checked; retained to avoid silent rejection"
         ]
+      },
+      {
+        "ref": "E3481NTCSADX",
+        "title": "Procurement of Distribution / National Transmission Company of South Africa (Dx / NTCSA) Enterprise Historian solution.",
+        "url": "https://tenderbulletin.eskom.co.za/tender/96319",
+        "portfolios": [],
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Process dosing and instrumentation": [
+              "historian"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
+        "reason": "Possible scope; listing/document evidence insufficient",
+        "documents_checked": [],
+        "limitations": [
+          "No attachment links supplied by source"
+        ],
+        "client": "Eskom",
+        "source": "Eskom"
+      },
+      {
+        "ref": "E3585GXMWP",
+        "title": "The maintenance, outage repair services; the supply, transportation, erection and dismantling of scaffolding and insulation material for boiler pressure parts and high pressure pipework for 14 (fourteen) fossil fired power stations for a period of 5 (five) years.",
+        "url": "https://tenderbulletin.eskom.co.za/tender/96569",
+        "portfolios": [],
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Water and steam-cycle chemistry": [
+              "boiler"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
+        "reason": "Possible scope; listing/document evidence insufficient",
+        "documents_checked": [],
+        "limitations": [
+          "Document-check budget reached; manual review needed",
+          "Additional attachments not analysed"
+        ],
+        "client": "Eskom",
+        "source": "Eskom"
+      },
+      {
+        "ref": "E1526GXMPHENR",
+        "title": "Supply and delivery of Laboratory Chemicals on an as and when required basis for a period of 05 years",
+        "client": "Eskom",
+        "source": "Eskom",
+        "url": "https://tenderbulletin.eskom.co.za/tender/96599",
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Cooling-water process": [
+              "chemicals"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
+        "portfolios": [],
+        "reason": "Broader discovery signal; specification review needed",
+        "documents_checked": [],
+        "limitations": [
+          "Attachment scope not yet checked; retained to avoid silent rejection"
+        ]
+      },
+      {
+        "ref": "E1635CXMWPAward",
+        "title": "The upgrade and replacement of the Supervisory Control and Data Acquisition \n(SCADA) system at the Komati Water Scheme.",
+        "client": "Eskom",
+        "source": "Eskom",
+        "url": "https://tenderbulletin.eskom.co.za/tender/96629",
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Process dosing and instrumentation": [
+              "scada"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
+        "portfolios": [],
+        "reason": "Broader discovery signal; specification review needed",
+        "documents_checked": [],
+        "limitations": [
+          "Attachment scope not yet checked; retained to avoid silent rejection"
+        ]
+      },
+      {
+        "ref": "E3342GCDLETBIDDERS",
+        "title": "Publication of Names of Bidders in Respect of Advertised Competitive Bids for Provision of Plant Instrumentation Design and Commissioning services, including associated Electrical and Civil Designs and Commissioning services for all six (6) units at Lethabo Power Station.",
+        "client": "Eskom",
+        "source": "Eskom",
+        "url": "https://tenderbulletin.eskom.co.za/tender/96647",
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Process dosing and instrumentation": [
+              "instrumentation"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
+        "portfolios": [],
+        "reason": "Broader discovery signal; specification review needed",
+        "documents_checked": [],
+        "limitations": [
+          "Attachment scope not yet checked; retained to avoid silent rejection"
+        ]
+      },
+      {
+        "ref": "E3623GXMPGRO",
+        "title": "The Supply and delivery of various control and\ninstrumentation cables and related items for\nGrootvlei power station, as and when required.",
+        "url": "https://tenderbulletin.eskom.co.za/tender/96652",
+        "portfolios": [],
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Process dosing and instrumentation": [
+              "instrumentation"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
+        "reason": "Possible scope; listing/document evidence insufficient",
+        "documents_checked": [],
+        "limitations": [
+          "No attachment links supplied by source"
+        ],
+        "client": "Eskom",
+        "source": "Eskom"
+      },
+      {
+        "ref": "E3626GXMPKRI",
+        "title": "Supply, Installation, Commissioning, and Design of Coal Bunkers Unit 1 to 6 CO Gas Monitors and Interface to WinCC SCADA System at Kriel Power Station for a period of three months. It is estimated that tenderers should have a CIDB contractor grading of 7EP or higher, however 6EP Potentially Emerging Enterprises who satisfy criteria stated in the Tender Data may submit Tender offers.",
+        "url": "https://tenderbulletin.eskom.co.za/tender/96688",
+        "portfolios": [],
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Process dosing and instrumentation": [
+              "scada"
+            ],
+            "Monitor and display supply": [
+              "monitors"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
+        "reason": "Possible scope; listing/document evidence insufficient",
+        "documents_checked": [],
+        "limitations": [
+          "Document-check budget reached; manual review needed",
+          "Additional attachments not analysed"
+        ],
+        "client": "Eskom",
+        "source": "Eskom"
+      },
+      {
+        "ref": "E3734DXMWP",
+        "title": "The Supply and Delivery of Metering Seals (Tool-less Seals) for various Eskom Distribution clusters on an as and when required basis for a period of 36 months",
+        "url": "https://tenderbulletin.eskom.co.za/tender/96691",
+        "portfolios": [],
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Process dosing and instrumentation": [
+              "metering"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
+        "reason": "Possible scope; listing/document evidence insufficient",
+        "documents_checked": [],
+        "limitations": [
+          "Document-check budget reached; manual review needed",
+          "Additional attachments not analysed"
+        ],
+        "client": "Eskom",
+        "source": "Eskom"
       },
       {
         "ref": "E2326TSSERI",
         "title": "TRANSFORMER OIL INHIBITOR DOSING",
         "url": "https://tenderbulletin.eskom.co.za/tender/96719",
         "portfolios": [],
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Process dosing and instrumentation": [
+              "dosing"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
         "reason": "Possible scope; listing/document evidence insufficient",
         "documents_checked": [],
         "limitations": [
           "No attachment links supplied by source"
-        ]
+        ],
+        "client": "Eskom",
+        "source": "Eskom"
       },
       {
-        "ref": "E2942DXECOUA",
-        "title": "Design, supply, installation, testing, commissioning and maintenance of the complete intelligent security and substation plant monitoring system for a pilot project - Cape Coastal Cluster",
-        "url": "https://tenderbulletin.eskom.co.za/tender/96772",
+        "ref": "E3729GXMPDUV",
+        "title": "Cooling Water and Potable water clarifier cleaning services",
+        "url": "https://tenderbulletin.eskom.co.za/tender/96734",
         "portfolios": [],
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Cooling-water process": [
+              "cooling"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
         "reason": "Possible scope; listing/document evidence insufficient",
         "documents_checked": [],
         "limitations": [
-          "No attachment links supplied by source"
-        ]
+          "Document-check budget reached; manual review needed",
+          "Additional attachments not analysed"
+        ],
+        "client": "Eskom",
+        "source": "Eskom"
       },
       {
-        "ref": "BIDDERSLISTE3127GXGP",
+        "ref": "E3748GXMPHEN",
+        "title": "DESIGN AND REPLACEMENT OF FUEL OIL FLOW METERS FOR A PERIOD OF 24 MONTHS",
+        "url": "https://tenderbulletin.eskom.co.za/tender/96750",
+        "portfolios": [
+          "PHAKATHI"
+        ],
+        "discovery": {
+          "tier": "strong_candidate",
+          "signals": {
+            "Process dosing and instrumentation": [
+              "flow meters"
+            ]
+          },
+          "reason": "Current capability rules match; specification and eligibility still require review"
+        },
+        "reason": "Specification/eligibility check required",
+        "documents_checked": [
+          {
+            "name": "Scope of Work- FUEL OIL INSTALLATION.pdf",
+            "url": "https://www.etenders.gov.za/home/Download/?blobName=c3b88d1f-e374-4137-a44a-8381b82db8be.pdf&downloadedFileName=Scope+of+Work-+FUEL+OIL+INSTALLATION.pdf",
+            "characters": 36465
+          },
+          {
+            "name": "Tender Technical Evaluation-Fuel Oil Flow Meters.pdf",
+            "url": "https://www.etenders.gov.za/home/Download/?blobName=0691bbbf-9648-4419-8374-b308f0ecbe4c.pdf&downloadedFileName=Tender+Technical+Evaluation-Fuel+Oil+Flow+Meters.pdf",
+            "characters": 26157
+          },
+          {
+            "name": "Invitation to Tender (ITT)-Fuel Oil Flow meters for a period of 24 months.pdf",
+            "url": "https://www.etenders.gov.za/home/Download/?blobName=f0ba205c-cf8c-4fff-a9e0-e9a5f6b42383.pdf&downloadedFileName=Invitation+to+Tender+%28ITT%29-Fuel+Oil+Flow+meters+for+a+period+of+24+months.pdf",
+            "characters": 40000
+          }
+        ],
+        "limitations": [
+          "Additional attachments not analysed"
+        ],
+        "client": "Eskom",
+        "source": "Eskom"
+      },
+      {
+        "ref": "E3776GXMPGRO",
+        "title": "Boiler inspections and plant failure investigations for maintenance and outage at Grootvlei Power Station for a period of 5 years on as and when required basis.",
+        "url": "https://tenderbulletin.eskom.co.za/tender/96790",
+        "portfolios": [],
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Water and steam-cycle chemistry": [
+              "boiler"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
+        "reason": "Possible scope; listing/document evidence insufficient",
+        "documents_checked": [
+          {
+            "name": "Invitation to Tender (ITT).pdf",
+            "url": "https://www.etenders.gov.za/home/Download/?blobName=58296afd-9332-4aa1-a58c-2dc9a9a9cdb9.pdf&downloadedFileName=Invitation+to+Tender+%28ITT%29.pdf",
+            "characters": 40000
+          }
+        ],
+        "limitations": [],
+        "client": "Eskom",
+        "source": "Eskom"
+      },
+      {
+        "ref": "BiddersListE3127GXGP",
         "title": "Bidders List _ Supply and Delivery of Boiler Tube Shields and Shield Clips to Lethabo Power\nStation for a five (5) year period on an \u201cas and when required\u201d basis",
+        "client": "Eskom",
+        "source": "Eskom",
         "url": "https://tenderbulletin.eskom.co.za/tender/96811",
+        "discovery": {
+          "tier": "possible_candidate",
+          "signals": {
+            "Water and steam-cycle chemistry": [
+              "boiler"
+            ]
+          },
+          "reason": "Broad capability or attachment-name signal; retain for review"
+        },
         "portfolios": [],
-        "reason": "Possible scope; listing/document evidence insufficient",
+        "reason": "Broader discovery signal; specification review needed",
         "documents_checked": [],
         "limitations": [
-          "No attachment links supplied by source"
+          "Attachment scope not yet checked; retained to avoid silent rejection"
         ]
       }
     ],
@@ -1028,29 +2081,31 @@
         "source": "National Treasury",
         "status": "success",
         "records": 2020,
-        "checked_at": "2026-11-04T16:00:20.946185+00:00"
+        "checked_at": "2026-11-04T16:53:53.278053+00:00"
       },
       {
         "source": "Eskom Tender Bulletin",
         "status": "success",
         "records": 320,
-        "checked_at": "2026-11-04T16:00:20.946185+00:00"
+        "checked_at": "2026-11-04T16:53:53.278053+00:00"
       },
       {
         "source": "Municipalities",
         "status": "success",
         "records": 44,
-        "checked_at": "2026-11-04T16:00:20.946185+00:00"
+        "checked_at": "2026-11-04T16:53:53.278053+00:00"
       },
       {
         "source": "Water Boards",
         "status": "partial",
         "records": 4,
-        "error": "Magalies Water: 404 Client Error: Not Found for url: https://magalieswater.co.za/tenders/",
-        "checked_at": "2026-11-04T16:00:20.946185+00:00"
+        "error": "Umgeni Water: Umgeni Water: Failed to fetch page; Magalies Water: 404 Client Error: Not Found for url: https://magalieswater.co.za/tenders/",
+        "checked_at": "2026-11-04T16:53:53.278053+00:00"
       }
     ],
-    "source_records": 2388
+    "source_records": 2388,
+    "captured_notice_count": 2387,
+    "discovery_index_url": "/public/discovery-index.json"
   },
   "tenders": [
     {

@@ -20,3 +20,7 @@ Historic classification reports are retained as dated evidence, not current matc
 ## Coverage and review
 
 The dashboard includes source health and a specification-review queue. Official-source PDF attachments are checked within explicit limits; archives, scans, unreadable documents and budget-limited items remain for manual review. A match is not proof of eligibility. `tools/refresh_portfolio_snapshot.py` provides a public-source snapshot refresh without database writes or sends. Magalies' direct source currently fails with HTTP 404, so Water Boards coverage is partial.
+
+## Search beyond the shortlist
+
+Use **Search all captured notices** to search the full captured public feed, including uncertain and excluded records, by reference, scope, buyer and attachment name. Possible candidates remain separate from strong portfolio matches. No keyword signal means unassessed, not irrelevant. Source failures and unread attachments prevent any claim of zero misses; compare results against an independent feed to measure recall.

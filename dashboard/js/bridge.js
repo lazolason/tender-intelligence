@@ -5,6 +5,7 @@
  * application logic out of `index.html` and onto shared ES-module helpers.
  */
 
+import { bindDiscovery } from './modules/discovery.js';
 import { renderCoverage } from './modules/coverage.js';
 import { state } from './modules/config.js';
 import { loadTenderPayload, applyTenderPayload } from './modules/data.js';
@@ -792,6 +793,7 @@ function loadMore() {
 }
 
 function bindUI() {
+    bindDiscovery();
     document.querySelectorAll('.tab-btn').forEach((button) => {
         button.addEventListener('click', () => showTab(button.dataset.tab || 'dashboard'));
     });

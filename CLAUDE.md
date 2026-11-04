@@ -314,3 +314,7 @@ See [com.tenderscan.daily.plist](com.tenderscan.daily.plist) and [com.tenderscan
 - `tools/refresh_portfolio_snapshot.py` refreshes public sources and snapshot/review metadata without database writes or notifications. It retains the previous snapshot if the primary feed fails; supplementary failures are shown explicitly.
 - Review metadata is stored under the configured output directory and included in sync metadata. The dashboard separates source health from successful JSON loading and labels all queued opportunities as needing specification/eligibility review.
 - Sync and snapshot exports revalidate legacy stored categories, without deleting operational records or user workflow data.
+
+### High-recall discovery
+
+`utils/discovery.py` separates broad retrieval from portfolio qualification. Capture is written before shortlist filtering. `dashboard/public/discovery-index.json` retains searchable notices even when unassessed or excluded; the UI fetches this index on request. Generic chemical or equipment language can prompt review without claiming product suitability. Explicit unrelated scopes stay out of the review queue but remain searchable. Preserve per-buyer reference identity, missing-deadline review candidates and stale-source fallback flags. Curated positive examples verify retrieval, not empirical field recall.

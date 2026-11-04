@@ -278,6 +278,14 @@ def sync():
     except (OSError, ValueError, AttributeError):
         pass
 
+    try:
+        with open(os.path.join(DASHBOARD_DIR, 'public', 'discovery-index.json')) as index_file:
+            index = json.load(index_file)
+        metadata['meta']['captured_notice_count'] = index['notice_count']
+        metadata['meta']['discovery_index_url'] = '/public/discovery-index.json'
+    except (OSError, ValueError, KeyError):
+        pass
+
     # Get bid statistics
     bid_stats = get_bid_statistics()
     

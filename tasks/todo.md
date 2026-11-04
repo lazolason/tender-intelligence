@@ -242,3 +242,10 @@ Review: removed broad equipment/site/action false positives, preserved chemistry
 - [x] Refresh public-source snapshot without database writes or sends: 2 candidates, 82 review items; Magalies remains a visible partial failure.
 - [x] Revalidate legacy labels on export so old false positives cannot reappear.
 - [x] Verify Python, dashboard, source and browser checks; prepare release notes.
+
+## Low-miss discovery
+- [x] Separate broad retrieval and uncertain review from strict portfolio shortlist.
+- [x] Retain every captured notice in a searchable index, including unassessed/excluded scope and attachment names.
+- [x] Preserve shared refs across buyers, undated review candidates and prior notices on supplementary source failure.
+- [x] Verify known relevant scopes, failure handling, dashboard search and punctuation variants. 299 Python tests plus 2 new integration tests; 38 dashboard tests and required checks passed.
+- [x] Refresh public capture and prepare update to PR #3; local scheduler edits excluded.
