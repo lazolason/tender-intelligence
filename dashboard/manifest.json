@@ -1,7 +1,7 @@
 {
   "name": "Tender Intelligence Dashboard",
   "short_name": "Tenders",
-  "description": "Mexel Energy Sustain tender tracking system",
+  "description": "Combined Mexel and Phakathi / REICON-ODACON tender intelligence",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#1a1a2e",
@@ -50,7 +50,10 @@
     }
   ],
   "orientation": "portrait-primary",
-  "categories": ["business", "productivity"],
+  "categories": [
+    "business",
+    "productivity"
+  ],
   "screenshots": [
     {
       "src": "/screenshots/desktop.png",

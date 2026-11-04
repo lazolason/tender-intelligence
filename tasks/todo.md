@@ -199,3 +199,53 @@ Status: implementation complete on review branch `fix/tender-audit-etenders-2026
 Snapshot review: all 32 tender rows had been labelled PHAKATHI. Current rules classified all 32 as out of scope after adding a guard for mechanical butterfly-valve work that matched only because it mentioned a condenser. Both checked-in dashboard tender arrays are now empty and carry a scope-refresh count. All 16 separate planned-opportunity records were checked through their classifier and relevance gate and remain in their current categories.
 
 Known transport limit: outbound URL validation blocks literal private/loopback targets and validates each redirect before requesting it; DNS rebinding is not covered by the current resolver-free guard.
+
+## Website-based keyword correction — 2026-11-04
+- [x] Read live company websites and user-confirmed display-supply scope (low risk).
+- [x] Tighten keyword_rules.py and classify_engine.py to require capability signals (medium risk: stricter relevance filtering).
+- [x] Review all 62 dashboard records without rewriting operational data; see review/keyword-review.md.
+- [x] Verify classifier and broader regression suite: 240 passed; one existing snapshot metadata assertion separately reported.
+
+Review: removed broad equipment/site/action false positives, preserved chemistry/process monitoring and display supply. No commit, push, scan, data refresh or scheduler reload. Follow-up: review source specifications and snapshot provenance; repair stale snapshot metadata test independently.
+
+### Second website coverage review
+- [x] Read full capability and delivery pages of both live websites.
+- [x] Correct chemistry, preservation, instrumentation, monitoring and connectivity gaps; restrict Huawei scope.
+- [x] 255 tests passed, existing snapshot-metadata test deselected; diff check passed.
+- [x] Record source-to-rule mapping in review/website-coverage-check.md.
+
+- [x] Add user-confirmed chemistry terms with process context; Huawei left unchanged in this update. 263 tests passed; existing snapshot-metadata check remains deselected.
+
+## Combined portfolio matching
+- [x] Trace database, scanner, procurement-plan and dashboard paths.
+- [x] Add independent portfolio matches, capability tags and per-portfolio evidence while retaining legacy category compatibility.
+- [x] Carry metadata through exports; update dashboard search, filters and counts for overlapping matches.
+- [x] Verify mixed-scope export, exclusion and product-evidence separation: Python and dashboard checks passed; existing snapshot metadata check remains outstanding.
+- [x] Prepare review/combined-portfolio-review.md and full patch. No production data or scheduling changed.
+
+## Active repository cleanup
+- [x] Back up tracked working tree, local edits, original snapshot and SQLite database.
+- [x] Integrate current main and portfolio rules; preserve reviewed UI and local scanner settings.
+- [x] Refresh published snapshot by scope; quarantine two unverified rows without deleting operational records.
+- [x] Archive superseded plan and remove temporary worktrees after stashing review changes.
+- [x] Verify 268 Python and 35 dashboard tests, lint, typecheck and browser smoke. No commit or push.
+
+## Branding and source coverage
+- [x] Add official Mexel/Phakathi logo assets and verify mobile/desktop loading.
+- [x] Check public eTenders/Eskom feeds read-only and supplementary endpoint reachability.
+- [x] Remove Eskom 50-record default cap and scope-text truncation; 270 Python tests passed, dashboard smoke passed.
+- [x] Document remaining attachment, source-health, review-queue and portal coverage limits. No operational scan or notifications run.
+
+## Document coverage and push
+- [x] Preserve eTenders attachment links and perform bounded official-PDF checks before final classification.
+- [x] Add needs-review queue, source health and stale/unverified indicators.
+- [x] Refresh public-source snapshot without database writes or sends: 2 candidates, 82 review items; Magalies remains a visible partial failure.
+- [x] Revalidate legacy labels on export so old false positives cannot reappear.
+- [x] Verify Python, dashboard, source and browser checks; prepare release notes.
+
+## Low-miss discovery
+- [x] Separate broad retrieval and uncertain review from strict portfolio shortlist.
+- [x] Retain every captured notice in a searchable index, including unassessed/excluded scope and attachment names.
+- [x] Preserve shared refs across buyers, undated review candidates and prior notices on supplementary source failure.
+- [x] Verify known relevant scopes, failure handling, dashboard search and punctuation variants. 299 Python tests plus 2 new integration tests; 38 dashboard tests and required checks passed.
+- [x] Refresh public capture and prepare update to PR #3; local scheduler edits excluded.

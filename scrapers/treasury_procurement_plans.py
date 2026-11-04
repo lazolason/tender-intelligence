@@ -10,7 +10,7 @@ from typing import Any, Dict, Iterable, List, Optional
 import requests
 from bs4 import BeautifulSoup
 
-from classify_engine import classify_tender, clean, keyword_present
+from classify_engine import classify_tender, clean, keyword_present, PORTFOLIO_FIELDS
 from keyword_rules import STRONG_MATCH_KEYWORDS, PHAKATHI_KEYWORDS
 from utils.retry_tools import secure_request_kwargs, validate_outbound_url, guarded_request
 
@@ -140,6 +140,7 @@ def parse_procurement_plans_html(
                 "planned_advert_date": advert_date,
                 "planned_closing_date": closing_date,
                 "planned_award_date": award_date,
+                **{key: classification[key] for key in PORTFOLIO_FIELDS},
                 "category": classification.get("category", "EXCLUDED"),
                 "classification_reason": classification.get("reason", ""),
                 "matched_keywords": sorted(

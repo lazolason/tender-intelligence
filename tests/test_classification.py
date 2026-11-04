@@ -11,7 +11,7 @@ def run_classification_checks():
             "title": "Supply of Mexel 432 oxidizing biocide",
             "description": "Chemical supply for water treatment",
             "expected_category": "MEXEL",
-            "expected_keywords": ["mexel", "mexel 432", "oxidizing biocide"]
+            "expected_keywords": ["mexel", "mexel 432"]
         },
         {
             "title": "Cooling tower water supply",
@@ -23,7 +23,7 @@ def run_classification_checks():
             "title": "Boiler water treatment plant",
             "description": "Maintenance of industrial utility",
             "expected_category": "PHAKATHI",
-            "expected_keywords": ["boiler water treatment", "boiler water"]
+            "expected_keywords": ["boiler water treatment"]
         },
         {
             "title": "Construction of boundary wall",
@@ -46,8 +46,8 @@ def run_classification_checks():
         {
             "title": "Supply of antiscalant for RO system",
             "description": "Reverse osmosis water treatment chemicals",
-            "expected_category": "MEXEL",
-            "expected_keywords": ["antiscalant", "ro", "reverse osmosis"]
+            "expected_category": "EXCLUDED",
+            "expected_keywords": []
         }
     ]
 

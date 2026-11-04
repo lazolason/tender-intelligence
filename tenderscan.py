@@ -29,7 +29,9 @@ from utils.scraper_monitor import ScraperMonitor
 from utils.config_validator import validate_env_on_startup
 
 # Import the central classification engine
-from classify_engine import classify_tender
+from classify_engine import classify_tender, PORTFOLIO_FIELDS
+from utils.opportunity_review import prepare_opportunities, write_review_state
+from utils.discovery import write_discovery_index
 
 # ----------------------------------------------------------
 # LOAD CONFIG
@@ -257,7 +259,7 @@ def run_all_scrapers(
                     name, tenders, error = future.result()
                     if error:
                         failed_sources.append(name)
-                    all_tenders.extend(tenders)
+                    all_tenders.extend({**row, "capture_group": name} for row in tenders)
                 except Exception as e:
                     log_error(
                         LOG_FILE, f"Unexpected error processing {scraper_name}: {e}"
@@ -346,6 +348,7 @@ def process_tenders(tenders, *, return_stats=False):
             title = t.get("title", "")
             description = t.get("description", title)
             classification = classify_tender(title, description)
+            t.update({key: classification[key] for key in PORTFOLIO_FIELDS})
             t["category"] = classification["category"]
             t["reason"] = classification["reason"]
             t["short_title"] = classification["short_title"]
@@ -680,6 +683,10 @@ if __name__ == "__main__":
     # Scrape all sources (with monitoring)
     monitor = ScraperMonitor(output_dir=OUTPUT_DIR, db_path=DB_PATH)
     all_tenders = run_all_scrapers(monitor)
+    source_health = [{'source': name, 'status': item.get('status', 'unknown'), 'records': item.get('tenders_found', 0), 'checked_at': item.get('last_run')} for name, item in monitor.get_metrics().items()]
+    write_discovery_index(all_tenders, os.path.join(os.path.dirname(os.path.abspath(__file__)), 'dashboard', 'public', 'discovery-index.json'), source_health)
+    all_tenders, review_queue = prepare_opportunities(all_tenders)
+    write_review_state(OUTPUT_DIR, review_queue, source_health)
 
     # Save scraper health report
     try:

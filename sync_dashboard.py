@@ -10,6 +10,8 @@ import sqlite3
 from datetime import datetime
 from urllib.parse import quote
 import yaml
+from classify_engine import portfolio_metadata, classify_tender
+from utils.opportunity_review import read_review_state
 from dotenv import load_dotenv
 
 # Load environment variables
@@ -115,10 +117,15 @@ def load_planned_opportunities():
     plans = []
     for row in rows:
         plan = dict(row)
+        current = classify_tender(plan.get('description', ''), '')
+        if current['category'] == 'EXCLUDED':
+            continue
+        plan['category'] = current['category']
         try:
             plan["matched_keywords"] = json.loads(plan.get("matched_keywords") or "[]")
         except (TypeError, ValueError, json.JSONDecodeError):
             plan["matched_keywords"] = []
+        plan.update(portfolio_metadata(plan.get("title", ""), plan.get("description", "")))
         plan["company"] = {"MEXEL": "Mexel", "PHAKATHI": "Phakathi"}.get(
             plan.get("category"), "Unknown"
         )
@@ -261,12 +268,34 @@ def sync():
         "tenders": tenders
     }
     
+    review_state = read_review_state(load_config().get("paths", {}).get("output_dir", os.path.join(PROJECT_DIR, "output")))
+    metadata["meta"].update(review_state)
+    try:
+        metrics_path = os.path.join(load_config().get("paths", {}).get("output_dir", os.path.join(PROJECT_DIR, "output")), "scraper_metrics.json")
+        with open(metrics_path) as metrics_file:
+            metrics = json.load(metrics_file)
+        metadata["meta"]["source_health"] = [{"source": name, "status": item.get("status", "unknown"), "records": item.get("tenders_found", 0), "checked_at": item.get("last_run"), "error": item.get("error_message")} for name, item in metrics.items()]
+    except (OSError, ValueError, AttributeError):
+        pass
+
+    try:
+        with open(os.path.join(DASHBOARD_DIR, 'public', 'discovery-index.json')) as index_file:
+            index = json.load(index_file)
+        metadata['meta']['captured_notice_count'] = index['notice_count']
+        metadata['meta']['discovery_index_url'] = '/public/discovery-index.json'
+    except (OSError, ValueError, KeyError):
+        pass
+
     # Get bid statistics
     bid_stats = get_bid_statistics()
     
     # Re-map tenders for dashboard compatibility
     js_tenders = []
     for t in tenders:
+        current = classify_tender(t.get('title', ''), t.get('description', ''))
+        if current['category'] == 'EXCLUDED':
+            continue
+        t.update(current)
         url = t.get("url", "") or get_search_url(t)
         
         # Parse matched_keywords if it's a string
@@ -307,8 +336,10 @@ def sync():
                 "contact": t.get("contact_info", {})
             }
         
+        tender_data.update(portfolio_metadata(tender_data["title"], tender_data["description"]))
         js_tenders.append(tender_data)
 
+    metadata["meta"]["tender_count"] = len(js_tenders)
     # Update metadata with bid statistics
     metadata["meta"]["bid_statistics"] = bid_stats
     

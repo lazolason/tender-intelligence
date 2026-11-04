@@ -9,7 +9,7 @@ from typing import Any, Dict, List, Optional, Tuple
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from classify_engine import classify_tender
+from classify_engine import classify_tender, portfolio_metadata
 from scoring_engine import score_tender
 from utils.pipeline_validation import validate_tender_batch
 from scrapers.registry import get_active_scrapers
@@ -231,6 +231,7 @@ def build_snapshot(limit: int) -> dict:
             category=category,
         )
 
+        tender.update(portfolio_metadata(title, description))
         merged.append(tender)
 
     validation = validate_tender_batch(merged)
@@ -294,19 +295,12 @@ def build_snapshot_from_inputs(paths: List[str], limit: int) -> dict:
         client = tender.get("client", "") or ""
         closing_date = tender.get("closing_date", "") or ""
 
-        # These inputs are already filtered to actionable categories (MEXEL /
-        # PHAKATHI) when they come from the database via sync_dashboard. Running
-        # the classifier a second time only ever removes them again: on
-        # 2026-11-03 it cut 87 stored tenders down to 4 before date validation.
-        # Re-classify only when the record carries no usable category.
-        stored_category = (tender.get("category") or "").strip()
-        if stored_category and stored_category.upper() != "UNKNOWN":
-            category = stored_category.upper()
-        else:
-            classification = classify_tender(title, description)
-            category = classification.get("category", "Unknown")
-            tender["reason"] = classification.get("reason", tender.get("reason", ""))
-            tender["short_title"] = classification.get("short_title", tender.get("short_title", ""))
+        # Stored categories may predate the current scope rules. Revalidate on
+        # export without rewriting operational records or user workflow fields.
+        classification = classify_tender(title, description)
+        category = classification['category']
+        tender['reason'] = classification['reason']
+        tender['short_title'] = classification['short_title']
 
         if category == "EXCLUDED":
             continue
@@ -321,6 +315,7 @@ def build_snapshot_from_inputs(paths: List[str], limit: int) -> dict:
             category=category,
         )
 
+        tender.update(portfolio_metadata(title, description))
         merged.append(tender)
 
     validation = validate_tender_batch(merged)

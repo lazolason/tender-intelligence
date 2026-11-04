@@ -66,9 +66,9 @@ def _scrape_eskom_tenders_api(max_tenders, timeout=30):
             "ref": ref,
             "source": "Eskom",
             "url": tender_url,
-            "title": title[:100],
+            "title": title,
             "short_title": title[:50] if title else ref,
-            "description": description[:500] if description else title[:500],
+            "description": description or title,
             "client": "Eskom",
             "category": "Unknown",
             "closing_date": closing_date,
@@ -216,7 +216,7 @@ def _scrape_eskom_tenders_selenium(max_tenders):
                         "ref": ref,
                         "source": "Eskom",
                         "url": href,
-                        "title": title[:100],
+                        "title": title,
                         "short_title": title[:50],
                         "description": element_text[:500],
                         "client": "Eskom",
@@ -278,7 +278,7 @@ def _scrape_eskom_tenders_selenium(max_tenders):
     return tenders
 
 
-def scrape_eskom_tenders(max_tenders=50, use_selenium_fallback=False, api_timeout=30):
+def scrape_eskom_tenders(max_tenders=10_000, use_selenium_fallback=False, api_timeout=30):
     """
     Scrape tenders directly from Eskom's tender bulletin portal
     """

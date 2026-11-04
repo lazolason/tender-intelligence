@@ -33,7 +33,7 @@ def classify_logic(text):
     ("Mexel 432 treatment", "INCLUDE"),
     ("Legionella control services", "INCLUDE"),
     ("Asme ptc 12.2 performance test", "INCLUDE"),
-    ("Surfactant supply for cooling", "INCLUDE"),
+    ("Surfactant supply for cooling", "EXCLUDE"),
     
     # SYSTEM + ACTION tests (MEXEL scope: cooling water, condensers, thermal efficiency)
     ("Cooling tower treatment", "INCLUDE"),
@@ -41,7 +41,7 @@ def classify_logic(text):
     # not detectable via simplified SYSTEM+ACTION logic here — covered in test_classify_engine.py
     ("Condenser efficiency optimization", "INCLUDE"),
     ("CRAC unit water treatment", "INCLUDE"),
-    ("Data center precision cooling maintenance", "INCLUDE"),
+    ("Data center precision cooling maintenance", "EXCLUDE"),
     ("Server room thermal efficiency", "INCLUDE"),
     
     # NEGATIVE MATCH tests (Specific building HVAC)
@@ -83,7 +83,7 @@ def test_data_center_keywords_present():
     assert "precision cooling" in systems
     
     # Strong matches
-    assert "pue" in strong
+    assert "pue" not in strong
     assert "condenser efficiency" in strong
 
     # Actions

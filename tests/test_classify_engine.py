@@ -3,11 +3,11 @@ from classify_engine import classify_tender, should_exclude, clean
 
 @pytest.mark.parametrize("title,description,expected_category", [
     ("Power station cooling water treatment", "Supply of biocides and antiscalants", "MEXEL"),
-    ("Supply of oxidizing biocide", "Chemical supply for water treatment", "MEXEL"),
-    ("Supply of antiscalant for RO system", "Reverse osmosis water treatment chemicals", "MEXEL"),
+    ("Supply of oxidizing biocide", "Chemical supply for water treatment", "EXCLUDED"),
+    ("Supply of antiscalant for RO system", "Reverse osmosis water treatment chemicals", "EXCLUDED"),
     ("Cooling tower water supply", "Supply and delivery of chemical dosing equipment", "MEXEL"),
     ("Office cleaning service", "Daily cleaning of municipal offices", "EXCLUDED"),
-    ("CRAC unit maintenance", "Data center precision cooling services", "MEXEL"),
+    ("CRAC unit maintenance", "Data center precision cooling services", "EXCLUDED"),
     ("Boiler maintenance and repair", "Routine service of steam plant", "EXCLUDED"),
     ("Boiler water treatment plant", "Maintenance of industrial utility", "PHAKATHI"),
     ("Supply of laptops", "High performance computers for staff", "EXCLUDED"),
@@ -41,8 +41,7 @@ def test_hyphenated_system_keyword_normalization():
 def test_classify_keyword_aliases():
     """Verify matched keyword aliases for reporting/debug output."""
     ro_case = classify_tender("Supply of antiscalant for RO system", "Reverse osmosis water treatment chemicals")
-    assert ro_case["category"] == "MEXEL"
-    assert "ro" in ro_case.get("matched_keywords", [])
+    assert ro_case["category"] == "EXCLUDED"
 
     dosing_case = classify_tender("Cooling tower water supply", "Supply and delivery of chemical dosing equipment")
     assert dosing_case["category"] == "MEXEL"
@@ -50,7 +49,7 @@ def test_classify_keyword_aliases():
 
     context_case = classify_tender("Boiler water treatment plant", "Maintenance of industrial utility")
     assert context_case["category"] == "PHAKATHI"
-    assert "boiler water" in context_case.get("matched_keywords", [])
+    assert "boiler water treatment" in context_case.get("matched_keywords", [])
 
 def test_should_exclude_backward_compatible_call():
     """Legacy callers passing only text + strong_hits should still work."""
@@ -111,3 +110,86 @@ def test_classify_allows_specific_thermal_scope_at_power_station():
         "Cooling water treatment and efficiency restoration for the turbine condenser",
     )
     assert result["category"] == "MEXEL"
+
+
+@pytest.mark.parametrize("title,description,expected", [
+    ("Supply and delivery of 86-inch Interactive LED Touch Panels for Eskom RT&D", "", "PHAKATHI"),
+    ("Supply online monitoring equipment", "chemical dosing and cooling-water condition", "MEXEL"),
+    ("Duvha Cooling Water Treatment Plant Refurbishment", "", "EXCLUDED"),
+    ("Service repair and test air Compressor for Transnet", "", "EXCLUDED"),
+    ("Corrosion protection of steel reinforced concrete civil structures", "Koeberg power station", "EXCLUDED"),
+    ("For Bids For SAP Infrastructure", "City Power", "EXCLUDED"),
+    ("Coal bunker CO gas monitors and interface to WinCC SCADA", "", "EXCLUDED"),
+    ("Cooling tower maintenance", "Mechanical repairs", "EXCLUDED"),
+    ("Steam-cycle preservation using ODACON", "", "PHAKATHI"),
+    ("Supply process instrumentation and flow meters", "chemical dosing system", "PHAKATHI"),
+    ("Cancellation of interactive display supply", "Eskom", "EXCLUDED"),
+])
+def test_website_capabilities_and_user_reviewed_examples(title, description, expected):
+    assert classify_tender(title, description)["category"] == expected
+
+
+@pytest.mark.parametrize("title,description,expected", [
+    ("Preservation of feedwater and condensate circuit during shutdown", "", "PHAKATHI"),
+    ("Supply conductivity and pressure transmitters", "Industrial process monitoring", "PHAKATHI"),
+    ("Online monitoring of cooling water", "supply of equipment", "MEXEL"),
+    ("Chiller loop corrosion control and scale control", "", "MEXEL"),
+    ("Cellular IoT remote telemetry", "industrial dosing skid", "PHAKATHI"),
+    ("Supply Huawei mobile phones", "", "EXCLUDED"),
+    ("Supply Huawei network switches", "", "PHAKATHI"),
+    ("Maintenance of boiler feedwater pumps", "", "EXCLUDED"),
+    ("Temperature sensors for domestic appliances", "", "EXCLUDED"),
+    ("Air compressor supply", "cooling system included in equipment", "EXCLUDED"),
+])
+def test_full_website_coverage(title, description, expected):
+    assert classify_tender(title, description)["category"] == expected
+
+
+@pytest.mark.parametrize("title,expected", [
+    ("Cooling tower preservation", "MEXEL"),
+    ("Supply of cooling-water monitors", "MEXEL"),
+    ("SCADA historian interface for chemical dosing controls", "PHAKATHI"),
+    ("Chiller water chemistry and corrosion control", "MEXEL"),
+    ("Supply of gas monitors for coal bunkers", "EXCLUDED"),
+])
+def test_process_scope_wording_variants(title, expected):
+    assert classify_tender(title, "")["category"] == expected
+
+
+@pytest.mark.parametrize("title,description,expected", [
+    ("Supply ODACON corrosion inhibitor", "boiler chemistry", "PHAKATHI"),
+    ("Supply corrosion inhibitors for boiler feedwater", "", "PHAKATHI"),
+    ("Steam cycle corrosion inhibition", "", "PHAKATHI"),
+    ("Cooling water surfactant treatment", "biocidal properties", "MEXEL"),
+    ("Mexel surfactant", "online dosing monitoring", "MEXEL"),
+    ("Cooling tower online dosing and monitoring", "", "MEXEL"),
+    ("Biocidal treatment of domestic surfaces", "", "EXCLUDED"),
+    ("Corrosion inhibitor for vehicle radiators", "", "EXCLUDED"),
+])
+def test_user_confirmed_chemistry_terms(title, description, expected):
+    assert classify_tender(title, description)["category"] == expected
+
+
+def test_overlapping_portfolios_preserve_distinct_evidence():
+    result = classify_tender(
+        "Cooling-water surfactant treatment with ODACON boiler corrosion inhibitors",
+        "Chemical dosing and online monitoring equipment for both circuits",
+    )
+    assert set(result["portfolios"]) == {"MEXEL", "REICON_ODACON", "PHAKATHI"}
+    assert set(result["companies"]) == {"Mexel", "Phakathi"}
+    matches = {match["portfolio"]: match for match in result["portfolio_matches"]}
+    assert "odacon" in matches["REICON_ODACON"]["matched_keywords"]
+    assert "odacon" not in matches["MEXEL"]["matched_keywords"]
+    assert all(match["reason"] and match["capabilities"] for match in matches.values())
+
+
+def test_excluded_works_do_not_gain_portfolio_tags_from_brands():
+    result = classify_tender("Boiler refurbishment", "Mexel and ODACON existing dosing system")
+    assert result["category"] == "EXCLUDED"
+    assert result["portfolios"] == result["companies"] == result["portfolio_matches"] == []
+
+
+def test_steam_chemistry_does_not_inherit_mexel_evidence():
+    result = classify_tender("ODACON feedwater corrosion inhibitor", "steam-cycle preservation")
+    assert result["portfolios"] == ["REICON_ODACON"]
+    assert result["companies"] == ["Phakathi"]
