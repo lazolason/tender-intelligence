@@ -40,7 +40,7 @@ def test_protected_endpoint_rejects_wrong_key(monkeypatch):
 def test_authenticated_daily_trigger_is_post_only(monkeypatch):
     monkeypatch.setattr(app_module, "API_KEY", "correct-secret")
     daily_module = ModuleType("daily_runner")
-    daily_module.run_daily = lambda: {"scan": {"status": "success"}}
+    daily_module.run_daily = lambda: {"scan": {"status": "success"}, "sync": {"status": "success"}}
     monkeypatch.setitem(sys.modules, "daily_runner", daily_module)
     client = app_module.app.test_client()
 
@@ -57,7 +57,7 @@ def test_authenticated_daily_trigger_is_post_only(monkeypatch):
 def test_untrusted_forwarded_for_does_not_change_rate_limit_identity(monkeypatch):
     monkeypatch.setattr(app_module, "API_KEY", "correct-secret")
     daily_module = ModuleType("daily_runner")
-    daily_module.run_daily = lambda: {"scan": {"status": "success"}}
+    daily_module.run_daily = lambda: {"scan": {"status": "success"}, "sync": {"status": "success"}}
     monkeypatch.setitem(sys.modules, "daily_runner", daily_module)
     client = app_module.app.test_client()
 

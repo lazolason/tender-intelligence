@@ -8,9 +8,7 @@ Target Industries:
 2. Mining & Smelters (furnace cooling, compressor loops)
 3. Critical HVAC (data centers, large commercial cooling)
 
-FLOWTECH KEYWORDS - Pump refurbishment and slurry handling
-
-PHAKATHI KEYWORDS - Machining, component manufacture, pump spares
+PHAKATHI KEYWORDS - REICON/ODACON chemistry, preservation and OT integration
 """
 
 # =============================================================================
@@ -22,7 +20,6 @@ PHAKATHI KEYWORDS - Machining, component manufacture, pump spares
 STRONG_MATCH_KEYWORDS = [
     # Brand & Product
     "mexel", "mexel 432", "mexel432", "mexsteam", "mexsteam 100",
-    "film forming amine", "filming amine", "film forming agent", "ffa",
     "antiscalant", "oxidizing biocide", "surfactant",
 
     # Core Service Metrics (unique to TES)
@@ -176,6 +173,7 @@ NEGATIVE_KEYWORDS = [
     # Office/Building Maintenance (not industrial)
     "office furniture", "office equipment",
     "painting", "plumbing", "carpentry",
+    "butterfly valve",
     "steel supply", "bearings supply",
 
     # Generic maintenance-only boiler work tends to be mechanical, not TES chemistry scope
@@ -203,6 +201,7 @@ PHAKATHI_KEYWORDS = [
     "boiler treatment", "boiler preservation", "boiler water treatment",
     "lay-up", "layup", "asset preservation",
     "flow-accelerated corrosion", "film forming amine", "film-forming amine",
+    "filming amine", "film forming agent",
     "ffa treatment", "steam drum", "steam circuit", "boiler lay-up",
 
     # OT Networking & SCADA

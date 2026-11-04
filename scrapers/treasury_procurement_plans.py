@@ -11,8 +11,8 @@ import requests
 from bs4 import BeautifulSoup
 
 from classify_engine import classify_tender, clean, keyword_present
-from keyword_rules import STRONG_MATCH_KEYWORDS
-from utils.retry_tools import secure_request_kwargs, validate_outbound_url
+from keyword_rules import STRONG_MATCH_KEYWORDS, PHAKATHI_KEYWORDS
+from utils.retry_tools import secure_request_kwargs, validate_outbound_url, guarded_request
 
 
 logger = logging.getLogger(__name__)
@@ -172,7 +172,7 @@ def _download_html(
         "stream": True,
         "allow_redirects": True,
     })
-    with client.get(url, **request_kwargs) as response:
+    with guarded_request(url, requester=client.get, **request_kwargs) as response:
         validate_outbound_url(response.url)
         response.raise_for_status()
         content_length = response.headers.get("Content-Length")
@@ -199,14 +199,7 @@ def is_relevant_plan(plan: Dict[str, Any]) -> bool:
     """Apply a stricter discovery gate than the general tender classifier."""
     text = clean(f"{plan.get('institution', '')} {plan.get('description', '')}")
     if plan.get("category") == "PHAKATHI":
-        phakathi_signals = (
-            "huawei", "reicon", "odacon", "scada", "ot networking", "ot network",
-            "operational technology", "industrial networking", "plc programming",
-            "hmi programming", "boiler chemistry", "boiler water", "boiler protection",
-            "boiler treatment", "boiler preservation", "boiler lay up", "steam drum",
-            "steam circuit", "flow accelerated corrosion",
-        )
-        return any(keyword_present(text, keyword) for keyword in phakathi_signals)
+        return any(keyword_present(text, keyword) for keyword in PHAKATHI_KEYWORDS)
     if plan.get("category") != "MEXEL":
         return False
 

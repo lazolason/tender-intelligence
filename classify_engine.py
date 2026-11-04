@@ -31,6 +31,9 @@ def clean(text: str) -> str:
 # ----------------------------------------------------------
 def keyword_present(text: str, keyword: str) -> bool:
     """Match a normalized keyword without allowing alphanumeric substrings."""
+    keyword = clean(keyword)
+    if not keyword:
+        return False
     pattern = rf"(?<![a-z0-9]){re.escape(keyword)}(?![a-z0-9])"
     return re.search(pattern, text) is not None
 
@@ -67,7 +70,7 @@ def build_matched_keywords(
         if f" {token} " in f" {text} ":
             matched.add(token)
 
-    return list(matched)
+    return sorted(matched)
 
 
 def has_specific_profile_b_signal(system_hits: list, action_hits: list) -> bool:
@@ -141,6 +144,20 @@ def make_short_title(original_title: str) -> str:
 def classify_tender(title: str, description: str) -> dict:
     text = clean(f"{title} {description}")
 
+    # A brand name cannot turn an explicit cancellation/award notice into a
+    # live opportunity. Use the headline so ordinary contractual conditions in
+    # the description do not suppress a live advert.
+    notice_keywords = (
+        "regret letter", "publication of bidders", "publication of name of bidders",
+        "bidder names", "bidders names", "validity extension", "tender validity",
+        "tender cancellation", "tender cancelled", "cancellation",
+        "notification of award", "notification of awarded", "award notice",
+    )
+    for notice in notice_keywords:
+        if keyword_present(clean(title), notice):
+            return {"category": "EXCLUDED", "reason": f"Excluded: notice '{notice}'",
+                    "short_title": make_short_title(title), "matched_keywords": []}
+
     # Brand check for Phakathi direct routing
     brand_match = [
         brand
@@ -185,6 +202,16 @@ def classify_tender(title: str, description: str) -> dict:
             ),
         }
 
+    # Boiler/steam chemistry and generic FFA terms belong to PISO's chemistry
+    # profile. Explicit Mexel product terms above retain their own routing.
+    if phakathi_hits:
+        return {
+            "category": "PHAKATHI",
+            "reason": f"Phakathi Match: {len(phakathi_hits)} keyword(s)",
+            "short_title": make_short_title(title),
+            "matched_keywords": build_matched_keywords(text, [], [], [], phakathi_hits),
+        }
+
     # 3. PROFILE B: SYSTEM + ACTION (Must be paired - Mexel)
     if system_hits and action_hits and has_specific_profile_b_signal(system_hits, action_hits):
         return {
@@ -193,17 +220,6 @@ def classify_tender(title: str, description: str) -> dict:
             "short_title": make_short_title(title),
             "matched_keywords": build_matched_keywords(
                 text, strong_hits, system_hits, action_hits, phakathi_hits,
-            ),
-        }
-
-    # 4. PHAKATHI MATCH
-    if phakathi_hits:
-        return {
-            "category": "PHAKATHI",
-            "reason": f"Phakathi Match: {len(phakathi_hits)} keyword(s)",
-            "short_title": make_short_title(title),
-            "matched_keywords": build_matched_keywords(
-                text, strong_hits, system_hits, action_hits, phakathi_hits
             ),
         }
 

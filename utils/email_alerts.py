@@ -4,6 +4,7 @@ Sends urgent tender notifications via email
 """
 
 import smtplib
+import ssl
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from datetime import datetime, timedelta
@@ -73,7 +74,7 @@ def _usable(value: Any) -> bool:
 
 def config_status(cfg: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
     """Report whether the digest can actually be sent, and what is missing."""
-    cfg = cfg or EMAIL_CONFIG
+    cfg = EMAIL_CONFIG if cfg is None else cfg
     missing = []
 
     sender = cfg.get("sender_email")
@@ -89,6 +90,7 @@ def config_status(cfg: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
 
     return {
         "configured": not missing,
+        "enabled": cfg.get("enabled", False),
         "missing": missing,
         # Report placeholders as unresolved rather than echoing them as valid.
         "sender": sender if _usable(sender) else None,
@@ -138,6 +140,7 @@ def load_email_config():
     )
 
     result = {
+        "enabled": bool(email_config.get("enabled", False)),
         "smtp_server": _get_env(
             "SMTP_SERVER",
             "TENDERSCAN_SMTP_SERVER",
@@ -253,8 +256,8 @@ class EmailAlerter:
         msg.attach(MIMEText(html_body, 'html'))
         
         try:
-            with smtplib.SMTP(self.smtp_server, self.smtp_port) as server:
-                server.starttls()
+            with smtplib.SMTP(self.smtp_server, self.smtp_port, timeout=30) as server:
+                server.starttls(context=ssl.create_default_context())
                 server.login(self.smtp_user, self.sender_password)
                 server.sendmail(self.sender_email, self.recipients, msg.as_string())
             logger.info(f"✅ Email alert sent to {len(self.recipients)} recipient(s)")
@@ -359,8 +362,8 @@ class EmailAlerter:
         msg.attach(MIMEText(html_body, "html"))
 
         try:
-            with smtplib.SMTP(self.smtp_server, self.smtp_port) as server:
-                server.starttls()
+            with smtplib.SMTP(self.smtp_server, self.smtp_port, timeout=30) as server:
+                server.starttls(context=ssl.create_default_context())
                 server.login(self.smtp_user, self.sender_password)
                 server.sendmail(self.sender_email, self.recipients, msg.as_string())
             logger.info(f"✅ Scraper failure alert sent to {len(self.recipients)} recipient(s)")
@@ -767,33 +770,28 @@ def generate_email_html(tenders, meta=None):
 
 def send_email(subject, html_content):
     """Send email via SMTP"""
-    if not EMAIL_CONFIG["sender_email"] or not EMAIL_CONFIG["recipient_emails"] or not EMAIL_CONFIG["sender_password"]:
-        logger.warning("⚠️ Email not configured. Update EMAIL_CONFIG in utils/email_alerts.py")
-        return False
-
-    # Refuse placeholder credentials outright: a copied .env should skip the
-    # digest, not attempt an SMTP login as "your-email@gmail.com".
-    if not _usable(EMAIL_CONFIG["sender_email"]) or not _usable(EMAIL_CONFIG["sender_password"]):
-        logger.warning("⚠️ Email placeholders still in place; skipping send")
+    status = config_status()
+    if not status["configured"]:
+        logger.warning("Email is not configured; skipping send")
         return False
 
     try:
         msg = MIMEMultipart("alternative")
         msg["Subject"] = subject
         msg["From"] = EMAIL_CONFIG["sender_email"]
-        msg["To"] = ", ".join(EMAIL_CONFIG["recipient_emails"])
+        msg["To"] = ", ".join(status["recipients"])
 
         msg.attach(MIMEText(html_content, "html"))
 
-        with smtplib.SMTP(EMAIL_CONFIG["smtp_server"], EMAIL_CONFIG["smtp_port"]) as server:
-            server.starttls()
+        with smtplib.SMTP(EMAIL_CONFIG["smtp_server"], EMAIL_CONFIG["smtp_port"], timeout=30) as server:
+            server.starttls(context=ssl.create_default_context())
             server.login(
                 EMAIL_CONFIG.get("smtp_user") or EMAIL_CONFIG["sender_email"],
                 EMAIL_CONFIG["sender_password"],
             )
             server.sendmail(
                 EMAIL_CONFIG["sender_email"],
-                EMAIL_CONFIG["recipient_emails"],
+                status["recipients"],
                 msg.as_string()
             )
 
@@ -804,7 +802,7 @@ def send_email(subject, html_content):
         return False
 
 
-def send_daily_digest():
+def send_daily_digest(*, return_status=False):
     """Main function to send daily digest"""
     logger.info("📧 Preparing daily tender digest...")
 
@@ -815,10 +813,17 @@ def send_daily_digest():
 
     if high_count == 0:
         logger.info("   No high priority tenders - skipping email")
-        return False
+        result = {"status": "no_alerts_needed"}
+        return result if return_status else False
 
     stamp = meta.get("build_id") or meta.get("last_sync") or datetime.now().strftime("%Y-%m-%d")
     subject = f"🎯 {high_count} High Priority Tender{'s' if high_count != 1 else ''} - {stamp}"
     html = generate_email_html(tenders, meta=meta)
 
-    return send_email(subject, html)
+    status = config_status()
+    if not status["configured"]:
+        result = {"status": "not_configured", "missing": status["missing"]}
+        return result if return_status else False
+    sent = send_email(subject, html)
+    result = {"status": "sent" if sent else "failed"}
+    return result if return_status else sent

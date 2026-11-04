@@ -1,4 +1,5 @@
 # ==========================================================
+from classify_engine import clean, keyword_present
 # SCORING ENGINE
 # Comprehensive tender scoring system
 # Fit, Industry, Product Suitability
@@ -107,8 +108,9 @@ def calculate_fit_score(title: str, description: str, category: str) -> dict:
         reasons.append("Phakathi category match")
 
     # Strong fit keywords
-    mexel_strong = sum(1 for kw in MEXEL_STRONG_FIT if kw in text)
-    phakathi_strong = sum(1 for kw in PHAKATHI_STRONG_FIT if kw in text)
+    normalized = clean(text)
+    mexel_strong = sum(keyword_present(normalized, kw) for kw in MEXEL_STRONG_FIT) if category != "PHAKATHI" else 0
+    phakathi_strong = sum(keyword_present(normalized, kw) for kw in PHAKATHI_STRONG_FIT) if category != "MEXEL" else 0
 
     if mexel_strong >= 3:
         score += 2
@@ -160,18 +162,22 @@ def calculate_suitability_scores(title: str, description: str, category: str = "
     """
     Calculate suitability score based on company product keywords
     """
-    text = f"{title} {description}".lower()
+    text = clean(f"{title} {description}")
 
     # Mexel Score (base scoring for all categories)
     mexel_score = 0
-    mexel_strong = sum(1 for kw in MEXEL_STRONG_FIT if kw in text)
-    mexel_moderate = sum(1 for kw in MEXEL_MODERATE_FIT if kw in text)
+    mexel_strong = sum(keyword_present(text, kw) for kw in MEXEL_STRONG_FIT)
+    mexel_moderate = sum(keyword_present(text, kw) for kw in MEXEL_MODERATE_FIT)
     mexel_score = min(10, mexel_strong * 2 + mexel_moderate)
+    if category in {"PHAKATHI", "EXCLUDED"}:
+        mexel_score = 0
+    phakathi_score = min(10, sum(keyword_present(text, kw) for kw in PHAKATHI_STRONG_FIT) * 2) if category == "PHAKATHI" else 0
 
     return {
         "mexel_suitability": mexel_score,
         "mexel_fit": "Strong" if mexel_score >= 6 else "Moderate" if mexel_score >= 3 else "Weak",
         "company_category": category,
+        "phakathi_suitability": phakathi_score,
     }
 
 
@@ -187,7 +193,7 @@ def score_tender(title: str, description: str, client: str = "",
     """
     
     if str(category or "").strip().upper() == "EXCLUDED":
-        suitability = calculate_suitability_scores(title, description)
+        suitability = calculate_suitability_scores(title, description, category)
         return {
             "fit_score": 1,
             "fit_reasons": ["Tender excluded from scope"],

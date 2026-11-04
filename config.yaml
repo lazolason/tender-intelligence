@@ -18,27 +18,10 @@ scrapers:
   timeout: 20
   user_agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)"
   
-  # Search terms for National Treasury eTenders API
-  search_terms:
-    # Mexel
-    - "mexel"
-    - "mexel 432"
-    - "mexel432"
-    - "mexsteam"
-    - "mexsteam 100"
-    - "condenser efficiency"
-    - "thermal efficiency"
-    - "cooling water treatment"
-    - "m&v protocol"
-    # Phakathi
-    - "boiler"
-    - "boiler chemistry"
-    - "ot networking"
-    - "scada"
-    - "huawei"
-    - "reicon"
-    - "odacon"
-  
+  # eTenders is the primary full-feed source. No keyword restriction is sent
+  # to its public API; keyword_rules.py classifies every advert locally.
+  # Cape Town, Water Boards and Eskom Bulletin supplement this national feed.
+
   # URLs
   urls:
     national_treasury: "https://www.etenders.gov.za/Home/opportunities"
@@ -79,7 +62,7 @@ authorized_feeds:
 
 # Classification settings
 classification:
-  # Multi-company mode (FLOWTECH, PHAKATHI, MEXEL all classified independently)
+  # Multi-company mode: PHAKATHI (including REICON/ODACON) and MEXEL
   mexel_only: false            # Set to true to show only MEXEL tenders in dashboard
   include_excluded: false      # Whether to store/store EXCLUDED tenders in DB
 

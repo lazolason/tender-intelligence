@@ -2,8 +2,7 @@
 # PDF TOOLS - File size and metadata detection
 # ==========================================================
 
-import urllib.request
-from urllib.error import URLError
+from utils.retry_tools import guarded_request
 
 
 def get_pdf_size(url):
@@ -16,15 +15,16 @@ def get_pdf_size(url):
     
     try:
         # Get headers without downloading body
-        request = urllib.request.Request(url, method='HEAD')
-        response = urllib.request.urlopen(request, timeout=5)
+        response = guarded_request(url, method='HEAD', timeout=5)
         
+        response.raise_for_status()
         size_bytes = int(response.headers.get('content-length', 0))
+        response.close()
         if size_bytes == 0:
             return None
             
         return format_bytes(size_bytes)
-    except (URLError, ValueError, TimeoutError):
+    except Exception:
         return None
 
 

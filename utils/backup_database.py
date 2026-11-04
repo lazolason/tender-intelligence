@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 import os
-import shutil
 from datetime import datetime
 import sqlite3
+from pathlib import Path
 
-def backup_database():
+def backup_database(db_path=None, backup_dir=None):
     """Create a backup of the SQLite database."""
     PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    DB_PATH = os.path.join(PROJECT_DIR, "data", "tenders.db")
-    BACKUP_DIR = os.path.join(PROJECT_DIR, "backups")
+    DB_PATH = os.fspath(db_path or os.environ.get("DB_PATH") or os.path.join(PROJECT_DIR, "data", "tenders.db"))
+    BACKUP_DIR = os.fspath(backup_dir or os.path.join(PROJECT_DIR, "backups"))
     
     if not os.path.exists(DB_PATH):
         print(f"Error: Database not found at {DB_PATH}")
@@ -22,7 +22,7 @@ def backup_database():
     try:
         # Use sqlite3 backup API if available, else copy file
         # Copying is generally safe if no one is writing, but backup API is better
-        with sqlite3.connect(DB_PATH) as src:
+        with sqlite3.connect(Path(DB_PATH).resolve().as_uri() + "?mode=ro", uri=True) as src:
             with sqlite3.connect(backup_path) as dst:
                 src.backup(dst)
         

@@ -155,3 +155,47 @@ Refine keyword classification to distinguish between general building HVAC (excl
 ## Completion Status: ✅ COMPLETE
 
 All tasks completed successfully. System now correctly distinguishes between general building HVAC (excluded) and data center precision cooling (included).
+
+
+## Audit repair plan — 4 November 2026
+
+Baseline: GitHub main ee8a3911f61b9db47f5758cf0c1b85949da43b05, isolated audit checkout. The active local scanner checkout contains prior uncommitted changes and will not be edited or reloaded.
+
+Approval checkpoint: AI_RULES.md section 1 requires human approval of this plan before implementation.
+
+- [ ] Redirect safety [MEDIUM]: validate each redirect before issuing its request, cap redirect hops, preserve TLS verification and existing request options. Files: utils/retry_tools.py; tests/test_network_security.py. Verify with an offline adapter proving a public URL cannot redirect a request to a private address.
+- [ ] Backup correctness [LOW]: honour DB_PATH and allow isolated backup destinations; verify a backup contains the configured database. Files: utils/backup_database.py; new tests/test_backup_database.py.
+- [ ] Daily workflow status [MEDIUM]: distinguish SMTP failure from no eligible tenders; report failed core jobs correctly through the API/CLI; write status atomically and honour runtime output settings. Preserve default boolean email APIs for existing callers. Files: daily_runner.py, app.py, utils/email_alerts.py, utils/run_status.py, tools/email_doctor.py and focused existing/new tests.
+- [ ] Scraper coverage health [MEDIUM]: propagate underlying source failures through grouped scrapers and CLI artifacts while retaining valid partial results; align CI source selection with the active registry, avoiding retired or duplicate sources. Files: scrapers/base.py, scrapers/municipalities.py, scrapers/soes.py, scrapers/water_boards.py, scrapers/registry.py, tenderscan.py, tools/scrape_source.py, .github/workflows/update-dashboard-tenders.yml and focused regression tests.
+- [ ] Development dependency advisories [MEDIUM]: update compatible dashboard tooling dependencies and verify any narrowly scoped dependency override. Do not run npm audit fix --force or downgrade ESLint to the obsolete version suggested by npm. Files: dashboard/package.json, dashboard/package-lock.json; adjust the CI audit gate only after verification.
+- [ ] Regression verification [LOW]: run full Python tests, Ruff, dashboard tests/lint/typecheck and dependency audits. Use isolated temporary data and mocked notifications; no real alerts or production scan.
+- [ ] Review delivery [LOW]: prepare audit report and complete patch; leave code uncommitted and unpushed pending explicit publication instruction.
+
+Confirmed reproductions before changes:
+- Public HTTPS redirect reached https://127.0.0.1/private before the current guard rejected it (offline requests adapter).
+- A valid configured temporary DB existed, but backup_database() ignored DB_PATH and returned False.
+- A mocked failed daily scan returned HTTP 200 with top-level status success.
+- A mocked failed digest was labelled no_alerts_needed.
+- A municipality fetch exception returned [] and the enclosing FunctionScraper.last_error remained None.
+
+Baseline checks: 193 Python tests passed; 34 dashboard tests passed; Ruff, dashboard lint and typecheck passed. npm audit found 14 development dependency advisories (4 high, 10 moderate); runtime-only audit found none. No live scan, alert, scheduler change, commit or push was performed.
+
+
+## Tender Intelligence repository audit and repairs — 4 November 2026
+
+Status: implementation complete on review branch `fix/tender-audit-etenders-2026-11-04`; pull request #1 is open. The active operational checkout and its schedule/database were not changed.
+
+- [x] Prevent unsafe redirect hops; preserve HTTPS/TLS checks, retry behaviour and response handling.
+- [x] Honour configured database paths in backups and avoid creating a missing source database.
+- [x] Report daily scan, sync and mail outcomes accurately through API and CLI; write run status atomically and respect configured output paths.
+- [x] Propagate grouped source failures while preserving partial records; make eTenders the primary feed and align CI with active scrapers.
+- [x] Update vulnerable Python and dashboard dependency pins; verify core and optional-ML Python environments plus dashboard audit.
+- [x] Separate Mexel and Phakathi/REICON/ODACON classification and scoring; normalize matching; handle award/cancellation notices before brand routing.
+- [x] Fix dashboard card overflow at narrow mobile widths and extend CI smoke coverage.
+- [x] Update current scraper and keyword architecture documentation; prepare keyword routing report and full patch.
+- [x] Reclassify the checked-in live tender snapshots against current company rules; remove out-of-scope records and keep both snapshot copies identical.
+- [x] Verify Python tests (228 passed), Ruff, dashboard tests (34 passed), dashboard lint/typecheck, npm audit (0 vulnerabilities), live source parsing, and browser widths 320/390/768/1440 px.
+
+Snapshot review: all 32 tender rows had been labelled PHAKATHI. Current rules classified all 32 as out of scope after adding a guard for mechanical butterfly-valve work that matched only because it mentioned a condenser. Both checked-in dashboard tender arrays are now empty and carry a scope-refresh count. All 16 separate planned-opportunity records were checked through their classifier and relevance gate and remain in their current categories.
+
+Known transport limit: outbound URL validation blocks literal private/loopback targets and validates each redirect before requesting it; DNS rebinding is not covered by the current resolver-free guard.

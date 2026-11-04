@@ -18,6 +18,21 @@ from utils.dashboard_snapshot import (
 DEFAULT_RUN_STALE_HOURS = 36.0
 
 
+def daily_run_outcome(results: Dict[str, Any]) -> str:
+    """Distinguish a completed workflow from failed core or auxiliary steps."""
+    for name in ("scan", "sync"):
+        step = results.get(name)
+        if not isinstance(step, dict) or step.get("status") != "success":
+            return "error"
+    if results["scan"].get("failed_sources_count", 0):
+        return "partial"
+    for name in ("email", "procurement_plans", "backup"):
+        step = results.get(name) or {}
+        if step.get("status") in {"error", "failed", "failure"}:
+            return "partial"
+    return "success"
+
+
 def inspect_daily_run_status(
     path: str,
     *,
@@ -41,6 +56,10 @@ def inspect_daily_run_status(
             payload = json.load(file_obj)
     except Exception as exc:
         info["error"] = str(exc)
+        return info
+
+    if not isinstance(payload, dict):
+        info["error"] = "Daily run status must be an object"
         return info
 
     timestamp = payload.get("timestamp")

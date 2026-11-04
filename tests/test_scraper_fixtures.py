@@ -7,6 +7,9 @@ class FakeResponse:
     def __init__(self, text: str):
         self.text = text
 
+    def raise_for_status(self):
+        pass
+
 
 def _read_fixture(name: str) -> str:
     fixtures_dir = Path(__file__).resolve().parent / "fixtures"

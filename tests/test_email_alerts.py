@@ -4,6 +4,7 @@ The path was previously "configured" only in name: daily_runner compared the
 sender against a literal placeholder, so behaviour was never exercised.
 """
 import json
+import ssl
 import sys
 from pathlib import Path
 
@@ -19,8 +20,9 @@ class FakeSMTP:
 
     instances = []
 
-    def __init__(self, host, port):
+    def __init__(self, host, port, timeout=None):
         self.host, self.port = host, port
+        self.timeout = timeout
         self.started_tls = False
         self.credentials = None
         self.sent = None
@@ -32,8 +34,9 @@ class FakeSMTP:
     def __exit__(self, *exc):
         return False
 
-    def starttls(self):
+    def starttls(self, context=None):
         self.started_tls = True
+        self.tls_context = context
 
     def login(self, user, password):
         self.credentials = (user, password)
@@ -87,6 +90,9 @@ def test_send_email_starts_tls_authenticates_and_sends(fake_smtp, monkeypatch):
     server = fake_smtp.instances[0]
     assert (server.host, server.port) == ("smtp.gmail.com", 587)
     assert server.started_tls is True
+    assert server.timeout == 30
+    assert server.tls_context.verify_mode == ssl.CERT_REQUIRED
+    assert server.tls_context.check_hostname is True
     assert server.credentials == ("tenders@mexel.co.za", "app-password")
     sender, recipients, message = server.sent
     assert sender == "tenders@mexel.co.za"

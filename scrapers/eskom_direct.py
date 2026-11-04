@@ -22,7 +22,7 @@ import requests
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from classify_engine import classify_tender
-from utils.retry_tools import safe_driver_get, build_selenium_get_with_retry
+from utils.retry_tools import safe_driver_get, build_selenium_get_with_retry, guarded_request
 
 logger = logging.getLogger(__name__)
 try:
@@ -44,7 +44,7 @@ def _scrape_eskom_tenders_api(max_tenders, timeout=30):
     seen = set()
     url = f"{API_BASE_URL}/Lookup/GetTender?TENDER_ID="
 
-    response = requests.get(url, timeout=timeout)
+    response = guarded_request(url, timeout=timeout)
     response.raise_for_status()
     data = response.json()
 

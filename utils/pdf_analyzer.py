@@ -11,7 +11,7 @@ from typing import Dict, List, Optional, Tuple
 import os
 import tempfile
 
-from utils.retry_tools import secure_request_kwargs, validate_outbound_url
+from utils.retry_tools import secure_request_kwargs, validate_outbound_url, guarded_request
 
 
 def download_pdf(url: str, timeout: int = 30) -> Optional[bytes]:
@@ -30,7 +30,7 @@ def download_pdf(url: str, timeout: int = 30) -> Optional[bytes]:
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
         }
         validate_outbound_url(url)
-        response = requests.get(
+        response = guarded_request(
             url,
             **secure_request_kwargs({
                 "headers": headers,

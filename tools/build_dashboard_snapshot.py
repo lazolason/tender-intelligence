@@ -12,24 +12,8 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from classify_engine import classify_tender
 from scoring_engine import score_tender
 from utils.pipeline_validation import validate_tender_batch
-from scrapers.municipalities import scrape_all_municipalities
-from scrapers.soes import (
-    scrape_rand_water,
-    scrape_transnet,
-    scrape_eskom,
-    scrape_anglo_american,
-    scrape_harmony_gold,
-    scrape_seriti,
-)
-from scrapers.water_boards import (
-    scrape_umgeni_water,
-    scrape_magalies_water,
-    scrape_lepelle_water,
-)
-from scrapers.sadc import (
-    scrape_botswana,
-    scrape_namibia,
-)
+from scrapers.registry import get_active_scrapers
+from scrapers.base import PartialScrapeError
 from scrapers.treasury_procurement_plans import scrape_treasury_procurement_plans
 
 
@@ -204,26 +188,18 @@ def _load_planned_opportunities() -> List[dict]:
 def build_snapshot(limit: int) -> dict:
     all_tenders = []
 
-    # Keep to non-Selenium sources for CI stability
-    all_tenders.extend(scrape_all_municipalities())
-    soe_scrapers = [
-        scrape_rand_water,
-        scrape_transnet,
-        scrape_eskom,
-        scrape_anglo_american,
-        scrape_harmony_gold,
-        scrape_seriti,
-        scrape_umgeni_water,
-        scrape_magalies_water,
-        scrape_lepelle_water,
-        scrape_botswana,
-        scrape_namibia,
-    ]
-    for scraper in soe_scrapers:
+    failures = {}
+    # Use the same primary feed and supplemental sources as the daily runner.
+    for scraper in get_active_scrapers(enable_selenium=False):
         try:
-            all_tenders.extend(scraper())
-        except Exception:
-            continue
+            all_tenders.extend(scraper.run(raise_on_error=True))
+        except Exception as exc:
+            if scraper.source_name == "National Treasury":
+                raise RuntimeError("Primary eTenders feed failed; refusing a fresh snapshot") from exc
+            failures[scraper.source_name] = str(exc)
+            if isinstance(exc, PartialScrapeError):
+                all_tenders.extend(exc.tenders)
+
 
     merged = []
     seen = set()
@@ -265,6 +241,7 @@ def build_snapshot(limit: int) -> dict:
     meta: Dict[str, Any] = {
         "last_sync": last_sync,
         "snapshot_origin": "static_scrape",
+        "failed_sources": failures,
         "next_run": "Daily 08:00",
         "build_sha": build_sha,
         "build_id": f"{last_sync} · {build_sha}" if build_sha else last_sync,

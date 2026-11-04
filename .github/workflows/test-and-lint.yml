@@ -45,7 +45,7 @@ jobs:
         run: npm run test:run
       - name: Audit Dashboard Runtime Dependencies
         working-directory: dashboard
-        run: npm audit --omit=dev
+        run: npm audit
       - name: Run Dashboard Smoke Test
         working-directory: dashboard
         run: npm run test:smoke
