@@ -12,15 +12,10 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import yaml
 
 from scrapers.municipalities import scrape_all_municipalities
-from scrapers.soes import (
-    scrape_rand_water,
-    scrape_transnet,
-    scrape_anglo_american,
-    scrape_harmony_gold,
-    scrape_seriti,
-    scrape_joburg_water,
-    scrape_eskom,
-)
+from scrapers.base import PartialScrapeError
+from scrapers.water_boards import scrape_all_water_boards
+from scrapers.eskom_direct import scrape_eskom_tenders
+
 
 
 def atomic_write_json(path: str, payload: Any) -> None:
@@ -69,29 +64,16 @@ def run_scraper(scraper: str, config: Dict[str, Any]) -> List[Dict[str, Any]]:
     timeout = int(((config.get("scrapers") or {}).get("timeout") or 15))
 
     if scraper == "municipalities":
-        return scrape_all_municipalities(timeout=timeout)
+        return scrape_all_municipalities(timeout=timeout, raise_on_error=True)
 
-    if scraper == "soes":
-        # "SOEs" core (non-Selenium) – exclude Eskom + Johannesburg Water to avoid duplicates
-        tenders: List[Dict[str, Any]] = []
-        for fn in (
-            scrape_rand_water,
-            scrape_transnet,
-            scrape_anglo_american,
-            scrape_harmony_gold,
-            scrape_seriti,
-        ):
-            try:
-                tenders.extend(fn())
-            except Exception:
-                continue
-        return tenders
-
-    if scraper == "joburg_water":
-        return scrape_joburg_water()
+    if scraper == "water_boards":
+        return scrape_all_water_boards(raise_on_error=True)
 
     if scraper == "eskom":
-        return scrape_eskom()
+        return scrape_eskom_tenders(use_selenium_fallback=False, api_timeout=timeout)
+
+    if scraper in {"soes", "joburg_water"}:
+        raise ValueError("SOE and Johannesburg Water coverage uses the primary national_treasury feed")
 
     if scraper == "procurement_plans":
         from scrapers.treasury_procurement_plans import scrape_treasury_procurement_plans
@@ -122,7 +104,7 @@ def run_scraper(scraper: str, config: Dict[str, Any]) -> List[Dict[str, Any]]:
             t.setdefault("url", url)
         return tenders
 
-    raise SystemExit(f"Unknown scraper: {scraper}")
+    raise ValueError(f"Unknown scraper: {scraper}")
 
 
 def main() -> int:
@@ -130,7 +112,7 @@ def main() -> int:
     parser.add_argument(
         "--scraper",
         required=True,
-        help="municipalities|soes|national_treasury|procurement_plans|joburg_water|eskom",
+        help="national_treasury|municipalities|water_boards|procurement_plans|eskom",
     )
     parser.add_argument("--out", required=True, help="Output JSON path")
     args = parser.parse_args()
@@ -158,6 +140,13 @@ def main() -> int:
         payload["tenders"] = normalized
         payload["tenders_found"] = len(normalized)
         payload["status"] = "success"
+    except PartialScrapeError as exc:
+        payload["tenders"] = [normalize_tender(payload["source"], t) for t in exc.tenders]
+        payload["tenders_found"] = len(payload["tenders"])
+        payload["status"] = "partial" if payload["tenders"] else "failure"
+        payload["failed_sources"] = exc.failures
+        payload["error"] = str(exc)
+        exit_code = 1
     except Exception as exc:
         payload["error"] = str(exc)
         exit_code = 1

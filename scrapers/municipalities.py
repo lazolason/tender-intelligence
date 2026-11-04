@@ -16,6 +16,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from utils.text_cleaner import clean_text
 from utils.retry_tools import safe_get
+from scrapers.base import PartialScrapeError
 from classify_engine import classify_tender
 
 logger = logging.getLogger(__name__)
@@ -52,6 +53,7 @@ class BaseMunicipalityScraper:
             )
             if response is None:
                 raise RuntimeError("No response returned")
+            response.raise_for_status()
             return response.text
         except Exception as e:
             raise Exception(f"Error fetching {self.name}: {e}")
@@ -169,7 +171,7 @@ class CapeTownScraper(BaseMunicipalityScraper):
 # ===========================================================
 # AGGREGATOR - RUN ALL MUNICIPALITIES
 # ===========================================================
-def scrape_all_municipalities(timeout: int = 15) -> List[Dict[str, any]]:
+def scrape_all_municipalities(timeout: int = 15, *, raise_on_error: bool = False) -> List[Dict[str, any]]:
     """Run all municipality scrapers and aggregate results
     
     Args:
@@ -183,7 +185,7 @@ def scrape_all_municipalities(timeout: int = 15) -> List[Dict[str, any]]:
     ]
     
     all_tenders: List[Dict[str, any]] = []
-    failed_sources: List[str] = []
+    failed_sources: Dict[str, str] = {}
     
     for scraper in scrapers:
         try:
@@ -192,16 +194,18 @@ def scrape_all_municipalities(timeout: int = 15) -> List[Dict[str, any]]:
             all_tenders.extend(tenders)
             logger.info("%s: found %d tenders", scraper.name, len(tenders))
             if scraper.last_error:
-                failed_sources.append(scraper.name)
+                failed_sources[scraper.name] = scraper.last_error
         except Exception as e:
             logger.warning("%s failed: %s", scraper.name, e)
-            failed_sources.append(scraper.name)
+            failed_sources[scraper.name] = str(e)
             continue
     
     if failed_sources:
         logger.warning(
             "Failed municipality sources: %s", ", ".join(sorted(set(failed_sources)))
         )
+        if raise_on_error:
+            raise PartialScrapeError(all_tenders, failed_sources)
     
     return all_tenders
 

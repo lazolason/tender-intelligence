@@ -43,8 +43,8 @@ Scrapers → tenderscan.py → Validation → Classification → Scoring → SQL
 
 ### Key Design Decisions
 
-- **Scoring vs Classification**: Classification ([keyword_rules.py](keyword_rules.py)) determines Mexel/EXCLUDED using keyword matching. Scoring ([scoring_engine.py](scoring_engine.py)) evaluates priority (HIGH/MEDIUM/LOW) using composite metrics (fit, industry).
-- **Suitability**: Each tender gets a `mexel_suitability` score (Mexel product fit). The dashboard treats all classified tenders as Mexel.
+- **Scoring vs Classification**: Classification ([keyword_rules.py](keyword_rules.py)) assigns MEXEL, PHAKATHI or EXCLUDED. Scoring ([scoring_engine.py](scoring_engine.py)) evaluates priority (HIGH/MEDIUM/LOW) using composite metrics (fit, industry).
+- **Suitability**: `mexel_suitability` and `phakathi_suitability` score the separate company profiles.
 - **Dashboard Sync Source of Truth**: [sync_dashboard.py](sync_dashboard.py) rebuilds `dashboard/tenders.json` from open tenders in SQLite on each run.
 - **Selenium Toggle**: Controlled by `config.yaml` → `scrapers.enable_selenium`. Some scrapers (National Treasury, Joburg Water, Eskom Direct) require Selenium. Disabled in production to avoid Chrome dependencies.
 
@@ -113,8 +113,9 @@ Primary configuration file: [config.yaml](config.yaml)
 - `paths.log_file` - Scraper execution logs
 
 **Scraper Settings**:
-- `scrapers.enable_selenium` - Toggle Selenium-based scrapers (National Treasury, Joburg Water)
-- `scrapers.search_terms` - National Treasury search queries
+- `scrapers.enable_selenium` - Toggle Selenium-based scrapers that require Selenium
+- National Treasury eTenders is the primary full-feed source; the API returns all advertised records and matching happens locally after collection. `scrapers.search_terms` is not used for API filtering.
+- Cape Town's direct tender portal, water boards and the Eskom bulletin are supplementary sources. The active source list is defined in `scrapers/registry.py`.
 
 **Scoring Thresholds**:
 - `scoring.high_threshold: 7.0` - Composite score ≥ 7.0 → HIGH priority
@@ -165,11 +166,11 @@ Each scraper module follows this pattern:
 
 **Active Scrapers**:
 - [registry.py](scrapers/registry.py) - Explicit registry of active scraper entrypoints used by `tenderscan.py`
-- [municipalities.py](scrapers/municipalities.py) - Cape Town
-- [soes.py](scrapers/soes.py) - Rand Water, Johannesburg Water, Transnet, Eskom, Anglo American, Harmony Gold, Seriti
-- [national_treasury_selenium.py](scrapers/national_treasury_selenium.py) - eTenders portal (Selenium-based)
-- [joburg_water_selenium.py](scrapers/joburg_water_selenium.py) - Johannesburg Water (Selenium-based)
-- [eskom_direct.py](scrapers/eskom_direct.py) - Eskom tender bulletin (Selenium-based)
+- [national_treasury.py](scrapers/national_treasury.py) - Primary full eTenders feed; includes SOE opportunities
+- [municipalities.py](scrapers/municipalities.py) - Supplementary City of Cape Town direct portal
+- [water_boards.py](scrapers/water_boards.py) - Supplementary South African water board sources
+- [eskom_direct.py](scrapers/eskom_direct.py) - Eskom Tender Bulletin API with Selenium fallback
+- Johannesburg Water's page redirects to eTenders and is intentionally not registered separately
 
 **Archived Scrapers**:
 - [eskom.py](scrapers/archived/eskom.py) - Deprecated in favor of `eskom_direct.py`
@@ -200,25 +201,27 @@ Composite scoring algorithm with two dimensions:
 - Composite Score < 4.5 → `LOW`
 
 **Company Suitability**:
-- `mexel_suitability` is calculated for Mexel product fit
-- Dashboard labels all classified tenders as Mexel
+- `mexel_suitability` and `phakathi_suitability` are separate scores. REICON and ODACON opportunities route to PHAKATHI, which is the operating company profile used for those products and related technologies.
+- Do not treat the two profiles as interchangeable: Mexel covers industrial cooling-water efficiency; Phakathi covers REICON/ODACON chemistry, preservation and OT/IT integration.
 
 ### Classification Rules ([keyword_rules.py](keyword_rules.py))
 
-**Three-Profile System** (PHASE 2 - Strict Competence Rules):
+Tender collection and tender matching are separate. The eTenders API is fetched as a full feed without company search terms; these keyword lists are applied locally to each title and description.
+
+**Mexel Profile** (three-profile competence rules):
 
 1. **STRONG_MATCH_KEYWORDS** (Profile A: The Product)
    - Automatic match - specific chemical technologies or brand names
-   - Examples: "mexel", "film forming amine", "scale inhibitor", "surfactant", "legionella"
+   - Examples: "mexel", "mexel 432", "surfactant", "legionella control"
    - Any match → Immediate INCLUDE
 
 2. **SYSTEM_KEYWORDS** (Profile B1: The System)
-   - Industrial water systems that Mexel serves
+   - Industrial cooling systems that Mexel serves
    - Examples: "cooling tower", "condenser", "boiler", "heat exchanger", "CRAC", "data center"
    - **Must be paired with ACTION keyword** to qualify
 
 3. **ACTION_KEYWORDS** (Profile B2: The Action)
-   - Services or chemical applications Mexel provides
+   - Cooling efficiency and service terms used with a matching system
    - Examples: "treatment", "chemical", "dosing", "efficiency", "PUE", "thermal efficiency"
    - **Must be paired with SYSTEM keyword** to qualify
 
@@ -230,9 +233,13 @@ Composite scoring algorithm with two dimensions:
 
 **Classification Logic**:
 - NEGATIVE match → EXCLUDE
-- STRONG_MATCH → INCLUDE
-- (SYSTEM + ACTION) → INCLUDE
+- Explicit REICON/ODACON/Huawei brand → PHAKATHI
+- PHAKATHI chemistry, preservation or OT keyword → PHAKATHI
+- Mexel STRONG_MATCH → MEXEL
+- (Mexel SYSTEM + ACTION) → MEXEL
 - Otherwise → EXCLUDE
+
+Brand routing does not override explicit cancellation, regret, validity-extension or award-notice headlines.
 
 
 ### Dashboard Sync ([sync_dashboard.py](sync_dashboard.py))

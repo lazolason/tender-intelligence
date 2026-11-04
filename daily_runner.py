@@ -7,6 +7,7 @@
 import os
 import sys
 import json
+import tempfile
 from datetime import datetime
 
 # Add current directory to path
@@ -16,9 +17,11 @@ from dotenv import load_dotenv
 from utils.config_validator import validate_env_on_startup
 from utils.pipeline_validation import validate_tender_batch
 from utils.scraper_monitor import summarize_scraper_health_status
+from utils.run_status import daily_run_outcome
 
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
-OUTPUT_DIR = os.path.join(PROJECT_DIR, "output")
+load_dotenv(os.path.join(PROJECT_DIR, ".env"))
+OUTPUT_DIR = os.environ.get("OUTPUT_DIR") or os.path.join(PROJECT_DIR, "output")
 DAILY_RUN_STATUS_PATH = os.path.join(OUTPUT_DIR, "last_daily_run.json")
 DASHBOARD_URL = (os.getenv("DASHBOARD_URL") or "http://localhost:5001/").strip() or "http://localhost:5001/"
 
@@ -26,9 +29,19 @@ DASHBOARD_URL = (os.getenv("DASHBOARD_URL") or "http://localhost:5001/").strip()
 def persist_run_results(results, path: str | None = None):
     """Persist the latest daily runner result for health checks and debugging."""
     path = path or DAILY_RUN_STATUS_PATH
-    os.makedirs(os.path.dirname(path), exist_ok=True)
-    with open(path, "w", encoding="utf-8") as file_obj:
-        json.dump(results, file_obj, indent=2)
+    directory = os.path.dirname(os.path.abspath(path))
+    os.makedirs(directory, exist_ok=True)
+    temporary_path = None
+    try:
+        with tempfile.NamedTemporaryFile(mode="w", encoding="utf-8", dir=directory, delete=False) as file_obj:
+            temporary_path = file_obj.name
+            json.dump(results, file_obj, indent=2)
+            file_obj.flush()
+            os.fsync(file_obj.fileno())
+        os.replace(temporary_path, path)
+    finally:
+        if temporary_path and os.path.exists(temporary_path):
+            os.remove(temporary_path)
     return path
 
 
@@ -53,7 +66,7 @@ def run_daily():
         from tenderscan import run_all_scrapers, process_tenders, save_outputs
         from utils.logging_tools import write_log, rotate_log_if_needed
         
-        LOG_FILE = os.path.join(PROJECT_DIR, "logs", "scraper.log")
+        LOG_FILE = os.environ.get("LOG_FILE") or os.path.join(PROJECT_DIR, "logs", "scraper.log")
         DB_PATH = os.getenv(
             "DB_PATH",
             os.path.join(PROJECT_DIR, "data", "tenders.db"),
@@ -71,6 +84,8 @@ def run_daily():
         print(f"   Scraped: {len(all_tenders)} tenders")
         monitor.generate_report()
         scraper_summary = summarize_scraper_health_status(monitor.get_metrics(), problem_threshold=3)
+        if "National Treasury" in scraper_summary["latest_failed_sources"]:
+            raise RuntimeError("Primary eTenders feed failed; scan coverage is incomplete")
         
         # Check for scraper failures and send alerts
         has_critical_failures, failures = monitor.should_alert_on_failures(threshold=3)
@@ -169,19 +184,29 @@ def run_daily():
         # empty in any other way reached SMTP and failed with a confusing error
         # instead of skipping cleanly.
         status = config_status()
-        if not status["configured"]:
+        if not results.get("scan") or results["scan"].get("status") != "success":
+            results["email"] = {"status": "skipped", "reason": "scan_failed"}
+            print("   ⚠️ Scan failed - refusing to send a stale digest")
+        elif not results.get("sync") or results["sync"].get("status") != "success":
+            results["email"] = {"status": "skipped", "reason": "sync_failed"}
+            print("   ⚠️ Dashboard sync failed - refusing to send a stale digest")
+        elif not status.get("enabled", True):
+            results["email"] = {"status": "disabled"}
+            print("   Email digest disabled in config.yaml - skipping alerts")
+        elif not status["configured"]:
             print("   ⚠️ Email not configured - skipping alerts")
             for missing in status["missing"]:
                 print(f"      missing: {missing}")
             results["email"] = {"status": "not_configured", "missing": status["missing"]}
         else:
-            success = send_daily_digest()
-            if success:
+            delivery = send_daily_digest(return_status=True)
+            results["email"] = delivery
+            if delivery["status"] == "sent":
                 print(f"   ✅ Email digest sent!")
-                results["email"] = {"status": "sent"}
-            else:
+            elif delivery["status"] == "no_alerts_needed":
                 print(f"   ⚠️ No HIGH priority tenders to alert")
-                results["email"] = {"status": "no_alerts_needed"}
+            else:
+                print("   ⚠️ Email digest delivery failed")
     except Exception as e:
         results["email"] = {"status": "error", "message": str(e)}
         print(f"   ⚠️ Email alerts skipped: {e}")
@@ -191,10 +216,13 @@ def run_daily():
     try:
         from utils.backup_database import backup_database
         if backup_database():
+            results["backup"] = {"status": "success"}
             print(f"   ✅ Database backed up successfully!")
         else:
+            results["backup"] = {"status": "failed"}
             print(f"   ⚠️ Database backup failed")
     except Exception as e:
+        results["backup"] = {"status": "error", "message": str(e)}
         print(f"   ⚠️ Backup generation failed: {e}")
     
     # Final summary
@@ -219,9 +247,12 @@ def run_daily():
    🌐 View Dashboard: {DASHBOARD_URL}
 """)
     
+    results["status"] = daily_run_outcome(results)
     try:
         persist_run_results(results)
     except Exception as e:
+        results["status"] = "error"
+        results["status_persistence"] = {"status": "error", "message": str(e)}
         print(f"   ⚠️ Failed to persist daily run status: {e}")
     return results
 
@@ -313,4 +344,5 @@ if __name__ == "__main__":
         print(f"❌ Configuration validation failed: {e}")
         sys.exit(1)
         
-    run_daily()
+    results = run_daily()
+    sys.exit({"success": 0, "partial": 2}.get(results["status"], 1))

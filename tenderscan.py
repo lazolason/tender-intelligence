@@ -206,14 +206,22 @@ def run_all_scrapers(
     def run_scraper(scraper: BaseScraper):
         """Worker function to run a single scraper with monitoring."""
         from utils.scraper_monitor import CircuitOpenError
+        from scrapers.base import PartialScrapeError
 
         try:
             with monitor.track(scraper.source_name) as run:
                 write_log(LOG_FILE, f"=== Scraping {scraper.source_name} ===")
-                tenders = scraper.run(raise_on_error=True)
+                try:
+                    tenders = scraper.run(raise_on_error=True)
+                except PartialScrapeError as exc:
+                    run.tenders_found = len(exc.tenders)
+                    raise
                 run.tenders_found = len(tenders)
             write_log(LOG_FILE, f"{scraper.source_name}: {len(tenders)} tenders found")
             return scraper.source_name, tenders, None
+        except PartialScrapeError as exc:
+            log_error(LOG_FILE, f"{scraper.source_name} incomplete: {exc}")
+            return scraper.source_name, exc.tenders, str(exc)
         except CircuitOpenError:
             msg = f"Skipping {scraper.source_name} (Circuit Open)"
             write_log(LOG_FILE, msg, "INFO")
@@ -249,8 +257,7 @@ def run_all_scrapers(
                     name, tenders, error = future.result()
                     if error:
                         failed_sources.append(name)
-                    else:
-                        all_tenders.extend(tenders)
+                    all_tenders.extend(tenders)
                 except Exception as e:
                     log_error(
                         LOG_FILE, f"Unexpected error processing {scraper_name}: {e}"
@@ -683,6 +690,12 @@ if __name__ == "__main__":
         log_error(LOG_FILE, f"Failed to write scraper health report: {exc}")
 
     write_log(LOG_FILE, f"Total tenders scraped: {len(all_tenders)}")
+
+    from utils.scraper_monitor import summarize_scraper_health_status
+    source_status = summarize_scraper_health_status(monitor.get_metrics())
+    if "National Treasury" in source_status["latest_failed_sources"]:
+        log_error(LOG_FILE, "Primary eTenders feed failed; refusing to publish a fresh scan")
+        sys.exit(1)
 
     # Alert on repeated failures (3 consecutive failures) - Phase 1: Multi-channel alerts
     if MULTI_CHANNEL_ALERTS_AVAILABLE and CONFIG.get("alerts", {}).get(

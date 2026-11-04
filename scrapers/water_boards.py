@@ -14,6 +14,7 @@ import logging
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from classify_engine import classify_tender
 from utils.retry_tools import safe_get
+from scrapers.base import PartialScrapeError
 
 logger = logging.getLogger(__name__)
 
@@ -28,7 +29,7 @@ def _is_excluded_category(value):
     """Return True when a classifier result should be skipped by the scraper."""
     return str(value or "").strip().upper() in {"EXCLUDED", "EXCLUDE"}
 
-def _scrape_generic_water_board(client_name, url, row_selector, ref_prefix):
+def _scrape_generic_water_board(client_name, url, row_selector, ref_prefix, *, raise_on_error=False):
     """Generic scraper for Water Boards with standard HTML tables"""
     tenders = []
     
@@ -36,6 +37,7 @@ def _scrape_generic_water_board(client_name, url, row_selector, ref_prefix):
         resp = safe_get(url, headers=HEADERS, timeout=30, log=logger)
         if resp is None:
             raise RuntimeError(f"{client_name}: Failed to fetch page")
+        resp.raise_for_status()
 
         soup = BeautifulSoup(resp.text, "html.parser")
         
@@ -109,19 +111,22 @@ def _scrape_generic_water_board(client_name, url, row_selector, ref_prefix):
                 
     except Exception as e:
         logger.warning("%s scrape failed: %s", client_name, e)
+        if raise_on_error:
+            raise
         
     return tenders
 
 # ----------------------------------------------------------
 # UMGENI WATER (uMngeni-uThukela)
 # ----------------------------------------------------------
-def scrape_umgeni_water():
+def scrape_umgeni_water(*, raise_on_error=False):
     """Scrape Umgeni Water tenders"""
     return _scrape_generic_water_board(
         client_name="Umgeni Water",
         url="https://www.umngeni-uthukela.co.za/tender/",
         row_selector="table#tenderTable tr, table tr", # Specific ID often used
-        ref_prefix="UW"
+        ref_prefix="UW",
+        raise_on_error=raise_on_error
     )
 
 # ----------------------------------------------------------
@@ -140,7 +145,7 @@ def _magalies_date(raw: str) -> str:
         return ""
 
 
-def scrape_magalies_water():
+def scrape_magalies_water(*, raise_on_error=False):
     """Scrape Magalies Water's Visual Composer toggle list.
 
     Each tender is a .vc_toggle block whose title holds the advert heading and
@@ -153,12 +158,18 @@ def scrape_magalies_water():
     resp = safe_get(url, headers=headers, timeout=20, log=logger)
     if resp is None:
         logger.warning("Magalies Water: no response")
+        if raise_on_error:
+            raise RuntimeError("Magalies Water: listing request failed")
         return []
 
+    if raise_on_error:
+        resp.raise_for_status()
     soup = BeautifulSoup(resp.text, "html.parser")
     blocks = soup.select(".vc_toggle")
     if not blocks:
         logger.warning("Magalies Water: no toggle blocks found")
+        if raise_on_error:
+            raise RuntimeError("Magalies Water: expected listing structure missing")
         return []
 
     tenders = []
@@ -228,7 +239,7 @@ def _lepelle_date(raw: str) -> str:
         return ""
 
 
-def scrape_lepelle_water():
+def scrape_lepelle_water(*, raise_on_error=False):
     """Scrape Lepelle Northern Water from its article-based opportunity list.
 
     Each opportunity is <article class="alt-theme-opportunity"> with a bid number
@@ -241,12 +252,18 @@ def scrape_lepelle_water():
     resp = safe_get(url, headers=headers, timeout=20, log=logger)
     if resp is None:
         logger.warning("Lepelle Northern Water: no response")
+        if raise_on_error:
+            raise RuntimeError("Lepelle Northern Water: listing request failed")
         return []
 
+    if raise_on_error:
+        resp.raise_for_status()
     soup = BeautifulSoup(resp.text, "html.parser")
     articles = soup.select("article.alt-theme-opportunity")
     if not articles:
         logger.warning("Lepelle Northern Water: no opportunity articles found")
+        if raise_on_error:
+            raise RuntimeError("Lepelle Northern Water: expected listing structure missing")
         return []
 
     tenders = []
@@ -290,7 +307,7 @@ def scrape_lepelle_water():
 # ----------------------------------------------------------
 # MASTER FUNCTION
 # ----------------------------------------------------------
-def scrape_all_water_boards():
+def scrape_all_water_boards(*, raise_on_error=False):
     """Scrape all configured Water Boards"""
     all_tenders = []
     
@@ -300,12 +317,13 @@ def scrape_all_water_boards():
         ("Lepelle Northern Water", scrape_lepelle_water),
     ]
     
+    failures = {}
     logger.info("Scraping water boards")
     
     for name, scraper in scrapers:
         logger.info("Running %s scraper", name)
         try:
-            results = scraper()
+            results = scraper(raise_on_error=True)
             all_tenders.extend(results)
             if results:
                 logger.info("%s: found %d tenders", name, len(results))
@@ -313,7 +331,10 @@ def scrape_all_water_boards():
                 logger.info("%s: no tenders found", name)
         except Exception as e:
             logger.warning("%s failed: %s", name, e)
+            failures[name] = str(e)
             
+    if failures and raise_on_error:
+        raise PartialScrapeError(all_tenders, failures)
     return all_tenders
 
 if __name__ == "__main__":

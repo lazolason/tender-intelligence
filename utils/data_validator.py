@@ -6,7 +6,7 @@ from typing import Dict, List, Optional, Tuple
 from urllib.parse import urlparse
 
 import requests
-from utils.retry_tools import secure_request_kwargs, validate_outbound_url
+from utils.retry_tools import secure_request_kwargs, validate_outbound_url, guarded_request
 from utils.text_utils import parse_date
 
 
@@ -154,8 +154,8 @@ class TenderValidator:
 
         try:
             validate_outbound_url(url)
-            resp = requests.head(
-                url,
+            resp = guarded_request(
+                url, method="HEAD",
                 **secure_request_kwargs({
                     "headers": headers,
                     "timeout": self.url_timeout_seconds,
@@ -171,7 +171,7 @@ class TenderValidator:
 
         # Some sites block HEAD; fall back to a light GET.
         try:
-            resp = requests.get(
+            resp = guarded_request(
                 url,
                 **secure_request_kwargs({
                     "headers": headers,

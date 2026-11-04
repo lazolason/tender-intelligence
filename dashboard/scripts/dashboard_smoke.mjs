@@ -165,6 +165,15 @@ async function run() {
     const calendarMonth = (await page.locator('#calendarMonth').textContent())?.trim() || '';
     expect(calendarMonth.length > 0, 'Calendar month label should not be empty');
 
+    // Action controls must wrap instead of extending past a mobile card.
+    await page.locator('[data-tab="dashboard"]').click();
+    for (const width of [320, 390, 768]) {
+      await page.setViewportSize({ width, height: 844 });
+      const overflows = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth);
+      expect(!overflows, `Dashboard overflows horizontally at ${width}px`);
+    }
+    await page.setViewportSize({ width: 1440, height: 1400 });
+
     await page.screenshot({ path: screenshotPath, fullPage: true });
 
     const unexpectedConsole = consoleMessages.filter((entry) => ['error', 'pageerror'].includes(entry.type));

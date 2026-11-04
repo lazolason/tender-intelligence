@@ -1,7 +1,7 @@
 import ipaddress
 import logging
 from typing import Optional
-from urllib.parse import urlparse
+from urllib.parse import urljoin, urlparse
 
 import requests
 
@@ -83,18 +83,51 @@ def _log_before_sleep(retry_state):
     before_sleep=_log_before_sleep,
     reraise=True,
 )
-def _requests_get_with_retry(url: str, **kwargs):
-    validate_outbound_url(url)
-    response = requests.get(url, **secure_request_kwargs(kwargs))
-    try:
-        validate_outbound_url(response.url)
-    except ValueError:
+def _requests_get_with_retry(url: str, *, method="GET", requester=None, **kwargs):
+    if method not in {"GET", "HEAD"}:
+        raise ValueError("Only read-only HTTP methods are supported")
+    perform_request = requester or (requests.head if method == "HEAD" else requests.get)
+    prepared = secure_request_kwargs(kwargs)
+    follow_redirects = prepared.pop("allow_redirects", True)
+    for hop in range(11):
+        validate_outbound_url(url)
+        response = perform_request(url, allow_redirects=False, **prepared)
+        try:
+            validate_outbound_url(response.url)
+            location = getattr(response, "headers", {}).get("Location")
+            if not follow_redirects or response.status_code not in {301, 302, 303, 307, 308} or not location:
+                if response.status_code in {502, 503, 504}:
+                    response.raise_for_status()
+                return response
+            target = urljoin(response.url, location)
+            # Validate before making the next request, not after requests has
+            # already followed a redirect into a private network or plain HTTP.
+            validate_outbound_url(target)
+            if hop == 10:
+                raise requests.TooManyRedirects("More than 10 outbound redirects")
+        except Exception:
+            response.close()
+            raise
+        prepared.pop("params", None)
+        if urlparse(target).netloc != urlparse(url).netloc:
+            prepared.pop("auth", None)
+            prepared.pop("cookies", None)
+            prepared["headers"] = {
+                k: v for k, v in (prepared.get("headers") or {}).items()
+                if k.lower() not in {"authorization", "proxy-authorization", "cookie"}
+            }
+        elif getattr(response, "cookies", None):
+            cookies = requests.cookies.RequestsCookieJar()
+            cookies.update(prepared.get("cookies") or {})
+            cookies.update(response.cookies)
+            prepared["cookies"] = cookies
         response.close()
-        raise
-    # Retry on 5xx server errors
-    if response.status_code in [502, 503, 504]:
-        response.raise_for_status()
-    return response
+        url = target
+
+
+def guarded_request(url: str, **kwargs):
+    """Return a response or raise, validating transport before every redirect."""
+    return _requests_get_with_retry(url, **kwargs)
 
 
 def safe_get(url: str, *, log: Optional[logging.Logger] = None, **kwargs):

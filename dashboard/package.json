@@ -19,16 +19,19 @@
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/user-event": "^14.5.2",
-    "@vitest/coverage-v8": "^4.1.10",
-    "@vitest/ui": "^4.1.10",
+    "@vitest/coverage-v8": "^4.1.12",
+    "@vitest/ui": "^4.1.12",
     "eslint": "^9.17.0",
     "jsdom": "^25.0.1",
     "playwright": "^1.59.1",
     "typescript": "^5.7.2",
-    "vitest": "^4.1.10"
+    "vitest": "^4.1.12"
   },
   "dependencies": {
     "chart.js": "^4.4.0",
     "hammerjs": "^2.0.8"
+  },
+  "overrides": {
+    "minimatch": "^11.0.1"
   }
 }

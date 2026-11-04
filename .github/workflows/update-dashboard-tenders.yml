@@ -19,7 +19,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        scraper: [municipalities, soes, national_treasury, joburg_water, eskom]
+        scraper: [national_treasury, municipalities, water_boards, eskom]
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -85,6 +85,19 @@ jobs:
         with:
           path: artifacts
 
+      - name: Require the primary eTenders artifact
+        run: |
+          python - <<'PY_PRIMARY'
+          import glob, json
+          paths = glob.glob("artifacts/**/national_treasury.json", recursive=True)
+          if len(paths) != 1:
+              raise SystemExit("Primary eTenders artifact missing or ambiguous; refusing to publish")
+          with open(paths[0], encoding="utf-8") as source:
+              payload = json.load(source)
+          if payload.get("status") != "success":
+              raise SystemExit("Primary eTenders feed failed; refusing to publish")
+          PY_PRIMARY
+
       - name: Aggregate and build dashboard snapshot
         id: build_snapshot
         run: |
@@ -108,8 +121,10 @@ jobs:
               try:
                   with open(path, "r", encoding="utf-8") as file_obj:
                       payload = json.load(file_obj)
-                  if isinstance(payload, dict) and payload.get("status") == "success":
+                  if isinstance(payload, dict) and payload.get("status") in {"success", "partial"}:
                       successful += 1
+                      if payload.get("status") == "partial":
+                          failing.append(payload.get("scraper") or os.path.basename(path))
                   else:
                       failing.append(payload.get("scraper") or os.path.basename(path))
               except Exception:

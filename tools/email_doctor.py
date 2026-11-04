@@ -26,7 +26,7 @@ from dotenv import load_dotenv  # noqa: E402
 
 load_dotenv(PROJECT_DIR / ".env")
 
-from utils.email_alerts import config_status, send_daily_digest  # noqa: E402
+from utils.email_alerts import EMAIL_CONFIG, config_status, send_daily_digest  # noqa: E402
 
 
 def check_smtp(server: str, port: int, timeout: float = 8.0) -> tuple[bool, str]:
@@ -41,8 +41,8 @@ def check_smtp(server: str, port: int, timeout: float = 8.0) -> tuple[bool, str]
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--send", action="store_true", help="send the digest after checking")
-    parser.add_argument("--server", default=os.getenv("TENDERSCAN_SMTP_SERVER", "smtp.gmail.com"))
-    parser.add_argument("--port", default=int(os.getenv("TENDERSCAN_SMTP_PORT", "587")), type=int)
+    parser.add_argument("--server", default=EMAIL_CONFIG["smtp_server"])
+    parser.add_argument("--port", default=int(EMAIL_CONFIG["smtp_port"]), type=int)
     args = parser.parse_args()
 
     status = config_status()
@@ -71,11 +71,14 @@ def main() -> int:
         return 0
 
     print("\nsending digest...")
-    sent = send_daily_digest()
-    if sent:
+    result = send_daily_digest(return_status=True)
+    if result["status"] == "sent":
         print("  sent")
         return 0
-    print("  not sent — usually means no HIGH-priority tenders are pending")
+    if result["status"] == "no_alerts_needed":
+        print("  no HIGH-priority tenders are pending")
+        return 0
+    print("  delivery failed")
     return 2
 
 

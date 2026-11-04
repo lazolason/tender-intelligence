@@ -1,11 +1,13 @@
 import json
+import pytest
 import sys
 from types import ModuleType
 
 import daily_runner
 
 
-def test_run_daily_writes_status_and_reports_step_results(tmp_path, monkeypatch):
+@pytest.mark.parametrize("failure", [None, "email", "scan", "sync", "primary", "disabled"])
+def test_run_daily_writes_status_and_reports_step_results(tmp_path, monkeypatch, failure):
     status_path = tmp_path / "output" / "last_daily_run.json"
     calls = []
 
@@ -13,6 +15,8 @@ def test_run_daily_writes_status_and_reports_step_results(tmp_path, monkeypatch)
 
     def fake_run_all_scrapers(monitor=None):
         calls.append("run_all_scrapers")
+        if failure == "scan":
+            raise RuntimeError("mock scanner failure")
         return [
             {
                 "ref": "DAILY-001",
@@ -74,7 +78,7 @@ def test_run_daily_writes_status_and_reports_step_results(tmp_path, monkeypatch)
             return False, {}
 
         def get_metrics(self):
-            return {}
+            return {"National Treasury": {"status": "failure"}} if failure == "primary" else {}
 
     scraper_monitor_module.ScraperMonitor = FakeMonitor
 
@@ -86,14 +90,15 @@ def test_run_daily_writes_status_and_reports_step_results(tmp_path, monkeypatch)
     }
 
     sync_dashboard_module = ModuleType("sync_dashboard")
-    sync_dashboard_module.sync = lambda: True
+    sync_dashboard_module.sync = lambda: failure != "sync"
 
     email_alerts_module = ModuleType("utils.email_alerts")
     email_alerts_module.EMAIL_CONFIG = {"sender_email": "ops@example.com"}
-    email_alerts_module.send_daily_digest = lambda: True
+    email_alerts_module.send_daily_digest = lambda **kwargs: {"status": "failed" if failure == "email" else "sent"}
     # The real module exposes config_status(); daily_runner uses it to decide
     # whether sending is possible instead of matching a literal placeholder.
     email_alerts_module.config_status = lambda: {
+        "enabled": failure != "disabled",
         "configured": True,
         "missing": [],
         "sender": "ops@example.com",
@@ -114,6 +119,19 @@ def test_run_daily_writes_status_and_reports_step_results(tmp_path, monkeypatch)
 
     results = daily_runner.run_daily()
 
+    if failure == "disabled":
+        assert results["status"] == "success"
+        assert results["email"]["status"] == "disabled"
+        return
+    if failure:
+        expected = "partial" if failure == "email" else "error"
+        assert results["status"] == expected
+        assert results["email"]["status"] == ("failed" if failure == "email" else "skipped")
+        persisted = json.loads(status_path.read_text(encoding="utf-8"))
+        assert persisted["status"] == expected
+        return
+
+    assert results["status"] == "success"
     assert results["scan"]["status"] == "success"
     assert results["scan"]["total_scraped"] == 2
     assert results["scan"]["new_added"] == 1

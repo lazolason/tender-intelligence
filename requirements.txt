@@ -24,7 +24,7 @@ python-dotenv==1.2.2
 
 # Utilities
 python-dateutil==2.8.2
-urllib3==2.7.0
+urllib3==2.8.0
 
 # Retry / backoff
 tenacity==8.2.3
@@ -39,7 +39,7 @@ python-Levenshtein==0.25.1
 
 # PDF Processing
 pdfplumber>=0.9.0
-pypdf==6.16.1
+pypdf==6.21.4
 
 # Multi-channel Alerts
 slack-sdk>=3.0.0

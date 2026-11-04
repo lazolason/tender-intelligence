@@ -15,6 +15,15 @@ logger = logging.getLogger(__name__)
 TenderList = List[Dict[str, Any]]
 
 
+class PartialScrapeError(RuntimeError):
+    """A grouped source failed, possibly after collecting usable records."""
+
+    def __init__(self, tenders: TenderList, failures: Dict[str, str]):
+        self.tenders = tenders
+        self.failures = failures
+        super().__init__("; ".join(f"{name}: {error}" for name, error in failures.items()))
+
+
 class BaseScraper(ABC):
     """Abstract base class for all tender scrapers.
 

@@ -24,7 +24,7 @@ from utils.db_writer import DatabaseWriter
 from utils.config_validator import load_and_validate_config, ConfigValidationError
 from utils.dashboard_snapshot import inspect_dashboard_snapshot
 from utils.launchd_validator import inspect_default_launchd_jobs
-from utils.run_status import inspect_daily_run_status
+from utils.run_status import inspect_daily_run_status, daily_run_outcome
 from utils.scraper_monitor import load_scraper_health, summarize_scraper_health_status
 
 logger = logging.getLogger(__name__)
@@ -553,12 +553,13 @@ def _run_daily_response():
         from daily_runner import run_daily as execute_daily_run
 
         result = execute_daily_run()
+        outcome = "error" if result.get("status_persistence") else daily_run_outcome(result)
         return jsonify({
-            "status": "success",
-            "message": "Daily scan completed",
+            "status": outcome,
+            "message": "Daily scan completed" if outcome == "success" else "Daily workflow incomplete",
             "timestamp": _utc_now_iso(),
             "result": result,
-        })
+        }), (500 if outcome == "error" else 200)
     except Exception:
         logger.exception("Daily scan API trigger failed")
         return _json_error("Daily scan failed", 500)

@@ -4,7 +4,6 @@ from typing import List
 
 from scrapers.base import BaseScraper, ScraperRegistration
 from scrapers.municipalities import scrape_all_municipalities
-from scrapers.soes import scrape_all_soes
 from scrapers.water_boards import scrape_all_water_boards
 
 
@@ -22,25 +21,19 @@ def _scrape_eskom_bulletin() -> list:
 
 SCRAPER_REGISTRY = [
     ScraperRegistration(
-        name="Municipalities",
-        scrape_func=scrape_all_municipalities,
-        description="Static municipality tender pages",
+        name="National Treasury",
+        scrape_func=_scrape_national_treasury,
+        description="Primary full eTenders feed, including SOE adverts",
     ),
     ScraperRegistration(
-        name="SOEs",
-        scrape_func=scrape_all_soes,
-        description="State-owned enterprises and large corporate sources",
+        name="Municipalities",
+        scrape_func=lambda: scrape_all_municipalities(raise_on_error=True),
+        description="Supplementary City of Cape Town direct portal",
     ),
     ScraperRegistration(
         name="Water Boards",
-        scrape_func=scrape_all_water_boards,
+        scrape_func=lambda: scrape_all_water_boards(raise_on_error=True),
         description="South African water board sources",
-    ),
-    ScraperRegistration(
-        name="National Treasury",
-        scrape_func=_scrape_national_treasury,
-        requires_selenium=False,
-        description="Public National Treasury eTender listing feed",
     ),
     # Johannesburg Water is intentionally absent: its tenders page redirects to
     # eTenders, which the National Treasury registration above already ingests
