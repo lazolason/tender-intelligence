@@ -145,20 +145,26 @@ async function run() {
     if (expectedActiveCount === 0) {
       await page.locator('#activeEmptyState').waitFor();
       expect(await page.locator('#activeEmptyState').isVisible(), 'Empty-state panel should be visible');
-      expect(await page.locator('#recentMatchesSection').isVisible(), 'Recent matches section should be visible');
-      const recentItems = await page.locator('#recentTenderList .tender-item').count();
-      expect(recentItems === expectedRecentCount, `Expected ${expectedRecentCount} recent matches, got ${recentItems}`);
+      if (expectedSnapshotCount === 0) {
+        expect(!(await page.locator('#recentMatchesSection').isVisible()), 'Recent matches should be hidden for an empty snapshot');
+      } else {
+        expect(await page.locator('#recentMatchesSection').isVisible(), 'Recent matches section should be visible');
+        const recentItems = await page.locator('#recentTenderList .tender-item').count();
+        expect(recentItems === expectedRecentCount, `Expected ${expectedRecentCount} recent matches, got ${recentItems}`);
+      }
     } else {
       const activeItems = await page.locator('#tenderList .tender-item').count();
       expect(activeItems > 0, 'Expected at least one active tender item');
     }
 
-    const firstSummaryButton = page.locator('.tender-summary-btn').first();
-    await firstSummaryButton.click();
-    await page.locator('#summaryModal.active').waitFor();
-    const modalTitle = (await page.locator('#modalTitle').textContent())?.trim() || '';
-    expect(modalTitle.length > 0, 'Summary modal title should not be empty');
-    await page.locator('#summaryModalClose').click();
+    if (expectedSnapshotCount > 0) {
+      const firstSummaryButton = page.locator('.tender-summary-btn').first();
+      await firstSummaryButton.click();
+      await page.locator('#summaryModal.active').waitFor();
+      const modalTitle = (await page.locator('#modalTitle').textContent())?.trim() || '';
+      expect(modalTitle.length > 0, 'Summary modal title should not be empty');
+      await page.locator('#summaryModalClose').click();
+    }
 
     await page.locator('[data-tab="calendar"]').click();
     await page.locator('#calendar.active').waitFor();
