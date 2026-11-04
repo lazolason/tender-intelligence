@@ -173,6 +173,7 @@ NEGATIVE_KEYWORDS = [
     # Office/Building Maintenance (not industrial)
     "office furniture", "office equipment",
     "painting", "plumbing", "carpentry",
+    "butterfly valve",
     "steel supply", "bearings supply",
 
     # Generic maintenance-only boiler work tends to be mechanical, not TES chemistry scope

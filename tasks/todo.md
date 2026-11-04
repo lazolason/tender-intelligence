@@ -183,7 +183,7 @@ Baseline checks: 193 Python tests passed; 34 dashboard tests passed; Ruff, dashb
 
 ## Tender Intelligence repository audit and repairs — 4 November 2026
 
-Status: implementation complete in isolated audit checkout; reviewed locally, not committed or pushed. The active operational checkout and its schedule/database were not changed.
+Status: implementation complete on review branch `fix/tender-audit-etenders-2026-11-04`; pull request #1 is open. The active operational checkout and its schedule/database were not changed.
 
 - [x] Prevent unsafe redirect hops; preserve HTTPS/TLS checks, retry behaviour and response handling.
 - [x] Honour configured database paths in backups and avoid creating a missing source database.
@@ -193,8 +193,9 @@ Status: implementation complete in isolated audit checkout; reviewed locally, no
 - [x] Separate Mexel and Phakathi/REICON/ODACON classification and scoring; normalize matching; handle award/cancellation notices before brand routing.
 - [x] Fix dashboard card overflow at narrow mobile widths and extend CI smoke coverage.
 - [x] Update current scraper and keyword architecture documentation; prepare keyword routing report and full patch.
+- [x] Reclassify the checked-in live tender snapshots against current company rules; remove out-of-scope records and keep both snapshot copies identical.
 - [x] Verify Python tests (228 passed), Ruff, dashboard tests (34 passed), dashboard lint/typecheck, npm audit (0 vulnerabilities), live source parsing, and browser widths 320/390/768/1440 px.
 
-Known data follow-up: the committed dashboard snapshot contains 32 historical rows all labelled PHAKATHI; a current-rule dry run classifies 31 EXCLUDED and 1 MEXEL. Stored database and generated snapshots were left intact. Review that data reclassification separately before regenerating production-facing output.
+Snapshot review: all 32 tender rows had been labelled PHAKATHI. Current rules classified all 32 as out of scope after adding a guard for mechanical butterfly-valve work that matched only because it mentioned a condenser. Both checked-in dashboard tender arrays are now empty and carry a scope-refresh count. All 16 separate planned-opportunity records were checked through their classifier and relevance gate and remain in their current categories.
 
 Known transport limit: outbound URL validation blocks literal private/loopback targets and validates each redirect before requesting it; DNS rebinding is not covered by the current resolver-free guard.

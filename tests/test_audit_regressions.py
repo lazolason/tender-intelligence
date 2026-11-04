@@ -142,6 +142,7 @@ def test_digest_reports_delivery_result(monkeypatch, eligible, delivered, expect
     ('Cooling tower water treatment and condenser efficiency', 'MEXEL'),
     ('Tender cancellation - ODACON boiler water treatment', 'EXCLUDED'),
     ('Notification of Awarded Camden Power Station', 'EXCLUDED'),
+    ('Refurbishment of metal seated butterfly valve on main condenser isolation valves', 'EXCLUDED'),
     ('Regret letter - Mexel 432 supply', 'EXCLUDED'),
 ])
 def test_company_keyword_boundaries(title, category):
@@ -167,6 +168,17 @@ def test_primary_registry_has_no_duplicate_soe_group():
     assert 'Municipalities' in names
     assert 'SOEs' not in names
     assert names.count('Eskom Tender Bulletin') == 1
+
+
+def test_checked_in_dashboard_snapshot_contains_only_current_scope_matches():
+    import json
+    from pathlib import Path
+
+    payload = json.loads(Path('dashboard/tenders.json').read_text())
+    public_payload = json.loads(Path('dashboard/public/tenders-latest.json').read_text())
+    assert public_payload == payload
+    assert all(row.get('category') in {'MEXEL', 'PHAKATHI'} for row in payload['tenders'])
+    assert payload['meta']['scope_refresh']['records_removed_as_out_of_scope'] == 32
 
 
 def test_municipality_failure_reaches_pipeline(monkeypatch):
