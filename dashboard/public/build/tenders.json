@@ -1,10 +1,10 @@
 {
     "meta": {
-        "last_sync": "2026-11-04 16:20",
+        "last_sync": "2026-11-05 16:33",
         "snapshot_origin": "static_scrape",
         "next_run": "Daily 08:00",
-        "build_sha": "923ad02",
-        "build_id": "2026-11-04 16:20 · 923ad02",
+        "build_sha": "9e57cb2",
+        "build_id": "2026-11-05 16:33 · 9e57cb2",
         "inputs": [
             "eskom.json",
             "municipalities.json",
@@ -12,35 +12,92 @@
             "water_boards.json"
         ],
         "validation": {
-            "total": 15,
-            "valid": 14,
-            "invalid": 1,
+            "total": 2,
+            "valid": 2,
+            "invalid": 0,
             "warnings": 0,
-            "error_counts": {
-                "closing_date is in the past": 1
-            },
+            "error_counts": {},
             "warning_counts": {}
         },
-        "planned_opportunity_count": 19
+        "planned_opportunity_count": 12
     },
     "tenders": [
         {
-            "ref": "E3789CXMWP",
-            "title": "The supply of a skid mounted, fuel (petrol/diesel) driven air compressor. This compressor must be able to offer 5-7 bar and give a minimum of 150CFM coverage. All relative connections, pressure pipes (10m) and nozzles must be included.",
-            "description": "The supply of a skid mounted, fuel (petrol/diesel) driven air compressor. This compressor must be able to offer 5-7 bar and give a minimum of 150CFM coverage. All relative connections, pressure pipes (10m) and nozzles must be included. | Reference: E3789CXMWP | Supplies: General | Request for Bid(Open-Tender) | N/A",
+            "ref": "E3748GXMPHEN",
+            "attachments": [
+                {
+                    "name": "SDLI Strategy Replace of Fuel Oil system.pdf",
+                    "url": "https://www.etenders.gov.za/home/Download/?blobName=e33fd209-f217-4c63-a3c5-26408503e13c.pdf&downloadedFileName=SDLI+Strategy+Replace+of+Fuel+Oil+system.pdf"
+                },
+                {
+                    "name": "Supplier Evaluation Pack.pdf",
+                    "url": "https://www.etenders.gov.za/home/Download/?blobName=37760774-2ca7-4836-bec8-38bfb154de2c.pdf&downloadedFileName=Supplier+Evaluation+Pack.pdf"
+                },
+                {
+                    "name": "E-tendering Help Manual for supplier - 27 January 2025.pdf",
+                    "url": "https://www.etenders.gov.za/home/Download/?blobName=42c80125-56fc-4657-a799-3b6c8ffc3cd7.pdf&downloadedFileName=E-tendering+Help+Manual+for+supplier+-+27+January+2025.pdf"
+                },
+                {
+                    "name": "E-Tenderers E-Tendering Training Acknowledgement Form.pdf",
+                    "url": "https://www.etenders.gov.za/home/Download/?blobName=cccc184b-f8a0-4d01-9bb2-3ee99e09e198.pdf&downloadedFileName=E-Tenderers+E-Tendering+Training+Acknowledgement+Form.pdf"
+                },
+                {
+                    "name": "Scope of Work- FUEL OIL INSTALLATION.pdf",
+                    "url": "https://www.etenders.gov.za/home/Download/?blobName=c3b88d1f-e374-4137-a44a-8381b82db8be.pdf&downloadedFileName=Scope+of+Work-+FUEL+OIL+INSTALLATION.pdf"
+                },
+                {
+                    "name": "Environmental Evaluation Checklist - template.pdf",
+                    "url": "https://www.etenders.gov.za/home/Download/?blobName=f980736e-22a1-4c9c-8a4a-8f0ce07df863.pdf&downloadedFileName=Environmental+Evaluation+Checklist+-+template.pdf"
+                },
+                {
+                    "name": "380-136358 R0 - Quality Control Plan TEMPLATE.doc",
+                    "url": "https://www.etenders.gov.za/home/Download/?blobName=9bcd6a35-e904-4b17-a724-aa7c6e33d946.doc&downloadedFileName=380-136358+R0+-+Quality+Control+Plan+TEMPLATE.doc"
+                },
+                {
+                    "name": "Tender Technical Evaluation-Fuel Oil Flow Meters.pdf",
+                    "url": "https://www.etenders.gov.za/home/Download/?blobName=0691bbbf-9648-4419-8374-b308f0ecbe4c.pdf&downloadedFileName=Tender+Technical+Evaluation-Fuel+Oil+Flow+Meters.pdf"
+                },
+                {
+                    "name": "240-109253698 CQP Template 2021.docx",
+                    "url": "https://www.etenders.gov.za/home/Download/?blobName=7c06e480-1db6-49e9-b0e2-cb86d43c5a8b.docx&downloadedFileName=240-109253698+CQP+Template+2021.docx"
+                },
+                {
+                    "name": "240-68099512 Form A_Cat 2_ Rev 9.docx",
+                    "url": "https://www.etenders.gov.za/home/Download/?blobName=901d381f-9383-449d-a565-cbda31752de4.docx&downloadedFileName=240-68099512+Form+A_Cat+2_+Rev+9.docx"
+                },
+                {
+                    "name": "240-12248652_List of Tender Returnables_Cat 2_ Rev 7.xlsx",
+                    "url": "https://www.etenders.gov.za/home/Download/?blobName=7a9978e6-b96b-43eb-a968-cf5db44229de.xlsx&downloadedFileName=240-12248652_List+of+Tender+Returnables_Cat+2_+Rev+7.xlsx"
+                },
+                {
+                    "name": "240-77471651(HIGH RISK) (1).pdf",
+                    "url": "https://www.etenders.gov.za/home/Download/?blobName=e206cc60-f6c1-44c1-9d66-d719fc9b55ba.pdf&downloadedFileName=240-77471651%28HIGH+RISK%29+%281%29.pdf"
+                },
+                {
+                    "name": "Annexure B Eskom Acknowledgement Form for OHS Legal and Other Requirements - Rev 4.pdf",
+                    "url": "https://www.etenders.gov.za/home/Download/?blobName=d9374eb8-a4a5-4b68-97c1-e821bfd0fdda.pdf&downloadedFileName=Annexure+B+Eskom+Acknowledgement+Form+for+OHS+Legal+and+Other+Requirements+-+Rev+4.pdf"
+                },
+                {
+                    "name": "Invitation to Tender (ITT)-Fuel Oil Flow meters for a period of 24 months.pdf",
+                    "url": "https://www.etenders.gov.za/home/Download/?blobName=f0ba205c-cf8c-4fff-a9e0-e9a5f6b42383.pdf&downloadedFileName=Invitation+to+Tender+%28ITT%29-Fuel+Oil+Flow+meters+for+a+period+of+24+months.pdf"
+                }
+            ],
+            "source_id": 176185,
+            "title": "DESIGN AND REPLACEMENT OF FUEL OIL FLOW METERS FOR A PERIOD OF 24 MONTHS",
+            "description": "DESIGN AND REPLACEMENT OF FUEL OIL FLOW METERS FOR A PERIOD OF 24 MONTHS | Reference: E3748GXMPHEN | Architectural and engineering activities; technical testing and analysis | Request for Bid(Open-Tender) | N/A",
             "client": "ESKOM",
             "source": "National Treasury",
             "ref_is_authoritative": true,
             "url": "https://www.etenders.gov.za/Home/opportunities",
-            "closing_date": "2026-11-18",
-            "published_date": "2026-11-03",
-            "reason": "Competence Match (Profile B): compressor + supply",
-            "short_title": "The_A_Skid_Mounted",
-            "category": "MEXEL",
+            "closing_date": "2026-11-19",
+            "published_date": "2026-10-28",
+            "reason": "Phakathi Match: 1 keyword(s)",
+            "short_title": "Design_And_Replacement_Of",
+            "category": "PHAKATHI",
             "scores": {
                 "fit_score": 7,
                 "fit_reasons": [
-                    "Mexel category match"
+                    "Phakathi category match"
                 ],
                 "fit_grade": "B",
                 "industry_score": 10,
@@ -48,308 +105,80 @@
                 "industry_grade": "A",
                 "mexel_suitability": 0,
                 "mexel_fit": "Weak",
-                "company_category": "MEXEL",
+                "company_category": "PHAKATHI",
                 "phakathi_suitability": 0,
                 "composite": 8.2,
                 "composite_score": 8.2,
                 "priority": "HIGH",
                 "recommendation": "🔥 PRIORITY BID - Strong fit, pursue immediately"
-            }
-        },
-        {
-            "ref": "TPL/2026/07/0533/9677/RFQ",
-            "title": "Supply of 1X Aircon compressor unit for a Carrier air conditioner. 12000 BTU, installation and configuration location control room.",
-            "description": "Supply of 1X Aircon compressor unit for a Carrier air conditioner. 12000 BTU, installation and configuration location control room. | Reference: TPL/2026/07/0533/9677/RFQ | Construction | Request for Bid(Open-Tender) | N/A",
-            "client": "Transnet SOC Ltd",
-            "source": "National Treasury",
-            "ref_is_authoritative": true,
-            "url": "https://www.etenders.gov.za/Home/opportunities",
-            "closing_date": "2026-11-13",
-            "published_date": "2026-10-30",
-            "reason": "Competence Match (Profile B): compressor + supply",
-            "short_title": "1x_Aircon_Compressor_Unit",
-            "category": "MEXEL",
-            "scores": {
-                "fit_score": 7,
-                "fit_reasons": [
-                    "Mexel category match"
-                ],
-                "fit_grade": "B",
-                "industry_score": 5,
-                "industry_matched": "General",
-                "industry_grade": "C",
-                "mexel_suitability": 0,
-                "mexel_fit": "Weak",
-                "company_category": "MEXEL",
-                "phakathi_suitability": 0,
-                "composite": 6.2,
-                "composite_score": 6.2,
-                "priority": "MEDIUM",
-                "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
-            }
-        },
-        {
-            "ref": "E3775GXMPGRO",
-            "title": "The Maintenance Services on routine, non-routine on an as and when required basis for High Pressure Jetting of Condenser Tubes – Grootvlei Power Station for a period of 5 years",
-            "description": "The Maintenance Services on routine, non-routine on an as and when required basis for High Pressure Jetting of Condenser Tubes – Grootvlei Power Station for a period of 5 years | Reference: E3775GXMPGRO | Services: Professional | Request for Bid(Open-Tender) | N/A",
-            "client": "ESKOM",
-            "source": "National Treasury",
-            "ref_is_authoritative": true,
-            "url": "https://www.etenders.gov.za/Home/opportunities",
-            "closing_date": "2027-01-20",
-            "published_date": "2026-10-30",
-            "reason": "Competence Match (Profile B): power station + maintenance",
-            "short_title": "The_On_Routine_Non",
-            "category": "MEXEL",
-            "scores": {
-                "fit_score": 8,
-                "fit_reasons": [
-                    "Mexel category match",
-                    "Mexel alignment (1 keywords)"
-                ],
-                "fit_grade": "A",
-                "industry_score": 10,
-                "industry_matched": "Power",
-                "industry_grade": "A",
-                "mexel_suitability": 2,
-                "mexel_fit": "Weak",
-                "company_category": "MEXEL",
-                "phakathi_suitability": 0,
-                "composite": 8.8,
-                "composite_score": 8.8,
-                "priority": "HIGH",
-                "recommendation": "🔥 PRIORITY BID - Strong fit, pursue immediately"
-            }
-        },
-        {
-            "ref": "PRDP 32/2025-26",
-            "title": "PRDP 32/2025-26 – REQUEST FOR PROPOSAL FOR THE PROVISION OF THE PROVINCIAL DATA CENTRE INFRASTRUCTURE FOR A PERIOD OF THIRTY-SIX (36) MONTHS",
-            "description": "PRDP 32/2025-26 – REQUEST FOR PROPOSAL FOR THE PROVISION OF THE PROVINCIAL DATA CENTRE INFRASTRUCTURE FOR A PERIOD OF THIRTY-SIX (36) MONTHS | Reference: PRDP 32/2025-26 | Services: Professional | Participation | This bid is only open to accredited service providers as per the SITA Transversal Contract. Bidder(s) must be registered as a service provider on the SITA RFB 2003 for services in Limpopo Province",
-            "client": "Limpopo - Office of the Premier",
-            "source": "National Treasury",
-            "ref_is_authoritative": true,
-            "url": "https://www.etenders.gov.za/Home/opportunities",
-            "closing_date": "2026-11-20",
-            "published_date": "2026-10-28",
-            "reason": "Competence Match (Profile B): data centre + service",
-            "short_title": "Prdp_32_2025_26",
-            "category": "MEXEL",
-            "scores": {
-                "fit_score": 7,
-                "fit_reasons": [
-                    "Mexel category match"
-                ],
-                "fit_grade": "B",
-                "industry_score": 5,
-                "industry_matched": "General",
-                "industry_grade": "C",
-                "mexel_suitability": 0,
-                "mexel_fit": "Weak",
-                "company_category": "MEXEL",
-                "phakathi_suitability": 0,
-                "composite": 6.2,
-                "composite_score": 6.2,
-                "priority": "MEDIUM",
-                "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
-            }
-        },
-        {
-            "ref": "TPT/2026/10/1476/13514/RFQ",
-            "title": "Provision to Service, repair and test air Compressor for Transnet Soc Limited (Reg. no. 1990/000900/30) Operating as Transnet Port Terminals (hereinafter referred to as “TPT”) at the Port of Port Elizabeth Container Terminal as a once-off service.",
-            "description": "Provision to Service, repair and test air Compressor for Transnet Soc Limited (Reg. no. 1990/000900/30) Operating as Transnet Port Terminals (hereinafter referred to as “TPT”) at the Port of Port Elizabeth Container Terminal as a once-off service. | Reference: TPT/2026/10/1476/13514/RFQ | Repair and installation of machinery and equipment | Request for Quotation | N/A",
-            "client": "Transnet SOC Ltd",
-            "source": "National Treasury",
-            "ref_is_authoritative": true,
-            "url": "https://www.etenders.gov.za/Home/opportunities",
-            "closing_date": "2026-11-05",
-            "published_date": "2026-10-27",
-            "reason": "Competence Match (Profile B): compressor + service",
-            "short_title": "Provision_To_Repair_And",
-            "category": "MEXEL",
-            "scores": {
-                "fit_score": 7,
-                "fit_reasons": [
-                    "Mexel category match"
-                ],
-                "fit_grade": "B",
-                "industry_score": 5,
-                "industry_matched": "General",
-                "industry_grade": "C",
-                "mexel_suitability": 0,
-                "mexel_fit": "Weak",
-                "company_category": "MEXEL",
-                "phakathi_suitability": 0,
-                "composite": 6.2,
-                "composite_score": 6.2,
-                "priority": "MEDIUM",
-                "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
-            }
-        },
-        {
-            "ref": "57 OF 2026",
-            "title": "Supply, delivery, installation and commissioning of server room environmental management system including quarterly support and maintenance plan for the period of three years",
-            "description": "Supply, delivery, installation and commissioning of server room environmental management system including quarterly support and maintenance plan for the period of three years | Reference: 57 OF 2026 | Information service activities | Request for Bid(Open-Tender) | N/A",
-            "client": "Makhado Local Municipality",
-            "source": "National Treasury",
-            "ref_is_authoritative": true,
-            "url": "https://www.etenders.gov.za/Home/opportunities",
-            "closing_date": "2026-11-30",
-            "published_date": "2026-10-26",
-            "reason": "Competence Match (Profile B): server room + service",
-            "short_title": "Supply_Delivery_Installation_And",
-            "category": "MEXEL",
-            "scores": {
-                "fit_score": 7,
-                "fit_reasons": [
-                    "Mexel category match"
-                ],
-                "fit_grade": "B",
-                "industry_score": 7,
-                "industry_matched": "Municipal",
-                "industry_grade": "B",
-                "mexel_suitability": 0,
-                "mexel_fit": "Weak",
-                "company_category": "MEXEL",
-                "phakathi_suitability": 0,
-                "composite": 7.0,
-                "composite_score": 7.0,
-                "priority": "HIGH",
-                "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
-            }
-        },
-        {
-            "ref": "E3626GXMPKRI",
-            "title": "Supply, Installation, Commissioning, and Design of Coal Bunkers Unit 1 to 6 CO Gas Monitors and Interface to WinCC SCADA System at Kriel Power Station for a period of three months. It is estimated that tenderers should have a CIDB contractor grading of 7EP or higher, however 6EP Potentially Emerging Enterprises who satisfy criteria stated in the Tender Data may submit Tender offers.",
-            "description": "Supply, Installation, Commissioning, and Design of Coal Bunkers Unit 1 to 6 CO Gas Monitors and Interface to WinCC SCADA System at Kriel Power Station for a period of three months. It is estimated that tenderers should have a CIDB contractor grading of 7EP or higher, however 6EP Potentially Emerging Enterprises who satisfy criteria stated in the Tender Data may submit Tender offers. | Reference: E3626GXMPKRI | Electricity, gas, steam and air conditioning | Request for Bid(Open-Tender) | Supply, Installation, Commissioning, and Design of Coal Bunkers Unit 1 to 6 CO Gas Monitors and Interface to WinCC SCADA System at Kriel Power Station for a period of three months. It is estimated that tenderers should have a CIDB contractor grading of 7EP or higher, however 6EP Potentially Emerging Enterprises who satisfy criteria stated in the Tender Data may submit Tender offers.",
-            "client": "ESKOM",
-            "source": "National Treasury",
-            "ref_is_authoritative": true,
-            "url": "https://www.etenders.gov.za/Home/opportunities",
-            "closing_date": "2026-11-13",
-            "published_date": "2026-10-23",
-            "reason": "Phakathi Match: 1 keyword(s)",
-            "short_title": "Supply_Installation_Commissioning_And",
-            "category": "PHAKATHI",
-            "scores": {
-                "fit_score": 8,
-                "fit_reasons": [
-                    "Phakathi category match",
-                    "Phakathi alignment (1 keywords)"
-                ],
-                "fit_grade": "A",
-                "industry_score": 10,
-                "industry_matched": "Power",
-                "industry_grade": "A",
-                "mexel_suitability": 0,
-                "mexel_fit": "Weak",
-                "company_category": "PHAKATHI",
-                "phakathi_suitability": 2,
-                "composite": 8.8,
-                "composite_score": 8.8,
-                "priority": "HIGH",
-                "recommendation": "🔥 PRIORITY BID - Strong fit, pursue immediately"
-            }
-        },
-        {
-            "ref": "WTE-2636ES",
-            "title": "SUPPLY AND DELIVERY OF MOBILE COMPRESSOR, PORTABLE SANDBLASTING POT AND CRANE CABLE GREASER AND OTHER MATERIAL TO MIDMAR DAM NEAR HOWICK TOWN",
-            "description": "SUPPLY AND DELIVERY OF MOBILE COMPRESSOR, PORTABLE SANDBLASTING POT AND CRANE CABLE GREASER AND OTHER MATERIAL TO MIDMAR DAM NEAR HOWICK TOWN | Reference: WTE-2636ES | Supplies: General | Request for Quotation | N/A",
-            "client": "Water and Sanitation",
-            "source": "National Treasury",
-            "ref_is_authoritative": true,
-            "url": "https://www.etenders.gov.za/Home/opportunities",
-            "closing_date": "2026-11-11",
-            "published_date": "2026-10-21",
-            "reason": "Competence Match (Profile B): compressor + supply",
-            "short_title": "Mobile_Compressor_Portable_Sandblasting",
-            "category": "MEXEL",
-            "scores": {
-                "fit_score": 7,
-                "fit_reasons": [
-                    "Mexel category match"
-                ],
-                "fit_grade": "B",
-                "industry_score": 5,
-                "industry_matched": "General",
-                "industry_grade": "C",
-                "mexel_suitability": 0,
-                "mexel_fit": "Weak",
-                "company_category": "MEXEL",
-                "phakathi_suitability": 0,
-                "composite": 6.2,
-                "composite_score": 6.2,
-                "priority": "MEDIUM",
-                "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
-            }
-        },
-        {
-            "ref": "CSA/06/2026-27",
-            "title": "THE DESIGN, SUPPLY, INSTALLATION, TESTING, COMMISSIONING AND VERIFICATION OF LED ARENA FLOODLIGHTING, NEW FLOODLIGHT MASTS AND ASSOCIATED ELECTRICAL INFRASTRUCTURE, AND MAINTENANCE FOR TEN (10) YEARS, AT THE BORDER CRICKET GROUNDS (BUFFALO PARK STADIUM), KUGOMPO CITY",
-            "description": "THE DESIGN, SUPPLY, INSTALLATION, TESTING, COMMISSIONING AND VERIFICATION OF LED ARENA FLOODLIGHTING, NEW FLOODLIGHT MASTS AND ASSOCIATED ELECTRICAL INFRASTRUCTURE, AND MAINTENANCE FOR TEN (10) YEARS, AT THE BORDER CRICKET GROUNDS (BUFFALO PARK STADIUM), KUGOMPO CITY | Reference: CSA/06/2026-27 | Electricity, gas, steam and air conditioning | Request for Bid(Open-Tender) | It is estimated that tenderers must have a CIDB contractor grading designation of 8EP or higher. Joint ventures are permitted in accordance with the CIDB requirements. An OEM may tender in its own right, be a CIDB-registered joint venture member, or be named as a key Subcontractor, in which case its grading (if any) does not count.",
-            "client": "Buffalo City Metropolitan Municipality",
-            "source": "National Treasury",
-            "ref_is_authoritative": true,
-            "url": "https://www.etenders.gov.za/Home/opportunities",
-            "closing_date": "2026-11-23",
-            "published_date": "2026-10-19",
-            "reason": "Competence Match (Profile B): infrastructure + maintenance",
-            "short_title": "The_Design_Supply_Installation",
-            "category": "MEXEL",
-            "scores": {
-                "fit_score": 8,
-                "fit_reasons": [
-                    "Mexel category match",
-                    "Mexel alignment (1 keywords)"
-                ],
-                "fit_grade": "A",
-                "industry_score": 7,
-                "industry_matched": "Municipal",
-                "industry_grade": "B",
-                "mexel_suitability": 2,
-                "mexel_fit": "Weak",
-                "company_category": "MEXEL",
-                "phakathi_suitability": 0,
-                "composite": 7.6,
-                "composite_score": 7.6,
-                "priority": "HIGH",
-                "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
-            }
-        },
-        {
-            "ref": "E3656GXNOU",
-            "title": "E3656GXNOU-EXPRESSION OF INTEREST (EOI) TO SUPPLIERS AND SERVICE PROVIDERS SPECIALISING IN CORROSION PREVENTION AND METALLURGICAL ENGINEERING CONSULTING SERVICES FOR THE CORROSION PROTECTION OF PRE OR POST TENSIONED AND STEEL REINFORCED CONCRETE CIVIL STRUCTURES AT KOEBERG POWER STATION.(EOI)",
-            "description": "E3656GXNOU-EXPRESSION OF INTEREST (EOI) TO SUPPLIERS AND SERVICE PROVIDERS SPECIALISING IN CORROSION PREVENTION AND METALLURGICAL ENGINEERING CONSULTING SERVICES FOR THE CORROSION PROTECTION OF PRE OR POST TENSIONED AND STEEL REINFORCED CONCRETE CIVIL STRUCTURES AT KOEBERG POWER STATION.(EOI) | Reference: E3656GXNOU | Other service activities | Expression of interest | N/A",
-            "client": "ESKOM",
-            "source": "National Treasury",
-            "ref_is_authoritative": true,
-            "url": "https://www.etenders.gov.za/Home/opportunities",
-            "closing_date": "2026-11-05",
-            "published_date": "2026-10-15",
-            "reason": "Competence Match (Profile B): power station + service",
-            "short_title": "E3656gxnou_Expression_Of_Interest",
-            "category": "MEXEL",
-            "scores": {
-                "fit_score": 8,
-                "fit_reasons": [
-                    "Mexel category match",
-                    "Mexel alignment (1 keywords)"
-                ],
-                "fit_grade": "A",
-                "industry_score": 10,
-                "industry_matched": "Power",
-                "industry_grade": "A",
-                "mexel_suitability": 2,
-                "mexel_fit": "Weak",
-                "company_category": "MEXEL",
-                "phakathi_suitability": 0,
-                "composite": 8.8,
-                "composite_score": 8.8,
-                "priority": "HIGH",
-                "recommendation": "🔥 PRIORITY BID - Strong fit, pursue immediately"
-            }
+            },
+            "portfolios": [
+                "PHAKATHI"
+            ],
+            "companies": [
+                "Phakathi"
+            ],
+            "capabilities": [
+                "Equipment, instrumentation and integration"
+            ],
+            "portfolio_matches": [
+                {
+                    "portfolio": "PHAKATHI",
+                    "capabilities": [
+                        "Equipment, instrumentation and integration"
+                    ],
+                    "matched_keywords": [
+                        "flow meters"
+                    ],
+                    "reason": "Specified equipment or process-integration scope"
+                }
+            ]
         },
         {
             "ref": "RFB 3273/2026-(ERP No 523017)",
+            "attachments": [
+                {
+                    "name": "RFB 3273-2026 - Annexure 6c- Bid specification Updted.docx",
+                    "url": "https://www.etenders.gov.za/home/Download/?blobName=5fb87b75-d1e2-4872-ba50-24a452700e4a.docx&downloadedFileName=RFB+3273-2026+-+Annexure+6c-+Bid+specification+Updted.docx"
+                },
+                {
+                    "name": "RFB 3273-2026  - Annexure 6c- Bid specification.docx",
+                    "url": "https://www.etenders.gov.za/home/Download/?blobName=626ff6d2-78ff-4eb3-b57f-3e473aae7741.docx&downloadedFileName=RFB+3273-2026++-+Annexure+6c-+Bid+specification.docx"
+                },
+                {
+                    "name": "RFB 3273-2026 - Annexure 6c- Bid specification (updted).docx",
+                    "url": "https://www.etenders.gov.za/home/Download/?blobName=50968525-b531-4dba-90f9-67ed275313af.docx&downloadedFileName=RFB+3273-2026+-+Annexure+6c-+Bid+specification+%28updted%29.docx"
+                },
+                {
+                    "name": "RFB 3273-2026 - ERRATUM2.pdf",
+                    "url": "https://www.etenders.gov.za/home/Download/?blobName=8d3ddc37-d7cb-4876-914a-770dff442414.pdf&downloadedFileName=RFB+3273-2026+-+ERRATUM2.pdf"
+                },
+                {
+                    "name": "RFB 3273-2026 - Annexure 6d- Price Schedule Updted.xlsx",
+                    "url": "https://www.etenders.gov.za/home/Download/?blobName=963cd59c-1f8f-4ae8-9919-7d1c2968d577.xlsx&downloadedFileName=RFB+3273-2026+-+Annexure+6d-+Price+Schedule+Updted.xlsx"
+                },
+                {
+                    "name": "RFB 3273-2026 - ERRATUM.pdf",
+                    "url": "https://www.etenders.gov.za/home/Download/?blobName=830cbd35-ab3e-416a-b042-903cc5727766.pdf&downloadedFileName=RFB+3273-2026+-+ERRATUM.pdf"
+                },
+                {
+                    "name": "RFB 3273-2026  - Annexure 6a-Invitation to Bid.docx",
+                    "url": "https://www.etenders.gov.za/home/Download/?blobName=c0ed744c-6c47-4d05-a1a0-d51c0d7b518f.docx&downloadedFileName=RFB+3273-2026++-+Annexure+6a-Invitation+to+Bid.docx"
+                },
+                {
+                    "name": "RFB 3273-2026  - Annexure 6d- Price Schedule.xlsx",
+                    "url": "https://www.etenders.gov.za/home/Download/?blobName=150bd9f3-edab-43a0-91f1-e511e361780f.xlsx&downloadedFileName=RFB+3273-2026++-+Annexure+6d-+Price+Schedule.xlsx"
+                },
+                {
+                    "name": "RFB 3273-2026  - Fraud Notice to Bidders.pdf",
+                    "url": "https://www.etenders.gov.za/home/Download/?blobName=e7aa70c8-5721-4533-ade9-f8a7e3c11837.pdf&downloadedFileName=RFB+3273-2026++-+Fraud+Notice+to+Bidders.pdf"
+                },
+                {
+                    "name": "RFB 3273-2026  - Annexure 6b-Invitation Letter.pdf",
+                    "url": "https://www.etenders.gov.za/home/Download/?blobName=8044a729-e11d-4eda-8c81-f98af70812e4.pdf&downloadedFileName=RFB+3273-2026++-+Annexure+6b-Invitation+Letter.pdf"
+                }
+            ],
+            "source_id": 174241,
             "title": "Supply and Delivery of Huawei Network Infrastructure Equipment with Huawei Support for Five (5) Years for the Western Cape Government (WCG), Department of the Premier - Centre for e-Innovation (CEI)",
             "description": "Supply and Delivery of Huawei Network Infrastructure Equipment with Huawei Support for Five (5) Years for the Western Cape Government (WCG), Department of the Premier - Centre for e-Innovation (CEI) | Reference: RFB 3273/2026-(ERP No 523017) | Information service activities | Request for Bid(Open-Tender) | N/A",
             "client": "State Information Technology Agency",
@@ -379,104 +208,28 @@
                 "composite_score": 6.8,
                 "priority": "MEDIUM",
                 "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
-            }
-        },
-        {
-            "ref": "2/2/003/2026-27",
-            "title": "Appointment of a Service Provider for Upgrade and Service of Head Office Server Room Infrastructure",
-            "description": "Appointment of a Service Provider for Upgrade and Service of Head Office Server Room Infrastructure | Reference: 2/2/003/2026-27 | Services to buildings and landscape activities | Request for Bid(Open-Tender) | Bidders who do not attend the compulsory briefing session will be automatically disqualified. Preference will be offered to bidders who reside in the Moqhaka Local Municipality area and have a valid BBBEE status level, certificate or sworn affidavit, in line with the municipality's Preferential Procurement Policy.",
-            "client": "Moqhaka Local Municipality",
-            "source": "National Treasury",
-            "ref_is_authoritative": true,
-            "url": "https://www.etenders.gov.za/Home/opportunities",
-            "closing_date": "2026-11-05",
-            "published_date": "2026-10-14",
-            "reason": "Competence Match (Profile B): server room + service",
-            "short_title": "A_Provider_For_Upgrade",
-            "category": "MEXEL",
-            "scores": {
-                "fit_score": 7,
-                "fit_reasons": [
-                    "Mexel category match"
-                ],
-                "fit_grade": "B",
-                "industry_score": 7,
-                "industry_matched": "Municipal",
-                "industry_grade": "B",
-                "mexel_suitability": 0,
-                "mexel_fit": "Weak",
-                "company_category": "MEXEL",
-                "phakathi_suitability": 0,
-                "composite": 7.0,
-                "composite_score": 7.0,
-                "priority": "HIGH",
-                "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
-            }
-        },
-        {
-            "ref": "BID - 2646GS",
-            "title": "BID - 2646GS - For Bids For SAP Infrastructure",
-            "description": "BID - 2646GS - For Bids For SAP Infrastructure | Reference: BID - 2646GS | Information and communication | Request for Bid(Open-Tender) | Enterprises owned by black people with at least 51% shareholding  51% black ownership = 6 points  Less than 51% black ownership = 0 point (Provide certified copy (not older than three (3) months) of BEE certificate / sworn affidavit, consolidated B-BBEE certificate from verification agency if bidders JV/consortium) Less than 30% black women ownership = 0 points",
-            "client": "City Power – Johannesburg",
-            "source": "National Treasury",
-            "ref_is_authoritative": true,
-            "url": "https://www.etenders.gov.za/Home/opportunities",
-            "closing_date": "2026-11-10",
-            "published_date": "2026-10-08",
-            "reason": "Competence Match (Profile B): infrastructure + verification",
-            "short_title": "Bid_2646gs_For_Bids",
-            "category": "MEXEL",
-            "scores": {
-                "fit_score": 7,
-                "fit_reasons": [
-                    "Mexel category match"
-                ],
-                "fit_grade": "B",
-                "industry_score": 10,
-                "industry_matched": "Power",
-                "industry_grade": "A",
-                "mexel_suitability": 0,
-                "mexel_fit": "Weak",
-                "company_category": "MEXEL",
-                "phakathi_suitability": 0,
-                "composite": 8.2,
-                "composite_score": 8.2,
-                "priority": "HIGH",
-                "recommendation": "🔥 PRIORITY BID - Strong fit, pursue immediately"
-            }
-        },
-        {
-            "ref": "Tender 66/2026",
-            "title": "APPOINTMENT OF A PROFESSIONAL SERVICE PROVIDER FOR MANAGEMENT, OPERATION & MAINTENANCE OF POTCHEFSTROOM WATER TREATMENT WORKS AND ASSOCIATED BULK INFRASTRUCTURE FOR A PERIOD OF THREE(3) YEARS",
-            "description": "APPOINTMENT OF A PROFESSIONAL SERVICE PROVIDER FOR MANAGEMENT, OPERATION & MAINTENANCE OF POTCHEFSTROOM WATER TREATMENT WORKS AND ASSOCIATED BULK INFRASTRUCTURE FOR A PERIOD OF THREE(3) YEARS | Reference: Tender 66/2026 | Civil engineering | Request for Bid(Open-Tender) | N/A",
-            "client": "JB Marks Local Municipality",
-            "source": "National Treasury",
-            "ref_is_authoritative": true,
-            "url": "https://www.etenders.gov.za/Home/opportunities",
-            "closing_date": "2026-11-13",
-            "published_date": "2026-10-01",
-            "reason": "Competence Match (Profile B): infrastructure + treatment",
-            "short_title": "A_Professional_Provider_For",
-            "category": "MEXEL",
-            "scores": {
-                "fit_score": 8,
-                "fit_reasons": [
-                    "Mexel category match",
-                    "Mexel alignment (1 keywords)"
-                ],
-                "fit_grade": "A",
-                "industry_score": 7,
-                "industry_matched": "Municipal",
-                "industry_grade": "B",
-                "mexel_suitability": 4,
-                "mexel_fit": "Moderate",
-                "company_category": "MEXEL",
-                "phakathi_suitability": 0,
-                "composite": 7.6,
-                "composite_score": 7.6,
-                "priority": "HIGH",
-                "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
-            }
+            },
+            "portfolios": [
+                "PHAKATHI"
+            ],
+            "companies": [
+                "Phakathi"
+            ],
+            "capabilities": [
+                "Equipment, instrumentation and integration"
+            ],
+            "portfolio_matches": [
+                {
+                    "portfolio": "PHAKATHI",
+                    "capabilities": [
+                        "Equipment, instrumentation and integration"
+                    ],
+                    "matched_keywords": [
+                        "huawei"
+                    ],
+                    "reason": "Specified equipment or process-integration scope"
+                }
+            ]
         }
     ],
     "planned_opportunities": [
@@ -487,6 +240,27 @@
             "planned_advert_date": "2026-10-16",
             "planned_closing_date": "2026-10-26",
             "planned_award_date": "2027-01-29",
+            "portfolios": [
+                "PHAKATHI"
+            ],
+            "companies": [
+                "Phakathi"
+            ],
+            "capabilities": [
+                "Equipment, instrumentation and integration"
+            ],
+            "portfolio_matches": [
+                {
+                    "portfolio": "PHAKATHI",
+                    "capabilities": [
+                        "Equipment, instrumentation and integration"
+                    ],
+                    "matched_keywords": [
+                        "huawei"
+                    ],
+                    "reason": "Specified equipment or process-integration scope"
+                }
+            ],
             "category": "PHAKATHI",
             "classification_reason": "Direct Brand Routing: matched 'huawei'",
             "matched_keywords": [
@@ -503,6 +277,27 @@
             "planned_advert_date": "2026-10-20",
             "planned_closing_date": "2026-10-30",
             "planned_award_date": "2027-02-01",
+            "portfolios": [
+                "PHAKATHI"
+            ],
+            "companies": [
+                "Phakathi"
+            ],
+            "capabilities": [
+                "Equipment, instrumentation and integration"
+            ],
+            "portfolio_matches": [
+                {
+                    "portfolio": "PHAKATHI",
+                    "capabilities": [
+                        "Equipment, instrumentation and integration"
+                    ],
+                    "matched_keywords": [
+                        "huawei"
+                    ],
+                    "reason": "Specified equipment or process-integration scope"
+                }
+            ],
             "category": "PHAKATHI",
             "classification_reason": "Direct Brand Routing: matched 'huawei'",
             "matched_keywords": [
@@ -513,52 +308,113 @@
             "source_url": "https://www.etenders.gov.za/Home/ProcurementPlans"
         },
         {
-            "external_id": "TPP-9AF2EDEDB98F42B1E67F1311",
-            "institution": "Justice & Constitutional Development",
-            "description": "Appointment of a service provider for the provision of maintenance & support services for the existing Private Cloud Datacenter Environment (Huawei stack) for a period of 3 years.",
-            "planned_advert_date": "2026-05-25",
-            "planned_closing_date": "2026-06-25",
-            "planned_award_date": "2026-08-25",
-            "category": "PHAKATHI",
-            "classification_reason": "Direct Brand Routing: matched 'huawei'",
-            "matched_keywords": [
-                "huawei"
+            "external_id": "TPP-D723163D77B053D67AF6DD1A",
+            "institution": "Overberg Water",
+            "description": "Calibration and verification of flow meters all schemes 36 months",
+            "planned_advert_date": "2026-10-15",
+            "planned_closing_date": "2026-10-30",
+            "planned_award_date": "2026-11-13",
+            "portfolios": [
+                "PHAKATHI"
             ],
-            "lifecycle_stage": "OVERDUE",
-            "source": "National Treasury Procurement Plans",
-            "source_url": "https://www.etenders.gov.za/Home/ProcurementPlans"
-        },
-        {
-            "external_id": "TPP-682AE9EF85F729F62C61165D",
-            "institution": "National - Department of Electricity and Energy",
-            "description": "Appointment of a panel of Service Provider(s) for the Measurement and Verification in the EEDSM Municipalities for a period of 12 months",
-            "planned_advert_date": "2026-06-08",
-            "planned_closing_date": "2026-06-29",
-            "planned_award_date": "2026-08-11",
-            "category": "MEXEL",
-            "classification_reason": "Strong Match (Profile A): measurement and verification",
-            "matched_keywords": [
-                "measurement and verification",
-                "service",
-                "verification"
+            "companies": [
+                "Phakathi"
             ],
-            "lifecycle_stage": "OVERDUE",
-            "source": "National Treasury Procurement Plans",
-            "source_url": "https://www.etenders.gov.za/Home/ProcurementPlans"
-        },
-        {
-            "external_id": "TPP-A2C05C205C9C1936E0776816",
-            "institution": "SALDANHA BAY MUNICIPALITY",
-            "description": "Professional services (Consultant): Investigation of upgrading of SCADA system",
-            "planned_advert_date": "2026-11-17",
-            "planned_closing_date": "2026-12-07",
-            "planned_award_date": "2027-01-18",
+            "capabilities": [
+                "Equipment, instrumentation and integration"
+            ],
+            "portfolio_matches": [
+                {
+                    "portfolio": "PHAKATHI",
+                    "capabilities": [
+                        "Equipment, instrumentation and integration"
+                    ],
+                    "matched_keywords": [
+                        "flow meters"
+                    ],
+                    "reason": "Specified equipment or process-integration scope"
+                }
+            ],
             "category": "PHAKATHI",
             "classification_reason": "Phakathi Match: 1 keyword(s)",
             "matched_keywords": [
-                "scada"
+                "flow meters"
             ],
             "lifecycle_stage": "DUE_SOON",
+            "source": "National Treasury Procurement Plans",
+            "source_url": "https://www.etenders.gov.za/Home/ProcurementPlans"
+        },
+        {
+            "external_id": "TPP-AC7A4722F855D087C6855AE8",
+            "institution": "Mbombela Local Municipality",
+            "description": "Flow Proportional Sodium Hypochlorite Dosing System",
+            "planned_advert_date": "2026-10-30",
+            "planned_closing_date": "2026-11-27",
+            "planned_award_date": "2027-03-04",
+            "portfolios": [
+                "PHAKATHI"
+            ],
+            "companies": [
+                "Phakathi"
+            ],
+            "capabilities": [
+                "Equipment, instrumentation and integration"
+            ],
+            "portfolio_matches": [
+                {
+                    "portfolio": "PHAKATHI",
+                    "capabilities": [
+                        "Equipment, instrumentation and integration"
+                    ],
+                    "matched_keywords": [
+                        "dosing system"
+                    ],
+                    "reason": "Specified equipment or process-integration scope"
+                }
+            ],
+            "category": "PHAKATHI",
+            "classification_reason": "Phakathi Match: 1 keyword(s)",
+            "matched_keywords": [
+                "dosing system"
+            ],
+            "lifecycle_stage": "DUE_SOON",
+            "source": "National Treasury Procurement Plans",
+            "source_url": "https://www.etenders.gov.za/Home/ProcurementPlans"
+        },
+        {
+            "external_id": "TPP-F2018AF46E1D5E6A7AF9CB8A",
+            "institution": "uThukela Water (Pty) Ltd",
+            "description": "Maintenance of a chlorin dosing system for 36 months",
+            "planned_advert_date": "2026-09-04",
+            "planned_closing_date": "2026-10-05",
+            "planned_award_date": "2026-11-15",
+            "portfolios": [
+                "PHAKATHI"
+            ],
+            "companies": [
+                "Phakathi"
+            ],
+            "capabilities": [
+                "Equipment, instrumentation and integration"
+            ],
+            "portfolio_matches": [
+                {
+                    "portfolio": "PHAKATHI",
+                    "capabilities": [
+                        "Equipment, instrumentation and integration"
+                    ],
+                    "matched_keywords": [
+                        "dosing system"
+                    ],
+                    "reason": "Specified equipment or process-integration scope"
+                }
+            ],
+            "category": "PHAKATHI",
+            "classification_reason": "Phakathi Match: 1 keyword(s)",
+            "matched_keywords": [
+                "dosing system"
+            ],
+            "lifecycle_stage": "OVERDUE",
             "source": "National Treasury Procurement Plans",
             "source_url": "https://www.etenders.gov.za/Home/ProcurementPlans"
         },
@@ -569,13 +425,34 @@
             "planned_advert_date": "2026-10-16",
             "planned_closing_date": "2026-11-16",
             "planned_award_date": "2027-01-02",
+            "portfolios": [
+                "MEXEL"
+            ],
+            "companies": [
+                "Mexel"
+            ],
+            "capabilities": [
+                "Cooling-water chemistry"
+            ],
+            "portfolio_matches": [
+                {
+                    "portfolio": "MEXEL",
+                    "capabilities": [
+                        "Cooling-water chemistry"
+                    ],
+                    "matched_keywords": [
+                        "chiller",
+                        "treatment",
+                        "water treatment"
+                    ],
+                    "reason": "Cooling-water product/process scope"
+                }
+            ],
             "category": "MEXEL",
-            "classification_reason": "Competence Match (Profile B): chiller + treatment",
+            "classification_reason": "Competence Match (Profile B): chiller + water treatment",
             "matched_keywords": [
                 "chiller",
-                "maintenance",
                 "plant",
-                "service",
                 "treatment",
                 "water treatment"
             ],
@@ -590,6 +467,27 @@
             "planned_advert_date": "2026-06-26",
             "planned_closing_date": "2026-07-20",
             "planned_award_date": "2026-08-25",
+            "portfolios": [
+                "PHAKATHI"
+            ],
+            "companies": [
+                "Phakathi"
+            ],
+            "capabilities": [
+                "Equipment, instrumentation and integration"
+            ],
+            "portfolio_matches": [
+                {
+                    "portfolio": "PHAKATHI",
+                    "capabilities": [
+                        "Equipment, instrumentation and integration"
+                    ],
+                    "matched_keywords": [
+                        "huawei"
+                    ],
+                    "reason": "Specified equipment or process-integration scope"
+                }
+            ],
             "category": "PHAKATHI",
             "classification_reason": "Direct Brand Routing: matched 'huawei'",
             "matched_keywords": [
@@ -600,103 +498,148 @@
             "source_url": "https://www.etenders.gov.za/Home/ProcurementPlans"
         },
         {
-            "external_id": "TPP-84522B4A604B328E104EA4D5",
+            "external_id": "TPP-E717DCB683589FA92030E608",
             "institution": "uMngeni-uThukela Water",
-            "description": "Control Room SCADA Upgrade",
-            "planned_advert_date": "2026-08-01",
-            "planned_closing_date": "2026-08-26",
-            "planned_award_date": "2026-10-26",
-            "category": "PHAKATHI",
-            "classification_reason": "Phakathi Match: 1 keyword(s)",
-            "matched_keywords": [
-                "scada"
+            "description": "Flow Proportional Sodium Hypochlorite Dosing System",
+            "planned_advert_date": "2026-10-30",
+            "planned_closing_date": "2026-11-27",
+            "planned_award_date": "2027-03-04",
+            "portfolios": [
+                "PHAKATHI"
             ],
-            "lifecycle_stage": "OVERDUE",
-            "source": "National Treasury Procurement Plans",
-            "source_url": "https://www.etenders.gov.za/Home/ProcurementPlans"
-        },
-        {
-            "external_id": "TPP-0CAE0F5A87BB5637F1D51783",
-            "institution": "Medical Research Council of South Africa",
-            "description": "SCADA Licenses",
-            "planned_advert_date": "2026-11-30",
-            "planned_closing_date": "2026-12-30",
-            "planned_award_date": "2027-01-29",
+            "companies": [
+                "Phakathi"
+            ],
+            "capabilities": [
+                "Equipment, instrumentation and integration"
+            ],
+            "portfolio_matches": [
+                {
+                    "portfolio": "PHAKATHI",
+                    "capabilities": [
+                        "Equipment, instrumentation and integration"
+                    ],
+                    "matched_keywords": [
+                        "dosing system"
+                    ],
+                    "reason": "Specified equipment or process-integration scope"
+                }
+            ],
             "category": "PHAKATHI",
             "classification_reason": "Phakathi Match: 1 keyword(s)",
             "matched_keywords": [
-                "scada"
+                "dosing system"
             ],
             "lifecycle_stage": "DUE_SOON",
             "source": "National Treasury Procurement Plans",
             "source_url": "https://www.etenders.gov.za/Home/ProcurementPlans"
         },
         {
-            "external_id": "TPP-CCF6A928DBD20CF36D1A41C7",
-            "institution": "Passenger Rail Agency of South Africa",
-            "description": "Private Cloud License Renewals (Huawei / CommVault)",
-            "planned_advert_date": "2026-06-12",
-            "planned_closing_date": "2026-06-26",
-            "planned_award_date": "2026-07-31",
-            "category": "PHAKATHI",
-            "classification_reason": "Direct Brand Routing: matched 'huawei'",
-            "matched_keywords": [
-                "huawei"
+            "external_id": "TPP-1CA9CF1608063826F80313A3",
+            "institution": "Companies and Intellectual Property Commission",
+            "description": "Computer Monitors",
+            "planned_advert_date": "0001-01-01",
+            "planned_closing_date": "0001-01-01",
+            "planned_award_date": "0001-01-01",
+            "portfolios": [
+                "PHAKATHI"
             ],
-            "lifecycle_stage": "OVERDUE",
-            "source": "National Treasury Procurement Plans",
-            "source_url": "https://www.etenders.gov.za/Home/ProcurementPlans"
-        },
-        {
-            "external_id": "TPP-0DBBCD3B59502B1FB6F21D62",
-            "institution": "Water and Sanitation",
-            "description": "Appointment  of Sevice provider to upgradePLC/SCADA  at Usutu Vaal",
-            "planned_advert_date": "2026-05-31",
-            "planned_closing_date": "2026-06-21",
-            "planned_award_date": "2026-08-19",
+            "companies": [
+                "Phakathi"
+            ],
+            "capabilities": [
+                "Equipment, instrumentation and integration"
+            ],
+            "portfolio_matches": [
+                {
+                    "portfolio": "PHAKATHI",
+                    "capabilities": [
+                        "Equipment, instrumentation and integration"
+                    ],
+                    "matched_keywords": [
+                        "computer monitors"
+                    ],
+                    "reason": "Specified equipment or process-integration scope"
+                }
+            ],
             "category": "PHAKATHI",
             "classification_reason": "Phakathi Match: 1 keyword(s)",
             "matched_keywords": [
-                "scada"
+                "computer monitors"
             ],
             "lifecycle_stage": "OVERDUE",
             "source": "National Treasury Procurement Plans",
             "source_url": "https://www.etenders.gov.za/Home/ProcurementPlans"
         },
         {
-            "external_id": "TPP-4814262A48473DDB04E358C8",
-            "institution": "Council for Scientific and Industrial Research (CSIR)",
-            "description": "Supply, delivery, installation, and commissioning  of an HVAC system, maintenance, and support in the data centre at the CSIR  Scientia Campus",
-            "planned_advert_date": "2026-06-22",
-            "planned_closing_date": "2026-07-10",
-            "planned_award_date": "2026-07-20",
-            "category": "MEXEL",
-            "classification_reason": "Competence Match (Profile B): data centre + maintenance",
+            "external_id": "TPP-0E2E03BAB1F8A0BFF7213571",
+            "institution": "Commission for Conciliation Mediation & Arbitration",
+            "description": "Supply and delivery of laptops,  desktops, and display monitors once-off.",
+            "planned_advert_date": "2026-05-22",
+            "planned_closing_date": "2026-06-15",
+            "planned_award_date": "2026-07-21",
+            "portfolios": [
+                "PHAKATHI"
+            ],
+            "companies": [
+                "Phakathi"
+            ],
+            "capabilities": [
+                "Equipment, instrumentation and integration"
+            ],
+            "portfolio_matches": [
+                {
+                    "portfolio": "PHAKATHI",
+                    "capabilities": [
+                        "Equipment, instrumentation and integration"
+                    ],
+                    "matched_keywords": [
+                        "display monitors"
+                    ],
+                    "reason": "Specified equipment or process-integration scope"
+                }
+            ],
+            "category": "PHAKATHI",
+            "classification_reason": "Phakathi Match: 1 keyword(s)",
             "matched_keywords": [
-                "data centre",
-                "delivery",
-                "industrial",
-                "installation",
-                "maintenance",
-                "supply"
+                "display monitors"
             ],
             "lifecycle_stage": "OVERDUE",
             "source": "National Treasury Procurement Plans",
             "source_url": "https://www.etenders.gov.za/Home/ProcurementPlans"
         },
         {
-            "external_id": "TPP-33BE6CDB65395E3E307004E4",
-            "institution": "Air Traffic and Navigation Services Company Limited",
-            "description": "Provision of HVAC, BMS, and chiller plant maintenance support at FALE",
-            "planned_advert_date": "2026-08-21",
-            "planned_closing_date": "2026-09-25",
-            "planned_award_date": "2027-04-02",
-            "category": "MEXEL",
-            "classification_reason": "Competence Match (Profile B): chiller + maintenance",
+            "external_id": "TPP-1C3091F3C0B38213E507D7BF",
+            "institution": "Special Investigation Unit",
+            "description": "Appointment of a Service Provider to Supply, Deliver and Maintenance of Interactive Displays for a period of three years.",
+            "planned_advert_date": "2026-06-01",
+            "planned_closing_date": "2026-06-23",
+            "planned_award_date": "2026-08-14",
+            "portfolios": [
+                "PHAKATHI"
+            ],
+            "companies": [
+                "Phakathi"
+            ],
+            "capabilities": [
+                "Equipment, instrumentation and integration"
+            ],
+            "portfolio_matches": [
+                {
+                    "portfolio": "PHAKATHI",
+                    "capabilities": [
+                        "Equipment, instrumentation and integration"
+                    ],
+                    "matched_keywords": [
+                        "interactive displays"
+                    ],
+                    "reason": "Specified equipment or process-integration scope"
+                }
+            ],
+            "category": "PHAKATHI",
+            "classification_reason": "Phakathi Match: 1 keyword(s)",
             "matched_keywords": [
-                "chiller",
-                "maintenance",
-                "plant"
+                "interactive displays"
             ],
             "lifecycle_stage": "OVERDUE",
             "source": "National Treasury Procurement Plans",
@@ -709,92 +652,31 @@
             "planned_advert_date": "2026-05-04",
             "planned_closing_date": "2026-05-15",
             "planned_award_date": "2026-06-30",
+            "portfolios": [
+                "PHAKATHI"
+            ],
+            "companies": [
+                "Phakathi"
+            ],
+            "capabilities": [
+                "Equipment, instrumentation and integration"
+            ],
+            "portfolio_matches": [
+                {
+                    "portfolio": "PHAKATHI",
+                    "capabilities": [
+                        "Equipment, instrumentation and integration"
+                    ],
+                    "matched_keywords": [
+                        "huawei"
+                    ],
+                    "reason": "Specified equipment or process-integration scope"
+                }
+            ],
             "category": "PHAKATHI",
             "classification_reason": "Direct Brand Routing: matched 'huawei'",
             "matched_keywords": [
                 "huawei"
-            ],
-            "lifecycle_stage": "OVERDUE",
-            "source": "National Treasury Procurement Plans",
-            "source_url": "https://www.etenders.gov.za/Home/ProcurementPlans"
-        },
-        {
-            "external_id": "TPP-576211679E70954CD0C2345A",
-            "institution": "Civilian Secretariat for Police",
-            "description": "Procurement of Performance Management System Business (PMDS) Automation System",
-            "planned_advert_date": "2026-04-15",
-            "planned_closing_date": "2026-05-11",
-            "planned_award_date": "2026-05-31",
-            "category": "PHAKATHI",
-            "classification_reason": "Phakathi Match: 1 keyword(s)",
-            "matched_keywords": [
-                "automation system"
-            ],
-            "lifecycle_stage": "OVERDUE",
-            "source": "National Treasury Procurement Plans",
-            "source_url": "https://www.etenders.gov.za/Home/ProcurementPlans"
-        },
-        {
-            "external_id": "TPP-E689C666BB39E173CF6F6CB8",
-            "institution": "Civilian Secretariat for Police",
-            "description": "Procurement of e-Leave Business Automation System",
-            "planned_advert_date": "2026-04-15",
-            "planned_closing_date": "2026-04-30",
-            "planned_award_date": "2026-05-29",
-            "category": "PHAKATHI",
-            "classification_reason": "Phakathi Match: 1 keyword(s)",
-            "matched_keywords": [
-                "automation system"
-            ],
-            "lifecycle_stage": "OVERDUE",
-            "source": "National Treasury Procurement Plans",
-            "source_url": "https://www.etenders.gov.za/Home/ProcurementPlans"
-        },
-        {
-            "external_id": "TPP-AA429A221414586BF1B366FF",
-            "institution": "Civilian Secretariat for Police",
-            "description": "Procurement of e-submission Business Automation System",
-            "planned_advert_date": "2026-04-15",
-            "planned_closing_date": "2026-04-30",
-            "planned_award_date": "2026-05-31",
-            "category": "PHAKATHI",
-            "classification_reason": "Phakathi Match: 1 keyword(s)",
-            "matched_keywords": [
-                "automation system"
-            ],
-            "lifecycle_stage": "OVERDUE",
-            "source": "National Treasury Procurement Plans",
-            "source_url": "https://www.etenders.gov.za/Home/ProcurementPlans"
-        },
-        {
-            "external_id": "TPP-68A4F16E957F062FFB54A722",
-            "institution": "South African Revenue Service",
-            "description": "Replacement of HVAC system new and old server room",
-            "planned_advert_date": "2026-05-01",
-            "planned_closing_date": "2026-06-01",
-            "planned_award_date": "2026-08-01",
-            "category": "MEXEL",
-            "classification_reason": "Competence Match (Profile B): server room + service",
-            "matched_keywords": [
-                "server room",
-                "service"
-            ],
-            "lifecycle_stage": "OVERDUE",
-            "source": "National Treasury Procurement Plans",
-            "source_url": "https://www.etenders.gov.za/Home/ProcurementPlans"
-        },
-        {
-            "external_id": "TPP-8C6786C43F836E388E7E6834",
-            "institution": "South African Revenue Service",
-            "description": "Chiller & BMS - Alberton Campus & Lehae",
-            "planned_advert_date": "2026-07-01",
-            "planned_closing_date": "2026-08-01",
-            "planned_award_date": "2026-12-20",
-            "category": "MEXEL",
-            "classification_reason": "Competence Match (Profile B): chiller + service",
-            "matched_keywords": [
-                "chiller",
-                "service"
             ],
             "lifecycle_stage": "OVERDUE",
             "source": "National Treasury Procurement Plans",

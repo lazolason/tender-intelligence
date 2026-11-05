@@ -1,111 +1,30 @@
 {
-    "generated_at": "2026-11-04 16:20",
-    "build_id": "2026-11-04 16:20 · 923ad02",
-    "build_sha": "923ad02",
+    "generated_at": "2026-11-05 16:33",
+    "build_id": "2026-11-05 16:33 · 9e57cb2",
+    "build_sha": "9e57cb2",
     "next_run": "Daily 08:00",
     "counts": {
-        "total": 14,
+        "total": 2,
         "by_company": {
-            "MEXEL": 12,
             "PHAKATHI": 2
         },
         "by_priority": {
-            "HIGH": 9,
-            "MEDIUM": 5
+            "HIGH": 1,
+            "MEDIUM": 1
         },
         "by_source": {
-            "National Treasury": 14
+            "National Treasury": 2
         }
     },
     "top": [
         {
-            "title": "The Maintenance Services on routine, non-routine on an as and when required basis for High Pressure Jetting of Condenser Tubes – Grootvlei Power Station for a period of 5 years",
-            "source": "National Treasury",
-            "company": "MEXEL",
-            "priority": "HIGH",
-            "close_date": "2027-01-20",
-            "fit": null,
-            "suitability": 8.8,
-            "url": "https://www.etenders.gov.za/Home/opportunities"
-        },
-        {
-            "title": "Supply, Installation, Commissioning, and Design of Coal Bunkers Unit 1 to 6 CO Gas Monitors and Interface to WinCC SCADA System at Kriel Power Station for a period of three months. It is estimated that tenderers should have a CIDB contractor grading of 7EP or higher, however 6EP Potentially Emerging Enterprises who satisfy criteria stated in the Tender Data may submit Tender offers.",
+            "title": "DESIGN AND REPLACEMENT OF FUEL OIL FLOW METERS FOR A PERIOD OF 24 MONTHS",
             "source": "National Treasury",
             "company": "PHAKATHI",
             "priority": "HIGH",
-            "close_date": "2026-11-13",
-            "fit": null,
-            "suitability": 8.8,
-            "url": "https://www.etenders.gov.za/Home/opportunities"
-        },
-        {
-            "title": "E3656GXNOU-EXPRESSION OF INTEREST (EOI) TO SUPPLIERS AND SERVICE PROVIDERS SPECIALISING IN CORROSION PREVENTION AND METALLURGICAL ENGINEERING CONSULTING SERVICES FOR THE CORROSION PROTECTION OF PRE OR POST TENSIONED AND STEEL REINFORCED CONCRETE CIVIL STRUCTURES AT KOEBERG POWER STATION.(EOI)",
-            "source": "National Treasury",
-            "company": "MEXEL",
-            "priority": "HIGH",
-            "close_date": "2026-11-05",
-            "fit": null,
-            "suitability": 8.8,
-            "url": "https://www.etenders.gov.za/Home/opportunities"
-        },
-        {
-            "title": "The supply of a skid mounted, fuel (petrol/diesel) driven air compressor. This compressor must be able to offer 5-7 bar and give a minimum of 150CFM coverage. All relative connections, pressure pipes (10m) and nozzles must be included.",
-            "source": "National Treasury",
-            "company": "MEXEL",
-            "priority": "HIGH",
-            "close_date": "2026-11-18",
+            "close_date": "2026-11-19",
             "fit": null,
             "suitability": 8.2,
-            "url": "https://www.etenders.gov.za/Home/opportunities"
-        },
-        {
-            "title": "BID - 2646GS - For Bids For SAP Infrastructure",
-            "source": "National Treasury",
-            "company": "MEXEL",
-            "priority": "HIGH",
-            "close_date": "2026-11-10",
-            "fit": null,
-            "suitability": 8.2,
-            "url": "https://www.etenders.gov.za/Home/opportunities"
-        },
-        {
-            "title": "THE DESIGN, SUPPLY, INSTALLATION, TESTING, COMMISSIONING AND VERIFICATION OF LED ARENA FLOODLIGHTING, NEW FLOODLIGHT MASTS AND ASSOCIATED ELECTRICAL INFRASTRUCTURE, AND MAINTENANCE FOR TEN (10) YEARS, AT THE BORDER CRICKET GROUNDS (BUFFALO PARK STADIUM), KUGOMPO CITY",
-            "source": "National Treasury",
-            "company": "MEXEL",
-            "priority": "HIGH",
-            "close_date": "2026-11-23",
-            "fit": null,
-            "suitability": 7.6,
-            "url": "https://www.etenders.gov.za/Home/opportunities"
-        },
-        {
-            "title": "APPOINTMENT OF A PROFESSIONAL SERVICE PROVIDER FOR MANAGEMENT, OPERATION & MAINTENANCE OF POTCHEFSTROOM WATER TREATMENT WORKS AND ASSOCIATED BULK INFRASTRUCTURE FOR A PERIOD OF THREE(3) YEARS",
-            "source": "National Treasury",
-            "company": "MEXEL",
-            "priority": "HIGH",
-            "close_date": "2026-11-13",
-            "fit": null,
-            "suitability": 7.6,
-            "url": "https://www.etenders.gov.za/Home/opportunities"
-        },
-        {
-            "title": "Supply, delivery, installation and commissioning of server room environmental management system including quarterly support and maintenance plan for the period of three years",
-            "source": "National Treasury",
-            "company": "MEXEL",
-            "priority": "HIGH",
-            "close_date": "2026-11-30",
-            "fit": null,
-            "suitability": 7.0,
-            "url": "https://www.etenders.gov.za/Home/opportunities"
-        },
-        {
-            "title": "Appointment of a Service Provider for Upgrade and Service of Head Office Server Room Infrastructure",
-            "source": "National Treasury",
-            "company": "MEXEL",
-            "priority": "HIGH",
-            "close_date": "2026-11-05",
-            "fit": null,
-            "suitability": 7.0,
             "url": "https://www.etenders.gov.za/Home/opportunities"
         },
         {
