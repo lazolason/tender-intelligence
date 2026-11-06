@@ -1,10 +1,10 @@
 {
     "meta": {
-        "last_sync": "2026-11-05 16:33",
+        "last_sync": "2026-11-06 16:12",
         "snapshot_origin": "static_scrape",
         "next_run": "Daily 08:00",
-        "build_sha": "9e57cb2",
-        "build_id": "2026-11-05 16:33 · 9e57cb2",
+        "build_sha": "d4ce720",
+        "build_id": "2026-11-06 16:12 · d4ce720",
         "inputs": [
             "eskom.json",
             "municipalities.json",
@@ -12,8 +12,8 @@
             "water_boards.json"
         ],
         "validation": {
-            "total": 2,
-            "valid": 2,
+            "total": 1,
+            "valid": 1,
             "invalid": 0,
             "warnings": 0,
             "error_counts": {},
@@ -24,76 +24,16 @@
     "tenders": [
         {
             "ref": "E3748GXMPHEN",
-            "attachments": [
-                {
-                    "name": "SDLI Strategy Replace of Fuel Oil system.pdf",
-                    "url": "https://www.etenders.gov.za/home/Download/?blobName=e33fd209-f217-4c63-a3c5-26408503e13c.pdf&downloadedFileName=SDLI+Strategy+Replace+of+Fuel+Oil+system.pdf"
-                },
-                {
-                    "name": "Supplier Evaluation Pack.pdf",
-                    "url": "https://www.etenders.gov.za/home/Download/?blobName=37760774-2ca7-4836-bec8-38bfb154de2c.pdf&downloadedFileName=Supplier+Evaluation+Pack.pdf"
-                },
-                {
-                    "name": "E-tendering Help Manual for supplier - 27 January 2025.pdf",
-                    "url": "https://www.etenders.gov.za/home/Download/?blobName=42c80125-56fc-4657-a799-3b6c8ffc3cd7.pdf&downloadedFileName=E-tendering+Help+Manual+for+supplier+-+27+January+2025.pdf"
-                },
-                {
-                    "name": "E-Tenderers E-Tendering Training Acknowledgement Form.pdf",
-                    "url": "https://www.etenders.gov.za/home/Download/?blobName=cccc184b-f8a0-4d01-9bb2-3ee99e09e198.pdf&downloadedFileName=E-Tenderers+E-Tendering+Training+Acknowledgement+Form.pdf"
-                },
-                {
-                    "name": "Scope of Work- FUEL OIL INSTALLATION.pdf",
-                    "url": "https://www.etenders.gov.za/home/Download/?blobName=c3b88d1f-e374-4137-a44a-8381b82db8be.pdf&downloadedFileName=Scope+of+Work-+FUEL+OIL+INSTALLATION.pdf"
-                },
-                {
-                    "name": "Environmental Evaluation Checklist - template.pdf",
-                    "url": "https://www.etenders.gov.za/home/Download/?blobName=f980736e-22a1-4c9c-8a4a-8f0ce07df863.pdf&downloadedFileName=Environmental+Evaluation+Checklist+-+template.pdf"
-                },
-                {
-                    "name": "380-136358 R0 - Quality Control Plan TEMPLATE.doc",
-                    "url": "https://www.etenders.gov.za/home/Download/?blobName=9bcd6a35-e904-4b17-a724-aa7c6e33d946.doc&downloadedFileName=380-136358+R0+-+Quality+Control+Plan+TEMPLATE.doc"
-                },
-                {
-                    "name": "Tender Technical Evaluation-Fuel Oil Flow Meters.pdf",
-                    "url": "https://www.etenders.gov.za/home/Download/?blobName=0691bbbf-9648-4419-8374-b308f0ecbe4c.pdf&downloadedFileName=Tender+Technical+Evaluation-Fuel+Oil+Flow+Meters.pdf"
-                },
-                {
-                    "name": "240-109253698 CQP Template 2021.docx",
-                    "url": "https://www.etenders.gov.za/home/Download/?blobName=7c06e480-1db6-49e9-b0e2-cb86d43c5a8b.docx&downloadedFileName=240-109253698+CQP+Template+2021.docx"
-                },
-                {
-                    "name": "240-68099512 Form A_Cat 2_ Rev 9.docx",
-                    "url": "https://www.etenders.gov.za/home/Download/?blobName=901d381f-9383-449d-a565-cbda31752de4.docx&downloadedFileName=240-68099512+Form+A_Cat+2_+Rev+9.docx"
-                },
-                {
-                    "name": "240-12248652_List of Tender Returnables_Cat 2_ Rev 7.xlsx",
-                    "url": "https://www.etenders.gov.za/home/Download/?blobName=7a9978e6-b96b-43eb-a968-cf5db44229de.xlsx&downloadedFileName=240-12248652_List+of+Tender+Returnables_Cat+2_+Rev+7.xlsx"
-                },
-                {
-                    "name": "240-77471651(HIGH RISK) (1).pdf",
-                    "url": "https://www.etenders.gov.za/home/Download/?blobName=e206cc60-f6c1-44c1-9d66-d719fc9b55ba.pdf&downloadedFileName=240-77471651%28HIGH+RISK%29+%281%29.pdf"
-                },
-                {
-                    "name": "Annexure B Eskom Acknowledgement Form for OHS Legal and Other Requirements - Rev 4.pdf",
-                    "url": "https://www.etenders.gov.za/home/Download/?blobName=d9374eb8-a4a5-4b68-97c1-e821bfd0fdda.pdf&downloadedFileName=Annexure+B+Eskom+Acknowledgement+Form+for+OHS+Legal+and+Other+Requirements+-+Rev+4.pdf"
-                },
-                {
-                    "name": "Invitation to Tender (ITT)-Fuel Oil Flow meters for a period of 24 months.pdf",
-                    "url": "https://www.etenders.gov.za/home/Download/?blobName=f0ba205c-cf8c-4fff-a9e0-e9a5f6b42383.pdf&downloadedFileName=Invitation+to+Tender+%28ITT%29-Fuel+Oil+Flow+meters+for+a+period+of+24+months.pdf"
-                }
-            ],
-            "source_id": 176185,
+            "source": "Eskom",
+            "url": "https://tenderbulletin.eskom.co.za/tender/96750",
             "title": "DESIGN AND REPLACEMENT OF FUEL OIL FLOW METERS FOR A PERIOD OF 24 MONTHS",
-            "description": "DESIGN AND REPLACEMENT OF FUEL OIL FLOW METERS FOR A PERIOD OF 24 MONTHS | Reference: E3748GXMPHEN | Architectural and engineering activities; technical testing and analysis | Request for Bid(Open-Tender) | N/A",
-            "client": "ESKOM",
-            "source": "National Treasury",
-            "ref_is_authoritative": true,
-            "url": "https://www.etenders.gov.za/Home/opportunities",
-            "closing_date": "2026-11-19",
-            "published_date": "2026-10-28",
-            "reason": "Phakathi Match: 1 keyword(s)",
             "short_title": "Design_And_Replacement_Of",
+            "description": "DESIGN AND REPLACEMENT OF FUEL OIL FLOW METERS FOR A PERIOD OF 24 MONTHS",
+            "client": "Eskom",
             "category": "PHAKATHI",
+            "closing_date": "2026-11-19T10:00:00",
+            "scraped_date": "2026-11-06T14:08:04.730302",
+            "reason": "Phakathi Match: 1 keyword(s)",
             "scores": {
                 "fit_score": 7,
                 "fit_reasons": [
@@ -129,103 +69,6 @@
                     ],
                     "matched_keywords": [
                         "flow meters"
-                    ],
-                    "reason": "Specified equipment or process-integration scope"
-                }
-            ]
-        },
-        {
-            "ref": "RFB 3273/2026-(ERP No 523017)",
-            "attachments": [
-                {
-                    "name": "RFB 3273-2026 - Annexure 6c- Bid specification Updted.docx",
-                    "url": "https://www.etenders.gov.za/home/Download/?blobName=5fb87b75-d1e2-4872-ba50-24a452700e4a.docx&downloadedFileName=RFB+3273-2026+-+Annexure+6c-+Bid+specification+Updted.docx"
-                },
-                {
-                    "name": "RFB 3273-2026  - Annexure 6c- Bid specification.docx",
-                    "url": "https://www.etenders.gov.za/home/Download/?blobName=626ff6d2-78ff-4eb3-b57f-3e473aae7741.docx&downloadedFileName=RFB+3273-2026++-+Annexure+6c-+Bid+specification.docx"
-                },
-                {
-                    "name": "RFB 3273-2026 - Annexure 6c- Bid specification (updted).docx",
-                    "url": "https://www.etenders.gov.za/home/Download/?blobName=50968525-b531-4dba-90f9-67ed275313af.docx&downloadedFileName=RFB+3273-2026+-+Annexure+6c-+Bid+specification+%28updted%29.docx"
-                },
-                {
-                    "name": "RFB 3273-2026 - ERRATUM2.pdf",
-                    "url": "https://www.etenders.gov.za/home/Download/?blobName=8d3ddc37-d7cb-4876-914a-770dff442414.pdf&downloadedFileName=RFB+3273-2026+-+ERRATUM2.pdf"
-                },
-                {
-                    "name": "RFB 3273-2026 - Annexure 6d- Price Schedule Updted.xlsx",
-                    "url": "https://www.etenders.gov.za/home/Download/?blobName=963cd59c-1f8f-4ae8-9919-7d1c2968d577.xlsx&downloadedFileName=RFB+3273-2026+-+Annexure+6d-+Price+Schedule+Updted.xlsx"
-                },
-                {
-                    "name": "RFB 3273-2026 - ERRATUM.pdf",
-                    "url": "https://www.etenders.gov.za/home/Download/?blobName=830cbd35-ab3e-416a-b042-903cc5727766.pdf&downloadedFileName=RFB+3273-2026+-+ERRATUM.pdf"
-                },
-                {
-                    "name": "RFB 3273-2026  - Annexure 6a-Invitation to Bid.docx",
-                    "url": "https://www.etenders.gov.za/home/Download/?blobName=c0ed744c-6c47-4d05-a1a0-d51c0d7b518f.docx&downloadedFileName=RFB+3273-2026++-+Annexure+6a-Invitation+to+Bid.docx"
-                },
-                {
-                    "name": "RFB 3273-2026  - Annexure 6d- Price Schedule.xlsx",
-                    "url": "https://www.etenders.gov.za/home/Download/?blobName=150bd9f3-edab-43a0-91f1-e511e361780f.xlsx&downloadedFileName=RFB+3273-2026++-+Annexure+6d-+Price+Schedule.xlsx"
-                },
-                {
-                    "name": "RFB 3273-2026  - Fraud Notice to Bidders.pdf",
-                    "url": "https://www.etenders.gov.za/home/Download/?blobName=e7aa70c8-5721-4533-ade9-f8a7e3c11837.pdf&downloadedFileName=RFB+3273-2026++-+Fraud+Notice+to+Bidders.pdf"
-                },
-                {
-                    "name": "RFB 3273-2026  - Annexure 6b-Invitation Letter.pdf",
-                    "url": "https://www.etenders.gov.za/home/Download/?blobName=8044a729-e11d-4eda-8c81-f98af70812e4.pdf&downloadedFileName=RFB+3273-2026++-+Annexure+6b-Invitation+Letter.pdf"
-                }
-            ],
-            "source_id": 174241,
-            "title": "Supply and Delivery of Huawei Network Infrastructure Equipment with Huawei Support for Five (5) Years for the Western Cape Government (WCG), Department of the Premier - Centre for e-Innovation (CEI)",
-            "description": "Supply and Delivery of Huawei Network Infrastructure Equipment with Huawei Support for Five (5) Years for the Western Cape Government (WCG), Department of the Premier - Centre for e-Innovation (CEI) | Reference: RFB 3273/2026-(ERP No 523017) | Information service activities | Request for Bid(Open-Tender) | N/A",
-            "client": "State Information Technology Agency",
-            "source": "National Treasury",
-            "ref_is_authoritative": true,
-            "url": "https://www.etenders.gov.za/Home/opportunities",
-            "closing_date": "2026-11-06",
-            "published_date": "2026-10-15",
-            "reason": "Direct Brand Routing: matched 'huawei'",
-            "short_title": "Huawei_Network_Infrastructure_Equipment",
-            "category": "PHAKATHI",
-            "scores": {
-                "fit_score": 8,
-                "fit_reasons": [
-                    "Phakathi category match",
-                    "Phakathi alignment (1 keywords)"
-                ],
-                "fit_grade": "A",
-                "industry_score": 5,
-                "industry_matched": "General",
-                "industry_grade": "C",
-                "mexel_suitability": 0,
-                "mexel_fit": "Weak",
-                "company_category": "PHAKATHI",
-                "phakathi_suitability": 2,
-                "composite": 6.8,
-                "composite_score": 6.8,
-                "priority": "MEDIUM",
-                "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
-            },
-            "portfolios": [
-                "PHAKATHI"
-            ],
-            "companies": [
-                "Phakathi"
-            ],
-            "capabilities": [
-                "Equipment, instrumentation and integration"
-            ],
-            "portfolio_matches": [
-                {
-                    "portfolio": "PHAKATHI",
-                    "capabilities": [
-                        "Equipment, instrumentation and integration"
-                    ],
-                    "matched_keywords": [
-                        "huawei"
                     ],
                     "reason": "Specified equipment or process-integration scope"
                 }
