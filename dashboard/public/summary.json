@@ -1,124 +1,41 @@
 {
-    "generated_at": "2026-11-03 23:18",
-    "build_id": "2026-11-03 23:18 · ba63fdd",
-    "build_sha": "ba63fdd",
+    "generated_at": "2026-11-05 16:33",
+    "build_id": "2026-11-05 16:33 · 9e57cb2",
+    "build_sha": "9e57cb2",
     "next_run": "Daily 08:00",
     "counts": {
-        "total": 32,
+        "total": 2,
         "by_company": {
-            "PHAKATHI": 32
+            "PHAKATHI": 2
         },
         "by_priority": {
-            "HIGH": 22,
-            "MEDIUM": 10
+            "HIGH": 1,
+            "MEDIUM": 1
         },
         "by_source": {
-            "National Treasury": 21,
-            "National Treasury Procurement Plan": 7,
-            "Private Lead": 3,
-            "Eskom": 1
+            "National Treasury": 2
         }
     },
     "top": [
         {
-            "title": "REFURBISHMENT OF METAL SEATED BUTTERFLY VALVE FOR USE AS CW ISOLATION VALVE ON MAIN CONDENSER ISOLATION VALVES (T1 AND T2 VALVES) FOR ONCE-OFF BASIS.",
+            "title": "DESIGN AND REPLACEMENT OF FUEL OIL FLOW METERS FOR A PERIOD OF 24 MONTHS",
             "source": "National Treasury",
             "company": "PHAKATHI",
             "priority": "HIGH",
-            "close_date": "2026-11-30",
-            "fit": null,
-            "suitability": 8.8,
-            "url": "https://www.etenders.gov.za/home/Download/?blobName=95a8def0-b853-4397-975e-0a943093db09.pdf&downloadedFileName=Grootvlei+Power+Station++Tender+Technical+Evaluation+Strategy.pdf"
-        },
-        {
-            "title": "Notification of Awarded Camden Power Station E2185GXMPCAMR The provision of mechanical maintenance of the boiler auxiliary plant, soot blowers and valves for a period of 48 months at Camden Power Station",
-            "source": "National Treasury",
-            "company": "PHAKATHI",
-            "priority": "HIGH",
-            "close_date": "2026-11-09",
-            "fit": null,
-            "suitability": 8.8,
-            "url": "https://www.etenders.gov.za/home/Download/?blobName=a7b7a041-c750-41d5-9909-0e0d52c0676a.pdf&downloadedFileName=Notification+of+Tender+Advertised+and+Awarded+E2185GXMPCAMR.pdf"
-        },
-        {
-            "title": "Supply and delivery of mill plant couplings, rubber coupling, spring bibby coupling, coupling bolts and coupling grease on an as when required basis for a period of 5 years. Please note that the tender closing date has been postponed to 11 November 2026.",
-            "source": "National Treasury",
-            "company": "PHAKATHI",
-            "priority": "HIGH",
-            "close_date": "2026-11-11",
+            "close_date": "2026-11-19",
             "fit": null,
             "suitability": 8.2,
-            "url": "https://www.etenders.gov.za/home/Download/?blobName=b4a1b526-a1bd-4646-b539-24d74409b7b8.pdf&downloadedFileName=NEC3+SUPPLY+CONTRACT.pdf"
+            "url": "https://www.etenders.gov.za/Home/opportunities"
         },
         {
-            "title": "SUPPLY, REFURBISHMENT, TESTING, COMMISSIONING, AND DELIVERY OF FLUID DRIVES USED IN INDUSTRIAL ROTATING EQUIPMENT FOR A PERIOD OF FIVE (05) YEARS",
+            "title": "Supply and Delivery of Huawei Network Infrastructure Equipment with Huawei Support for Five (5) Years for the Western Cape Government (WCG), Department of the Premier - Centre for e-Innovation (CEI)",
             "source": "National Treasury",
             "company": "PHAKATHI",
-            "priority": "HIGH",
-            "close_date": "2026-11-27",
-            "fit": null,
-            "suitability": 8.2,
-            "url": "https://www.etenders.gov.za/home/Download/?blobName=1b761d33-f3d0-4582-98f6-0c287a82c82a.pdf&downloadedFileName=Fluid+Drive+Scope+Of+Work+-+ITT.pdf"
-        },
-        {
-            "title": "Service repair and refurbishment of mill yoke stem, mill gearbox base, mill motor base and valve on site machining for 60 months",
-            "source": "National Treasury",
-            "company": "PHAKATHI",
-            "priority": "HIGH",
-            "close_date": "2026-12-15",
-            "fit": null,
-            "suitability": 8.2,
-            "url": "https://www.etenders.gov.za/home/Download/?blobName=2afb016b-83a6-43d2-8c3a-575107d261a4.pdf&downloadedFileName=Invitation+to+Tender+%28ITT%29+or+Request+for+Proposal+%28RFP%29+Template+Rev.+Yoke+Repairsv+vv.pdf"
-        },
-        {
-            "title": "INLINE OR OFFLINE VALVE COMPONENTS RECONDITIONING – SEAT HARD-FACING WELD OVERLAY, OR WELD OVERLAY O",
-            "source": "Eskom",
-            "company": "PHAKATHI",
-            "priority": "HIGH",
-            "close_date": "2027-12-13T10:00:00",
-            "fit": null,
-            "suitability": 8.2,
-            "url": "https://tenderbulletin.eskom.co.za/tender/94260"
-        },
-        {
-            "title": "TURNKEY PROPOSAL FOR THE DEVELOPMENT OF A WATER TREATMENT, RIVER PUMP STATION AND WATER BOTTLING PLANT FOR THE MPUMALANGA INTERNATIONAL FOOD MARKET AT THE CITY OF MBOMBELA LOCAL MUNICIPALITY",
-            "source": "National Treasury",
-            "company": "PHAKATHI",
-            "priority": "HIGH",
+            "priority": "MEDIUM",
             "close_date": "2026-11-06",
             "fit": null,
-            "suitability": 7.6,
-            "url": "https://www.etenders.gov.za/home/Download/?blobName=f2ae0f11-b23d-4cc2-afd1-f5ddb222eab1.pdf&downloadedFileName=ALA605.pdf"
-        },
-        {
-            "title": "Panel for service providers to provide design, supply, delivery, installation, and commissioning of Craighead Hi-lift P/S 400KW variable speed drive for period of three (3) years on ad-hoc basis.",
-            "source": "National Treasury Procurement Plan",
-            "company": "PHAKATHI",
-            "priority": "HIGH",
-            "close_date": "2026-12-21",
-            "fit": null,
-            "suitability": 7.4,
-            "url": "https://admin.etenders.gov.za/Home/ProcurementPlans"
-        },
-        {
-            "title": "Removal and replacement of DN 900 Valves - Pumpsets 9 and 20 including auxiliary DN 150 Bypass valves",
-            "source": "National Treasury",
-            "company": "PHAKATHI",
-            "priority": "HIGH",
-            "close_date": "2026-11-24",
-            "fit": null,
-            "suitability": 7.4,
-            "url": "https://www.etenders.gov.za/home/Download/?blobName=82d758fb-4640-465e-8288-40381a4e3bb7.zip&downloadedFileName=10417366.zip"
-        },
-        {
-            "title": "Refurbish, install , align and ccommissioning pump set 1 for Trichardt pump station pump ETA 150-50 .",
-            "source": "National Treasury",
-            "company": "PHAKATHI",
-            "priority": "HIGH",
-            "close_date": "2026-11-11",
-            "fit": null,
-            "suitability": 7.4,
-            "url": "https://www.etenders.gov.za/home/Download/?blobName=73173323-167e-41d2-91f4-05e996c136e1.pdf&downloadedFileName=10414239%28+Latest+CIDB%29.pdf"
+            "suitability": 6.8,
+            "url": "https://www.etenders.gov.za/Home/opportunities"
         }
     ]
 }

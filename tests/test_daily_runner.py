@@ -158,3 +158,23 @@ def test_run_daily_writes_status_and_reports_step_results(tmp_path, monkeypatch,
     assert persisted["scan"]["status"] == "success"
     assert persisted["sync"]["status"] == "success"
     assert persisted["email"]["status"] == "sent"
+
+
+@pytest.mark.parametrize("status, expected", [
+    ("success", True), ("partial", False), ("error", False), (None, False),
+])
+def test_completed_daily_run_today_allows_retry_after_failure(tmp_path, status, expected):
+    path = tmp_path / "last_daily_run.json"
+    path.write_text(json.dumps({
+        "timestamp": daily_runner.datetime.now().isoformat(), "status": status,
+    }))
+    assert daily_runner.completed_daily_run_today(path) is expected
+
+
+@pytest.mark.parametrize("content", [None, "invalid", "[]", '{"status":"success","timestamp":null}',
+                                     '{"status":"success","timestamp":"2000-01-01T08:00:00"}'])
+def test_completed_daily_run_today_allows_missing_old_or_invalid_status(tmp_path, content):
+    path = tmp_path / "last_daily_run.json"
+    if content is not None:
+        path.write_text(content)
+    assert daily_runner.completed_daily_run_today(path) is False

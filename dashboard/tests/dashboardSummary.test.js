@@ -64,3 +64,16 @@ describe('dashboard summary helpers', () => {
     expect(recent[1].ref).toBe('CLOSED-002');
   });
 });
+
+it('includes overlapping opportunities under either company filter without duplication', () => {
+    const tender = {
+        ref: 'BOTH-1', title: 'Combined treatment and dosing',
+        category: 'PHAKATHI', company: 'Phakathi', companies: ['Mexel', 'Phakathi'],
+        portfolios: ['MEXEL', 'REICON_ODACON'], capabilities: ['Corrosion protection'],
+        closing_date: '2099-01-01',
+    };
+    expect(getFilteredActiveTenders([tender], { filter: 'mexel' })).toEqual([tender]);
+    expect(getFilteredActiveTenders([tender], { filter: 'phakathi' })).toEqual([tender]);
+    expect(getFilteredActiveTenders([tender])).toHaveLength(1);
+    expect(getFilteredActiveTenders([tender], { searchQuery: 'REICON_ODACON' })).toEqual([tender]);
+});

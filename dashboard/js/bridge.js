@@ -5,6 +5,8 @@
  * application logic out of `index.html` and onto shared ES-module helpers.
  */
 
+import { bindDiscovery } from './modules/discovery.js';
+import { renderCoverage } from './modules/coverage.js';
 import { state } from './modules/config.js';
 import { loadTenderPayload, applyTenderPayload } from './modules/data.js';
 import { getDaysUntil, getPriority, isTenderActive } from './modules/tender.js';
@@ -13,6 +15,7 @@ import {
     getFilteredActiveTenders,
     getRecentMatchedTenders,
     normalizeCompanyLabel,
+    matchesCompany,
 } from './modules/dashboardSummary.js';
 import { escapeHtml, safeHttpUrl } from './utils/helpers.js';
 
@@ -82,6 +85,7 @@ function setDataNotice({ level = 'ok', text = '', actionLabel = '', actionType =
 }
 
 function updateHeader(meta = {}, payload = {}) {
+    renderCoverage(meta);
     lastPayload = payload;
     const lastSyncEl = document.getElementById('lastSync');
     const winRateBadge = document.getElementById('winRateBadge');
@@ -188,12 +192,12 @@ function updateStats() {
     if (statLow) statLow.textContent = String(active.filter((t) => getPriority(t) === 'LOW').length);
     if (statMexel) {
         statMexel.textContent = String(
-            active.filter((t) => normalizeCompanyLabel(t).toLowerCase() === 'mexel').length
+            active.filter((t) => matchesCompany(t, 'mexel')).length
         );
     }
     if (statPhakathi) {
         statPhakathi.textContent = String(
-            active.filter((t) => normalizeCompanyLabel(t).toLowerCase() === 'phakathi').length
+            active.filter((t) => matchesCompany(t, 'phakathi')).length
         );
     }
 }
@@ -226,6 +230,8 @@ export function createTenderListItem(tender) {
     const keywords = Array.isArray(tender?.matched_keywords) ? tender.matched_keywords : [];
     const visibleKeywords = keywords.slice(0, 5);
     const extraKeywords = Math.max(0, keywords.length - visibleKeywords.length);
+    const portfolioMatches = Array.isArray(tender?.portfolio_matches) ? tender.portfolio_matches : [];
+    const portfolioBadges = portfolioMatches.map((match) => `<span class="keyword-tag" title="${escapeHtml(match.reason || '')}">${escapeHtml(match.portfolio === 'REICON_ODACON' ? 'REICON / ODACON' : match.portfolio)}</span>`).join('');
     const hasIntel = Boolean(tender?.pdf_analysis);
     const isDuplicate =
         Array.isArray(tender?.duplicate_refs) && tender.duplicate_refs.length > 0;
@@ -265,7 +271,7 @@ export function createTenderListItem(tender) {
                     <span class="meta-item"><span class="meta-label">Source</span><span>${escapeHtml(source)}</span></span>
                     <span class="meta-item category-meta"><span class="meta-label">Category</span><span>${escapeHtml(category)}</span></span>
                 </div>
-                <div class="keyword-container">
+                <div class="keyword-container">${portfolioBadges}
                     ${visibleKeywords.map((keyword) => `<span class="keyword-tag">${escapeHtml(keyword)}</span>`).join('')}
                     ${extraKeywords ? `<span class="keyword-tag">+${extraKeywords} more</span>` : ''}
                 </div>
@@ -787,6 +793,7 @@ function loadMore() {
 }
 
 function bindUI() {
+    bindDiscovery();
     document.querySelectorAll('.tab-btn').forEach((button) => {
         button.addEventListener('click', () => showTab(button.dataset.tab || 'dashboard'));
     });

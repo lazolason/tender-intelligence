@@ -1,0 +1,26 @@
+[
+  {
+    "source": "Cape Town",
+    "http_status": 200,
+    "bytes": 119337,
+    "final_url": "https://web1.capetown.gov.za/web1/tenderportal/Tender"
+  },
+  {
+    "source": "Umngeni-uThukela",
+    "http_status": 200,
+    "bytes": 332879,
+    "final_url": "https://www.umngeni-uthukela.co.za/tender/"
+  },
+  {
+    "source": "Magalies",
+    "http_status": 404,
+    "bytes": 355,
+    "final_url": "https://magalieswater.co.za/tenders/"
+  },
+  {
+    "source": "Lepelle",
+    "http_status": 200,
+    "bytes": 217343,
+    "final_url": "https://www.lepellewater.co.za/tenders/"
+  }
+]

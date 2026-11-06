@@ -64,3 +64,17 @@ def test_expected_dashboard_count_matches_profile_filter(tmp_path, monkeypatch):
 
         monkeypatch.setattr(app_module, "DASHBOARD_SHOW_ALL", True)
         assert app_module._expected_dashboard_record_count(conn) == 3
+
+
+@pytest.mark.parametrize("origin, expected", [
+    ("public_source_refresh_without_database_write", None),
+    ("static_scrape", None),
+    ("database_sync", False),
+])
+def test_health_compares_counts_only_for_database_snapshots(monkeypatch, origin, expected):
+    monkeypatch.setattr(app_module, "inspect_dashboard_snapshot", lambda _: {
+        "exists": True, "stale": False, "record_count": 2, "snapshot_origin": origin,
+    })
+    monkeypatch.setattr(app_module, "_expected_dashboard_record_count", lambda _: 89)
+    payload = app.test_client().get("/health").get_json()
+    assert payload["dashboard_snapshot"]["counts_match_db"] is expected

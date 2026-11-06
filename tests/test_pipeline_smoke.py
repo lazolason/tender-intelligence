@@ -1,11 +1,16 @@
 import json
+import pytest
 
 from sync_dashboard import sync
 from utils.dashboard_snapshot import inspect_dashboard_snapshot
 from utils.db_writer import DatabaseWriter
 
 
-def test_db_to_dashboard_sync_smoke(tmp_path, monkeypatch):
+@pytest.mark.parametrize("description,category,companies", [
+    ("Supply of Mexel-compatible cooling water treatment chemicals", "MEXEL", ["Mexel"]),
+    ("Mexel cooling-water treatment and ODACON boiler corrosion inhibitor with chemical dosing", "PHAKATHI", ["Mexel", "Phakathi"]),
+])
+def test_db_to_dashboard_sync_smoke(tmp_path, monkeypatch, description, category, companies):
     db_path = tmp_path / "data" / "tenders.db"
     dashboard_dir = tmp_path / "dashboard"
     dashboard_json = dashboard_dir / "tenders.json"
@@ -16,7 +21,7 @@ def test_db_to_dashboard_sync_smoke(tmp_path, monkeypatch):
         {
             "ref": "SMOKE-001",
             "title": "Cooling water treatment chemicals",
-            "description": "Supply of Mexel-compatible cooling water treatment chemicals",
+            "description": description,
             "client": "Eskom",
             "source": "National Treasury",
             "url": "https://example.com/tender",
@@ -26,7 +31,7 @@ def test_db_to_dashboard_sync_smoke(tmp_path, monkeypatch):
 
     assert was_added is True
     assert scores["priority"] in {"HIGH", "MEDIUM", "LOW"}
-    assert classification["category"] == "MEXEL"
+    assert classification["category"] == category
 
     monkeypatch.setattr("sync_dashboard.DB_PATH", str(db_path))
     monkeypatch.setattr("sync_dashboard.DASHBOARD_DIR", str(dashboard_dir))
@@ -44,7 +49,8 @@ def test_db_to_dashboard_sync_smoke(tmp_path, monkeypatch):
     assert dashboard_payload["meta"]["tender_count"] == 1
     assert len(dashboard_payload["tenders"]) == 1
     assert dashboard_payload["tenders"][0]["ref"] == "SMOKE-001"
-    assert dashboard_payload["tenders"][0]["company"] == "Mexel"
+    assert dashboard_payload["tenders"][0]["companies"] == companies
+    assert dashboard_payload["tenders"][0]["portfolio_matches"] == classification["portfolio_matches"]
 
     snapshot_info = inspect_dashboard_snapshot(str(dashboard_json))
     assert snapshot_info["exists"] is True

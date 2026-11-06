@@ -66,6 +66,8 @@ def test_parses_current_portal_field_names_without_classifying():
     assert tenders == [
         {
             "ref": "HES 01/2026",
+            "attachments": [],
+            "source_id": None,
             "title": "Supply of cooling water treatment chemicals",
             "description": (
                 "Supply of cooling water treatment chemicals | Reference: HES 01/2026 | "
@@ -119,3 +121,15 @@ def test_pagination_refuses_truncation_and_excessive_snapshots(monkeypatch):
     )
     with pytest.raises(ValueError, match="exceeds safety limit"):
         NationalTreasuryScraper(max_records=10).fetch_all()
+
+
+def test_official_attachment_links_use_valid_ids_only():
+    rows = NationalTreasuryScraper().parse_tenders([{
+        'tender_No': 'DOC-1', 'description': 'Monitoring equipment', 'id': 123,
+        'supportDocument': [
+            {'supportDocumentID': '085109da-5e2d-4d99-97a6-c1253f9fb3ef', 'fileName': 'Scope.pdf', 'extension': '.pdf', 'active': True},
+            {'supportDocumentID': '../../bad', 'fileName': 'bad.pdf'},
+        ],
+    }])
+    assert len(rows[0]['attachments']) == 1
+    assert 'blobName=085109da-5e2d-4d99-97a6-c1253f9fb3ef.pdf' in rows[0]['attachments'][0]['url']

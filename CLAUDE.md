@@ -204,43 +204,18 @@ Composite scoring algorithm with two dimensions:
 - `mexel_suitability` and `phakathi_suitability` are separate scores. REICON and ODACON opportunities route to PHAKATHI, which is the operating company profile used for those products and related technologies.
 - Do not treat the two profiles as interchangeable: Mexel covers industrial cooling-water efficiency; Phakathi covers REICON/ODACON chemistry, preservation and OT/IT integration.
 
-### Classification Rules ([keyword_rules.py](keyword_rules.py))
+### Classification Rules and Portfolio Matches
 
-Tender collection and tender matching are separate. The eTenders API is fetched as a full feed without company search terms; these keyword lists are applied locally to each title and description.
+`classify_engine.py` is the source of truth. `keyword_rules.py` defines candidate capabilities against the current Mexel and PISO websites plus user-confirmed display supply.
 
-**Mexel Profile** (three-profile competence rules):
-
-1. **STRONG_MATCH_KEYWORDS** (Profile A: The Product)
-   - Automatic match - specific chemical technologies or brand names
-   - Examples: "mexel", "mexel 432", "surfactant", "legionella control"
-   - Any match → Immediate INCLUDE
-
-2. **SYSTEM_KEYWORDS** (Profile B1: The System)
-   - Industrial cooling systems that Mexel serves
-   - Examples: "cooling tower", "condenser", "boiler", "heat exchanger", "CRAC", "data center"
-   - **Must be paired with ACTION keyword** to qualify
-
-3. **ACTION_KEYWORDS** (Profile B2: The Action)
-   - Cooling efficiency and service terms used with a matching system
-   - Examples: "treatment", "chemical", "dosing", "efficiency", "PUE", "thermal efficiency"
-   - **Must be paired with SYSTEM keyword** to qualify
-
-4. **NEGATIVE_KEYWORDS** (Exclusions)
-   - Targeted exclusions for non-Mexel work
-   - Examples: "construction of", "split unit", "office air conditioning", "building hvac"
-   - **Note**: General "hvac" removed - too broad, excludes data center CRAC/CRAH systems
-   - Any match → Immediate EXCLUDE (overrides all other matches)
-
-**Classification Logic**:
-- NEGATIVE match → EXCLUDE
-- Explicit REICON/ODACON/Huawei brand → PHAKATHI
-- PHAKATHI chemistry, preservation or OT keyword → PHAKATHI
-- Mexel STRONG_MATCH → MEXEL
-- (Mexel SYSTEM + ACTION) → MEXEL
-- Otherwise → EXCLUDE
-
-Brand routing does not override explicit cancellation, regret, validity-extension or award-notice headlines.
-
+- Mexel: cooling-water chemistry, surfactant/biological-fouling scope, dosing, online process monitoring and thermal-performance review.
+- REICON/ODACON: film-forming-amine corrosion inhibition, boiler/feedwater/condensate/steam-cycle chemistry and preservation; represented through Phakathi.
+- Phakathi: relevant dosing, process instrumentation, controls/connectivity and specified display supply. Huawei scope is deferred, with no further expansion authorised.
+- `portfolios`, `companies`, `capabilities` and `portfolio_matches` allow overlapping matches with distinct evidence. Do not force one commercial portfolio or transfer product evidence.
+- `category` remains a legacy storage/scoring field, not an exclusive commercial assignment. Export derives portfolio metadata from stored title/description without schema migration.
+- Refurbishment, mechanical repairs, generic site/equipment names or procurement verbs alone do not establish relevance. Qualification still requires specification/eligibility review.
+- Historical MWP3022CX is a relevant interactive-display supply example. Readvertisement timing is unknown; do not assert a live advert or use buyer/end-user names as blanket qualification triggers.
+- Dashboard filters/counts support overlap; all-tenders results do not duplicate rows. Source timestamps must not be advanced merely because matching rules changed.
 
 ### Dashboard Sync ([sync_dashboard.py](sync_dashboard.py))
 
@@ -331,3 +306,15 @@ See [com.tenderscan.daily.plist](com.tenderscan.daily.plist) and [com.tenderscan
 - Main branch: `main`
 - Run `python sync_dashboard.py` after scans to refresh the local dashboard
 - Includes co-authorship attribution in commits (see Git Safety Protocol in [DEPLOYMENT.md](DEPLOYMENT.md))
+
+### Document-aware review and source health
+
+- `utils/opportunity_review.py` checks bounded official-source PDFs before final portfolio matching. Only allowlisted HTTPS document hosts are fetched; redirects, unsupported files, oversized/unreadable PDFs and processing limits stay explicit in the review queue.
+- The per-run limits are 20 documents, up to 3 per opportunity, 8 MB per document, first 30 pages and a 60-second checking budget. This is not exhaustive document coverage. ZIPs and scanned documents require manual review.
+- `tools/refresh_portfolio_snapshot.py` refreshes public sources and snapshot/review metadata without database writes or notifications. It retains the previous snapshot if the primary feed fails; supplementary failures are shown explicitly.
+- Review metadata is stored under the configured output directory and included in sync metadata. The dashboard separates source health from successful JSON loading and labels all queued opportunities as needing specification/eligibility review.
+- Sync and snapshot exports revalidate legacy stored categories, without deleting operational records or user workflow data.
+
+### High-recall discovery
+
+`utils/discovery.py` separates broad retrieval from portfolio qualification. Capture is written before shortlist filtering. `dashboard/public/discovery-index.json` retains searchable notices even when unassessed or excluded; the UI fetches this index on request. Generic chemical or equipment language can prompt review without claiming product suitability. Explicit unrelated scopes stay out of the review queue but remain searchable. Preserve per-buyer reference identity, missing-deadline review candidates and stale-source fallback flags. Curated positive examples verify retrieval, not empirical field recall.

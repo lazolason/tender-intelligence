@@ -45,6 +45,22 @@ def persist_run_results(results, path: str | None = None):
     return path
 
 
+
+def completed_daily_run_today(path=None):
+    """Skip repeated successful runs, while allowing failed or partial runs to retry."""
+    try:
+        with open(path or DAILY_RUN_STATUS_PATH, "r", encoding="utf-8") as file_obj:
+            result = json.load(file_obj)
+        return (
+            isinstance(result, dict)
+            and result.get("status") == "success"
+            and isinstance(result.get("timestamp"), str)
+            and result["timestamp"][:10] == datetime.now().strftime("%Y-%m-%d")
+        )
+    except (OSError, ValueError):
+        return False
+
+
 def run_daily():
     """Run complete daily tender workflow"""
     results = {
@@ -344,5 +360,9 @@ if __name__ == "__main__":
         print(f"❌ Configuration validation failed: {e}")
         sys.exit(1)
         
+    if completed_daily_run_today():
+        print("Daily scan already completed today; skipping.")
+        sys.exit(0)
+
     results = run_daily()
     sys.exit({"success": 0, "partial": 2}.get(results["status"], 1))

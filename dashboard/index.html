@@ -847,6 +847,15 @@
             outline-offset: 2px;
         }
 
+        .portfolio-logos { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 4px; }
+        .portfolio-logo { background: #fff; border-radius: 9px; padding: 8px 12px; display: grid; place-items: center; }
+        .portfolio-logo:first-child { background: #162437; border: 1px solid var(--line-strong); }
+        .portfolio-logo img { display: block; width: 145px; height: 50px; object-fit: contain; }
+        @media (max-width: 360px) {
+            .portfolio-logos { gap: 8px; }
+            .portfolio-logo { padding: 6px 8px; }
+            .portfolio-logo img { width: 116px; height: 42px; }
+        }
         /* Header */
         .app-header {
             display: flex;
@@ -2228,12 +2237,16 @@
 
 <body>
     <div class="container">
+        <div class="portfolio-logos" aria-label="Company portfolio">
+            <div class="portfolio-logo"><img src="branding/mexel.svg" alt="Mexel Energy Sustain" width="160" height="55"></div>
+            <div class="portfolio-logo"><img src="branding/phakathi.svg" alt="Phakathi Industrial Solutions" width="160" height="55"></div>
+        </div>
         <header class="app-header">
             <div class="brand">
                 <div class="brand-mark" aria-hidden="true">TI</div>
                 <div class="brand-copy">
                     <h1>Tender Intelligence</h1>
-                    <p class="subtitle">Mexel Energy Sustain · Bid pipeline</p>
+                    <p class="subtitle">Mexel · REICON/ODACON · Phakathi</p>
                 </div>
             </div>
             <div class="header-status">
@@ -2255,6 +2268,28 @@
         </div>
         <div id="sourceStats" class="sr-only" aria-live="polite">Loading stats…</div>
 
+        <section class="tender-section" aria-label="Coverage and review">
+            <details style="padding:12px 16px"><summary>Source health &amp; opportunities needing review <span id="coverageCount"></span></summary>
+                <div id="sourceHealth" style="padding-top:12px">Source health unavailable.</div>
+                <div id="opportunityReview" style="padding-top:12px"></div>
+            </details>
+        </section>
+        <section class="tender-section" aria-label="Search all captured notices">
+            <details style="padding:12px 16px"><summary>Search all captured notices — including uncertain and excluded items</summary>
+                <p>Broader discovery helps catch opportunities missed by the shortlist. Review the original specification before bidding.</p>
+                <button id="loadDiscovery" class="view-btn" type="button">Load captured notices</button>
+                <label for="discoverySearch">Search reference, scope, buyer or attachment name</label>
+                <input id="discoverySearch" type="search" placeholder="e.g. interactive panel, surfactant, condensate" style="width:100%;padding:10px;margin:8px 0;box-sizing:border-box">
+                <label for="discoveryTier">Discovery group</label>
+                <select id="discoveryTier" style="max-width:100%;padding:8px">
+                    <option value="all">All captured notices</option><option value="strong_candidate">Strong candidates</option>
+                    <option value="possible_candidate">Possible candidates</option><option value="unassessed">Unassessed notices</option>
+                    <option value="clearly_excluded">Clearly excluded scope</option>
+                </select>
+                <p id="discoveryStatus" role="status">Load the index to search beyond the shortlist.</p>
+                <div id="discoveryResults" style="overflow-wrap:anywhere"></div>
+            </details>
+        </section>
         <nav class="tab-nav" role="tablist" aria-label="Dashboard sections">
             <button class="tab-btn active" type="button" role="tab" aria-selected="true" aria-controls="dashboard" data-tab="dashboard">Dashboard</button>
             <button class="tab-btn" type="button" role="tab" aria-selected="false" aria-controls="pipeline" data-tab="pipeline">Planned pipeline</button>

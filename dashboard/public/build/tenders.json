@@ -1,2878 +1,235 @@
 {
     "meta": {
-        "last_sync": "2026-11-03 23:18",
+        "last_sync": "2026-11-05 16:33",
         "snapshot_origin": "static_scrape",
         "next_run": "Daily 08:00",
-        "build_sha": "ba63fdd",
-        "build_id": "2026-11-03 23:18 · ba63fdd",
+        "build_sha": "9e57cb2",
+        "build_id": "2026-11-05 16:33 · 9e57cb2",
         "inputs": [
-            "tenders.json"
+            "eskom.json",
+            "municipalities.json",
+            "national_treasury.json",
+            "water_boards.json"
         ],
         "validation": {
-            "total": 87,
-            "valid": 32,
-            "invalid": 55,
+            "total": 2,
+            "valid": 2,
+            "invalid": 0,
             "warnings": 0,
-            "error_counts": {
-                "Invalid url format": 4,
-                "title exceeds 500 chars": 2,
-                "closing_date is in the past": 50
-            },
+            "error_counts": {},
             "warning_counts": {}
         },
-        "planned_opportunity_count": 16
+        "planned_opportunity_count": 12
     },
     "tenders": [
         {
-            "ref": "PLAN-8D501C157CA2",
-            "title": "Panel for service providers to provide design, supply, delivery, installation, and commissioning of Craighead Hi-lift P/S 400KW variable speed drive for period of three (3) years on ad-hoc basis.",
-            "description": "Advance procurement plan for Panel for service providers to provide design, supply, delivery, installation, and commissioning of Craighead Hi-lift P/S 400KW variable speed drive for period of three (3) years on ad-hoc basis.",
-            "client": "Amatola Water Board",
-            "priority": "HIGH",
-            "score": 7.4,
-            "category": "PHAKATHI",
-            "source": "National Treasury Procurement Plan",
-            "url": "https://admin.etenders.gov.za/Home/ProcurementPlans",
-            "company": "Phakathi",
-            "closing_date": "2026-12-21",
-            "matched_keywords": [
-                "variable speed drive",
-                "service",
-                "supply",
-                "delivery"
+            "ref": "E3748GXMPHEN",
+            "attachments": [
+                {
+                    "name": "SDLI Strategy Replace of Fuel Oil system.pdf",
+                    "url": "https://www.etenders.gov.za/home/Download/?blobName=e33fd209-f217-4c63-a3c5-26408503e13c.pdf&downloadedFileName=SDLI+Strategy+Replace+of+Fuel+Oil+system.pdf"
+                },
+                {
+                    "name": "Supplier Evaluation Pack.pdf",
+                    "url": "https://www.etenders.gov.za/home/Download/?blobName=37760774-2ca7-4836-bec8-38bfb154de2c.pdf&downloadedFileName=Supplier+Evaluation+Pack.pdf"
+                },
+                {
+                    "name": "E-tendering Help Manual for supplier - 27 January 2025.pdf",
+                    "url": "https://www.etenders.gov.za/home/Download/?blobName=42c80125-56fc-4657-a799-3b6c8ffc3cd7.pdf&downloadedFileName=E-tendering+Help+Manual+for+supplier+-+27+January+2025.pdf"
+                },
+                {
+                    "name": "E-Tenderers E-Tendering Training Acknowledgement Form.pdf",
+                    "url": "https://www.etenders.gov.za/home/Download/?blobName=cccc184b-f8a0-4d01-9bb2-3ee99e09e198.pdf&downloadedFileName=E-Tenderers+E-Tendering+Training+Acknowledgement+Form.pdf"
+                },
+                {
+                    "name": "Scope of Work- FUEL OIL INSTALLATION.pdf",
+                    "url": "https://www.etenders.gov.za/home/Download/?blobName=c3b88d1f-e374-4137-a44a-8381b82db8be.pdf&downloadedFileName=Scope+of+Work-+FUEL+OIL+INSTALLATION.pdf"
+                },
+                {
+                    "name": "Environmental Evaluation Checklist - template.pdf",
+                    "url": "https://www.etenders.gov.za/home/Download/?blobName=f980736e-22a1-4c9c-8a4a-8f0ce07df863.pdf&downloadedFileName=Environmental+Evaluation+Checklist+-+template.pdf"
+                },
+                {
+                    "name": "380-136358 R0 - Quality Control Plan TEMPLATE.doc",
+                    "url": "https://www.etenders.gov.za/home/Download/?blobName=9bcd6a35-e904-4b17-a724-aa7c6e33d946.doc&downloadedFileName=380-136358+R0+-+Quality+Control+Plan+TEMPLATE.doc"
+                },
+                {
+                    "name": "Tender Technical Evaluation-Fuel Oil Flow Meters.pdf",
+                    "url": "https://www.etenders.gov.za/home/Download/?blobName=0691bbbf-9648-4419-8374-b308f0ecbe4c.pdf&downloadedFileName=Tender+Technical+Evaluation-Fuel+Oil+Flow+Meters.pdf"
+                },
+                {
+                    "name": "240-109253698 CQP Template 2021.docx",
+                    "url": "https://www.etenders.gov.za/home/Download/?blobName=7c06e480-1db6-49e9-b0e2-cb86d43c5a8b.docx&downloadedFileName=240-109253698+CQP+Template+2021.docx"
+                },
+                {
+                    "name": "240-68099512 Form A_Cat 2_ Rev 9.docx",
+                    "url": "https://www.etenders.gov.za/home/Download/?blobName=901d381f-9383-449d-a565-cbda31752de4.docx&downloadedFileName=240-68099512+Form+A_Cat+2_+Rev+9.docx"
+                },
+                {
+                    "name": "240-12248652_List of Tender Returnables_Cat 2_ Rev 7.xlsx",
+                    "url": "https://www.etenders.gov.za/home/Download/?blobName=7a9978e6-b96b-43eb-a968-cf5db44229de.xlsx&downloadedFileName=240-12248652_List+of+Tender+Returnables_Cat+2_+Rev+7.xlsx"
+                },
+                {
+                    "name": "240-77471651(HIGH RISK) (1).pdf",
+                    "url": "https://www.etenders.gov.za/home/Download/?blobName=e206cc60-f6c1-44c1-9d66-d719fc9b55ba.pdf&downloadedFileName=240-77471651%28HIGH+RISK%29+%281%29.pdf"
+                },
+                {
+                    "name": "Annexure B Eskom Acknowledgement Form for OHS Legal and Other Requirements - Rev 4.pdf",
+                    "url": "https://www.etenders.gov.za/home/Download/?blobName=d9374eb8-a4a5-4b68-97c1-e821bfd0fdda.pdf&downloadedFileName=Annexure+B+Eskom+Acknowledgement+Form+for+OHS+Legal+and+Other+Requirements+-+Rev+4.pdf"
+                },
+                {
+                    "name": "Invitation to Tender (ITT)-Fuel Oil Flow meters for a period of 24 months.pdf",
+                    "url": "https://www.etenders.gov.za/home/Download/?blobName=f0ba205c-cf8c-4fff-a9e0-e9a5f6b42383.pdf&downloadedFileName=Invitation+to+Tender+%28ITT%29-Fuel+Oil+Flow+meters+for+a+period+of+24+months.pdf"
+                }
             ],
-            "scores": {
-                "fit_score": 7,
-                "fit_reasons": [
-                    "Phakathi category match"
-                ],
-                "fit_grade": "B",
-                "industry_score": 8,
-                "industry_matched": "Water Board",
-                "industry_grade": "A",
-                "mexel_suitability": 0,
-                "mexel_fit": "Weak",
-                "company_category": "PHAKATHI",
-                "composite": 7.4,
-                "composite_score": 7.4,
-                "priority": "HIGH",
-                "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
-            }
-        },
-        {
-            "ref": "PLAN-8D69FCEFCA88",
-            "title": "Supply , delivery and commissioning of control valve at Ngagane",
-            "description": "Advance procurement plan for Supply , delivery and commissioning of control valve at Ngagane",
-            "client": "uThukela Water (Pty) Ltd",
-            "priority": "MEDIUM",
-            "score": 6.2,
-            "category": "PHAKATHI",
-            "source": "National Treasury Procurement Plan",
-            "url": "https://admin.etenders.gov.za/Home/ProcurementPlans",
-            "company": "Phakathi",
-            "closing_date": "2027-03-25",
-            "matched_keywords": [
-                "valve",
-                "supply",
-                "control valve",
-                "delivery"
-            ],
-            "scores": {
-                "fit_score": 7,
-                "fit_reasons": [
-                    "Phakathi category match"
-                ],
-                "fit_grade": "B",
-                "industry_score": 5,
-                "industry_matched": "General",
-                "industry_grade": "C",
-                "mexel_suitability": 0,
-                "mexel_fit": "Weak",
-                "company_category": "PHAKATHI",
-                "composite": 6.2,
-                "composite_score": 6.2,
-                "priority": "MEDIUM",
-                "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
-            }
-        },
-        {
-            "ref": "E3593GXMPKRI",
-            "title": "Supply and delivery of mill plant couplings, rubber coupling, spring bibby coupling, coupling bolts and coupling grease on an as when required basis for a period of 5 years. Please note that the tender closing date has been postponed to 11 November 2026.",
-            "description": "Supplies: General. Request for Bid(Open-Tender). Supply and delivery of mill plant couplings, rubber coupling, spring bibby coupling, coupling bolts and coupling grease on an as when required basis for a period of 5 years. Please note that the tender closing date has been postponed to 11 November 2026.",
+            "source_id": 176185,
+            "title": "DESIGN AND REPLACEMENT OF FUEL OIL FLOW METERS FOR A PERIOD OF 24 MONTHS",
+            "description": "DESIGN AND REPLACEMENT OF FUEL OIL FLOW METERS FOR A PERIOD OF 24 MONTHS | Reference: E3748GXMPHEN | Architectural and engineering activities; technical testing and analysis | Request for Bid(Open-Tender) | N/A",
             "client": "ESKOM",
-            "priority": "HIGH",
-            "score": 8.2,
-            "category": "PHAKATHI",
             "source": "National Treasury",
-            "url": "https://www.etenders.gov.za/home/Download/?blobName=b4a1b526-a1bd-4646-b539-24d74409b7b8.pdf&downloadedFileName=NEC3+SUPPLY+CONTRACT.pdf",
-            "company": "Phakathi",
-            "closing_date": "2026-11-11",
-            "matched_keywords": [
-                "plant",
-                "supply",
-                "delivery",
-                "supply and delivery",
-                "coupling",
-                "couplings"
-            ],
-            "pdf_analysis": {
-                "page_count": 97,
-                "word_count": 32880,
-                "requirements": [
-                    "pay the supplier the amount due in",
-                    "form an agreement between the purchaser and the tenderer upon the terms and conditions contained",
-                    "within two weeks of receiving a completed copy of this agreement, including the schedule",
-                    "constitute a repudiation of this agreement",
-                    "be recorded here and the final draft of the contract documents shall be revised to",
-                    "have any meaning or effect in the contract between the parties arising from this agreement",
-                    "not be necessary to prove)",
-                    "not be necessary to prove",
-                    "be in effect until the knps is",
-                    "be fit for purpose, free from defects, and compliant with",
-                    "include technical datasheets",
-                    "be packaged in a way that prohibits mechanical damage to components",
-                    "be corrected at the supplier’s cost",
-                    "supply the goods as per the purchase order issued to them by the purchaser",
-                    "have a tag plate, permanently affixed, that indicates the following",
-                    "be arranged within kriel power station normal working hours as stipulated in",
-                    "be recorded using minutes or a register prepared and circulated by the person who",
-                    "not be used for the purpose of confirming",
-                    "be done separately by the person identified in",
-                    "be submitted in hardcopy and soft copy format",
-                    "the need or expectation that is stated, generally implied, or obligatory",
-                    "apply throughout eskom holdings limited divisions, its subsidiaries,",
-                    "form part of all eskom requests for information (rfi)/ requests",
-                    "apply the most recent edition of the documents listed in the",
-                    "not proceed without the attendance of, and written authorisation of, an",
-                    "be audited as per the management",
-                    "develop, implement, maintain and improve a formal qms",
-                    "consist of the appropriate documented information required by",
-                    "carry a valid iso 9001",
-                    "have a fully developed,",
-                    "be responsible for defining and managing the specific quality",
-                    "inform eskom of any proposed changes to the qms or staff that will affect",
-                    "develop and implement a performance management programme for",
-                    "include, but not limited to:",
-                    "have a documented, implemented, reviewed and maintained contract",
-                    "be carried out in accordance with a documented",
-                    "plan for the required quality-related activities and interfaces within the",
-                    "require sub-suppliers to submit project quality plans (pqps)/ contract quality",
-                    "ensure that sub-supplier cqps are developed and implemented in",
-                    "include the following (as applicable):",
-                    "submit a detailed methodology of how the tenderer will:",
-                    "be submitted, with clear step-by-step tasks stipulated in the quality control plan",
-                    "provide assurance in terms",
-                    "be in the form of a combination of the following:",
-                    "provide a signed off onsite and offsite storage procedure",
-                    "be submitted, tenderers",
-                    "be made to the specified eskom drawings",
-                    "be submitted electronically to the end-user",
-                    "work to original manufacturing specifications, modification on original",
-                    "clearly state the added benefits as opposed to the previous design",
-                    "be made available for inspection by the employer",
-                    "commit to a reasonable lead-time at the start of the contract",
-                    "be communicated with the contract manager and end-user",
-                    "be notified two days before any delivery to arrange the",
-                    "be made during the week within the following hours:",
-                    "be developed and submitted to eskom for approval",
-                    "be approved before the",
-                    "state the controls to confirm the quality of all materials used, ndt test",
-                    "be in the data pack (where applicable)",
-                    "be submitted for each task order with the activities broken down to show how the"
-                ],
-                "deadlines": [],
-                "values": [
-                    {
-                        "value": 4740101508000000.0,
-                        "formatted": "R4,740,101,508,000,000",
-                        "context": "ION. the Purchaser’s VAT number 4740101508 on each invoice he submits fo"
-                    },
-                    {
-                        "value": 4740101508000000.0,
-                        "formatted": "R4,740,101,508,000,000",
-                        "context": "loyer’s VAT registration number 4740101508; • Description of service pro"
-                    },
-                    {
-                        "value": 2026000000.0,
-                        "formatted": "R2,026,000,000",
-                        "context": "starting date is. 01 September 2026 and the end date is 31 August"
-                    },
-                    {
-                        "value": 2013000000.0,
-                        "formatted": "R2,013,000,000",
-                        "context": "il 2013 and replace by December 2013) 10.1 The Purchaser is (name)"
-                    },
-                    {
-                        "value": 2009000000.0,
-                        "formatted": "R2,009,000,000",
-                        "context": "(April 2013) 1 (If the December 2009 edition is to be used delete"
-                    },
-                    {
-                        "value": 200000000.0,
-                        "formatted": "R200,000,000",
-                        "context": "MP; VENDORS ARE RESPONSIBLE FOR 200 EA ENSURING THAT THEY ARE PER"
-                    },
-                    {
-                        "value": 100000000.0,
-                        "formatted": "R100,000,000",
-                        "context": "RE; SIZE: F80; MATERIAL: RUBBER 100 EA JOINT, EXPANSION: CONNECTI"
-                    },
-                    {
-                        "value": 50000000.0,
-                        "formatted": "R50,000,000",
-                        "context": "ith a value less than made is R50M. 2. 60 days for Contracts wi"
-                    },
-                    {
-                        "value": 50000000.0,
-                        "formatted": "R50,000,000",
-                        "context": "cts with a value greater than R50M. 51.4 The interest rate is t"
-                    },
-                    {
-                        "value": 30000000.0,
-                        "formatted": "R30,000,000",
-                        "context": "es after order placement as per 30.1 32.2 The Supplier submits r"
-                    },
-                    {
-                        "value": 2021000000.0,
-                        "formatted": "R2,021,000,000",
-                        "context": "te: 15/10/2021 Date: 17 October 2021 EDC TN Formatted 15.10.2021 S"
-                    },
-                    {
-                        "value": 2021000000.0,
-                        "formatted": "R2,021,000,000",
-                        "context": "e Rev. Compiler Remarks October 2021 3 SA Sambo Specification was"
-                    },
-                    {
-                        "value": 2018000000.0,
-                        "formatted": "R2,018,000,000",
-                        "context": "processes and systems. October 2018 2 SA Sambo Specification revi"
-                    },
-                    {
-                        "value": 2011000000.0,
-                        "formatted": "R2,011,000,000",
-                        "context": "into four categories. December 2011 0 A Hunter New document 6. De"
-                    },
-                    {
-                        "value": 4000000.0,
-                        "formatted": "R4,000,000",
-                        "context": "uirements (Category 1, 2, 3, or 4), such a QMS shall carry a va"
-                    },
-                    {
-                        "value": 4000000.0,
-                        "formatted": "R4,000,000",
-                        "context": "uirements (Category 1, 2, 3, or 4), the supplier shall have a f"
-                    },
-                    {
-                        "value": 4000000.0,
-                        "formatted": "R4,000,000",
-                        "context": "uirements (Category 1, 2, 3, or 4); all individual products, se"
-                    },
-                    {
-                        "value": 2024.0,
-                        "formatted": "R2,024",
-                        "context": "s: 28 Next Review Date: October 2024 Disclosure Controlled Disclos"
-                    },
-                    {
-                        "value": 2025000000.0,
-                        "formatted": "R2,025,000,000",
-                        "context": "Rev. Compiler Remarks September 2025 0 WKW Nkentshane New document"
-                    },
-                    {
-                        "value": 5000000.0,
-                        "formatted": "R5,000,000",
-                        "context": "delivery of mill couplings for 5 years at Kriel Power Station."
-                    },
-                    {
-                        "value": 240.0,
-                        "formatted": "R240",
-                        "context": "nical perspective is 70% as per 240-168966153 Generation Tender T"
-                    },
-                    {
-                        "value": 0.0,
-                        "formatted": "R0",
-                        "context": "pecificatio ing ting n / Tender 0 2 4 5 Returnable (%) (%) Noth"
-                    },
-                    {
-                        "value": 7000000.0,
-                        "formatted": "R7,000,000",
-                        "context": "PIDER WEB; BORED AND KEYED, FOR 7/8 IN SHAFT, COMPLETE WITH GRU"
-                    },
-                    {
-                        "value": 6000000.0,
-                        "formatted": "R6,000,000",
-                        "context": "RE; SIZE: F80; MATERIAL: RUBBER 6 JOINT JOINT, EXPANSION: CONNE"
-                    },
-                    {
-                        "value": 5000000.0,
-                        "formatted": "R5,000,000",
-                        "context": "o Makaringe MMD turbine manager 5. Revisions Date Rev. Compiler"
-                    },
-                    {
-                        "value": 4000000.0,
-                        "formatted": "R4,000,000",
-                        "context": "EAD STYLE: HEX; MATERIAL: MS GR 4.5; POINT STYLE: FLAT; SPECIFI"
-                    },
-                    {
-                        "value": 5000.0,
-                        "formatted": "R5,000",
-                        "context": "basis. The contract will be for 5 years. The scope of work is d"
-                    }
-                ],
-                "contact": {
-                    "email": "Mesomm@eskom.co.za",
-                    "phone": "+27 17 615 2442"
-                }
-            },
-            "scores": {
-                "fit_score": 7,
-                "fit_reasons": [
-                    "Phakathi category match"
-                ],
-                "fit_grade": "B",
-                "industry_score": 10,
-                "industry_matched": "Eskom",
-                "industry_grade": "A",
-                "mexel_suitability": 1,
-                "mexel_fit": "Weak",
-                "company_category": "PHAKATHI",
-                "composite": 8.2,
-                "composite_score": 8.2,
-                "priority": "HIGH",
-                "recommendation": "🔥 PRIORITY BID - Strong fit, pursue immediately"
-            }
-        },
-        {
-            "ref": "E3624GXMPGRO",
-            "title": "REFURBISHMENT OF METAL SEATED BUTTERFLY VALVE FOR USE AS CW ISOLATION VALVE ON MAIN CONDENSER ISOLATION VALVES (T1 AND T2 VALVES) FOR ONCE-OFF BASIS.",
-            "description": "Other service activities. Request for Quotation. REFURBISHMENT OF METAL SEATED BUTTERFLY VALVE FOR USE AS CW ISOLATION VALVE ON MAIN CONDENSER ISOLATION VALVES (T1 AND T2 VALVES) FOR ONCE-OFF BASIS.",
-            "client": "ESKOM",
-            "priority": "HIGH",
-            "score": 8.8,
-            "category": "PHAKATHI",
-            "source": "National Treasury",
-            "url": "https://www.etenders.gov.za/home/Download/?blobName=95a8def0-b853-4397-975e-0a943093db09.pdf&downloadedFileName=Grootvlei+Power+Station++Tender+Technical+Evaluation+Strategy.pdf",
-            "company": "Phakathi",
-            "closing_date": "2026-11-30",
-            "matched_keywords": [
-                "valves",
-                "refurbishment",
-                "valve",
-                "service"
-            ],
-            "pdf_analysis": {
-                "page_count": 109,
-                "word_count": 36716,
-                "requirements": [
-                    "provide all documentation as",
-                    "meet” requirements for tender compliance",
-                    "provide ≥2 verifiable references of",
-                    "be conducted in south africa, as",
-                    "be enforced on the main supplier for non-conformance/s (identified for the main supplier and/or",
-                    "monitor contractors or suppliers through audits and assessments with regard to ohs",
-                    "be provided by the main supplier",
-                    "address the project yes",
-                    "be based on the overall scope of",
-                    "comply to ohs act section 7",
-                    "be deleted if not applicable",
-                    "take precedence over the standard conditions of tender in the event",
-                    "be for the whole of the contract",
-                    "be found to have the nationality",
-                    "be jointly and severally",
-                    "achieve in the performance of the contract the",
-                    "achieve in the performance of the contract",
-                    "engage targeted enterprise/s in the",
-                    "determine the contract skills participation",
-                    "use the exchange rate as at 12h00 on the date of the advertisement of the tender",
-                    "be the south african reserve bank (www",
-                    "be used instead of the table above",
-                    "be addressed in writing to the",
-                    "be filled out by all annexure h y",
-                    "not be under any restriction to do business with",
-                    "not have a conflict of interest",
-                    "upload the tender via eskom tender bulletin site on",
-                    "confirm their intention to attend with the eskom",
-                    "be submitted prior to",
-                    "have a cidb contractor",
-                    "be achieved in one of the",
-                    "be electrically operated by an electrical actuator and gearbox",
-                    "provide the chosen contractor with the opportunity to conduct inspection of the",
-                    "be responsible for organizing the collection of the valve from grootvlei power",
-                    "be executed upon the fully assembled valves",
-                    "then be closed, initiating a subsequent seat leakage test",
-                    "apply to grootvlei power station",
-                    "apply the most recent edition of the documents listed in the following",
-                    "review the cw chemistry analysis in annexure 1 and ensure the valve material",
-                    "visit grootvlei sites to identify the respective valves to be",
-                    "clearly indicate which",
-                    "for optimal valve performance",
-                    "migrate and achieve as a non-negotiable a milestone of b-bbee level 3 by the end of",
-                    "migrate and achieve as a non-negotiable a milestone of level 4 by the end of",
-                    "be from all provinces",
-                    "be representative of the population demographics of south",
-                    "involve the participation by tenderers directly and",
-                    "only be released to the contractor",
-                    "on a quarterly basis submit a report to eskom in accordance with data",
-                    "review the sdl&i reports submitted by the suppliers within 30 (thirty) days of receipt",
-                    "be required to implement corrective measures to meet those sdl&i obligations before the",
-                    "be accompanied by the sdl&i implementation schedule, which must be",
-                    "be added to the points scored for price and the",
-                    "be rounded off to the nearest two decimal places",
-                    "be awarded to the tenderer",
-                    "comply with all of the elements of qse score card relevant to",
-                    "be separated into its components as per the price schedule included with",
-                    "be considered when it comes to validity of affidavits;",
-                    "ensure that the affidavits meet the following key pointers to",
-                    "be indicated in order to know that person is duly",
-                    "select the basis for the empowering",
-                    "include criteria for evaluation,"
-                ],
-                "deadlines": [],
-                "values": [
-                    {
-                        "value": 2025000000.0,
-                        "formatted": "R2,025,000,000",
-                        "context": "ate System Original document er 2025 Engineer ADAPTED BY: ❖ Mlungi"
-                    },
-                    {
-                        "value": 240000000.0,
-                        "formatted": "R240,000,000",
-                        "context": "fitment procedure • NDT as per 240-83539994 • Pressure testing a"
-                    },
-                    {
-                        "value": 240000000.0,
-                        "formatted": "R240,000,000",
-                        "context": "essure testing requirements per 240-63154109 and/or API 598. 5 Ge"
-                    },
-                    {
-                        "value": 30000000.0,
-                        "formatted": "R30,000,000",
-                        "context": "ini Turbine Engineering Manager 30/09/2025 Thabo Montja Engineer"
-                    },
-                    {
-                        "value": 6000000.0,
-                        "formatted": "R6,000,000",
-                        "context": "habo Montja Engineering Manager 6. REVISIONS Date Rev Compiler"
-                    },
-                    {
-                        "value": 1000000.0,
-                        "formatted": "R1,000,000",
-                        "context": "TET 2 TET 3 TET 4 TET 5* Number 1 X X X X X 2 X X X X X Qualita"
-                    },
-                    {
-                        "value": 240000.0,
-                        "formatted": "R240,000",
-                        "context": "atic and seat leakage tests per 240- 5. [2], [15] 10 63154109 and"
-                    },
-                    {
-                        "value": 240000000.0,
-                        "formatted": "R240,000,000",
-                        "context": "Template Identifier 240-43921898 Rev 5 Annexure C 1:"
-                    },
-                    {
-                        "value": 240000000.0,
-                        "formatted": "R240,000,000",
-                        "context": "(High risk) Document Identifier 240-77471651 Rev 3 Effective Date"
-                    },
-                    {
-                        "value": 240000000.0,
-                        "formatted": "R240,000,000",
-                        "context": "agement Yes Template Identifier 240-43921898 Rev 5 Annexure C 1:"
-                    },
-                    {
-                        "value": 240000000.0,
-                        "formatted": "R240,000,000",
-                        "context": "petency Yes Template Identifier 240-43921898 Rev 5 Annexure C 1:"
-                    },
-                    {
-                        "value": 240000000.0,
-                        "formatted": "R240,000,000",
-                        "context": "Recommended Template Identifier 240-43921898 Rev 5 Annexure C 1:"
-                    },
-                    {
-                        "value": 240000000.0,
-                        "formatted": "R240,000,000",
-                        "context": "Page 4 of 5 Template Identifier 240-43921898 Rev 5 Annexure C 1:"
-                    },
-                    {
-                        "value": 2026000000.0,
-                        "formatted": "R2,026,000,000",
-                        "context": "clarification Date: 29 October 2026 (Postponed) meeting. Time: 13"
-                    },
-                    {
-                        "value": 2026000000.0,
-                        "formatted": "R2,026,000,000",
-                        "context": "clarification Date: 12 November 2026 meeting. Time: 13:30 – 15:00"
-                    },
-                    {
-                        "value": 240000000.0,
-                        "formatted": "R240,000,000",
-                        "context": "ITY Identifier REQUIREMENTS FOR 240-105658000 AND Effective Janua"
-                    },
-                    {
-                        "value": 240000000.0,
-                        "formatted": "R240,000,000",
-                        "context": "vironmental Template Identifier 240-43921804 Rev 6 Document Ident"
-                    },
-                    {
-                        "value": 2026000000.0,
-                        "formatted": "R2,026,000,000",
-                        "context": "GXMPGRO Issue date 30 September 2026 Closing date and time 30 Nove"
-                    },
-                    {
-                        "value": 2026000000.0,
-                        "formatted": "R2,026,000,000",
-                        "context": "osing date and time 30 November 2026 at 10h00 Tender validity peri"
-                    },
-                    {
-                        "value": 2026000000.0,
-                        "formatted": "R2,026,000,000",
-                        "context": "cation meeting Date: 29 October 2026, Time: 13h00 – 14h30 Microsof"
-                    },
-                    {
-                        "value": 2026000000.0,
-                        "formatted": "R2,026,000,000",
-                        "context": "submission is: Date 30 November 2026 Time 10h00 Late Tenders will"
-                    },
-                    {
-                        "value": 2026000000.0,
-                        "formatted": "R2,026,000,000",
-                        "context": "ce as follows: Date: 29 October 2026 Time: 13h00 – 14h30 Venue: MS"
-                    },
-                    {
-                        "value": 90000000.0,
-                        "formatted": "R90,000,000",
-                        "context": "ED FOR PRICE 3.1.1 THE 80/20 OR 90/10 PREFERENCE POINT SYSTEMS A"
-                    },
-                    {
-                        "value": 90000000.0,
-                        "formatted": "R90,000,000",
-                        "context": "OINT SYSTEMS A maximum of 80 or 90 points is allocated for price"
-                    },
-                    {
-                        "value": 90000000.0,
-                        "formatted": "R90,000,000",
-                        "context": "ED FOR PRICE A maximum of 80 or 90 points is allocated for price"
-                    },
-                    {
-                        "value": 90000000.0,
-                        "formatted": "R90,000,000",
-                        "context": "is unclear whether the 80/20 or 90/10 preference point system ap"
-                    },
-                    {
-                        "value": 90000000.0,
-                        "formatted": "R90,000,000",
-                        "context": "racts, that either the 80/20 or 90/10 preference point system wi"
-                    },
-                    {
-                        "value": 2025000000.0,
-                        "formatted": "R2,025,000,000",
-                        "context": "alo Original Document September 2025 2 M. Khumalo Revision updated"
-                    },
-                    {
-                        "value": 1350000000.0,
-                        "formatted": "R1,350,000,000",
-                        "context": "of five (5) off main condenser 1350NB Metal Seated Butterfly valv"
-                    },
-                    {
-                        "value": 9000000.0,
-                        "formatted": "R9,000,000",
-                        "context": "r T. Montja Engineering Manager 9. REVISIONS Date Rev. Compiler"
-                    },
-                    {
-                        "value": 240000000.0,
-                        "formatted": "R240,000,000",
-                        "context": "Document Identifier 240-148918142 Rev 4 SDL&I Strateg"
-                    },
-                    {
-                        "value": 240000000.0,
-                        "formatted": "R240,000,000",
-                        "context": "0 for price Document Identifier 240-148918142 Rev 4 SDL&I Strateg"
-                    },
-                    {
-                        "value": 240000000.0,
-                        "formatted": "R240,000,000",
-                        "context": "(RDP) Goals Document Identifier 240-148918142 Rev 4 SDL&I Strateg"
-                    },
-                    {
-                        "value": 240000000.0,
-                        "formatted": "R240,000,000",
-                        "context": "component. Document Identifier 240-148918142 Rev 4 SDL&I Strateg"
-                    },
-                    {
-                        "value": 240000000.0,
-                        "formatted": "R240,000,000",
-                        "context": "initiatives Document Identifier 240-148918142 Rev 4 SDL&I Strateg"
-                    },
-                    {
-                        "value": 240000000.0,
-                        "formatted": "R240,000,000",
-                        "context": "Open market Document Identifier 240-148918142 Rev 4 SDL&I Strateg"
-                    },
-                    {
-                        "value": 50000000.0,
-                        "formatted": "R50,000,000",
-                        "context": "your annual Total Revenue is R50 Million or less, you qualify"
-                    },
-                    {
-                        "value": 50000000.0,
-                        "formatted": "R50,000,000",
-                        "context": "Annual Total Revenue is above R50m you need to submit a Valid B"
-                    },
-                    {
-                        "value": 10000000.0,
-                        "formatted": "R10,000,000",
-                        "context": "any’s annual Total Revenue is R10 Million or less you qualify a"
-                    },
-                    {
-                        "value": 3.0,
-                        "formatted": "R3",
-                        "context": "eir B-BBEE status is level 2 or 3. Tenderer/s with a B-BBEE sta"
-                    },
-                    {
-                        "value": 240000000.0,
-                        "formatted": "R240,000,000",
-                        "context": "Unique Identifier 240-12248652 Supplier Quality Man"
-                    },
-                    {
-                        "value": 240000000.0,
-                        "formatted": "R240,000,000",
-                        "context": "uirements (Ref 240-105658000 or 240-109253302) 20% QCP /Checklist"
-                    },
-                    {
-                        "value": 1000000.0,
-                        "formatted": "R1,000,000",
-                        "context": "aging, storage, transmission or 1 transportation, and protectio"
-                    }
-                ],
-                "contact": {
-                    "email": "forensic@eskom.co.za",
-                    "phone": "967\n2624755"
-                }
-            },
-            "scores": {
-                "fit_score": 8,
-                "fit_reasons": [
-                    "Phakathi category match",
-                    "Mexel alignment (1 keywords)"
-                ],
-                "fit_grade": "A",
-                "industry_score": 10,
-                "industry_matched": "Eskom",
-                "industry_grade": "A",
-                "mexel_suitability": 2,
-                "mexel_fit": "Weak",
-                "company_category": "PHAKATHI",
-                "composite": 8.8,
-                "composite_score": 8.8,
-                "priority": "HIGH",
-                "recommendation": "🔥 PRIORITY BID - Strong fit, pursue immediately"
-            }
-        },
-        {
-            "ref": "E3607GXMPMAT",
-            "title": "SUPPLY, REFURBISHMENT, TESTING, COMMISSIONING, AND DELIVERY OF FLUID DRIVES USED IN INDUSTRIAL ROTATING EQUIPMENT FOR A PERIOD OF FIVE (05) YEARS",
-            "description": "Services: Electrical. Request for Bid(Open-Tender). SUPPLY, REFURBISHMENT, TESTING, COMMISSIONING, AND DELIVERY OF FLUID DRIVES USED IN INDUSTRIAL ROTATING EQUIPMENT FOR A PERIOD OF FIVE (05) YEARS",
-            "client": "ESKOM",
-            "priority": "HIGH",
-            "score": 8.2,
-            "category": "PHAKATHI",
-            "source": "National Treasury",
-            "url": "https://www.etenders.gov.za/home/Download/?blobName=1b761d33-f3d0-4582-98f6-0c287a82c82a.pdf&downloadedFileName=Fluid+Drive+Scope+Of+Work+-+ITT.pdf",
-            "company": "Phakathi",
-            "closing_date": "2026-11-27",
-            "matched_keywords": [
-                "supply",
-                "services",
-                "refurbishment",
-                "delivery",
-                "industrial",
-                "rotating equipment"
-            ],
-            "pdf_analysis": {
-                "page_count": 176,
-                "word_count": 51457,
-                "requirements": [
-                    "be submitted to engineering after the completion of the work",
-                    "comply with all applicable legal and other requirements",
-                    "ensure compliance with eskom matla environmental",
-                    "be signed progressively by the engineer/supervisor, eskom qc",
-                    "provide all labour, materials, replacement components, equipment, tools, technical expertise, quality assurance,",
-                    "be fully compatible with",
-                    "include all necessary accessories such",
-                    "include machining, polishing, grinding,",
-                    "be replaced with new oem",
-                    "be replaced during refurbishment",
-                    "be taken at the motor drive-end and non-drive-",
-                    "be performed annually;",
-                    "cover applicable motors, compressors,",
-                    "comply with the oem requirements",
-                    "undergo comprehensive",
-                    "include dimensional verification,",
-                    "provide qualified technical personnel to",
-                    "provide a hold contractor",
-                    "include the original condition",
-                    "repair or replace any defective",
-                    "take precedence over the standard conditions",
-                    "be for the whole of the contract",
-                    "be found to have the nationality",
-                    "be jointly and severally",
-                    "use the exchange rate as at 12h00 on the date of the advertisement of the tender",
-                    "be the south african reserve bank (www",
-                    "be used instead of the table above",
-                    "be addressed in writing to the",
-                    "be filled out by all annexure h y",
-                    "not be under any restriction to do business with",
-                    "not have a conflict of interest",
-                    "upload the tender via eskom tender bulletin site on",
-                    "confirm their intention to attend with the eskom",
-                    "be submitted prior to",
-                    "be declared in its tender documents",
-                    "submit the returnable set out hereunder as part of its tender at the stipulated deadline",
-                    "be submitted prior to award, completed in full if",
-                    "complete the sbd1 document; however, no proof of",
-                    "submit its annual financial",
-                    "complete the appropriate certificate set out below for its category of organisation",
-                    "not be controlled or supervised by eskom",
-                    "be entitled to withhold from any payments to be made to the company/cc/trust, any taxes,",
-                    "be liable in full for any taxes, penalties and interest that sars may",
-                    "be liable in full for any taxes, penalties and interest that sars may impose on eskom",
-                    "be liable in full for any taxes, penalties and",
-                    "not be deemed to carry on a trade independently as aforesaid if the",
-                    "include a part of a day, but shall not include any day that a person is in transit",
-                    "declare that all questions have been answered",
-                    "your duties be performed /are your duties performed mainly (more than 50%) at",
-                    "be marked on appendix 7 as the applicable code to be",
-                    "your duties be performed / are your duties performed mainly (more",
-                    "your duties be performed mainly (i",
-                    "be performed mainly at the premises of the client, such person or",
-                    "your duties be performed / are your duties performed",
-                    "be accompany all the questions signed “particulars of person acting as representative of the",
-                    "be accompany all the questions signed “particulars of “individual”",
-                    "maintain an environmental management system file as a proof of compliance,",
-                    "comply with the respective matla power station",
-                    "commence until the safety file is approved by the respective site’s",
-                    "be done by completing the",
-                    "upload the tender via eskom tender bulletin site on the eskom",
-                    "be complied with prior to signing the contract",
-                    "address the project /scope of work ohs risk(s) and aligned with",
-                    "be based on the overall scope of work/service to be performed;",
-                    "be provided together with the bra",
-                    "comply to ohs act section 7 and clause 5",
-                    "apply the most recent edition of the documents listed in the following",
-                    "adhere to the quality standard"
-                ],
-                "deadlines": [
-                    {
-                        "date": "2026-10-30",
-                        "raw": "30 October 2026",
-                        "context": "PARTMENT/ PUBLIC ENTITY) BID NUMBER: E3607GXMPMAT CLOSING DATE: 30 October 2026 CLOSING TIME: 10:00 DESCRIPTION Supply, refurbish"
-                    }
-                ],
-                "values": [
-                    {
-                        "value": 14593000000.0,
-                        "formatted": "R14,593,000,000",
-                        "context": "WER STATION Document Identifier 14593 Rev 7 Effective Date October"
-                    },
-                    {
-                        "value": 2027000000.0,
-                        "formatted": "R2,027,000,000",
-                        "context": "OPE OF WORK Review Date October 2027 Reference No: MEA-07040 Refer"
-                    },
-                    {
-                        "value": 992000000.0,
-                        "formatted": "R992,000,000",
-                        "context": "kom to witness. Contractor (GGR 0992). • Matla power station induc"
-                    },
-                    {
-                        "value": 24000000.0,
-                        "formatted": "R24,000,000",
-                        "context": "DIAMETER: 692 MM; MODEL NO: 5CR24R-SIZE 20; REFERENCE NO: 24376"
-                    },
-                    {
-                        "value": 24000000.0,
-                        "formatted": "R24,000,000",
-                        "context": "riable Speed Coupling Voith SCR24R Size 20 555687 9 9 MATLA POW"
-                    },
-                    {
-                        "value": 20000000.0,
-                        "formatted": "R20,000,000",
-                        "context": "s. Completely refurbish the SCR20 Size 4 fluid ✓ Every 24 month"
-                    },
-                    {
-                        "value": 2024000.0,
-                        "formatted": "R2,024,000",
-                        "context": "93 Rev 7 Effective Date October 2024 SCOPE OF WORK Review Date Oct"
-                    },
-                    {
-                        "value": 2000000.0,
-                        "formatted": "R2,000,000",
-                        "context": "METER 1: 72 MM; INSIDE DIAMETER 2: 118 MM; MANUF P/N: 366TVG; R"
-                    },
-                    {
-                        "value": 2000000.0,
-                        "formatted": "R2,000,000",
-                        "context": "METER 1: 60 MM; INSIDE DIAMETER 2: 100 MM; OUTSIDE DIAMETER: 69"
-                    },
-                    {
-                        "value": 1000000.0,
-                        "formatted": "R1,000,000",
-                        "context": "G; INSIDE 750633 45 30 DIAMETER 1: 72 MM; INSIDE DIAMETER 2: 11"
-                    },
-                    {
-                        "value": 2030000000.0,
-                        "formatted": "R2,030,000,000",
-                        "context": "ctober 2025 Review Date October 2030 ESKOM HOLDINGS SOC LTD INVITA"
-                    },
-                    {
-                        "value": 2030000000.0,
-                        "formatted": "R2,030,000,000",
-                        "context": "ctober 2025 Review Date October 2030 Invitation to Tender Eskom Ho"
-                    },
-                    {
-                        "value": 2030000000.0,
-                        "formatted": "R2,030,000,000",
-                        "context": "ctober 2025 Review Date October 2030 Number Description Annexure A"
-                    },
-                    {
-                        "value": 2030000000.0,
-                        "formatted": "R2,030,000,000",
-                        "context": "ctober 2025 Review Date October 2030 Clause Number from Standard T"
-                    },
-                    {
-                        "value": 2030000000.0,
-                        "formatted": "R2,030,000,000",
-                        "context": "ctober 2025 Review Date October 2030 request the tenderer to submi"
-                    },
-                    {
-                        "value": 2030000000.0,
-                        "formatted": "R2,030,000,000",
-                        "context": "ctober 2025 Review Date October 2030 Reference Returnable From Sup"
-                    },
-                    {
-                        "value": 2030000000.0,
-                        "formatted": "R2,030,000,000",
-                        "context": "ctober 2025 Review Date October 2030 ANNEXURE A AUTHORISATION FORM"
-                    },
-                    {
-                        "value": 2030000000.0,
-                        "formatted": "R2,030,000,000",
-                        "context": "ctober 2025 Review Date October 2030 ANNEXURE B ACKNOWLEDGEMENT FO"
-                    },
-                    {
-                        "value": 2030000000.0,
-                        "formatted": "R2,030,000,000",
-                        "context": "ctober 2025 Review Date October 2030 Name of Tenderer: _ _ Country"
-                    },
-                    {
-                        "value": 2030000000.0,
-                        "formatted": "R2,030,000,000",
-                        "context": "ctober 2025 Review Date October 2030 Please complete the declarati"
-                    },
-                    {
-                        "value": 2026000000.0,
-                        "formatted": "R2,026,000,000",
-                        "context": "activities will be done October 2026Contractual Requirement are th"
-                    },
-                    {
-                        "value": 2016000000.0,
-                        "formatted": "R2,016,000,000",
-                        "context": "Note Effective Date 09 November 2016 Review Date July 2026 Control"
-                    },
-                    {
-                        "value": 11000000.0,
-                        "formatted": "R11,000,000",
-                        "context": "AND SUPPLY FROM CONTACT NUMBER 011 800 3808 CHAIN MANAGEMENT INV"
-                    },
-                    {
-                        "value": 2026.0,
-                        "formatted": "R2,026",
-                        "context": "TION CONTROLLED DATE 13 OCTOBER 2026 FOR ATTENTION TENDERERS ACTIO"
-                    },
-                    {
-                        "value": 2002000000.0,
-                        "formatted": "R2,002,000,000",
-                        "context": "ngs SOC Ltd Registration Number 2002/015527/00 This Pack applies f"
-                    },
-                    {
-                        "value": 5000000.0,
-                        "formatted": "R5,000,000",
-                        "context": "ed Appendix 7 on Questions 4 or 5: • Code 3616 must be marked o"
-                    },
-                    {
-                        "value": 4000000.0,
-                        "formatted": "R4,000,000",
-                        "context": "nges in legislation. DISCLAIMER 4 Applicable to the 2025/2026 T"
-                    },
-                    {
-                        "value": 3000000.0,
-                        "formatted": "R3,000,000",
-                        "context": "rs of work? or or No to 5(i) or 3 5(ii) 6(i) Do/will the paymen"
-                    },
-                    {
-                        "value": 28.0,
-                        "formatted": "R28",
-                        "context": "Trust Personal Service Provider 28% N/A N/A IRP5 / IT3(a) 3601 o"
-                    },
-                    {
-                        "value": 5.0,
-                        "formatted": "R5",
-                        "context": "ed Appendix 7 on Questions 4 or 5: • Sign Appendix 8. If the De"
-                    },
-                    {
-                        "value": 3.0,
-                        "formatted": "R3",
-                        "context": "elationship* i.e. own, joint or 3rd party Own/Joint/3rd Party 6"
-                    },
-                    {
-                        "value": 240000000.0,
-                        "formatted": "R240,000,000",
-                        "context": "ITY Identifier REQUIREMENTS FOR 240-105658000 AND Effective Janua"
-                    },
-                    {
-                        "value": 2026000000.0,
-                        "formatted": "R2,026,000,000",
-                        "context": "RIFICATION MEETING – 14 October 2026 Agenda • Welcome Matsebela Mo"
-                    },
-                    {
-                        "value": 2026000000.0,
-                        "formatted": "R2,026,000,000",
-                        "context": "l). • Tenders close: 30 October 2026 at 10h00 Response Format The"
-                    },
-                    {
-                        "value": 80000000.0,
-                        "formatted": "R80,000,000",
-                        "context": "tender closing months of tender 80% 100% refurbishment date = 0%"
-                    },
-                    {
-                        "value": 80000000.0,
-                        "formatted": "R80,000,000",
-                        "context": "80% of all the provided for for 80% or more of all Warranty stip"
-                    },
-                    {
-                        "value": 2000000.0,
-                        "formatted": "R2,000,000",
-                        "context": "ial Stripping numbers, together 2. And with valid assembly cali"
-                    },
-                    {
-                        "value": 1000000.0,
-                        "formatted": "R1,000,000",
-                        "context": "Submit Reference 10% No similar 1–2 traceable 3–4 traceable 5 o"
-                    },
-                    {
-                        "value": 1000000.0,
-                        "formatted": "R1,000,000",
-                        "context": "tion. MEA-07040. 10% No similar 1–2 traceable 3–4 traceable 5 o"
-                    },
-                    {
-                        "value": 240.0,
-                        "formatted": "R240",
-                        "context": "LES AND RESPONSIBILITIES As per 240-48929482: Tender Technical Ev"
-                    },
-                    {
-                        "value": 10.0,
-                        "formatted": "R10",
-                        "context": "a signed Provides warranty for 10% No warranty Warranty provide"
-                    },
-                    {
-                        "value": 2002000000.0,
-                        "formatted": "R2,002,000,000",
-                        "context": "ngs SOC Ltd Registration Number 2002/015527/00 This Pack applies f"
-                    },
-                    {
-                        "value": 5000000.0,
-                        "formatted": "R5,000,000",
-                        "context": "ed Appendix 7 on Questions 4 or 5: • Code 3616 must be marked o"
-                    },
-                    {
-                        "value": 4000000.0,
-                        "formatted": "R4,000,000",
-                        "context": "nges in legislation. DISCLAIMER 4 Applicable to the 2025/2026 T"
-                    },
-                    {
-                        "value": 3000000.0,
-                        "formatted": "R3,000,000",
-                        "context": "rs of work? or or No to 5(i) or 3 5(ii) 6(i) Do/will the paymen"
-                    },
-                    {
-                        "value": 28.0,
-                        "formatted": "R28",
-                        "context": "Trust Personal Service Provider 28% N/A N/A IRP5 / IT3(a) 3601 o"
-                    },
-                    {
-                        "value": 5.0,
-                        "formatted": "R5",
-                        "context": "ed Appendix 7 on Questions 4 or 5: • Sign Appendix 8. If the De"
-                    },
-                    {
-                        "value": 3.0,
-                        "formatted": "R3",
-                        "context": "elationship* i.e. own, joint or 3rd party Own/Joint/3rd Party 6"
-                    }
-                ],
-                "contact": {
-                    "phone": "0101188610"
-                }
-            },
-            "scores": {
-                "fit_score": 7,
-                "fit_reasons": [
-                    "Phakathi category match"
-                ],
-                "fit_grade": "B",
-                "industry_score": 10,
-                "industry_matched": "Eskom",
-                "industry_grade": "A",
-                "mexel_suitability": 1,
-                "mexel_fit": "Weak",
-                "company_category": "PHAKATHI",
-                "composite": 8.2,
-                "composite_score": 8.2,
-                "priority": "HIGH",
-                "recommendation": "🔥 PRIORITY BID - Strong fit, pursue immediately"
-            }
-        },
-        {
-            "ref": "E3632GXMPGRO",
-            "title": "Service repair and refurbishment of mill yoke stem, mill gearbox base, mill motor base and valve on site machining for 60 months",
-            "description": "Other service activities. Request for Bid(Open-Tender). Service repair and refurbishment of mill yoke stem, mill gearbox base, mill motor base and valve on site machining for 60 months",
-            "client": "ESKOM",
-            "priority": "HIGH",
-            "score": 8.2,
-            "category": "PHAKATHI",
-            "source": "National Treasury",
-            "url": "https://www.etenders.gov.za/home/Download/?blobName=2afb016b-83a6-43d2-8c3a-575107d261a4.pdf&downloadedFileName=Invitation+to+Tender+%28ITT%29+or+Request+for+Proposal+%28RFP%29+Template+Rev.+Yoke+Repairsv+vv.pdf",
-            "company": "Phakathi",
-            "closing_date": "2026-12-15",
-            "matched_keywords": [
-                "refurbishment",
-                "repair",
-                "valve",
-                "service"
-            ],
-            "pdf_analysis": {
-                "page_count": 64,
-                "word_count": 25656,
-                "requirements": [
-                    "achieve in the performance of",
-                    "be for the whole of the contract",
-                    "also apply to the determination of the",
-                    "submit all the documentation (annexure a-targeted enterprise",
-                    "achieve in the performance of the contract",
-                    "achieve in the performance of the",
-                    "engage targeted enterprise/s in the",
-                    "determine the contract skills",
-                    "comply with all eskom grootvlei",
-                    "appoint personnel in writing with",
-                    "allocate funds for the",
-                    "be managed according to eskom",
-                    "apply to all contractors",
-                    "be made available for review when requested",
-                    "use the exchange rate as at 12h00 on the date of the advertisement of the tender",
-                    "be the south african reserve bank (www",
-                    "be used instead of the table above",
-                    "be filled out by all annexure h y",
-                    "not be under any restriction to do business",
-                    "not have a conflict of interest"
-                ],
-                "deadlines": [],
-                "values": [
-                    {
-                        "value": 2026000000.0,
-                        "formatted": "R2,026,000,000",
-                        "context": "GXMPGRO Issue date 30 September 2026 Closing date and time 15 Dece"
-                    },
-                    {
-                        "value": 2026000000.0,
-                        "formatted": "R2,026,000,000",
-                        "context": "osing date and time 15 December 2026 at 10H00 Tender validity peri"
-                    },
-                    {
-                        "value": 2026000000.0,
-                        "formatted": "R2,026,000,000",
-                        "context": "tion meeting Date : 16 November 2026 Time : 13:30 to 15:00 Venue:"
-                    },
-                    {
-                        "value": 2026000000.0,
-                        "formatted": "R2,026,000,000",
-                        "context": "bmission is: Date : 15 December 2026 Time 10H00 Late Tenders will"
-                    },
-                    {
-                        "value": 2026000000.0,
-                        "formatted": "R2,026,000,000",
-                        "context": "e as follows: Date: 16 November 2026 Time: 13:30 to 15:00 Venue: M"
-                    },
-                    {
-                        "value": 240000000.0,
-                        "formatted": "R240,000,000",
-                        "context": "irements (Ref 240- 105658000 or 240-109253302) • QCP /Checklist/"
-                    },
-                    {
-                        "value": 90000000.0,
-                        "formatted": "R90,000,000",
-                        "context": "ED FOR PRICE 3.1.1 THE 80/20 OR 90/10 PREFERENCE POINT SYSTEMS A"
-                    },
-                    {
-                        "value": 90000000.0,
-                        "formatted": "R90,000,000",
-                        "context": "OINT SYSTEMS A maximum of 80 or 90 points is allocated for price"
-                    },
-                    {
-                        "value": 90000000.0,
-                        "formatted": "R90,000,000",
-                        "context": "ED FOR PRICE A maximum of 80 or 90 points is allocated for price"
-                    },
-                    {
-                        "value": 90000000.0,
-                        "formatted": "R90,000,000",
-                        "context": "is unclear whether the 80/20 or 90/10 preference point system ap"
-                    }
-                ],
-                "contact": {
-                    "email": "forensic@eskom.co.za",
-                    "phone": "017 779 8788",
-                    "name": "Contact details"
-                }
-            },
-            "scores": {
-                "fit_score": 7,
-                "fit_reasons": [
-                    "Phakathi category match"
-                ],
-                "fit_grade": "B",
-                "industry_score": 10,
-                "industry_matched": "Eskom",
-                "industry_grade": "A",
-                "mexel_suitability": 0,
-                "mexel_fit": "Weak",
-                "company_category": "PHAKATHI",
-                "composite": 8.2,
-                "composite_score": 8.2,
-                "priority": "HIGH",
-                "recommendation": "🔥 PRIORITY BID - Strong fit, pursue immediately"
-            }
-        },
-        {
-            "ref": "OPS2027-BID-005",
-            "title": "SUPPLY, INSTALLATION AND COMMISSIONING OF NEW HIDROSTAL IMMERSIBLE PUMP OR EQUIVALENT FOR NGAGANE RIVER PUMP STATION",
-            "description": "Manufacture of machinery and equipment n.e.c.. Request for Quotation. SUPPLY, INSTALLATION AND COMMISSIONING OF NEW HIDROSTAL IMMERSIBLE PUMP OR EQUIVALENT FOR NGAGANE RIVER PUMP STATION",
-            "client": "uThukela Water (Pty) Ltd",
-            "priority": "MEDIUM",
-            "score": 6.2,
-            "category": "PHAKATHI",
-            "source": "National Treasury",
-            "url": "https://www.etenders.gov.za/home/Download/?blobName=fb5fca0c-0e91-4090-9a5a-0231b2b103f3.pdf&downloadedFileName=TENDER+NOTICE+OPS2027-BID-005.pdf",
-            "company": "Phakathi",
-            "closing_date": "2026-11-11",
-            "matched_keywords": [
-                "pump station",
-                "supply"
-            ],
-            "pdf_analysis": {
-                "page_count": 1,
-                "word_count": 366,
-                "requirements": [
-                    "be sealed and endorsed “bid"
-                ],
-                "deadlines": [
-                    {
-                        "date": "2026-11-11",
-                        "raw": "11 November 2026",
-                        "context": "_________________________________________________ CLOSING DATE: 11 November 2026 @ 12:00 Managing Director uThukela Water (Pty) Lt"
-                    }
-                ],
-                "values": [
-                    {
-                        "value": 2026000000.0,
-                        "formatted": "R2,026,000,000",
-                        "context": "S 29°59'30.28\"E)) on 21 October 2026 at 10:00 am. Tenderers are re"
-                    },
-                    {
-                        "value": 2026000000.0,
-                        "formatted": "R2,026,000,000",
-                        "context": "ter than 12:00pm on 11 November 2026 where bids will be opened in"
-                    },
-                    {
-                        "value": 2026000000.0,
-                        "formatted": "R2,026,000,000",
-                        "context": "_____ CLOSING DATE: 11 November 2026 @ 12:00 Managing Director uTh"
-                    },
-                    {
-                        "value": 120000000.0,
-                        "formatted": "R120,000,000",
-                        "context": "This bid will remain valid for 120 days .uThukela Water reserve"
-                    },
-                    {
-                        "value": 2027.0,
-                        "formatted": "R2,027",
-                        "context": "ealed and endorsed “BID NO: STR2027-BID-005 SUPPLY, INSTALLATION,"
-                    },
-                    {
-                        "value": 2026.0,
-                        "formatted": "R2,026",
-                        "context": "ater.co.za on the 16 of October 2026. Bids will be adjudicated in"
-                    }
-                ],
-                "contact": {
-                    "email": "wayne.smith@uthukelawater.co.za",
-                    "name": "You may"
-                }
-            },
-            "scores": {
-                "fit_score": 7,
-                "fit_reasons": [
-                    "Phakathi category match"
-                ],
-                "fit_grade": "B",
-                "industry_score": 5,
-                "industry_matched": "General",
-                "industry_grade": "C",
-                "mexel_suitability": 0,
-                "mexel_fit": "Weak",
-                "company_category": "PHAKATHI",
-                "composite": 6.2,
-                "composite_score": 6.2,
-                "priority": "MEDIUM",
-                "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
-            }
-        },
-        {
-            "ref": "SK8/3/1-10/2026/2027",
-            "title": "APPOINTMENT OF A SERVICE PROVIDER FOR THE SUPPLY AND DELIVERY OF READYMADE STAND ALONE PORTABLE PREFABRICATED MOBILE OFFICE CONTAINERS FOR MAKLEREKENG DEPOT, MARISHANE PLANT, PENGE PUMP STATION, NEBO STORES, EPHRAIM MOGALE FIRE STATION, FETAKGOMO FIRE STATION, AND PRACTISEER REGIONAL OFFICE (OONE-OFF).",
-            "description": "Services: General. Request for Bid(Open-Tender). APPOINTMENT OF A SERVICE PROVIDER FOR THE SUPPLY AND DELIVERY OF READYMADE STAND ALONE PORTABLE PREFABRICATED MOBILE OFFICE CONTAINERS FOR MAKLEREKENG DEPOT, MARISHANE PLANT, PENGE PUMP STATION, NEBO STORES, EPHRAIM MOGALE FIRE STATION, FETAKGOMO FIRE STATION, AND PRACTISEER REGIONAL OFFICE (OONE-OFF).",
-            "client": "Sekhukhune District Municipality",
-            "priority": "HIGH",
-            "score": 7.0,
-            "category": "PHAKATHI",
-            "source": "National Treasury",
-            "url": "https://www.etenders.gov.za/home/Download/?blobName=a9c71b56-ec30-40d6-a5c7-bfb0683a95f0.pdf&downloadedFileName=Appointment+of+a+Service+Provider+for+the+Supply+and+Delivery+of+Readymade+Stand+Alone+Portable+Prefabricated+Mobile+Office+Containers+.pdf",
-            "company": "Phakathi",
-            "closing_date": "2026-11-11",
-            "matched_keywords": [
-                "plant",
-                "service",
-                "supply",
-                "services",
-                "delivery",
-                "supply and delivery",
-                "pump station"
-            ],
-            "pdf_analysis": {
-                "page_count": 52,
-                "word_count": 12793,
-                "requirements": [
-                    "be deemed to form and be read and construed as part",
-                    "include any individual or organization, other than the bidder,",
-                    "pay the contractor the amount",
-                    "form an agreement between the employer and the tenderer upon",
-                    "constitute a repudiation of this agreement",
-                    "constitute a binding contract",
-                    "be interpreted as indicated:",
-                    "conform to the standards mentioned in the bidding documents and",
-                    "not, without the purchaser’s prior written consent, disclose the",
-                    "be made in confidence and shall",
-                    "not, without the purchaser’s prior written consent, make use of any",
-                    "remain and shall be returned (all copies) to the purchaser",
-                    "permit the purchaser to inspect the supplier’s records relating to the",
-                    "indemnify the purchaser against all third-party claims of infringement of",
-                    "furnish to the purchaser the performance security of the amount specified in scc",
-                    "be payable to the purchaser as compensation",
-                    "be denominated in the currency of the contract, or in a freely",
-                    "be in one of the following forms:",
-                    "be open, at all reasonable hours, for inspection by a",
-                    "itself make the necessary arrangements, including payment"
-                ],
-                "deadlines": [
-                    {
-                        "date": "2026-11-11",
-                        "raw": "11/11/2026",
-                        "context": "CT MUNICIPALITY) BID NUMBER: SK8/3/1-10/2026/2027 CLOSING DATE: 11/11/2026 CLOSING TIME: 10H00 APPOINTMENT OF A SERVICE PROV"
-                    }
-                ],
-                "values": [
-                    {
-                        "value": 2026000000.0,
-                        "formatted": "R2,026,000,000",
-                        "context": "/UNIT CLOSING DATE: 11 NOVEMBER 2026 CLOSING TIME: 10H00 BRIEFING"
-                    },
-                    {
-                        "value": 1994000000.0,
-                        "formatted": "R1,994,000,000",
-                        "context": "having voting 6 12 rights prior 1994. 2 Woman – ownership 1 2 of m"
-                    },
-                    {
-                        "value": 90000000.0,
-                        "formatted": "R90,000,000",
-                        "context": "6.1) 1.4. THIS BID IS VALID FOR 90 DAYS 2. TAX COMPLIANCE REQUIR"
-                    },
-                    {
-                        "value": 80000000.0,
-                        "formatted": "R80,000,000",
-                        "context": "llocated for specific goals for 80/20 preference point system. T"
-                    },
-                    {
-                        "value": 50000000.0,
-                        "formatted": "R50,000,000",
-                        "context": "p to and including a value of R50 000 000.00. The tenderer must"
-                    },
-                    {
-                        "value": 36000000.0,
-                        "formatted": "R36,000,000",
-                        "context": "d (all copies) to the purchaser 36 Initials ____ on completion o"
-                    },
-                    {
-                        "value": 24000000.0,
-                        "formatted": "R24,000,000",
-                        "context": "………………… Position Name of Bidder 24 Initials ____ FORM OF OFFER A"
-                    },
-                    {
-                        "value": 21000000.0,
-                        "formatted": "R21,000,000",
-                        "context": "………………… Position Name of Bidder 21 Initials ____ MBD 9 CERTIFICA"
-                    },
-                    {
-                        "value": 13000000.0,
-                        "formatted": "R13,000,000",
-                        "context": "HIGO TELEPHONE TELEPHONE NUMBER 013 262 7656 NUMBER 013 262 7470"
-                    },
-                    {
-                        "value": 13000000.0,
-                        "formatted": "R13,000,000",
-                        "context": "HONE NUMBER 013 262 7656 NUMBER 013 262 7470 E-MAIL ADDRESS masem"
-                    }
-                ],
-                "contact": {
-                    "email": "masemolav@sekhukhune.gov.za",
-                    "phone": "013 262 7656",
-                    "name": "Voster Masemola"
-                }
-            },
-            "scores": {
-                "fit_score": 7,
-                "fit_reasons": [
-                    "Phakathi category match"
-                ],
-                "fit_grade": "B",
-                "industry_score": 7,
-                "industry_matched": "Municipal",
-                "industry_grade": "B",
-                "mexel_suitability": 1,
-                "mexel_fit": "Weak",
-                "company_category": "PHAKATHI",
-                "composite": 7.0,
-                "composite_score": 7.0,
-                "priority": "HIGH",
-                "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
-            }
-        },
-        {
-            "ref": "GMT013/26-27",
-            "title": "Upgrading of Pacaltsdorp Pump Station No. 3: Bulk Earthworks and Related Civils",
-            "description": "Other service activities. Request for Bid(Open-Tender). Upgrading of Pacaltsdorp Pump Station No. 3: Bulk Earthworks and Related Civils",
-            "client": "George Municipality",
-            "priority": "HIGH",
-            "score": 7.0,
-            "category": "PHAKATHI",
-            "source": "National Treasury",
-            "url": "https://www.etenders.gov.za/home/Download/?blobName=9300d115-4c3b-45b7-8b73-856416644365.pdf&downloadedFileName=GMT013+of+26-27+-+ADVERT.pdf",
-            "company": "Phakathi",
-            "closing_date": "2026-11-10",
-            "matched_keywords": [
-                "pump station",
-                "service"
-            ],
-            "pdf_analysis": {
-                "page_count": 3,
-                "word_count": 1507,
-                "requirements": [
-                    "be placed in the tender tender nr",
-                    "be paid at the supply chain management unit, fifth dokument moet by die voorsieningskanaal-",
-                    "register per e-mail gehou word via microsoft teams",
-                    "be registered with the cidb, and it is tenderaars moet by die cidb geregistreer wees en dit",
-                    "‘n “tcs pin” vir tenderaars se belasting nakoming inligting"
-                ],
-                "deadlines": [],
-                "values": [
-                    {
-                        "value": 2026000000.0,
-                        "formatted": "R2,026,000,000",
-                        "context": "Building on the Fifth November 2026 in die tenderbus by die Georg"
-                    },
-                    {
-                        "value": 2026000000.0,
-                        "formatted": "R2,026,000,000",
-                        "context": "ingskanaal 12:00 on 10 November 2026. Tenders will be opened on Be"
-                    },
-                    {
-                        "value": 2026000000.0,
-                        "formatted": "R2,026,000,000",
-                        "context": "die Werkgewer sal op 20 October 2026 om 10:00 via Microsoft Teams."
-                    },
-                    {
-                        "value": 2026000000.0,
-                        "formatted": "R2,026,000,000",
-                        "context": "-mail address 10:00, 19 Oktober 2026 per e-pos registreer by Mnr."
-                    },
-                    {
-                        "value": 2026000000.0,
-                        "formatted": "R2,026,000,000",
-                        "context": "ance before 10:00 on 19 October 2026 with Mr 2026 vir bywoning by"
-                    },
-                    {
-                        "value": 2026000000.0,
-                        "formatted": "R2,026,000,000",
-                        "context": "0:00 on 19 October 2026 with Mr 2026 vir bywoning by Mnr Marc Jaco"
-                    },
-                    {
-                        "value": 2026000000.0,
-                        "formatted": "R2,026,000,000",
-                        "context": "terreinbesoek sal op 21 Oktober 2026 om at 11h00, at Pacaltsdorp S"
-                    },
-                    {
-                        "value": 2026000000.0,
-                        "formatted": "R2,026,000,000",
-                        "context": "os adres: mcjacobs@george.gov.za 2026 in order to receive an invite"
-                    },
-                    {
-                        "value": 1000000000.0,
-                        "formatted": "R1,000,000,000",
-                        "context": ". A non-refundable deposit of R1,000-00 per document ‘n Nie-terugb"
-                    },
-                    {
-                        "value": 1000000000.0,
-                        "formatted": "R1,000,000,000",
-                        "context": "-terugbetaalbare deposito van R1,000-00 per must be paid at the Su"
-                    }
-                ],
-                "contact": {
-                    "email": "francois@lyners.co.za",
-                    "phone": "6286962315"
-                }
-            },
-            "scores": {
-                "fit_score": 7,
-                "fit_reasons": [
-                    "Phakathi category match"
-                ],
-                "fit_grade": "B",
-                "industry_score": 7,
-                "industry_matched": "Municipal",
-                "industry_grade": "B",
-                "mexel_suitability": 0,
-                "mexel_fit": "Weak",
-                "company_category": "PHAKATHI",
-                "composite": 7.0,
-                "composite_score": 7.0,
-                "priority": "HIGH",
-                "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
-            }
-        },
-        {
-            "ref": "TE/2026/06/2474/7615/RFQ",
-            "title": "FOR THE APPOINTMENT OF A SERVICE PROVIDER TO PROVIDE ELECTRICAL REPAIR AND PROGRAMMING TO 7 OFF EXISTING CONTROL PANELS FOR INDUSTRIAL OVENS, TESTING, CALIBRATION AND COMMISSIONING",
-            "description": "Services: Electrical. Request for Quotation. FOR THE APPOINTMENT OF A SERVICE PROVIDER TO PROVIDE ELECTRICAL REPAIR AND PROGRAMMING TO 7 OFF EXISTING CONTROL PANELS FOR INDUSTRIAL OVENS, TESTING, CALIBRATION AND COMMISSIONING",
-            "client": "Transnet SOC Ltd",
-            "priority": "MEDIUM",
-            "score": 6.6,
-            "category": "PHAKATHI",
-            "source": "National Treasury",
-            "url": "https://www.etenders.gov.za/home/Download/?blobName=de526774-3341-4618-90d6-c75e40ce6a17.zip&downloadedFileName=TE-2026-06-2474-7615-RFQ.zip",
-            "company": "Phakathi",
-            "closing_date": "2026-11-06",
-            "matched_keywords": [
-                "repair",
-                "service",
-                "services",
-                "industrial",
-                "control panels"
-            ],
-            "scores": {
-                "fit_score": 7,
-                "fit_reasons": [
-                    "Phakathi category match"
-                ],
-                "fit_grade": "B",
-                "industry_score": 6,
-                "industry_matched": "Industrial",
-                "industry_grade": "B",
-                "mexel_suitability": 1,
-                "mexel_fit": "Weak",
-                "company_category": "PHAKATHI",
-                "composite": 6.6,
-                "composite_score": 6.6,
-                "priority": "MEDIUM",
-                "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
-            }
-        },
-        {
-            "ref": "A-WS 08-2026",
-            "title": "The appointment of contractors for Pressure Management, Leak Detection, Valve Replacement and Remedial Works in the City of Ekurhuleni on an as and when required basis from date of award until 30 June 2029",
-            "description": "Services: Civil. Request for Bid(Open-Tender). The appointment of contractors for Pressure Management, Leak Detection, Valve Replacement and Remedial Works in the City of Ekurhuleni on an as and when required basis from date of award until 30 June 2029",
-            "client": "City of Ekurhuleni",
-            "priority": "MEDIUM",
-            "score": 6.2,
-            "category": "PHAKATHI",
-            "source": "National Treasury",
-            "url": "https://www.etenders.gov.za/home/Download/?blobName=72c6462b-ac06-4d72-8154-6efa7a5bd7c9.pdf&downloadedFileName=A-WS+08-2026+FINAL+BID+DOCUMENT+PRESSURE+MANAGEMENT%2C+LEAK+DETECTION%2C+VALVE+REPLACEMENT+AND+REMEDIAL+WORKS.pdf",
-            "company": "Phakathi",
-            "closing_date": "2026-11-30",
-            "matched_keywords": [
-                "services",
-                "replacement",
-                "valve"
-            ],
-            "pdf_analysis": {
-                "page_count": 423,
-                "word_count": 118098,
-                "requirements": [
-                    "take precedence and apply",
-                    "hold good for 120 days as from the closing date of bids",
-                    "in terms of the scm policy of the city of",
-                    "have precedence in the interpretation of any ambiguity or inconsistency",
-                    "be adjusted to reflect",
-                    "be the 90/10-point preference",
-                    "not be considered and",
-                    "automatically be rejected",
-                    "provide all reasonable assistance in such investigations",
-                    "be submitted as a whole and shall not be taken apart",
-                    "comply with these conditions of tender",
-                    "discharge their duties and obligations as set out in f",
-                    "avoid conflicts of interest and where a conflict of interest is perceived or known, declare any such conflict of",
-                    "declare any potential conflict of interest in their",
-                    "declare any conflict of interest to",
-                    "not seek and a tenderer shall not submit a tender without having a firm intention and",
-                    "not form part of any contract arising from the invitation to tender",
-                    "be to or from the employer's agent only, and in",
-                    "be in the english language",
-                    "not take any responsibility for non-receipt of communications from or by a tenderer"
-                ],
-                "deadlines": [
-                    {
-                        "date": "2026-11-30",
-                        "raw": "30 NOVEMBER 2026",
-                        "context": "F THE CITY OF EKURHULENI BID NUMBER: A-WS 08-2026 CLOSING DATE: 30 NOVEMBER 2026 CLOSING TIME: 10:00 am The appointment of contrac"
-                    }
-                ],
-                "values": [
-                    {
-                        "value": 476396000000.0,
-                        "formatted": "R476,396,000,000",
-                        "context": "ords at rainfall station number 476396 for the period 1998 to 2015 a"
-                    },
-                    {
-                        "value": 120000000000.0,
-                        "formatted": "R120,000,000,000",
-                        "context": "VAT registration threshold is R120,000 per annum, subject to the req"
-                    },
-                    {
-                        "value": 2026000000.0,
-                        "formatted": "R2,026,000,000",
-                        "context": "ak Detection, Valve 30 NOVEMBER 2026 Replacement and Remedial Work"
-                    },
-                    {
-                        "value": 2026000000.0,
-                        "formatted": "R2,026,000,000",
-                        "context": "held at 11:00 am on 21 OCTOBER 2026. Prospective bidders are requ"
-                    },
-                    {
-                        "value": 2026000000.0,
-                        "formatted": "R2,026,000,000",
-                        "context": "later than 10:00 on 30 NOVEMBER 2026. Bids will be opened immediat"
-                    },
-                    {
-                        "value": 2026000000.0,
-                        "formatted": "R2,026,000,000",
-                        "context": "-2026 CLOSING DATE: 30 NOVEMBER 2026 CLOSING TIME: 10:00 am The ap"
-                    },
-                    {
-                        "value": 2026000000.0,
-                        "formatted": "R2,026,000,000",
-                        "context": "Kempton Park. Date: 21 OCTOBER 2026 Starting time: 11:00 am. F.2."
-                    },
-                    {
-                        "value": 2026000000.0,
-                        "formatted": "R2,026,000,000",
-                        "context": "NG TIME 10:00 am on 30 NOVEMBER 2026 Telephonic, telegraphic, tele"
-                    },
-                    {
-                        "value": 2022000000.0,
-                        "formatted": "R2,022,000,000",
-                        "context": "GAZETTE NO. 47452 OF 4 NOVEMBER 2022) THE APPOINTMENT OF CONTRACTO"
-                    },
-                    {
-                        "value": 2000000000.0,
-                        "formatted": "R2,000,000,000",
-                        "context": "irth of less than 1000 mm and R2000 for each tree having a girth"
-                    }
-                ],
-                "contact": {
-                    "email": "Sduduzo.Sikhakhane@ekurhuleni.gov.za",
-                    "phone": "250 600 1000"
-                }
-            },
-            "scores": {
-                "fit_score": 7,
-                "fit_reasons": [
-                    "Phakathi category match"
-                ],
-                "fit_grade": "B",
-                "industry_score": 5,
-                "industry_matched": "General",
-                "industry_grade": "C",
-                "mexel_suitability": 0,
-                "mexel_fit": "Weak",
-                "company_category": "PHAKATHI",
-                "composite": 6.2,
-                "composite_score": 6.2,
-                "priority": "MEDIUM",
-                "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
-            }
-        },
-        {
-            "ref": "8/2/1/651",
-            "title": "SUPPLY AND DELIVERY OF VJ COUPLINGS STOCK ITEMS AS PER SIZES OVER 36 MONTHS AS AND WHEN REQUIRED",
-            "description": "Administrative and support activities. Request for Bid(Open-Tender). SUPPLY AND DELIVERY OF VJ COUPLINGS STOCK ITEMS AS PER SIZES OVER 36 MONTHS AS AND WHEN REQUIRED",
-            "client": "Abaqulusi Local Municipality",
-            "priority": "HIGH",
-            "score": 7.0,
-            "category": "PHAKATHI",
-            "source": "National Treasury",
-            "url": "https://www.etenders.gov.za/home/Download/?blobName=10f5d29d-0bef-4e82-bb61-360d5e37d20e.pdf&downloadedFileName=TENDER+DOCUMENT+-+SUPPLY+AND+DELIVERY+OF+VJ+COULPINGS+8-2-1-651.pdf",
-            "company": "Phakathi",
-            "closing_date": "2026-11-13",
-            "matched_keywords": [
-                "supply and delivery",
-                "delivery",
-                "couplings",
-                "supply"
-            ],
-            "pdf_analysis": {
-                "page_count": 45,
-                "word_count": 12112,
-                "requirements": [
-                    "be deemed to form and be read and construed as part of this",
-                    "pay the contractor the amount due in accordance with the conditions of contract identified",
-                    "form an agreement between the employer and the tendered upon the",
-                    "within two weeks of receiving a completed copy of this agreement, including the schedule of deviations (if any),",
-                    "constitute a repudiation of this agreement",
-                    "constitute a binding contract between the parties",
-                    "include any individual or organization, other than the bidder, whether or not",
-                    "be interpreted as indicated:",
-                    "conform to the standards mentioned in the bidding",
-                    "not, without the purchaser’s prior written consent, disclose the",
-                    "be made in confidence and",
-                    "extend only as far as may be necessary for purposes of such performance",
-                    "not, without the purchaser’s prior written consent, make use of",
-                    "remain the property of the purchaser and shall be returned (all copies) to the purchaser",
-                    "permit the purchaser to inspect the supplier’s records relating",
-                    "indemnify the purchaser against all third-party claims of",
-                    "furnish to the purchaser the performance security of the amount specified in",
-                    "be payable to the purchaser as",
-                    "be denominated in the currency of the contract or in",
-                    "be open, at all reasonable"
-                ],
-                "deadlines": [
-                    {
-                        "date": "2026-11-13",
-                        "raw": "13/11/2026",
-                        "context": "CIPALITY/ MUNICIPAL ENTITY) BID NUMBER: 8/2/1/651 CLOSING DATE: 13/11/2026 CLOSING TIME: 12H00 DESCRIPTION SUPPLY AND DELIVE"
-                    }
-                ],
-                "values": [
-                    {
-                        "value": 2026000000.0,
-                        "formatted": "R2,026,000,000",
-                        "context": ".gov.za) as from the 13 October 2026.A non-refundable bid fee of R"
-                    },
-                    {
-                        "value": 2026000000.0,
-                        "formatted": "R2,026,000,000",
-                        "context": "0 by not later than 13 November 2026, at 12h00. The municipality d"
-                    },
-                    {
-                        "value": 1500000000.0,
-                        "formatted": "R1,500,000,000",
-                        "context": "nistration cost is payable of R 1500.00, Proof of payment will be"
-                    },
-                    {
-                        "value": 110000000.0,
-                        "formatted": "R110,000,000",
-                        "context": "0256 VJ coupling 108-128mm (for 110mm pipe) 1 W001154 VJ coupling"
-                    },
-                    {
-                        "value": 90000000.0,
-                        "formatted": "R90,000,000",
-                        "context": "te the Tender will be valid for 90 days. Tender are to be comple"
-                    },
-                    {
-                        "value": 90000000.0,
-                        "formatted": "R90,000,000",
-                        "context": "3/11/2026 OFFER TO BE VALID FOR 90 DAYS FROM THE CLOSING DATE OF"
-                    },
-                    {
-                        "value": 90000000.0,
-                        "formatted": "R90,000,000",
-                        "context": "ED FOR PRICE 3.1.1 THE 80/20 OR 90/10 PREFERENCE POINT SYSTEMS A"
-                    },
-                    {
-                        "value": 90000000.0,
-                        "formatted": "R90,000,000",
-                        "context": "OINT SYSTEMS A maximum of 80 or 90 points is allocated for price"
-                    },
-                    {
-                        "value": 90000000.0,
-                        "formatted": "R90,000,000",
-                        "context": "ED FOR PRICE A maximum of 80 or 90 points is allocated for price"
-                    },
-                    {
-                        "value": 90000000.0,
-                        "formatted": "R90,000,000",
-                        "context": "is unclear whether the 80/20 or 90/10 preference point system ap"
-                    }
-                ],
-                "contact": {
-                    "email": "nzulu@abaqulusi.gov.za"
-                }
-            },
-            "scores": {
-                "fit_score": 7,
-                "fit_reasons": [
-                    "Phakathi category match"
-                ],
-                "fit_grade": "B",
-                "industry_score": 7,
-                "industry_matched": "Municipal",
-                "industry_grade": "B",
-                "mexel_suitability": 0,
-                "mexel_fit": "Weak",
-                "company_category": "PHAKATHI",
-                "composite": 7.0,
-                "composite_score": 7.0,
-                "priority": "HIGH",
-                "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
-            }
-        },
-        {
-            "ref": "ALA/605/26/MP Re-advertisement",
-            "title": "TURNKEY PROPOSAL FOR THE DEVELOPMENT OF A WATER TREATMENT, RIVER PUMP STATION AND WATER BOTTLING PLANT FOR THE MPUMALANGA INTERNATIONAL FOOD MARKET AT THE CITY OF MBOMBELA LOCAL MUNICIPALITY",
-            "description": "Services: General. Request for Bid(Open-Tender). TURNKEY PROPOSAL FOR THE DEVELOPMENT OF A WATER TREATMENT, RIVER PUMP STATION AND WATER BOTTLING PLANT FOR THE MPUMALANGA INTERNATIONAL FOOD MARKET AT THE CITY OF MBOMBELA LOCAL MUNICIPALITY",
-            "client": "Mpumalanga - Agriculture Rural Development and Land Administration",
-            "priority": "HIGH",
-            "score": 7.6,
-            "category": "PHAKATHI",
-            "source": "National Treasury",
-            "url": "https://www.etenders.gov.za/home/Download/?blobName=f2ae0f11-b23d-4cc2-afd1-f5ddb222eab1.pdf&downloadedFileName=ALA605.pdf",
-            "company": "Phakathi",
-            "closing_date": "2026-11-06",
-            "matched_keywords": [
-                "services",
-                "pump station",
-                "plant"
-            ],
-            "scores": {
-                "fit_score": 8,
-                "fit_reasons": [
-                    "Phakathi category match",
-                    "Mexel alignment (1 keywords)"
-                ],
-                "fit_grade": "A",
-                "industry_score": 7,
-                "industry_matched": "Municipal",
-                "industry_grade": "B",
-                "mexel_suitability": 5,
-                "mexel_fit": "Moderate",
-                "company_category": "PHAKATHI",
-                "composite": 7.6,
-                "composite_score": 7.6,
-                "priority": "HIGH",
-                "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
-            }
-        },
-        {
-            "ref": "8/2/1/659",
-            "title": "SUPPLY AND DELIVERY OF GALVANISED AND PVC VALVES AS PER SIZES OVER 36 MONTHS",
-            "description": "Administrative and support activities. Request for Bid(Open-Tender). SUPPLY AND DELIVERY OF GALVANISED AND PVC VALVES AS PER SIZES OVER 36 MONTHS",
-            "client": "Abaqulusi Local Municipality",
-            "priority": "HIGH",
-            "score": 7.0,
-            "category": "PHAKATHI",
-            "source": "National Treasury",
-            "url": "https://www.etenders.gov.za/home/Download/?blobName=b1a346e7-09ce-4e11-9873-5f31dc29ad0f.pdf&downloadedFileName=TENDER+DOCUMENT+-+SUPPLY+AND+DELIVERY+OF+GALVANISED++PVC+VALVES+8-2-1-659.pdf",
-            "company": "Phakathi",
-            "closing_date": "2026-11-20",
-            "matched_keywords": [
-                "valves",
-                "delivery",
-                "supply and delivery",
-                "supply"
-            ],
-            "pdf_analysis": {
-                "page_count": 44,
-                "word_count": 11992,
-                "requirements": [
-                    "be deemed to form and be read and construed as part of this",
-                    "pay the contractor the amount due in accordance with the conditions of contract identified",
-                    "form an agreement between the employer and the tendered upon the",
-                    "within two weeks of receiving a completed copy of this agreement, including the schedule of deviations (if any),",
-                    "constitute a repudiation of this agreement",
-                    "constitute a binding contract between the parties",
-                    "include any individual or organization, other than the bidder, whether or not",
-                    "be interpreted as indicated:",
-                    "conform to the standards mentioned in the bidding",
-                    "not, without the purchaser’s prior written consent, disclose the",
-                    "be made in confidence and",
-                    "extend only as far as may be necessary for purposes of such performance",
-                    "not, without the purchaser’s prior written consent, make use of",
-                    "remain the property of the purchaser and shall be returned (all copies) to the purchaser",
-                    "permit the purchaser to inspect the supplier’s records relating",
-                    "indemnify the purchaser against all third-party claims of",
-                    "furnish to the purchaser the performance security of the amount specified in",
-                    "be payable to the purchaser as",
-                    "be denominated in the currency of the contract or in",
-                    "be open, at all reasonable"
-                ],
-                "deadlines": [
-                    {
-                        "date": "2026-11-20",
-                        "raw": "20/11/2026",
-                        "context": "CIPALITY/ MUNICIPAL ENTITY) BID NUMBER: 8/2/1/659 CLOSING DATE: 20/11/2026 CLOSING TIME: 12H00 DESCRIPTION SUPPLY AND DELIVE"
-                    }
-                ],
-                "values": [
-                    {
-                        "value": 2026000000.0,
-                        "formatted": "R2,026,000,000",
-                        "context": ".gov.za) as from the 15 October 2026.A non-refundable bid fee of R"
-                    },
-                    {
-                        "value": 2026000000.0,
-                        "formatted": "R2,026,000,000",
-                        "context": "0 by not later than 20 November 2026, at 12h00. The municipality d"
-                    },
-                    {
-                        "value": 1500000000.0,
-                        "formatted": "R1,500,000,000",
-                        "context": "nistration cost is payable of R 1500.00, Proof of payment will be"
-                    },
-                    {
-                        "value": 90000000.0,
-                        "formatted": "R90,000,000",
-                        "context": "te the Tender will be valid for 90 days. Tender are to be comple"
-                    },
-                    {
-                        "value": 90000000.0,
-                        "formatted": "R90,000,000",
-                        "context": "0/11/2026 OFFER TO BE VALID FOR 90 DAYS FROM THE CLOSING DATE OF"
-                    },
-                    {
-                        "value": 90000000.0,
-                        "formatted": "R90,000,000",
-                        "context": "ED FOR PRICE 3.1.1 THE 80/20 OR 90/10 PREFERENCE POINT SYSTEMS A"
-                    },
-                    {
-                        "value": 90000000.0,
-                        "formatted": "R90,000,000",
-                        "context": "OINT SYSTEMS A maximum of 80 or 90 points is allocated for price"
-                    },
-                    {
-                        "value": 90000000.0,
-                        "formatted": "R90,000,000",
-                        "context": "ED FOR PRICE A maximum of 80 or 90 points is allocated for price"
-                    },
-                    {
-                        "value": 90000000.0,
-                        "formatted": "R90,000,000",
-                        "context": "is unclear whether the 80/20 or 90/10 preference point system ap"
-                    },
-                    {
-                        "value": 90000000.0,
-                        "formatted": "R90,000,000",
-                        "context": "racts, that either the 80/20 or 90/10 preference point system wi"
-                    }
-                ],
-                "contact": {
-                    "email": "nzulu@abaqulusi.gov.za"
-                }
-            },
-            "scores": {
-                "fit_score": 7,
-                "fit_reasons": [
-                    "Phakathi category match"
-                ],
-                "fit_grade": "B",
-                "industry_score": 7,
-                "industry_matched": "Municipal",
-                "industry_grade": "B",
-                "mexel_suitability": 0,
-                "mexel_fit": "Weak",
-                "company_category": "PHAKATHI",
-                "composite": 7.0,
-                "composite_score": 7.0,
-                "priority": "HIGH",
-                "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
-            }
-        },
-        {
-            "ref": "8/2/1/658",
-            "title": "SUPPLY AND DELIVERY OF HDPE PLASSON COUPLINGS AS PER SIZES OVER 36 MONTHS",
-            "description": "Administrative and support activities. Request for Bid(Open-Tender). SUPPLY AND DELIVERY OF HDPE PLASSON COUPLINGS AS PER SIZES OVER 36 MONTHS",
-            "client": "Abaqulusi Local Municipality",
-            "priority": "HIGH",
-            "score": 7.0,
-            "category": "PHAKATHI",
-            "source": "National Treasury",
-            "url": "https://www.etenders.gov.za/home/Download/?blobName=bb9cfb04-85ea-411f-9f55-65323b81bbc2.pdf&downloadedFileName=TENDER+DOCUMENT+-+SUPPLY+AND+DELIVERY+OF+COUPLINGS+PLASSON+8-2-1-658.pdf",
-            "company": "Phakathi",
+            "ref_is_authoritative": true,
+            "url": "https://www.etenders.gov.za/Home/opportunities",
             "closing_date": "2026-11-19",
-            "matched_keywords": [
-                "supply and delivery",
-                "delivery",
-                "couplings",
-                "supply"
-            ],
-            "pdf_analysis": {
-                "page_count": 44,
-                "word_count": 11960,
-                "requirements": [
-                    "be deemed to form and be read and construed as part of this",
-                    "pay the contractor the amount due in accordance with the conditions of contract identified",
-                    "form an agreement between the employer and the tendered upon the",
-                    "within two weeks of receiving a completed copy of this agreement, including the schedule of deviations (if any),",
-                    "constitute a repudiation of this agreement",
-                    "constitute a binding contract between the parties",
-                    "include any individual or organization, other than the bidder, whether or not",
-                    "be interpreted as indicated:",
-                    "conform to the standards mentioned in the bidding",
-                    "not, without the purchaser’s prior written consent, disclose the",
-                    "be made in confidence and",
-                    "extend only as far as may be necessary for purposes of such performance",
-                    "not, without the purchaser’s prior written consent, make use of",
-                    "remain the property of the purchaser and shall be returned (all copies) to the purchaser",
-                    "permit the purchaser to inspect the supplier’s records relating",
-                    "indemnify the purchaser against all third-party claims of",
-                    "furnish to the purchaser the performance security of the amount specified in",
-                    "be payable to the purchaser as",
-                    "be denominated in the currency of the contract or in",
-                    "be open, at all reasonable"
-                ],
-                "deadlines": [
-                    {
-                        "date": "2026-11-19",
-                        "raw": "19/11/2026",
-                        "context": "CIPALITY/ MUNICIPAL ENTITY) BID NUMBER: 8/2/1/658 CLOSING DATE: 19/11/2026 CLOSING TIME: 12H00 DESCRIPTION SUPPLY AND DELIVE"
-                    }
-                ],
-                "values": [
-                    {
-                        "value": 2026000000.0,
-                        "formatted": "R2,026,000,000",
-                        "context": ".gov.za) as from the 15 October 2026.A non-refundable bid fee of R"
-                    },
-                    {
-                        "value": 2026000000.0,
-                        "formatted": "R2,026,000,000",
-                        "context": "0 by not later than 19 November 2026, at 12h00. The municipality d"
-                    },
-                    {
-                        "value": 1500000000.0,
-                        "formatted": "R1,500,000,000",
-                        "context": "nistration cost is payable of R 1500.00, Proof of payment will be"
-                    },
-                    {
-                        "value": 90000000.0,
-                        "formatted": "R90,000,000",
-                        "context": "te the Tender will be valid for 90 days. Tender are to be comple"
-                    },
-                    {
-                        "value": 90000000.0,
-                        "formatted": "R90,000,000",
-                        "context": "9/11/2026 OFFER TO BE VALID FOR 90 DAYS FROM THE CLOSING DATE OF"
-                    },
-                    {
-                        "value": 90000000.0,
-                        "formatted": "R90,000,000",
-                        "context": "ED FOR PRICE 3.1.1 THE 80/20 OR 90/10 PREFERENCE POINT SYSTEMS A"
-                    },
-                    {
-                        "value": 90000000.0,
-                        "formatted": "R90,000,000",
-                        "context": "OINT SYSTEMS A maximum of 80 or 90 points is allocated for price"
-                    },
-                    {
-                        "value": 90000000.0,
-                        "formatted": "R90,000,000",
-                        "context": "ED FOR PRICE A maximum of 80 or 90 points is allocated for price"
-                    },
-                    {
-                        "value": 90000000.0,
-                        "formatted": "R90,000,000",
-                        "context": "is unclear whether the 80/20 or 90/10 preference point system ap"
-                    },
-                    {
-                        "value": 90000000.0,
-                        "formatted": "R90,000,000",
-                        "context": "racts, that either the 80/20 or 90/10 preference point system wi"
-                    }
-                ],
-                "contact": {
-                    "email": "nzulu@abaqulusi.gov.za"
-                }
-            },
+            "published_date": "2026-10-28",
+            "reason": "Phakathi Match: 1 keyword(s)",
+            "short_title": "Design_And_Replacement_Of",
+            "category": "PHAKATHI",
             "scores": {
                 "fit_score": 7,
                 "fit_reasons": [
                     "Phakathi category match"
                 ],
                 "fit_grade": "B",
-                "industry_score": 7,
-                "industry_matched": "Municipal",
-                "industry_grade": "B",
+                "industry_score": 10,
+                "industry_matched": "Eskom",
+                "industry_grade": "A",
                 "mexel_suitability": 0,
                 "mexel_fit": "Weak",
                 "company_category": "PHAKATHI",
-                "composite": 7.0,
-                "composite_score": 7.0,
-                "priority": "HIGH",
-                "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
-            }
-        },
-        {
-            "ref": "8/2/1/656",
-            "title": "SUPPLY AND DELIVERY OF SEWERAGE WATER PUMPS SPARES AND INSTRUMENTS AS PER SIZES OVER 36 MONTHS",
-            "description": "Administrative and support activities. Request for Bid(Open-Tender). SUPPLY AND DELIVERY OF SEWERAGE WATER PUMPS SPARES AND INSTRUMENTS AS PER SIZES OVER 36 MONTHS",
-            "client": "Abaqulusi Local Municipality",
-            "priority": "HIGH",
-            "score": 7.0,
-            "category": "PHAKATHI",
-            "source": "National Treasury",
-            "url": "https://www.etenders.gov.za/home/Download/?blobName=894a6bb9-d68b-4ffb-a667-b6665cbea8ef.pdf&downloadedFileName=TENDER+DOCUMENT+-+SUPPLY+AND+DELIVERY+OF+WATER+PUMPS+8-2-1-656.pdf",
-            "company": "Phakathi",
-            "closing_date": "2026-11-19",
-            "matched_keywords": [
-                "spares",
-                "supply",
-                "delivery",
-                "supply and delivery",
-                "water pumps"
-            ],
-            "pdf_analysis": {
-                "page_count": 44,
-                "word_count": 11918,
-                "requirements": [
-                    "be deemed to form and be read and construed as part of this",
-                    "pay the contractor the amount due in accordance with the conditions of contract identified",
-                    "form an agreement between the employer and the tendered upon the",
-                    "within two weeks of receiving a completed copy of this agreement, including the schedule of deviations (if any),",
-                    "constitute a repudiation of this agreement",
-                    "constitute a binding contract between the parties",
-                    "include any individual or organization, other than the bidder, whether or not",
-                    "be interpreted as indicated:",
-                    "conform to the standards mentioned in the bidding",
-                    "not, without the purchaser’s prior written consent, disclose the",
-                    "be made in confidence and",
-                    "extend only as far as may be necessary for purposes of such performance",
-                    "not, without the purchaser’s prior written consent, make use of",
-                    "remain the property of the purchaser and shall be returned (all copies) to the purchaser",
-                    "permit the purchaser to inspect the supplier’s records relating",
-                    "indemnify the purchaser against all third-party claims of",
-                    "furnish to the purchaser the performance security of the amount specified in",
-                    "be payable to the purchaser as",
-                    "be denominated in the currency of the contract or in",
-                    "be open, at all reasonable"
-                ],
-                "deadlines": [
-                    {
-                        "date": "2026-11-19",
-                        "raw": "19/11/2026",
-                        "context": "CIPALITY/ MUNICIPAL ENTITY) BID NUMBER: 8/2/1/656 CLOSING DATE: 19/11/2026 CLOSING TIME: 12H00 DESCRIPTION SUPPLY AND DELIVE"
-                    }
-                ],
-                "values": [
-                    {
-                        "value": 2026000000.0,
-                        "formatted": "R2,026,000,000",
-                        "context": ".gov.za) as from the 15 October 2026.A non-refundable bid fee of R"
-                    },
-                    {
-                        "value": 2026000000.0,
-                        "formatted": "R2,026,000,000",
-                        "context": "0 by not later than 19 November 2026, at 12h00. The municipality d"
-                    },
-                    {
-                        "value": 1500000000.0,
-                        "formatted": "R1,500,000,000",
-                        "context": "nistration cost is payable of R 1500.00, Proof of payment will be"
-                    },
-                    {
-                        "value": 90000000.0,
-                        "formatted": "R90,000,000",
-                        "context": "te the Tender will be valid for 90 days.Tender are to be complet"
-                    },
-                    {
-                        "value": 90000000.0,
-                        "formatted": "R90,000,000",
-                        "context": "9/11/2026 OFFER TO BE VALID FOR 90 DAYS FROM THE CLOSING DATE OF"
-                    },
-                    {
-                        "value": 90000000.0,
-                        "formatted": "R90,000,000",
-                        "context": "ED FOR PRICE 3.1.1 THE 80/20 OR 90/10 PREFERENCE POINT SYSTEMS A"
-                    },
-                    {
-                        "value": 90000000.0,
-                        "formatted": "R90,000,000",
-                        "context": "OINT SYSTEMS A maximum of 80 or 90 points is allocated for price"
-                    },
-                    {
-                        "value": 90000000.0,
-                        "formatted": "R90,000,000",
-                        "context": "ED FOR PRICE A maximum of 80 or 90 points is allocated for price"
-                    },
-                    {
-                        "value": 90000000.0,
-                        "formatted": "R90,000,000",
-                        "context": "is unclear whether the 80/20 or 90/10 preference point system ap"
-                    },
-                    {
-                        "value": 90000000.0,
-                        "formatted": "R90,000,000",
-                        "context": "racts, that either the 80/20 or 90/10 preference point system wi"
-                    }
-                ],
-                "contact": {
-                    "email": "nzulu@abaqulusi.gov.za"
-                }
-            },
-            "scores": {
-                "fit_score": 7,
-                "fit_reasons": [
-                    "Phakathi category match"
-                ],
-                "fit_grade": "B",
-                "industry_score": 7,
-                "industry_matched": "Municipal",
-                "industry_grade": "B",
-                "mexel_suitability": 1,
-                "mexel_fit": "Weak",
-                "company_category": "PHAKATHI",
-                "composite": 7.0,
-                "composite_score": 7.0,
-                "priority": "HIGH",
-                "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
-            }
-        },
-        {
-            "ref": "E2185GXMPCAMRR",
-            "title": "Notification of Awarded Camden Power Station E2185GXMPCAMR The provision of mechanical maintenance of the boiler auxiliary plant, soot blowers and valves for a period of 48 months at Camden Power Station",
-            "description": "Services: Civil. Participation. Notification of Awarded Camden Power Station E2185GXMPCAMR The provision of mechanical maintenance of the boiler auxiliary plant, soot blowers and valves for a period of 48 months at Camden Power Station",
-            "client": "ESKOM",
-            "priority": "HIGH",
-            "score": 8.8,
-            "category": "PHAKATHI",
-            "source": "National Treasury",
-            "url": "https://www.etenders.gov.za/home/Download/?blobName=a7b7a041-c750-41d5-9909-0e0d52c0676a.pdf&downloadedFileName=Notification+of+Tender+Advertised+and+Awarded+E2185GXMPCAMR.pdf",
-            "company": "Phakathi",
-            "closing_date": "2026-11-09",
-            "matched_keywords": [
-                "valves",
-                "services",
-                "maintenance",
-                "plant"
-            ],
-            "pdf_analysis": {
-                "page_count": 1,
-                "word_count": 201,
-                "requirements": [],
-                "deadlines": [],
-                "values": [],
-                "contact": {
-                    "phone": "+27 17 827 8205"
-                }
-            },
-            "scores": {
-                "fit_score": 8,
-                "fit_reasons": [
-                    "Phakathi category match",
-                    "Mexel alignment (1 keywords)"
-                ],
-                "fit_grade": "A",
-                "industry_score": 10,
-                "industry_matched": "Power",
-                "industry_grade": "A",
-                "mexel_suitability": 3,
-                "mexel_fit": "Moderate",
-                "company_category": "PHAKATHI",
-                "composite": 8.8,
-                "composite_score": 8.8,
+                "phakathi_suitability": 0,
+                "composite": 8.2,
+                "composite_score": 8.2,
                 "priority": "HIGH",
                 "recommendation": "🔥 PRIORITY BID - Strong fit, pursue immediately"
-            }
+            },
+            "portfolios": [
+                "PHAKATHI"
+            ],
+            "companies": [
+                "Phakathi"
+            ],
+            "capabilities": [
+                "Equipment, instrumentation and integration"
+            ],
+            "portfolio_matches": [
+                {
+                    "portfolio": "PHAKATHI",
+                    "capabilities": [
+                        "Equipment, instrumentation and integration"
+                    ],
+                    "matched_keywords": [
+                        "flow meters"
+                    ],
+                    "reason": "Specified equipment or process-integration scope"
+                }
+            ]
         },
         {
-            "ref": "Rec 74476",
-            "title": "DESIGN OF MONITORING SYSTEM FOR SEWERAGE AND STORM WATER SUMP PUMP STATIONS INCLUDING CLOUD AND MOBILE MONITORING PLATFORM (MONITORING ONLY)",
-            "description": "Services: General. Request for Quotation. DESIGN OF MONITORING SYSTEM FOR SEWERAGE AND STORM WATER SUMP PUMP STATIONS INCLUDING CLOUD AND MOBILE MONITORING PLATFORM (MONITORING ONLY)",
-            "client": "Airports Company of South Africa",
-            "priority": "MEDIUM",
-            "score": 6.2,
-            "category": "PHAKATHI",
-            "source": "National Treasury",
-            "url": "https://www.etenders.gov.za/home/Download/?blobName=5c00492e-e0de-4422-acc0-07e3eaa54924.pdf&downloadedFileName=Rec+74476+Design+of+Sump+Pump+Monitoring+System+-+NEC3+PSC+rev+%28007%29.pdf",
-            "company": "Phakathi",
-            "closing_date": "2026-11-10",
-            "matched_keywords": [
-                "services",
-                "pump stations"
+            "ref": "RFB 3273/2026-(ERP No 523017)",
+            "attachments": [
+                {
+                    "name": "RFB 3273-2026 - Annexure 6c- Bid specification Updted.docx",
+                    "url": "https://www.etenders.gov.za/home/Download/?blobName=5fb87b75-d1e2-4872-ba50-24a452700e4a.docx&downloadedFileName=RFB+3273-2026+-+Annexure+6c-+Bid+specification+Updted.docx"
+                },
+                {
+                    "name": "RFB 3273-2026  - Annexure 6c- Bid specification.docx",
+                    "url": "https://www.etenders.gov.za/home/Download/?blobName=626ff6d2-78ff-4eb3-b57f-3e473aae7741.docx&downloadedFileName=RFB+3273-2026++-+Annexure+6c-+Bid+specification.docx"
+                },
+                {
+                    "name": "RFB 3273-2026 - Annexure 6c- Bid specification (updted).docx",
+                    "url": "https://www.etenders.gov.za/home/Download/?blobName=50968525-b531-4dba-90f9-67ed275313af.docx&downloadedFileName=RFB+3273-2026+-+Annexure+6c-+Bid+specification+%28updted%29.docx"
+                },
+                {
+                    "name": "RFB 3273-2026 - ERRATUM2.pdf",
+                    "url": "https://www.etenders.gov.za/home/Download/?blobName=8d3ddc37-d7cb-4876-914a-770dff442414.pdf&downloadedFileName=RFB+3273-2026+-+ERRATUM2.pdf"
+                },
+                {
+                    "name": "RFB 3273-2026 - Annexure 6d- Price Schedule Updted.xlsx",
+                    "url": "https://www.etenders.gov.za/home/Download/?blobName=963cd59c-1f8f-4ae8-9919-7d1c2968d577.xlsx&downloadedFileName=RFB+3273-2026+-+Annexure+6d-+Price+Schedule+Updted.xlsx"
+                },
+                {
+                    "name": "RFB 3273-2026 - ERRATUM.pdf",
+                    "url": "https://www.etenders.gov.za/home/Download/?blobName=830cbd35-ab3e-416a-b042-903cc5727766.pdf&downloadedFileName=RFB+3273-2026+-+ERRATUM.pdf"
+                },
+                {
+                    "name": "RFB 3273-2026  - Annexure 6a-Invitation to Bid.docx",
+                    "url": "https://www.etenders.gov.za/home/Download/?blobName=c0ed744c-6c47-4d05-a1a0-d51c0d7b518f.docx&downloadedFileName=RFB+3273-2026++-+Annexure+6a-Invitation+to+Bid.docx"
+                },
+                {
+                    "name": "RFB 3273-2026  - Annexure 6d- Price Schedule.xlsx",
+                    "url": "https://www.etenders.gov.za/home/Download/?blobName=150bd9f3-edab-43a0-91f1-e511e361780f.xlsx&downloadedFileName=RFB+3273-2026++-+Annexure+6d-+Price+Schedule.xlsx"
+                },
+                {
+                    "name": "RFB 3273-2026  - Fraud Notice to Bidders.pdf",
+                    "url": "https://www.etenders.gov.za/home/Download/?blobName=e7aa70c8-5721-4533-ade9-f8a7e3c11837.pdf&downloadedFileName=RFB+3273-2026++-+Fraud+Notice+to+Bidders.pdf"
+                },
+                {
+                    "name": "RFB 3273-2026  - Annexure 6b-Invitation Letter.pdf",
+                    "url": "https://www.etenders.gov.za/home/Download/?blobName=8044a729-e11d-4eda-8c81-f98af70812e4.pdf&downloadedFileName=RFB+3273-2026++-+Annexure+6b-Invitation+Letter.pdf"
+                }
             ],
+            "source_id": 174241,
+            "title": "Supply and Delivery of Huawei Network Infrastructure Equipment with Huawei Support for Five (5) Years for the Western Cape Government (WCG), Department of the Premier - Centre for e-Innovation (CEI)",
+            "description": "Supply and Delivery of Huawei Network Infrastructure Equipment with Huawei Support for Five (5) Years for the Western Cape Government (WCG), Department of the Premier - Centre for e-Innovation (CEI) | Reference: RFB 3273/2026-(ERP No 523017) | Information service activities | Request for Bid(Open-Tender) | N/A",
+            "client": "State Information Technology Agency",
+            "source": "National Treasury",
+            "ref_is_authoritative": true,
+            "url": "https://www.etenders.gov.za/Home/opportunities",
+            "closing_date": "2026-11-06",
+            "published_date": "2026-10-15",
+            "reason": "Direct Brand Routing: matched 'huawei'",
+            "short_title": "Huawei_Network_Infrastructure_Equipment",
+            "category": "PHAKATHI",
             "scores": {
                 "fit_score": 8,
                 "fit_reasons": [
                     "Phakathi category match",
-                    "Mexel alignment (1 keywords)"
+                    "Phakathi alignment (1 keywords)"
                 ],
                 "fit_grade": "A",
                 "industry_score": 5,
                 "industry_matched": "General",
                 "industry_grade": "C",
-                "mexel_suitability": 3,
-                "mexel_fit": "Moderate",
+                "mexel_suitability": 0,
+                "mexel_fit": "Weak",
                 "company_category": "PHAKATHI",
+                "phakathi_suitability": 2,
                 "composite": 6.8,
                 "composite_score": 6.8,
                 "priority": "MEDIUM",
                 "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
-            }
-        },
-        {
-            "ref": "10417366",
-            "title": "Removal and replacement of DN 900 Valves - Pumpsets 9 and 20 including auxiliary DN 150 Bypass valves",
-            "description": "Other service activities. Request for Quotation. Removal and replacement of DN 900 Valves - Pumpsets 9 and 20 including auxiliary DN 150 Bypass valves",
-            "client": "Rand Water",
-            "priority": "HIGH",
-            "score": 7.4,
-            "category": "PHAKATHI",
-            "source": "National Treasury",
-            "url": "https://www.etenders.gov.za/home/Download/?blobName=82d758fb-4640-465e-8288-40381a4e3bb7.zip&downloadedFileName=10417366.zip",
-            "company": "Phakathi",
-            "closing_date": "2026-11-24",
-            "matched_keywords": [
-                "valves",
-                "replacement",
-                "service"
-            ],
-            "pdf_analysis": {
-                "page_count": 5,
-                "word_count": 462,
-                "requirements": [
-                    "be used for bidding purposes of rand water",
-                    "provide details of completed works (similar to the work set out in this rfq)",
-                    "detail in the block below their company organogram and the human resources",
-                    "be contactable and willing to provide information relating"
-                ],
-                "deadlines": [],
-                "values": [],
-                "contact": {}
             },
-            "scores": {
-                "fit_score": 7,
-                "fit_reasons": [
-                    "Phakathi category match"
-                ],
-                "fit_grade": "B",
-                "industry_score": 8,
-                "industry_matched": "Rand Water",
-                "industry_grade": "A",
-                "mexel_suitability": 0,
-                "mexel_fit": "Weak",
-                "company_category": "PHAKATHI",
-                "composite": 7.4,
-                "composite_score": 7.4,
-                "priority": "HIGH",
-                "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
-            }
-        },
-        {
-            "ref": "10414239",
-            "title": "Refurbish, install , align and ccommissioning pump set 1 for Trichardt pump station pump ETA 150-50 .",
-            "description": "Other service activities. Request for Quotation. Refurbish, install , align and ccommissioning pump set 1 for Trichardt pump station pump ETA 150-50 .",
-            "client": "Rand Water",
-            "priority": "HIGH",
-            "score": 7.4,
-            "category": "PHAKATHI",
-            "source": "National Treasury",
-            "url": "https://www.etenders.gov.za/home/Download/?blobName=73173323-167e-41d2-91f4-05e996c136e1.pdf&downloadedFileName=10414239%28+Latest+CIDB%29.pdf",
-            "company": "Phakathi",
-            "closing_date": "2026-11-11",
-            "matched_keywords": [
-                "pump set",
-                "pump station",
-                "service"
+            "portfolios": [
+                "PHAKATHI"
             ],
-            "pdf_analysis": {
-                "page_count": 50,
-                "word_count": 15310,
-                "requirements": [
-                    "have precedence in the",
-                    "evaluate this bid in accordance with the evaluation criteria stated in",
-                    "be the sum total of the",
-                    "equal the sum of the bid price",
-                    "set out his proposals clearly",
-                    "set out his terms clearly hereunder or alternatively state them in a",
-                    "be marked nil and signed by the bidder",
-                    "provide details of completed works (similar to the work set out in this bid)",
-                    "detail in the block below their company organogram and the resources",
-                    "further complete the offer/letter and stipulate the sum in the currency of",
-                    "remain binding upon us and may be accepted at any time before that date",
-                    "constitute a binding contract between us",
-                    "have the same meanings as are respectively",
-                    "be deemed to form and be read and construed as part of this",
-                    "be amended by the particular conditions of contract as detailed herein",
-                    "issue any instructions to the",
-                    "at all times conform in all respects with the",
-                    "indemnify, and keep indemnified the employer,",
-                    "within a reasonable time after having been called",
-                    "be suspended pending the implementation responsibility for the due fulfilment of its obligations in terms of the",
-                    "be used for bidding purposes of rand water",
-                    "provide details of completed works (similar to the work set out in this rfq)",
-                    "detail in the block below their company organogram and the human resources",
-                    "be contactable and willing to provide information relating"
-                ],
-                "deadlines": [],
-                "values": [
-                    {
-                        "value": 250000000000000.0,
-                        "formatted": "R250,000,000,000,000",
-                        "context": "t immediately of indemnity of R250,000,000 notify the Employer by teleph"
-                    },
-                    {
-                        "value": 500000000000.0,
-                        "formatted": "R500,000,000,000",
-                        "context": "site of the Works or maximum R500,000 elsewhere as to the cause and"
-                    },
-                    {
-                        "value": 500000000000.0,
-                        "formatted": "R500,000,000,000",
-                        "context": "r parts thereof at maximum of R 500,000 premises other than at the Si"
-                    },
-                    {
-                        "value": 250000000000.0,
-                        "formatted": "R250,000,000,000",
-                        "context": "of such enquiries. maximum of R250,000 i. The Contractor will be b)"
-                    },
-                    {
-                        "value": 25000000000.0,
-                        "formatted": "R25,000,000,000",
-                        "context": "spect of any and a maximum of R25,000 claim made by or against the"
-                    },
-                    {
-                        "value": 25000000000.0,
-                        "formatted": "R25,000,000,000",
-                        "context": "loss of or damage to property R 25,000 insurances effected by the Em"
-                    },
-                    {
-                        "value": 10000000000.0,
-                        "formatted": "R10,000,000,000",
-                        "context": "% of the claim with a minimum R10,000 and a all and any enquiries o"
-                    },
-                    {
-                        "value": 10000000000.0,
-                        "formatted": "R10,000,000,000",
-                        "context": "f the claim with a minimum of R10,000 and carrying out of such enqu"
-                    },
-                    {
-                        "value": 10000000000.0,
-                        "formatted": "R10,000,000,000",
-                        "context": "% of the claim with a minimum R10,000 and a and/or fabrication of t"
-                    },
-                    {
-                        "value": 2500000000.0,
-                        "formatted": "R2,500,000,000",
-                        "context": "peril subject to a minimum of R2,500 Payable) in respect of any an"
-                    }
-                ],
-                "contact": {
-                    "email": "smametja@randwater.co.za",
-                    "phone": "011 682 7132"
+            "companies": [
+                "Phakathi"
+            ],
+            "capabilities": [
+                "Equipment, instrumentation and integration"
+            ],
+            "portfolio_matches": [
+                {
+                    "portfolio": "PHAKATHI",
+                    "capabilities": [
+                        "Equipment, instrumentation and integration"
+                    ],
+                    "matched_keywords": [
+                        "huawei"
+                    ],
+                    "reason": "Specified equipment or process-integration scope"
                 }
-            },
-            "scores": {
-                "fit_score": 7,
-                "fit_reasons": [
-                    "Phakathi category match"
-                ],
-                "fit_grade": "B",
-                "industry_score": 8,
-                "industry_matched": "Rand Water",
-                "industry_grade": "A",
-                "mexel_suitability": 0,
-                "mexel_fit": "Weak",
-                "company_category": "PHAKATHI",
-                "composite": 7.4,
-                "composite_score": 7.4,
-                "priority": "HIGH",
-                "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
-            }
-        },
-        {
-            "ref": "SMQ33-26-27",
-            "title": "SUPPLY AND INSTALLATION OF 2.4M HIGH ANTI-CUT FENCE-N2 SEWER PUMP STATION",
-            "description": "Construction. Request for Quotation. SUPPLY AND INSTALLATION OF 2.4M HIGH ANTI-CUT FENCE-N2 SEWER PUMP STATION",
-            "client": "Swellendam Municipality",
-            "priority": "HIGH",
-            "score": 7.0,
-            "category": "PHAKATHI",
-            "source": "National Treasury",
-            "url": "https://www.etenders.gov.za/home/Download/?blobName=fd253f75-137d-45cd-a53d-478cf7968df1.pdf&downloadedFileName=SMQ33-26-27_Advert.pdf",
-            "company": "Phakathi",
-            "closing_date": "2026-11-13",
-            "matched_keywords": [
-                "pump station",
-                "supply"
-            ],
-            "pdf_analysis": {
-                "page_count": 1,
-                "word_count": 334,
-                "requirements": [
-                    "remain valid for an eighty-four (84) day period calculated from the bid closing date",
-                    "be submitted in a sealed envelope and must be clearly marked with the",
-                    "be placed in the municipal quotation",
-                    "include a valid tax compliance status pin as issued by sars",
-                    "attend the compulsory site clarification meeting",
-                    "be in writing to the responsible official on this advert;"
-                ],
-                "deadlines": [],
-                "values": [
-                    {
-                        "value": 2026000000.0,
-                        "formatted": "R2,026,000,000",
-                        "context": "ellendam.gov.za from 29 October 2026. A compulsory site inspection"
-                    },
-                    {
-                        "value": 2026000000.0,
-                        "formatted": "R2,026,000,000",
-                        "context": "be held on Friday, 06 November 2026 at 10h00 at N2 Sewer Pump Sta"
-                    },
-                    {
-                        "value": 2026000000.0,
-                        "formatted": "R2,026,000,000",
-                        "context": "Box before 11h00 on 13 November 2026, situated at the Supply Chain"
-                    }
-                ],
-                "contact": {
-                    "email": "scm@swellendam.gov.za"
-                }
-            },
-            "scores": {
-                "fit_score": 7,
-                "fit_reasons": [
-                    "Phakathi category match"
-                ],
-                "fit_grade": "B",
-                "industry_score": 7,
-                "industry_matched": "Municipal",
-                "industry_grade": "B",
-                "mexel_suitability": 0,
-                "mexel_fit": "Weak",
-                "company_category": "PHAKATHI",
-                "composite": 7.0,
-                "composite_score": 7.0,
-                "priority": "HIGH",
-                "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
-            }
-        },
-        {
-            "ref": "SCM 22 OF 26-27",
-            "title": "FRAMEWORK AGREEMENT FOR THE SUPPLY, INSTALLATION AND MAINTENANCE TO MSUNDUZI WATER AND SANITATION PUMP STATIONS.",
-            "description": "Services: General. Request for Bid(Open-Tender). FRAMEWORK AGREEMENT FOR THE SUPPLY, INSTALLATION AND MAINTENANCE TO MSUNDUZI WATER AND SANITATION PUMP STATIONS.",
-            "client": "Msunduzi Local Municipality",
-            "priority": "HIGH",
-            "score": 7.0,
-            "category": "PHAKATHI",
-            "source": "National Treasury",
-            "url": "https://www.etenders.gov.za/home/Download/?blobName=c228b9fa-4f12-4ec6-bffa-bf5389b88f0a.pdf&downloadedFileName=TENDER+NOTICE+-+SCM+22+OF+26-27.pdf",
-            "company": "Phakathi",
-            "closing_date": "2026-12-03",
-            "matched_keywords": [
-                "services",
-                "maintenance",
-                "pump stations",
-                "supply"
-            ],
-            "pdf_analysis": {
-                "page_count": 2,
-                "word_count": 598,
-                "requirements": [
-                    "also be available from the supply chain",
-                    "be evaluated on a two stage evaluation system, stage one functionality",
-                    "be placed in the msunduzi municipality’s central stores, 2",
-                    "have a trade test certificate"
-                ],
-                "deadlines": [],
-                "values": [
-                    {
-                        "value": 2026000000.0,
-                        "formatted": "R2,026,000,000",
-                        "context": "12h00 on Wednesday, 4 November 2026. Tender documents can be down"
-                    },
-                    {
-                        "value": 2026000000.0,
-                        "formatted": "R2,026,000,000",
-                        "context": "n 12h00 on Thursday, 3 December 2026, when they will be publicly o"
-                    },
-                    {
-                        "value": 826.0,
-                        "formatted": "R826",
-                        "context": "undable tender deposit fee of R826.19 (including VAT) for each d"
-                    }
-                ],
-                "contact": {
-                    "email": "Fathima.mota@msunduzi.gov.za",
-                    "phone": "081 450\n2062"
-                }
-            },
-            "scores": {
-                "fit_score": 7,
-                "fit_reasons": [
-                    "Phakathi category match"
-                ],
-                "fit_grade": "B",
-                "industry_score": 7,
-                "industry_matched": "Municipal",
-                "industry_grade": "B",
-                "mexel_suitability": 1,
-                "mexel_fit": "Weak",
-                "company_category": "PHAKATHI",
-                "composite": 7.0,
-                "composite_score": 7.0,
-                "priority": "HIGH",
-                "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
-            }
-        },
-        {
-            "ref": "265/2026",
-            "title": "RFQ: ALTITUDE LEVEL CONTROL VALVE FOR FOUNTAINS RESERVOIR, JEFFREYS BAY",
-            "description": "Services: Professional. Request for Quotation. RFQ: ALTITUDE LEVEL CONTROL VALVE FOR FOUNTAINS RESERVOIR, JEFFREYS BAY",
-            "client": "Kouga Municipality",
-            "priority": "HIGH",
-            "score": 7.0,
-            "category": "PHAKATHI",
-            "source": "National Treasury",
-            "url": "https://www.etenders.gov.za/home/Download/?blobName=0a153d72-5704-4bde-abb0-ed554b26e5df.pdf&downloadedFileName=TERMS+OF+REFERENCE+NOTICE+265+OF+2026+.pdf",
-            "company": "Phakathi",
-            "closing_date": "2026-11-12",
-            "matched_keywords": [
-                "control valve",
-                "services",
-                "valve"
-            ],
-            "scores": {
-                "fit_score": 7,
-                "fit_reasons": [
-                    "Phakathi category match"
-                ],
-                "fit_grade": "B",
-                "industry_score": 7,
-                "industry_matched": "Municipal",
-                "industry_grade": "B",
-                "mexel_suitability": 0,
-                "mexel_fit": "Weak",
-                "company_category": "PHAKATHI",
-                "composite": 7.0,
-                "composite_score": 7.0,
-                "priority": "HIGH",
-                "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
-            }
-        },
-        {
-            "ref": "PLAN-BA69BEB729A9",
-            "title": "6inch trailer mounted trench pump - Supplementary",
-            "description": "Advance procurement plan for 6inch trailer mounted trench pump - Supplementary",
-            "client": "Rand Water",
-            "priority": "MEDIUM",
-            "score": 6.2,
-            "category": "PHAKATHI",
-            "source": "National Treasury Procurement Plan",
-            "url": "https://admin.etenders.gov.za/Home/ProcurementPlans",
-            "company": "Phakathi",
-            "closing_date": "2027-01-04",
-            "matched_keywords": [],
-            "scores": {
-                "fit_score": 7,
-                "fit_reasons": [
-                    "Phakathi category match"
-                ],
-                "fit_grade": "B",
-                "industry_score": 8,
-                "industry_matched": "Rand Water",
-                "industry_grade": "A",
-                "mexel_suitability": 0,
-                "mexel_fit": "Weak",
-                "company_category": "PHAKATHI",
-                "composite": 7.4,
-                "composite_score": 7.4,
-                "priority": "HIGH",
-                "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
-            }
-        },
-        {
-            "ref": "PLAN-6B51B4B31A0B",
-            "title": "Supply, Install and commission PLC's at Vereeniging",
-            "description": "Advance procurement plan for Supply, Install and commission PLC's at Vereeniging",
-            "client": "Rand Water",
-            "priority": "MEDIUM",
-            "score": 6.2,
-            "category": "PHAKATHI",
-            "source": "National Treasury Procurement Plan",
-            "url": "https://admin.etenders.gov.za/Home/ProcurementPlans",
-            "company": "Phakathi",
-            "closing_date": "2027-01-04",
-            "matched_keywords": [],
-            "scores": {
-                "fit_score": 7,
-                "fit_reasons": [
-                    "Phakathi category match"
-                ],
-                "fit_grade": "B",
-                "industry_score": 8,
-                "industry_matched": "Rand Water",
-                "industry_grade": "A",
-                "mexel_suitability": 0,
-                "mexel_fit": "Weak",
-                "company_category": "PHAKATHI",
-                "composite": 7.4,
-                "composite_score": 7.4,
-                "priority": "HIGH",
-                "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
-            }
-        },
-        {
-            "ref": "PLAN-437E19129C46",
-            "title": "Phase 1: Appointment of Service provider to execute the Substation Upgrades, Replace Reyralle Switchgear, Panels, Breaker & Protection - Consultants",
-            "description": "Advance procurement plan for Phase 1: Appointment of Service provider to execute the Substation Upgrades, Replace Reyralle Switchgear, Panels, Breaker & Protection - Consultants",
-            "client": "ARMSCOR",
-            "priority": "MEDIUM",
-            "score": 5.0,
-            "category": "PHAKATHI",
-            "source": "National Treasury Procurement Plan",
-            "url": "https://admin.etenders.gov.za/Home/ProcurementPlans",
-            "company": "Phakathi",
-            "closing_date": "2026-12-15",
-            "matched_keywords": [],
-            "scores": {
-                "fit_score": 7,
-                "fit_reasons": [
-                    "Phakathi category match"
-                ],
-                "fit_grade": "B",
-                "industry_score": 5,
-                "industry_matched": "General",
-                "industry_grade": "C",
-                "mexel_suitability": 0,
-                "mexel_fit": "Weak",
-                "company_category": "PHAKATHI",
-                "composite": 6.2,
-                "composite_score": 6.2,
-                "priority": "MEDIUM",
-                "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
-            }
-        },
-        {
-            "ref": "PLAN-0A1F14BCDE1B",
-            "title": "upgrade refurbishment of WWTW and Sewer pumpstation in Komatipoort ,Malelane Mhlathikop& Mhlathiplaas",
-            "description": "Advance procurement plan for upgrade refurbishment of WWTW and Sewer pumpstation in Komatipoort ,Malelane Mhlathikop& Mhlathiplaas",
-            "client": "Nkomazi Local Municipality",
-            "priority": "HIGH",
-            "score": 7.0,
-            "category": "PHAKATHI",
-            "source": "National Treasury Procurement Plan",
-            "url": "https://admin.etenders.gov.za/Home/ProcurementPlans",
-            "company": "Phakathi",
-            "closing_date": "2026-11-16",
-            "matched_keywords": [
-                "pumpstation",
-                "upgrade",
-                "refurbishment"
-            ],
-            "scores": {
-                "fit_score": 7,
-                "fit_reasons": [
-                    "Phakathi category match"
-                ],
-                "fit_grade": "B",
-                "industry_score": 7,
-                "industry_matched": "Municipal",
-                "industry_grade": "B",
-                "mexel_suitability": 0,
-                "mexel_fit": "Weak",
-                "company_category": "PHAKATHI",
-                "composite": 7.0,
-                "composite_score": 7.0,
-                "priority": "HIGH",
-                "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
-            }
-        },
-        {
-            "ref": "PLAN-F362007832CC",
-            "title": "Air Brake Valves and Components (Repairable)",
-            "description": "Advance procurement plan for Air Brake Valves and Components (Repairable)",
-            "client": "Passenger Rail Agency of South Africa",
-            "priority": "MEDIUM",
-            "score": 6.2,
-            "category": "PHAKATHI",
-            "source": "National Treasury Procurement Plan",
-            "url": "https://admin.etenders.gov.za/Home/ProcurementPlans",
-            "company": "Phakathi",
-            "closing_date": "2026-11-25",
-            "matched_keywords": [
-                "valves",
-                "components"
-            ],
-            "scores": {
-                "fit_score": 7,
-                "fit_reasons": [
-                    "Phakathi category match"
-                ],
-                "fit_grade": "B",
-                "industry_score": 5,
-                "industry_matched": "General",
-                "industry_grade": "C",
-                "mexel_suitability": 0,
-                "mexel_fit": "Weak",
-                "company_category": "PHAKATHI",
-                "composite": 6.2,
-                "composite_score": 6.2,
-                "priority": "MEDIUM",
-                "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
-            }
-        },
-        {
-            "ref": "PRIVATE-MUCHINA-PUMPS",
-            "title": "Private pump inspection and refurbishment route",
-            "description": "Qualify smaller pump inspection repair and refurbishment work through the existing Muchina relationship; this is a lead route and not a confirmed RFQ.",
-            "client": "Gauteng industrial clients",
-            "priority": "MEDIUM",
-            "score": 5.4,
-            "category": "PHAKATHI",
-            "source": "Private Lead",
-            "url": "https://www.google.com/search?q=PRIVATE-MUCHINA-PUMPS%20Private%20pump%20inspection%20and%20refurbishmen%20tender%20site%3Agov.za",
-            "company": "Phakathi",
-            "closing_date": "",
-            "matched_keywords": [],
-            "scores": {
-                "fit_score": 7,
-                "fit_reasons": [
-                    "Phakathi category match"
-                ],
-                "fit_grade": "B",
-                "industry_score": 6,
-                "industry_matched": "Industrial",
-                "industry_grade": "B",
-                "mexel_suitability": 0,
-                "mexel_fit": "Weak",
-                "company_category": "PHAKATHI",
-                "composite": 6.6,
-                "composite_score": 6.6,
-                "priority": "MEDIUM",
-                "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
-            }
-        },
-        {
-            "ref": "PRIVATE-FLOWTECH-PUMPS",
-            "title": "Flow Tech pump refurbishment partner route",
-            "description": "Prepare a qualified Gauteng delivery route for pump repair refurbishment installation and recommissioning opportunities; this is partner preparation and not a confirmed RFQ.",
-            "client": "Gauteng public and private industrial buyers",
-            "priority": "MEDIUM",
-            "score": 5.4,
-            "category": "PHAKATHI",
-            "source": "Private Lead",
-            "url": "https://www.google.com/search?q=PRIVATE-FLOWTECH-PUMPS%20Flow%20Tech%20pump%20refurbishment%20partner%20rou%20tender%20site%3Agov.za",
-            "company": "Phakathi",
-            "closing_date": "",
-            "matched_keywords": [],
-            "scores": {
-                "fit_score": 7,
-                "fit_reasons": [
-                    "Phakathi category match"
-                ],
-                "fit_grade": "B",
-                "industry_score": 6,
-                "industry_matched": "Industrial",
-                "industry_grade": "B",
-                "mexel_suitability": 0,
-                "mexel_fit": "Weak",
-                "company_category": "PHAKATHI",
-                "composite": 6.6,
-                "composite_score": 6.6,
-                "priority": "MEDIUM",
-                "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
-            }
-        },
-        {
-            "ref": "PRIVATE-GAUTENG-PUMP-PROSPECTING",
-            "title": "Gauteng factory pump maintenance prospecting",
-            "description": "Target smaller factory pump inspection maintenance and refurbishment enquiries where the buyer and scope can be verified before qualification.",
-            "client": "Targeted Gauteng factories",
-            "priority": "MEDIUM",
-            "score": 5.0,
-            "category": "PHAKATHI",
-            "source": "Private Lead",
-            "url": "https://www.google.com/search?q=PRIVATE-GAUTENG-PUMP-PROSPECTING%20Gauteng%20factory%20pump%20maintenance%20prospec%20tender%20site%3Agov.za",
-            "company": "Phakathi",
-            "closing_date": "",
-            "matched_keywords": [],
-            "scores": {
-                "fit_score": 7,
-                "fit_reasons": [
-                    "Phakathi category match"
-                ],
-                "fit_grade": "B",
-                "industry_score": 5,
-                "industry_matched": "General",
-                "industry_grade": "C",
-                "mexel_suitability": 0,
-                "mexel_fit": "Weak",
-                "company_category": "PHAKATHI",
-                "composite": 6.2,
-                "composite_score": 6.2,
-                "priority": "MEDIUM",
-                "recommendation": "✅ RECOMMENDED - Good opportunity, prepare bid"
-            }
-        },
-        {
-            "ref": "E2281GXMPTUTpublish",
-            "title": "INLINE OR OFFLINE VALVE COMPONENTS RECONDITIONING – SEAT HARD-FACING WELD OVERLAY, OR WELD OVERLAY O",
-            "description": "INLINE OR OFFLINE VALVE COMPONENTS RECONDITIONING – SEAT HARD-FACING WELD OVERLAY, OR WELD OVERLAY ON VALVE BODIES AND OTHER COMPONENTS    DURING PLANNED OUTAGES AND NORMAL MAINTENANCE AT TUTUKA POWER STATION FOR A PERIOD OF 5 YEARS - Publish",
-            "client": "Eskom",
-            "priority": "HIGH",
-            "score": 8.2,
-            "category": "PHAKATHI",
-            "source": "Eskom",
-            "url": "https://tenderbulletin.eskom.co.za/tender/94260",
-            "company": "Phakathi",
-            "closing_date": "2027-12-13T10:00:00",
-            "matched_keywords": [
-                "valve components",
-                "valve",
-                "maintenance",
-                "components"
-            ],
-            "scores": {
-                "fit_score": 7,
-                "fit_reasons": [
-                    "Phakathi category match"
-                ],
-                "fit_grade": "B",
-                "industry_score": 10,
-                "industry_matched": "Power",
-                "industry_grade": "A",
-                "mexel_suitability": 0,
-                "mexel_fit": "Weak",
-                "company_category": "PHAKATHI",
-                "composite": 8.2,
-                "composite_score": 8.2,
-                "priority": "HIGH",
-                "recommendation": "🔥 PRIORITY BID - Strong fit, pursue immediately"
-            }
+            ]
         }
     ],
     "planned_opportunities": [
@@ -2883,6 +240,27 @@
             "planned_advert_date": "2026-10-16",
             "planned_closing_date": "2026-10-26",
             "planned_award_date": "2027-01-29",
+            "portfolios": [
+                "PHAKATHI"
+            ],
+            "companies": [
+                "Phakathi"
+            ],
+            "capabilities": [
+                "Equipment, instrumentation and integration"
+            ],
+            "portfolio_matches": [
+                {
+                    "portfolio": "PHAKATHI",
+                    "capabilities": [
+                        "Equipment, instrumentation and integration"
+                    ],
+                    "matched_keywords": [
+                        "huawei"
+                    ],
+                    "reason": "Specified equipment or process-integration scope"
+                }
+            ],
             "category": "PHAKATHI",
             "classification_reason": "Direct Brand Routing: matched 'huawei'",
             "matched_keywords": [
@@ -2899,6 +277,27 @@
             "planned_advert_date": "2026-10-20",
             "planned_closing_date": "2026-10-30",
             "planned_award_date": "2027-02-01",
+            "portfolios": [
+                "PHAKATHI"
+            ],
+            "companies": [
+                "Phakathi"
+            ],
+            "capabilities": [
+                "Equipment, instrumentation and integration"
+            ],
+            "portfolio_matches": [
+                {
+                    "portfolio": "PHAKATHI",
+                    "capabilities": [
+                        "Equipment, instrumentation and integration"
+                    ],
+                    "matched_keywords": [
+                        "huawei"
+                    ],
+                    "reason": "Specified equipment or process-integration scope"
+                }
+            ],
             "category": "PHAKATHI",
             "classification_reason": "Direct Brand Routing: matched 'huawei'",
             "matched_keywords": [
@@ -2909,52 +308,113 @@
             "source_url": "https://www.etenders.gov.za/Home/ProcurementPlans"
         },
         {
-            "external_id": "TPP-9AF2EDEDB98F42B1E67F1311",
-            "institution": "Justice & Constitutional Development",
-            "description": "Appointment of a service provider for the provision of maintenance & support services for the existing Private Cloud Datacenter Environment (Huawei stack) for a period of 3 years.",
-            "planned_advert_date": "2026-05-25",
-            "planned_closing_date": "2026-06-25",
-            "planned_award_date": "2026-08-25",
-            "category": "PHAKATHI",
-            "classification_reason": "Direct Brand Routing: matched 'huawei'",
-            "matched_keywords": [
-                "huawei"
+            "external_id": "TPP-D723163D77B053D67AF6DD1A",
+            "institution": "Overberg Water",
+            "description": "Calibration and verification of flow meters all schemes 36 months",
+            "planned_advert_date": "2026-10-15",
+            "planned_closing_date": "2026-10-30",
+            "planned_award_date": "2026-11-13",
+            "portfolios": [
+                "PHAKATHI"
             ],
-            "lifecycle_stage": "OVERDUE",
-            "source": "National Treasury Procurement Plans",
-            "source_url": "https://www.etenders.gov.za/Home/ProcurementPlans"
-        },
-        {
-            "external_id": "TPP-682AE9EF85F729F62C61165D",
-            "institution": "National - Department of Electricity and Energy",
-            "description": "Appointment of a panel of Service Provider(s) for the Measurement and Verification in the EEDSM Municipalities for a period of 12 months",
-            "planned_advert_date": "2026-06-08",
-            "planned_closing_date": "2026-06-29",
-            "planned_award_date": "2026-08-11",
-            "category": "MEXEL",
-            "classification_reason": "Strong Match (Profile A): measurement and verification",
-            "matched_keywords": [
-                "measurement and verification",
-                "service",
-                "verification"
+            "companies": [
+                "Phakathi"
             ],
-            "lifecycle_stage": "OVERDUE",
-            "source": "National Treasury Procurement Plans",
-            "source_url": "https://www.etenders.gov.za/Home/ProcurementPlans"
-        },
-        {
-            "external_id": "TPP-A2C05C205C9C1936E0776816",
-            "institution": "SALDANHA BAY MUNICIPALITY",
-            "description": "Professional services (Consultant): Investigation of upgrading of SCADA system",
-            "planned_advert_date": "2026-11-17",
-            "planned_closing_date": "2026-12-07",
-            "planned_award_date": "2027-01-18",
+            "capabilities": [
+                "Equipment, instrumentation and integration"
+            ],
+            "portfolio_matches": [
+                {
+                    "portfolio": "PHAKATHI",
+                    "capabilities": [
+                        "Equipment, instrumentation and integration"
+                    ],
+                    "matched_keywords": [
+                        "flow meters"
+                    ],
+                    "reason": "Specified equipment or process-integration scope"
+                }
+            ],
             "category": "PHAKATHI",
             "classification_reason": "Phakathi Match: 1 keyword(s)",
             "matched_keywords": [
-                "scada"
+                "flow meters"
             ],
             "lifecycle_stage": "DUE_SOON",
+            "source": "National Treasury Procurement Plans",
+            "source_url": "https://www.etenders.gov.za/Home/ProcurementPlans"
+        },
+        {
+            "external_id": "TPP-AC7A4722F855D087C6855AE8",
+            "institution": "Mbombela Local Municipality",
+            "description": "Flow Proportional Sodium Hypochlorite Dosing System",
+            "planned_advert_date": "2026-10-30",
+            "planned_closing_date": "2026-11-27",
+            "planned_award_date": "2027-03-04",
+            "portfolios": [
+                "PHAKATHI"
+            ],
+            "companies": [
+                "Phakathi"
+            ],
+            "capabilities": [
+                "Equipment, instrumentation and integration"
+            ],
+            "portfolio_matches": [
+                {
+                    "portfolio": "PHAKATHI",
+                    "capabilities": [
+                        "Equipment, instrumentation and integration"
+                    ],
+                    "matched_keywords": [
+                        "dosing system"
+                    ],
+                    "reason": "Specified equipment or process-integration scope"
+                }
+            ],
+            "category": "PHAKATHI",
+            "classification_reason": "Phakathi Match: 1 keyword(s)",
+            "matched_keywords": [
+                "dosing system"
+            ],
+            "lifecycle_stage": "DUE_SOON",
+            "source": "National Treasury Procurement Plans",
+            "source_url": "https://www.etenders.gov.za/Home/ProcurementPlans"
+        },
+        {
+            "external_id": "TPP-F2018AF46E1D5E6A7AF9CB8A",
+            "institution": "uThukela Water (Pty) Ltd",
+            "description": "Maintenance of a chlorin dosing system for 36 months",
+            "planned_advert_date": "2026-09-04",
+            "planned_closing_date": "2026-10-05",
+            "planned_award_date": "2026-11-15",
+            "portfolios": [
+                "PHAKATHI"
+            ],
+            "companies": [
+                "Phakathi"
+            ],
+            "capabilities": [
+                "Equipment, instrumentation and integration"
+            ],
+            "portfolio_matches": [
+                {
+                    "portfolio": "PHAKATHI",
+                    "capabilities": [
+                        "Equipment, instrumentation and integration"
+                    ],
+                    "matched_keywords": [
+                        "dosing system"
+                    ],
+                    "reason": "Specified equipment or process-integration scope"
+                }
+            ],
+            "category": "PHAKATHI",
+            "classification_reason": "Phakathi Match: 1 keyword(s)",
+            "matched_keywords": [
+                "dosing system"
+            ],
+            "lifecycle_stage": "OVERDUE",
             "source": "National Treasury Procurement Plans",
             "source_url": "https://www.etenders.gov.za/Home/ProcurementPlans"
         },
@@ -2965,13 +425,34 @@
             "planned_advert_date": "2026-10-16",
             "planned_closing_date": "2026-11-16",
             "planned_award_date": "2027-01-02",
+            "portfolios": [
+                "MEXEL"
+            ],
+            "companies": [
+                "Mexel"
+            ],
+            "capabilities": [
+                "Cooling-water chemistry"
+            ],
+            "portfolio_matches": [
+                {
+                    "portfolio": "MEXEL",
+                    "capabilities": [
+                        "Cooling-water chemistry"
+                    ],
+                    "matched_keywords": [
+                        "chiller",
+                        "treatment",
+                        "water treatment"
+                    ],
+                    "reason": "Cooling-water product/process scope"
+                }
+            ],
             "category": "MEXEL",
-            "classification_reason": "Competence Match (Profile B): chiller + treatment",
+            "classification_reason": "Competence Match (Profile B): chiller + water treatment",
             "matched_keywords": [
                 "chiller",
-                "maintenance",
                 "plant",
-                "service",
                 "treatment",
                 "water treatment"
             ],
@@ -2986,6 +467,27 @@
             "planned_advert_date": "2026-06-26",
             "planned_closing_date": "2026-07-20",
             "planned_award_date": "2026-08-25",
+            "portfolios": [
+                "PHAKATHI"
+            ],
+            "companies": [
+                "Phakathi"
+            ],
+            "capabilities": [
+                "Equipment, instrumentation and integration"
+            ],
+            "portfolio_matches": [
+                {
+                    "portfolio": "PHAKATHI",
+                    "capabilities": [
+                        "Equipment, instrumentation and integration"
+                    ],
+                    "matched_keywords": [
+                        "huawei"
+                    ],
+                    "reason": "Specified equipment or process-integration scope"
+                }
+            ],
             "category": "PHAKATHI",
             "classification_reason": "Direct Brand Routing: matched 'huawei'",
             "matched_keywords": [
@@ -2996,103 +498,148 @@
             "source_url": "https://www.etenders.gov.za/Home/ProcurementPlans"
         },
         {
-            "external_id": "TPP-84522B4A604B328E104EA4D5",
+            "external_id": "TPP-E717DCB683589FA92030E608",
             "institution": "uMngeni-uThukela Water",
-            "description": "Control Room SCADA Upgrade",
-            "planned_advert_date": "2026-08-01",
-            "planned_closing_date": "2026-08-26",
-            "planned_award_date": "2026-10-26",
-            "category": "PHAKATHI",
-            "classification_reason": "Phakathi Match: 1 keyword(s)",
-            "matched_keywords": [
-                "scada"
+            "description": "Flow Proportional Sodium Hypochlorite Dosing System",
+            "planned_advert_date": "2026-10-30",
+            "planned_closing_date": "2026-11-27",
+            "planned_award_date": "2027-03-04",
+            "portfolios": [
+                "PHAKATHI"
             ],
-            "lifecycle_stage": "OVERDUE",
-            "source": "National Treasury Procurement Plans",
-            "source_url": "https://www.etenders.gov.za/Home/ProcurementPlans"
-        },
-        {
-            "external_id": "TPP-0CAE0F5A87BB5637F1D51783",
-            "institution": "Medical Research Council of South Africa",
-            "description": "SCADA Licenses",
-            "planned_advert_date": "2026-11-30",
-            "planned_closing_date": "2026-12-30",
-            "planned_award_date": "2027-01-29",
+            "companies": [
+                "Phakathi"
+            ],
+            "capabilities": [
+                "Equipment, instrumentation and integration"
+            ],
+            "portfolio_matches": [
+                {
+                    "portfolio": "PHAKATHI",
+                    "capabilities": [
+                        "Equipment, instrumentation and integration"
+                    ],
+                    "matched_keywords": [
+                        "dosing system"
+                    ],
+                    "reason": "Specified equipment or process-integration scope"
+                }
+            ],
             "category": "PHAKATHI",
             "classification_reason": "Phakathi Match: 1 keyword(s)",
             "matched_keywords": [
-                "scada"
+                "dosing system"
             ],
             "lifecycle_stage": "DUE_SOON",
             "source": "National Treasury Procurement Plans",
             "source_url": "https://www.etenders.gov.za/Home/ProcurementPlans"
         },
         {
-            "external_id": "TPP-CCF6A928DBD20CF36D1A41C7",
-            "institution": "Passenger Rail Agency of South Africa",
-            "description": "Private Cloud License Renewals (Huawei / CommVault)",
-            "planned_advert_date": "2026-06-12",
-            "planned_closing_date": "2026-06-26",
-            "planned_award_date": "2026-07-31",
-            "category": "PHAKATHI",
-            "classification_reason": "Direct Brand Routing: matched 'huawei'",
-            "matched_keywords": [
-                "huawei"
+            "external_id": "TPP-1CA9CF1608063826F80313A3",
+            "institution": "Companies and Intellectual Property Commission",
+            "description": "Computer Monitors",
+            "planned_advert_date": "0001-01-01",
+            "planned_closing_date": "0001-01-01",
+            "planned_award_date": "0001-01-01",
+            "portfolios": [
+                "PHAKATHI"
             ],
-            "lifecycle_stage": "OVERDUE",
-            "source": "National Treasury Procurement Plans",
-            "source_url": "https://www.etenders.gov.za/Home/ProcurementPlans"
-        },
-        {
-            "external_id": "TPP-0DBBCD3B59502B1FB6F21D62",
-            "institution": "Water and Sanitation",
-            "description": "Appointment  of Sevice provider to upgradePLC/SCADA  at Usutu Vaal",
-            "planned_advert_date": "2026-05-31",
-            "planned_closing_date": "2026-06-21",
-            "planned_award_date": "2026-08-19",
+            "companies": [
+                "Phakathi"
+            ],
+            "capabilities": [
+                "Equipment, instrumentation and integration"
+            ],
+            "portfolio_matches": [
+                {
+                    "portfolio": "PHAKATHI",
+                    "capabilities": [
+                        "Equipment, instrumentation and integration"
+                    ],
+                    "matched_keywords": [
+                        "computer monitors"
+                    ],
+                    "reason": "Specified equipment or process-integration scope"
+                }
+            ],
             "category": "PHAKATHI",
             "classification_reason": "Phakathi Match: 1 keyword(s)",
             "matched_keywords": [
-                "scada"
+                "computer monitors"
             ],
             "lifecycle_stage": "OVERDUE",
             "source": "National Treasury Procurement Plans",
             "source_url": "https://www.etenders.gov.za/Home/ProcurementPlans"
         },
         {
-            "external_id": "TPP-4814262A48473DDB04E358C8",
-            "institution": "Council for Scientific and Industrial Research (CSIR)",
-            "description": "Supply, delivery, installation, and commissioning  of an HVAC system, maintenance, and support in the data centre at the CSIR  Scientia Campus",
-            "planned_advert_date": "2026-06-22",
-            "planned_closing_date": "2026-07-10",
-            "planned_award_date": "2026-07-20",
-            "category": "MEXEL",
-            "classification_reason": "Competence Match (Profile B): data centre + maintenance",
+            "external_id": "TPP-0E2E03BAB1F8A0BFF7213571",
+            "institution": "Commission for Conciliation Mediation & Arbitration",
+            "description": "Supply and delivery of laptops,  desktops, and display monitors once-off.",
+            "planned_advert_date": "2026-05-22",
+            "planned_closing_date": "2026-06-15",
+            "planned_award_date": "2026-07-21",
+            "portfolios": [
+                "PHAKATHI"
+            ],
+            "companies": [
+                "Phakathi"
+            ],
+            "capabilities": [
+                "Equipment, instrumentation and integration"
+            ],
+            "portfolio_matches": [
+                {
+                    "portfolio": "PHAKATHI",
+                    "capabilities": [
+                        "Equipment, instrumentation and integration"
+                    ],
+                    "matched_keywords": [
+                        "display monitors"
+                    ],
+                    "reason": "Specified equipment or process-integration scope"
+                }
+            ],
+            "category": "PHAKATHI",
+            "classification_reason": "Phakathi Match: 1 keyword(s)",
             "matched_keywords": [
-                "data centre",
-                "delivery",
-                "industrial",
-                "installation",
-                "maintenance",
-                "supply"
+                "display monitors"
             ],
             "lifecycle_stage": "OVERDUE",
             "source": "National Treasury Procurement Plans",
             "source_url": "https://www.etenders.gov.za/Home/ProcurementPlans"
         },
         {
-            "external_id": "TPP-33BE6CDB65395E3E307004E4",
-            "institution": "Air Traffic and Navigation Services Company Limited",
-            "description": "Provision of HVAC, BMS, and chiller plant maintenance support at FALE",
-            "planned_advert_date": "2026-08-21",
-            "planned_closing_date": "2026-09-25",
-            "planned_award_date": "2027-04-02",
-            "category": "MEXEL",
-            "classification_reason": "Competence Match (Profile B): chiller + maintenance",
+            "external_id": "TPP-1C3091F3C0B38213E507D7BF",
+            "institution": "Special Investigation Unit",
+            "description": "Appointment of a Service Provider to Supply, Deliver and Maintenance of Interactive Displays for a period of three years.",
+            "planned_advert_date": "2026-06-01",
+            "planned_closing_date": "2026-06-23",
+            "planned_award_date": "2026-08-14",
+            "portfolios": [
+                "PHAKATHI"
+            ],
+            "companies": [
+                "Phakathi"
+            ],
+            "capabilities": [
+                "Equipment, instrumentation and integration"
+            ],
+            "portfolio_matches": [
+                {
+                    "portfolio": "PHAKATHI",
+                    "capabilities": [
+                        "Equipment, instrumentation and integration"
+                    ],
+                    "matched_keywords": [
+                        "interactive displays"
+                    ],
+                    "reason": "Specified equipment or process-integration scope"
+                }
+            ],
+            "category": "PHAKATHI",
+            "classification_reason": "Phakathi Match: 1 keyword(s)",
             "matched_keywords": [
-                "chiller",
-                "maintenance",
-                "plant"
+                "interactive displays"
             ],
             "lifecycle_stage": "OVERDUE",
             "source": "National Treasury Procurement Plans",
@@ -3105,44 +652,31 @@
             "planned_advert_date": "2026-05-04",
             "planned_closing_date": "2026-05-15",
             "planned_award_date": "2026-06-30",
+            "portfolios": [
+                "PHAKATHI"
+            ],
+            "companies": [
+                "Phakathi"
+            ],
+            "capabilities": [
+                "Equipment, instrumentation and integration"
+            ],
+            "portfolio_matches": [
+                {
+                    "portfolio": "PHAKATHI",
+                    "capabilities": [
+                        "Equipment, instrumentation and integration"
+                    ],
+                    "matched_keywords": [
+                        "huawei"
+                    ],
+                    "reason": "Specified equipment or process-integration scope"
+                }
+            ],
             "category": "PHAKATHI",
             "classification_reason": "Direct Brand Routing: matched 'huawei'",
             "matched_keywords": [
                 "huawei"
-            ],
-            "lifecycle_stage": "OVERDUE",
-            "source": "National Treasury Procurement Plans",
-            "source_url": "https://www.etenders.gov.za/Home/ProcurementPlans"
-        },
-        {
-            "external_id": "TPP-68A4F16E957F062FFB54A722",
-            "institution": "South African Revenue Service",
-            "description": "Replacement of HVAC system new and old server room",
-            "planned_advert_date": "2026-05-01",
-            "planned_closing_date": "2026-06-01",
-            "planned_award_date": "2026-08-01",
-            "category": "MEXEL",
-            "classification_reason": "Competence Match (Profile B): server room + service",
-            "matched_keywords": [
-                "server room",
-                "service"
-            ],
-            "lifecycle_stage": "OVERDUE",
-            "source": "National Treasury Procurement Plans",
-            "source_url": "https://www.etenders.gov.za/Home/ProcurementPlans"
-        },
-        {
-            "external_id": "TPP-8C6786C43F836E388E7E6834",
-            "institution": "South African Revenue Service",
-            "description": "Chiller & BMS - Alberton Campus & Lehae",
-            "planned_advert_date": "2026-07-01",
-            "planned_closing_date": "2026-08-01",
-            "planned_award_date": "2026-12-20",
-            "category": "MEXEL",
-            "classification_reason": "Competence Match (Profile B): chiller + service",
-            "matched_keywords": [
-                "chiller",
-                "service"
             ],
             "lifecycle_stage": "OVERDUE",
             "source": "National Treasury Procurement Plans",
