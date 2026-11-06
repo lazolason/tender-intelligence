@@ -749,10 +749,24 @@
                 align-items: flex-start;
             }
 
+            .tender-info {
+                width: 100%;
+                min-width: 0;
+            }
+
+            .tender-ref {
+                overflow-wrap: anywhere;
+            }
+
             .tender-right {
                 margin-top: 15px;
                 width: 100%;
                 justify-content: space-between;
+                flex-wrap: wrap;
+            }
+
+            .tender-right > div:last-child {
+                flex-wrap: wrap;
             }
 
             .calendar {
