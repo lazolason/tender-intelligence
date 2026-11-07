@@ -1,0 +1,529 @@
+{
+    "meta": {
+        "last_sync": "2026-11-07 14:54",
+        "snapshot_origin": "static_scrape",
+        "next_run": "Daily 08:00",
+        "build_sha": "e0c9342",
+        "build_id": "2026-11-07 14:54 · e0c9342",
+        "inputs": [
+            "eskom.json",
+            "municipalities.json",
+            "national_treasury.json",
+            "water_boards.json"
+        ],
+        "validation": {
+            "total": 1,
+            "valid": 1,
+            "invalid": 0,
+            "warnings": 0,
+            "error_counts": {},
+            "warning_counts": {}
+        },
+        "planned_opportunity_count": 12
+    },
+    "tenders": [
+        {
+            "ref": "E3748GXMPHEN",
+            "source": "Eskom",
+            "url": "https://tenderbulletin.eskom.co.za/tender/96750",
+            "title": "DESIGN AND REPLACEMENT OF FUEL OIL FLOW METERS FOR A PERIOD OF 24 MONTHS",
+            "short_title": "Design_And_Replacement_Of",
+            "description": "DESIGN AND REPLACEMENT OF FUEL OIL FLOW METERS FOR A PERIOD OF 24 MONTHS",
+            "client": "Eskom",
+            "category": "PHAKATHI",
+            "closing_date": "2026-11-19T10:00:00",
+            "scraped_date": "2026-11-07T12:51:47.799517",
+            "reason": "Phakathi Match: 1 keyword(s)",
+            "scores": {
+                "fit_score": 7,
+                "fit_reasons": [
+                    "Phakathi category match"
+                ],
+                "fit_grade": "B",
+                "industry_score": 10,
+                "industry_matched": "Eskom",
+                "industry_grade": "A",
+                "mexel_suitability": 0,
+                "mexel_fit": "Weak",
+                "company_category": "PHAKATHI",
+                "phakathi_suitability": 0,
+                "composite": 8.2,
+                "composite_score": 8.2,
+                "priority": "HIGH",
+                "recommendation": "🔥 PRIORITY BID - Strong fit, pursue immediately"
+            },
+            "portfolios": [
+                "PHAKATHI"
+            ],
+            "companies": [
+                "Phakathi"
+            ],
+            "capabilities": [
+                "Equipment, instrumentation and integration"
+            ],
+            "portfolio_matches": [
+                {
+                    "portfolio": "PHAKATHI",
+                    "capabilities": [
+                        "Equipment, instrumentation and integration"
+                    ],
+                    "matched_keywords": [
+                        "flow meters"
+                    ],
+                    "reason": "Specified equipment or process-integration scope"
+                }
+            ]
+        }
+    ],
+    "planned_opportunities": [
+        {
+            "external_id": "TPP-729CD3D7AE7284EA1A8C9FF8",
+            "institution": "State Information Technology Agency",
+            "description": "Procurement for the Department of Defence. Huawei Switches to be procured for phase 2 and 3.",
+            "planned_advert_date": "2026-10-16",
+            "planned_closing_date": "2026-10-26",
+            "planned_award_date": "2027-01-29",
+            "portfolios": [
+                "PHAKATHI"
+            ],
+            "companies": [
+                "Phakathi"
+            ],
+            "capabilities": [
+                "Equipment, instrumentation and integration"
+            ],
+            "portfolio_matches": [
+                {
+                    "portfolio": "PHAKATHI",
+                    "capabilities": [
+                        "Equipment, instrumentation and integration"
+                    ],
+                    "matched_keywords": [
+                        "huawei"
+                    ],
+                    "reason": "Specified equipment or process-integration scope"
+                }
+            ],
+            "category": "PHAKATHI",
+            "classification_reason": "Direct Brand Routing: matched 'huawei'",
+            "matched_keywords": [
+                "huawei"
+            ],
+            "lifecycle_stage": "DUE_SOON",
+            "source": "National Treasury Procurement Plans",
+            "source_url": "https://www.etenders.gov.za/Home/ProcurementPlans"
+        },
+        {
+            "external_id": "TPP-CAC43A4CEAC0D3714F5BD835",
+            "institution": "State Information Technology Agency",
+            "description": "WCG CEI Huawei Network Equipment with support for 5 years",
+            "planned_advert_date": "2026-10-20",
+            "planned_closing_date": "2026-10-30",
+            "planned_award_date": "2027-02-01",
+            "portfolios": [
+                "PHAKATHI"
+            ],
+            "companies": [
+                "Phakathi"
+            ],
+            "capabilities": [
+                "Equipment, instrumentation and integration"
+            ],
+            "portfolio_matches": [
+                {
+                    "portfolio": "PHAKATHI",
+                    "capabilities": [
+                        "Equipment, instrumentation and integration"
+                    ],
+                    "matched_keywords": [
+                        "huawei"
+                    ],
+                    "reason": "Specified equipment or process-integration scope"
+                }
+            ],
+            "category": "PHAKATHI",
+            "classification_reason": "Direct Brand Routing: matched 'huawei'",
+            "matched_keywords": [
+                "huawei"
+            ],
+            "lifecycle_stage": "DUE_SOON",
+            "source": "National Treasury Procurement Plans",
+            "source_url": "https://www.etenders.gov.za/Home/ProcurementPlans"
+        },
+        {
+            "external_id": "TPP-D723163D77B053D67AF6DD1A",
+            "institution": "Overberg Water",
+            "description": "Calibration and verification of flow meters all schemes 36 months",
+            "planned_advert_date": "2026-10-15",
+            "planned_closing_date": "2026-10-30",
+            "planned_award_date": "2026-11-13",
+            "portfolios": [
+                "PHAKATHI"
+            ],
+            "companies": [
+                "Phakathi"
+            ],
+            "capabilities": [
+                "Equipment, instrumentation and integration"
+            ],
+            "portfolio_matches": [
+                {
+                    "portfolio": "PHAKATHI",
+                    "capabilities": [
+                        "Equipment, instrumentation and integration"
+                    ],
+                    "matched_keywords": [
+                        "flow meters"
+                    ],
+                    "reason": "Specified equipment or process-integration scope"
+                }
+            ],
+            "category": "PHAKATHI",
+            "classification_reason": "Phakathi Match: 1 keyword(s)",
+            "matched_keywords": [
+                "flow meters"
+            ],
+            "lifecycle_stage": "DUE_SOON",
+            "source": "National Treasury Procurement Plans",
+            "source_url": "https://www.etenders.gov.za/Home/ProcurementPlans"
+        },
+        {
+            "external_id": "TPP-AC7A4722F855D087C6855AE8",
+            "institution": "Mbombela Local Municipality",
+            "description": "Flow Proportional Sodium Hypochlorite Dosing System",
+            "planned_advert_date": "2026-10-30",
+            "planned_closing_date": "2026-11-27",
+            "planned_award_date": "2027-03-04",
+            "portfolios": [
+                "PHAKATHI"
+            ],
+            "companies": [
+                "Phakathi"
+            ],
+            "capabilities": [
+                "Equipment, instrumentation and integration"
+            ],
+            "portfolio_matches": [
+                {
+                    "portfolio": "PHAKATHI",
+                    "capabilities": [
+                        "Equipment, instrumentation and integration"
+                    ],
+                    "matched_keywords": [
+                        "dosing system"
+                    ],
+                    "reason": "Specified equipment or process-integration scope"
+                }
+            ],
+            "category": "PHAKATHI",
+            "classification_reason": "Phakathi Match: 1 keyword(s)",
+            "matched_keywords": [
+                "dosing system"
+            ],
+            "lifecycle_stage": "DUE_SOON",
+            "source": "National Treasury Procurement Plans",
+            "source_url": "https://www.etenders.gov.za/Home/ProcurementPlans"
+        },
+        {
+            "external_id": "TPP-F2018AF46E1D5E6A7AF9CB8A",
+            "institution": "uThukela Water (Pty) Ltd",
+            "description": "Maintenance of a chlorin dosing system for 36 months",
+            "planned_advert_date": "2026-09-04",
+            "planned_closing_date": "2026-10-05",
+            "planned_award_date": "2026-11-15",
+            "portfolios": [
+                "PHAKATHI"
+            ],
+            "companies": [
+                "Phakathi"
+            ],
+            "capabilities": [
+                "Equipment, instrumentation and integration"
+            ],
+            "portfolio_matches": [
+                {
+                    "portfolio": "PHAKATHI",
+                    "capabilities": [
+                        "Equipment, instrumentation and integration"
+                    ],
+                    "matched_keywords": [
+                        "dosing system"
+                    ],
+                    "reason": "Specified equipment or process-integration scope"
+                }
+            ],
+            "category": "PHAKATHI",
+            "classification_reason": "Phakathi Match: 1 keyword(s)",
+            "matched_keywords": [
+                "dosing system"
+            ],
+            "lifecycle_stage": "OVERDUE",
+            "source": "National Treasury Procurement Plans",
+            "source_url": "https://www.etenders.gov.za/Home/ProcurementPlans"
+        },
+        {
+            "external_id": "TPP-6F81693D079645BACB3EE877",
+            "institution": "Public Works",
+            "description": "SERVICE,MAINTENANCE,REPAIRS AND REPLACEMENT OF AIR CONDITIONING, AIR CONDITIONING, AIR VENTILATION  EQUIPMENT AND (CHILLER) PLANT WATER TREATMENT TO VARIOUS AREAS WITHIN THE JURISDICTION OF JOHANNESBURG REGIONAL OFFICE FOR A PERIOD OF 36 MONTHS",
+            "planned_advert_date": "2026-10-16",
+            "planned_closing_date": "2026-11-16",
+            "planned_award_date": "2027-01-02",
+            "portfolios": [
+                "MEXEL"
+            ],
+            "companies": [
+                "Mexel"
+            ],
+            "capabilities": [
+                "Cooling-water chemistry"
+            ],
+            "portfolio_matches": [
+                {
+                    "portfolio": "MEXEL",
+                    "capabilities": [
+                        "Cooling-water chemistry"
+                    ],
+                    "matched_keywords": [
+                        "chiller",
+                        "treatment",
+                        "water treatment"
+                    ],
+                    "reason": "Cooling-water product/process scope"
+                }
+            ],
+            "category": "MEXEL",
+            "classification_reason": "Competence Match (Profile B): chiller + water treatment",
+            "matched_keywords": [
+                "chiller",
+                "plant",
+                "treatment",
+                "water treatment"
+            ],
+            "lifecycle_stage": "DUE_SOON",
+            "source": "National Treasury Procurement Plans",
+            "source_url": "https://www.etenders.gov.za/Home/ProcurementPlans"
+        },
+        {
+            "external_id": "TPP-276B685EC62A22356C116CAF",
+            "institution": "State Information Technology Agency",
+            "description": "DSAC_Procurement of two (2) Huawei S8700-4 core switches",
+            "planned_advert_date": "2026-06-26",
+            "planned_closing_date": "2026-07-20",
+            "planned_award_date": "2026-08-25",
+            "portfolios": [
+                "PHAKATHI"
+            ],
+            "companies": [
+                "Phakathi"
+            ],
+            "capabilities": [
+                "Equipment, instrumentation and integration"
+            ],
+            "portfolio_matches": [
+                {
+                    "portfolio": "PHAKATHI",
+                    "capabilities": [
+                        "Equipment, instrumentation and integration"
+                    ],
+                    "matched_keywords": [
+                        "huawei"
+                    ],
+                    "reason": "Specified equipment or process-integration scope"
+                }
+            ],
+            "category": "PHAKATHI",
+            "classification_reason": "Direct Brand Routing: matched 'huawei'",
+            "matched_keywords": [
+                "huawei"
+            ],
+            "lifecycle_stage": "OVERDUE",
+            "source": "National Treasury Procurement Plans",
+            "source_url": "https://www.etenders.gov.za/Home/ProcurementPlans"
+        },
+        {
+            "external_id": "TPP-E717DCB683589FA92030E608",
+            "institution": "uMngeni-uThukela Water",
+            "description": "Flow Proportional Sodium Hypochlorite Dosing System",
+            "planned_advert_date": "2026-10-30",
+            "planned_closing_date": "2026-11-27",
+            "planned_award_date": "2027-03-04",
+            "portfolios": [
+                "PHAKATHI"
+            ],
+            "companies": [
+                "Phakathi"
+            ],
+            "capabilities": [
+                "Equipment, instrumentation and integration"
+            ],
+            "portfolio_matches": [
+                {
+                    "portfolio": "PHAKATHI",
+                    "capabilities": [
+                        "Equipment, instrumentation and integration"
+                    ],
+                    "matched_keywords": [
+                        "dosing system"
+                    ],
+                    "reason": "Specified equipment or process-integration scope"
+                }
+            ],
+            "category": "PHAKATHI",
+            "classification_reason": "Phakathi Match: 1 keyword(s)",
+            "matched_keywords": [
+                "dosing system"
+            ],
+            "lifecycle_stage": "DUE_SOON",
+            "source": "National Treasury Procurement Plans",
+            "source_url": "https://www.etenders.gov.za/Home/ProcurementPlans"
+        },
+        {
+            "external_id": "TPP-1CA9CF1608063826F80313A3",
+            "institution": "Companies and Intellectual Property Commission",
+            "description": "Computer Monitors",
+            "planned_advert_date": "0001-01-01",
+            "planned_closing_date": "0001-01-01",
+            "planned_award_date": "0001-01-01",
+            "portfolios": [
+                "PHAKATHI"
+            ],
+            "companies": [
+                "Phakathi"
+            ],
+            "capabilities": [
+                "Equipment, instrumentation and integration"
+            ],
+            "portfolio_matches": [
+                {
+                    "portfolio": "PHAKATHI",
+                    "capabilities": [
+                        "Equipment, instrumentation and integration"
+                    ],
+                    "matched_keywords": [
+                        "computer monitors"
+                    ],
+                    "reason": "Specified equipment or process-integration scope"
+                }
+            ],
+            "category": "PHAKATHI",
+            "classification_reason": "Phakathi Match: 1 keyword(s)",
+            "matched_keywords": [
+                "computer monitors"
+            ],
+            "lifecycle_stage": "OVERDUE",
+            "source": "National Treasury Procurement Plans",
+            "source_url": "https://www.etenders.gov.za/Home/ProcurementPlans"
+        },
+        {
+            "external_id": "TPP-0E2E03BAB1F8A0BFF7213571",
+            "institution": "Commission for Conciliation Mediation & Arbitration",
+            "description": "Supply and delivery of laptops,  desktops, and display monitors once-off.",
+            "planned_advert_date": "2026-05-22",
+            "planned_closing_date": "2026-06-15",
+            "planned_award_date": "2026-07-21",
+            "portfolios": [
+                "PHAKATHI"
+            ],
+            "companies": [
+                "Phakathi"
+            ],
+            "capabilities": [
+                "Equipment, instrumentation and integration"
+            ],
+            "portfolio_matches": [
+                {
+                    "portfolio": "PHAKATHI",
+                    "capabilities": [
+                        "Equipment, instrumentation and integration"
+                    ],
+                    "matched_keywords": [
+                        "display monitors"
+                    ],
+                    "reason": "Specified equipment or process-integration scope"
+                }
+            ],
+            "category": "PHAKATHI",
+            "classification_reason": "Phakathi Match: 1 keyword(s)",
+            "matched_keywords": [
+                "display monitors"
+            ],
+            "lifecycle_stage": "OVERDUE",
+            "source": "National Treasury Procurement Plans",
+            "source_url": "https://www.etenders.gov.za/Home/ProcurementPlans"
+        },
+        {
+            "external_id": "TPP-1C3091F3C0B38213E507D7BF",
+            "institution": "Special Investigation Unit",
+            "description": "Appointment of a Service Provider to Supply, Deliver and Maintenance of Interactive Displays for a period of three years.",
+            "planned_advert_date": "2026-06-01",
+            "planned_closing_date": "2026-06-23",
+            "planned_award_date": "2026-08-14",
+            "portfolios": [
+                "PHAKATHI"
+            ],
+            "companies": [
+                "Phakathi"
+            ],
+            "capabilities": [
+                "Equipment, instrumentation and integration"
+            ],
+            "portfolio_matches": [
+                {
+                    "portfolio": "PHAKATHI",
+                    "capabilities": [
+                        "Equipment, instrumentation and integration"
+                    ],
+                    "matched_keywords": [
+                        "interactive displays"
+                    ],
+                    "reason": "Specified equipment or process-integration scope"
+                }
+            ],
+            "category": "PHAKATHI",
+            "classification_reason": "Phakathi Match: 1 keyword(s)",
+            "matched_keywords": [
+                "interactive displays"
+            ],
+            "lifecycle_stage": "OVERDUE",
+            "source": "National Treasury Procurement Plans",
+            "source_url": "https://www.etenders.gov.za/Home/ProcurementPlans"
+        },
+        {
+            "external_id": "TPP-465895B05097A87ACEAA07AE",
+            "institution": "State Information Technology Agency",
+            "description": "Ad Hoc Supply of Network Devices on Huawei Framework Agreement for KZN Education over 36 months",
+            "planned_advert_date": "2026-05-04",
+            "planned_closing_date": "2026-05-15",
+            "planned_award_date": "2026-06-30",
+            "portfolios": [
+                "PHAKATHI"
+            ],
+            "companies": [
+                "Phakathi"
+            ],
+            "capabilities": [
+                "Equipment, instrumentation and integration"
+            ],
+            "portfolio_matches": [
+                {
+                    "portfolio": "PHAKATHI",
+                    "capabilities": [
+                        "Equipment, instrumentation and integration"
+                    ],
+                    "matched_keywords": [
+                        "huawei"
+                    ],
+                    "reason": "Specified equipment or process-integration scope"
+                }
+            ],
+            "category": "PHAKATHI",
+            "classification_reason": "Direct Brand Routing: matched 'huawei'",
+            "matched_keywords": [
+                "huawei"
+            ],
+            "lifecycle_stage": "OVERDUE",
+            "source": "National Treasury Procurement Plans",
+            "source_url": "https://www.etenders.gov.za/Home/ProcurementPlans"
+        }
+    ]
+}
