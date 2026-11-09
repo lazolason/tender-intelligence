@@ -181,6 +181,8 @@ def test_checked_in_dashboard_snapshot_contains_only_current_scope_matches():
     refresh = payload['meta'].get('scope_refresh')
     if refresh:
         assert refresh['records_reviewed'] == len(payload['tenders']) + refresh['records_removed_as_out_of_scope'] + refresh.get('records_quarantined_unverified', 0)
+    elif payload['meta']['snapshot_origin'] == 'static_scrape':
+        assert 'national_treasury.json' in payload['meta']['inputs']
     else:
         assert payload['meta']['snapshot_origin'] == 'public_source_refresh_without_database_write'
         assert any(source['source'] == 'National Treasury' and source['status'] == 'success' for source in payload['meta']['source_health'])
