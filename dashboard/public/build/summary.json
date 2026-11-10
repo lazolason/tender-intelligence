@@ -1,7 +1,7 @@
 {
-    "generated_at": "2026-11-09 18:01",
-    "build_id": "2026-11-09 18:01 · 2764142",
-    "build_sha": "2764142",
+    "generated_at": "2026-11-10 16:47",
+    "build_id": "2026-11-10 16:47 · 44f0fcc",
+    "build_sha": "44f0fcc",
     "next_run": "Daily 08:00",
     "counts": {
         "total": 1,
@@ -12,19 +12,19 @@
             "HIGH": 1
         },
         "by_source": {
-            "Eskom": 1
+            "National Treasury": 1
         }
     },
     "top": [
         {
             "title": "DESIGN AND REPLACEMENT OF FUEL OIL FLOW METERS FOR A PERIOD OF 24 MONTHS",
-            "source": "Eskom",
+            "source": "National Treasury",
             "company": "PHAKATHI",
             "priority": "HIGH",
-            "close_date": "2026-11-19T10:00:00",
+            "close_date": "2026-11-19",
             "fit": null,
             "suitability": 8.2,
-            "url": "https://tenderbulletin.eskom.co.za/tender/96750"
+            "url": "https://www.etenders.gov.za/Home/opportunities"
         }
     ]
 }
