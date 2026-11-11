@@ -1,7 +1,7 @@
 {
-    "generated_at": "2026-11-10 16:47",
-    "build_id": "2026-11-10 16:47 · 44f0fcc",
-    "build_sha": "44f0fcc",
+    "generated_at": "2026-11-11 16:03",
+    "build_id": "2026-11-11 16:03 · fedab1d",
+    "build_sha": "fedab1d",
     "next_run": "Daily 08:00",
     "counts": {
         "total": 1,
@@ -21,7 +21,7 @@
             "source": "National Treasury",
             "company": "PHAKATHI",
             "priority": "HIGH",
-            "close_date": "2026-11-19",
+            "close_date": "2026-12-02",
             "fit": null,
             "suitability": 8.2,
             "url": "https://www.etenders.gov.za/Home/opportunities"

@@ -1,10 +1,10 @@
 {
     "meta": {
-        "last_sync": "2026-11-10 16:47",
+        "last_sync": "2026-11-11 16:03",
         "snapshot_origin": "static_scrape",
         "next_run": "Daily 08:00",
-        "build_sha": "44f0fcc",
-        "build_id": "2026-11-10 16:47 · 44f0fcc",
+        "build_sha": "fedab1d",
+        "build_id": "2026-11-11 16:03 · fedab1d",
         "inputs": [
             "eskom.json",
             "municipalities.json",
@@ -46,10 +46,6 @@
                     "url": "https://www.etenders.gov.za/home/Download/?blobName=c3b88d1f-e374-4137-a44a-8381b82db8be.pdf&downloadedFileName=Scope+of+Work-+FUEL+OIL+INSTALLATION.pdf"
                 },
                 {
-                    "name": "ECC3 Replacement of fuel oil flow meters.pdf",
-                    "url": "https://www.etenders.gov.za/home/Download/?blobName=2b38828e-0276-496c-8c23-83bb43426a13.pdf&downloadedFileName=ECC3+Replacement+of+fuel+oil+flow+meters.pdf"
-                },
-                {
                     "name": "Environmental Evaluation Checklist - template.pdf",
                     "url": "https://www.etenders.gov.za/home/Download/?blobName=f980736e-22a1-4c9c-8a4a-8f0ce07df863.pdf&downloadedFileName=Environmental+Evaluation+Checklist+-+template.pdf"
                 },
@@ -60,6 +56,14 @@
                 {
                     "name": "Tender Technical Evaluation-Fuel Oil Flow Meters.pdf",
                     "url": "https://www.etenders.gov.za/home/Download/?blobName=0691bbbf-9648-4419-8374-b308f0ecbe4c.pdf&downloadedFileName=Tender+Technical+Evaluation-Fuel+Oil+Flow+Meters.pdf"
+                },
+                {
+                    "name": "Addendum.pdf",
+                    "url": "https://www.etenders.gov.za/home/Download/?blobName=55ba30c4-35b8-4a9f-96c6-b4bb43cc86d4.pdf&downloadedFileName=Addendum.pdf"
+                },
+                {
+                    "name": "ECC3 Replacement of fuel oil flow meters.pdf",
+                    "url": "https://www.etenders.gov.za/home/Download/?blobName=80081dd4-57c0-42bf-bc0c-c45e5b764174.pdf&downloadedFileName=ECC3+Replacement+of+fuel+oil+flow+meters.pdf"
                 },
                 {
                     "name": "240-109253698 CQP Template 2021.docx",
@@ -78,12 +82,12 @@
                     "url": "https://www.etenders.gov.za/home/Download/?blobName=e206cc60-f6c1-44c1-9d66-d719fc9b55ba.pdf&downloadedFileName=240-77471651%28HIGH+RISK%29+%281%29.pdf"
                 },
                 {
-                    "name": "Annexure B Eskom Acknowledgement Form for OHS Legal and Other Requirements - Rev 4.pdf",
-                    "url": "https://www.etenders.gov.za/home/Download/?blobName=d9374eb8-a4a5-4b68-97c1-e821bfd0fdda.pdf&downloadedFileName=Annexure+B+Eskom+Acknowledgement+Form+for+OHS+Legal+and+Other+Requirements+-+Rev+4.pdf"
+                    "name": "Invitation to Tender (ITT)-Fuel Oil Flow meters for a period of 24 months_Extnsion.pdf",
+                    "url": "https://www.etenders.gov.za/home/Download/?blobName=c54dde49-affb-4f23-a3ac-e7d61ff59711.pdf&downloadedFileName=Invitation+to+Tender+%28ITT%29-Fuel+Oil+Flow+meters+for+a+period+of+24+months_Extnsion.pdf"
                 },
                 {
-                    "name": "Invitation to Tender (ITT)-Fuel Oil Flow meters for a period of 24 months.pdf",
-                    "url": "https://www.etenders.gov.za/home/Download/?blobName=f0ba205c-cf8c-4fff-a9e0-e9a5f6b42383.pdf&downloadedFileName=Invitation+to+Tender+%28ITT%29-Fuel+Oil+Flow+meters+for+a+period+of+24+months.pdf"
+                    "name": "Annexure B Eskom Acknowledgement Form for OHS Legal and Other Requirements - Rev 4.pdf",
+                    "url": "https://www.etenders.gov.za/home/Download/?blobName=d9374eb8-a4a5-4b68-97c1-e821bfd0fdda.pdf&downloadedFileName=Annexure+B+Eskom+Acknowledgement+Form+for+OHS+Legal+and+Other+Requirements+-+Rev+4.pdf"
                 }
             ],
             "source_id": 176185,
@@ -93,7 +97,7 @@
             "source": "National Treasury",
             "ref_is_authoritative": true,
             "url": "https://www.etenders.gov.za/Home/opportunities",
-            "closing_date": "2026-11-19",
+            "closing_date": "2026-12-02",
             "published_date": "2026-10-28",
             "reason": "Phakathi Match: 1 keyword(s)",
             "short_title": "Design_And_Replacement_Of",
