@@ -1,10 +1,10 @@
 {
     "meta": {
-        "last_sync": "2026-11-15 15:52",
+        "last_sync": "2026-11-16 17:36",
         "snapshot_origin": "static_scrape",
         "next_run": "Daily 08:00",
-        "build_sha": "b7cc14d",
-        "build_id": "2026-11-15 15:52 · b7cc14d",
+        "build_sha": "ae20a5e",
+        "build_id": "2026-11-16 17:36 · ae20a5e",
         "inputs": [
             "eskom.json",
             "municipalities.json",
@@ -32,7 +32,7 @@
             "client": "Eskom",
             "category": "PHAKATHI",
             "closing_date": "2026-12-02T10:00:00",
-            "scraped_date": "2026-11-15T13:51:02.368254",
+            "scraped_date": "2026-11-16T15:33:22.052056",
             "reason": "Phakathi Match: 1 keyword(s)",
             "scores": {
                 "fit_score": 7,
@@ -109,7 +109,7 @@
             "matched_keywords": [
                 "huawei"
             ],
-            "lifecycle_stage": "DUE_SOON",
+            "lifecycle_stage": "OVERDUE",
             "source": "National Treasury Procurement Plans",
             "source_url": "https://www.etenders.gov.za/Home/ProcurementPlans"
         },
@@ -299,7 +299,7 @@
                 "treatment",
                 "water treatment"
             ],
-            "lifecycle_stage": "DUE_SOON",
+            "lifecycle_stage": "OVERDUE",
             "source": "National Treasury Procurement Plans",
             "source_url": "https://www.etenders.gov.za/Home/ProcurementPlans"
         },
