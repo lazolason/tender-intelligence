@@ -1,10 +1,10 @@
 {
     "meta": {
-        "last_sync": "2026-11-26 18:48",
+        "last_sync": "2026-11-27 18:34",
         "snapshot_origin": "static_scrape",
         "next_run": "Daily 08:00",
-        "build_sha": "b9c0acf",
-        "build_id": "2026-11-26 18:48 · b9c0acf",
+        "build_sha": "bf94658",
+        "build_id": "2026-11-27 18:34 · bf94658",
         "inputs": [
             "eskom.json",
             "municipalities.json",
@@ -32,7 +32,7 @@
             "client": "Eskom",
             "category": "PHAKATHI",
             "closing_date": "2026-12-02T10:00:00",
-            "scraped_date": "2026-11-26T16:45:50.689291",
+            "scraped_date": "2026-11-27T16:31:31.890993",
             "reason": "Phakathi Match: 1 keyword(s)",
             "scores": {
                 "fit_score": 7,
